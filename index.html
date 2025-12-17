@@ -251,63 +251,38 @@
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
-            <div class="contact-wrapper">
-                <div class="contact-info">
-                    <p class="section-tag">Get In Touch</p>
-                    <h2>Ready to Build Something Great?</h2>
-                    <p>
-                        Whether you're exploring a new idea, preparing for funding, or scaling an existing platform—let's talk about how we can help.
-                    </p>
-                    <div class="contact-details">
-                        <div class="contact-item">
-                            <span class="contact-icon">📧</span>
-                            <div>
-                                <h4>Email</h4>
-                                <a href="mailto:indicatechnologyltd@gmail.com">indicatechnologyltd@gmail.com</a>
-                            </div>
+            <div class="contact-card">
+                <div class="contact-header">
+                    <h2>Let's Build Something Great</h2>
+                    <p>Tell us about your project and we'll get back to you within 24 hours.</p>
+                </div>
+                <form action="https://formsubmit.co/indicatechnologyltd@gmail.com" method="POST" class="contact-form">
+                    <!-- Formsubmit configuration -->
+                    <input type="hidden" name="_subject" value="New enquiry from Indica Tech website">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_next" value="https://indica-tech.com/thank-you.html">
+                    <input type="text" name="_honey" style="display:none">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required placeholder="John Smith">
                         </div>
-                        <div class="contact-item">
-                            <span class="contact-icon">📍</span>
-                            <div>
-                                <h4>Location</h4>
-                                <p>United Kingdom</p>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <span class="contact-icon">⏱️</span>
-                            <div>
-                                <h4>Response Time</h4>
-                                <p>Within 24 hours</p>
-                            </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required placeholder="john@company.com">
                         </div>
                     </div>
-                </div>
-                <div class="contact-form-wrapper">
-                    <!-- Formsubmit - emails go to indicatechnologyltd@gmail.com -->
-                    <form action="https://formsubmit.co/indicatechnologyltd@gmail.com" method="POST" class="contact-form">
-                        <!-- Formsubmit configuration -->
-                        <input type="hidden" name="_subject" value="New enquiry from Indica Tech website">
-                        <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_template" value="table">
-                        <input type="hidden" name="_next" value="https://indica-tech.com/thank-you.html">
-                        <input type="text" name="_honey" style="display:none">
-                        
+                    <div class="form-row">
                         <div class="form-group">
-                            <label for="name">Name *</label>
-                            <input type="text" id="name" name="name" required placeholder="Your name">
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email *</label>
-                            <input type="email" id="email" name="email" required placeholder="your@email.com">
-                        </div>
-                        <div class="form-group">
-                            <label for="company">Company</label>
-                            <input type="text" id="company" name="company" placeholder="Your company (optional)">
+                            <label for="company">Company <span class="optional">(optional)</span></label>
+                            <input type="text" id="company" name="company" placeholder="Your company name">
                         </div>
                         <div class="form-group">
                             <label for="project">Project Type</label>
                             <select id="project" name="project_type">
-                                <option value="">Select a project type</option>
+                                <option value="" disabled selected>Select project type</option>
                                 <option value="mvp">MVP / Prototype</option>
                                 <option value="fullstack">Full-Stack Development</option>
                                 <option value="ai-ml">AI / Machine Learning</option>
@@ -316,13 +291,18 @@
                                 <option value="other">Other</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="message">Message *</label>
-                            <textarea id="message" name="message" rows="4" required placeholder="Tell us about your project..."></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-large">Send Message</button>
-                    </form>
-                </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required placeholder="Tell us about your project, timeline, and goals..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-submit">
+                        <span>Send Message</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                        </svg>
+                    </button>
+                </form>
             </div>
         </div>
     </section>
