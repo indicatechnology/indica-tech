@@ -250,14 +250,14 @@
 
     <!-- Contact Section -->
     <section id="contact" class="contact">
-        <div class="container">
+        <div class="contact-container">
             <div class="contact-card">
                 <div class="contact-header">
+                    <span class="contact-badge">Get In Touch</span>
                     <h2>Let's Build Something Great</h2>
-                    <p>Tell us about your project and we'll get back to you within 24 hours.</p>
+                    <p>Share your project details and we'll get back to you within 24 hours.</p>
                 </div>
                 <form action="https://formsubmit.co/indicatechnologyltd@gmail.com" method="POST" class="contact-form">
-                    <!-- Formsubmit configuration -->
                     <input type="hidden" name="_subject" value="New enquiry from Indica Tech website">
                     <input type="hidden" name="_captcha" value="false">
                     <input type="hidden" name="_template" value="table">
@@ -267,22 +267,22 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" id="name" name="name" required placeholder="John Smith">
+                            <input type="text" id="name" name="name" required placeholder="Your name">
                         </div>
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required placeholder="john@company.com">
+                            <label for="email">Work Email</label>
+                            <input type="email" id="email" name="email" required placeholder="you@company.com">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="company">Company <span class="optional">(optional)</span></label>
-                            <input type="text" id="company" name="company" placeholder="Your company name">
+                            <label for="company">Company <span class="optional">optional</span></label>
+                            <input type="text" id="company" name="company" placeholder="Company name">
                         </div>
                         <div class="form-group">
                             <label for="project">Project Type</label>
-                            <select id="project" name="project_type">
-                                <option value="" disabled selected>Select project type</option>
+                            <select id="project" name="project_type" required>
+                                <option value="" disabled selected>Select one</option>
                                 <option value="mvp">MVP / Prototype</option>
                                 <option value="fullstack">Full-Stack Development</option>
                                 <option value="ai-ml">AI / Machine Learning</option>
@@ -292,16 +292,27 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group full-width">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" rows="5" required placeholder="Tell us about your project, timeline, and goals..."></textarea>
+                    <div class="form-group">
+                        <label for="message">How can we help?</label>
+                        <textarea id="message" name="message" rows="4" required placeholder="Tell us about your project, goals, and timeline..."></textarea>
                     </div>
-                    <button type="submit" class="btn btn-submit">
-                        <span>Send Message</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-                        </svg>
-                    </button>
+                    <div class="form-footer">
+                        <button type="submit" class="btn-submit">
+                            Send Message
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                        <p class="form-region">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                            Operating across UK & Europe
+                        </p>
+                    </div>
                 </form>
             </div>
         </div>
@@ -347,7 +358,7 @@
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2025 Indica Tech. All rights reserved.</p>
-                <p>United Kingdom</p>
+                <p>UK & Europe</p>
             </div>
         </div>
     </footer>

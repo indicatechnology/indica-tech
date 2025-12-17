@@ -503,20 +503,29 @@ section {
 }
 
 /* ========================================
-   Contact Section - Clean Professional Design
+   Contact Section - Sleek Modern Design
 ======================================== */
 .contact {
-    background: linear-gradient(180deg, var(--bg-alt) 0%, var(--bg) 100%);
+    background: var(--bg-dark);
     padding: 100px 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.contact-container {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 24px;
 }
 
 .contact-card {
-    max-width: 720px;
-    margin: 0 auto;
-    background: white;
-    border-radius: var(--radius-lg);
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07), 0 0 0 1px rgb(0 0 0 / 0.05);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
     padding: 48px;
+    backdrop-filter: blur(10px);
 }
 
 .contact-header {
@@ -524,15 +533,31 @@ section {
     margin-bottom: 40px;
 }
 
+.contact-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(99, 102, 241, 0.15);
+    color: var(--primary-light);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 50px;
+    margin-bottom: 20px;
+}
+
 .contact-header h2 {
-    font-size: 2rem;
+    color: white;
+    font-size: 2.25rem;
+    font-weight: 600;
     margin-bottom: 12px;
-    color: var(--secondary);
+    letter-spacing: -0.02em;
 }
 
 .contact-header p {
-    font-size: 1.1rem;
-    color: var(--text-light);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.05rem;
+    line-height: 1.6;
 }
 
 .contact-form {
@@ -544,7 +569,7 @@ section {
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 16px;
 }
 
 .form-group {
@@ -553,43 +578,45 @@ section {
     gap: 8px;
 }
 
-.form-group.full-width {
-    grid-column: 1 / -1;
-}
-
 .form-group label {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     font-weight: 500;
-    color: var(--text);
+    color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .form-group .optional {
+    font-size: 0.75rem;
     font-weight: 400;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.4);
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
+    width: 100%;
     padding: 14px 16px;
-    background: var(--bg-alt);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--text);
-    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    font-size: 0.95rem;
     font-family: inherit;
-    transition: var(--transition);
+    transition: all 0.2s ease;
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.35);
 }
 
 .form-group input:hover,
 .form-group select:hover,
 .form-group textarea:hover {
-    border-color: var(--text-muted);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.07);
 }
 
 .form-group input:focus,
@@ -597,64 +624,90 @@ section {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--primary);
-    background: white;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
 .form-group select {
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 12px center;
+    background-position: right 14px center;
     background-size: 18px;
-    background-color: var(--bg-alt);
+    padding-right: 44px;
 }
 
 .form-group select option {
-    background: white;
-    color: var(--text);
+    background: var(--bg-dark);
+    color: white;
+    padding: 12px;
 }
 
 .form-group textarea {
     resize: vertical;
-    min-height: 140px;
+    min-height: 120px;
+    line-height: 1.5;
+}
+
+.form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 8px;
 }
 
 .btn-submit {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    padding: 16px 32px;
+    gap: 8px;
+    padding: 12px 24px;
     background: var(--gradient);
     color: white;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
+    font-family: inherit;
     border: none;
-    border-radius: var(--radius);
+    border-radius: 10px;
     cursor: pointer;
-    transition: var(--transition);
-    margin-top: 8px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .btn-submit svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     transition: transform 0.3s ease;
 }
 
 .btn-submit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 8px 20px -6px rgba(99, 102, 241, 0.5);
 }
 
 .btn-submit:hover svg {
-    transform: translate(3px, -3px);
+    transform: translateX(3px);
 }
 
 .btn-submit:active {
     transform: translateY(0);
+}
+
+.form-region {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.45);
+    margin: 0;
+}
+
+.form-region svg {
+    width: 16px;
+    height: 16px;
+    opacity: 0.7;
 }
 
 /* ========================================
@@ -837,13 +890,37 @@ section {
         grid-template-columns: repeat(2, 1fr);
     }
 
+    .contact {
+        padding: 60px 0;
+    }
+
     .contact-card {
         padding: 32px 24px;
+        border-radius: 20px;
+    }
+
+    .contact-header h2 {
+        font-size: 1.75rem;
     }
 
     .form-row {
         grid-template-columns: 1fr;
         gap: 20px;
+    }
+
+    .form-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+    .btn-submit {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .form-region {
+        justify-content: center;
     }
 
     .footer-content {
