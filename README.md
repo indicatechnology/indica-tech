@@ -1,2 +1,250 @@
-# indica-tech
-This is website for indica tech
+# Indica Tech Website
+
+A modern, responsive consulting website for Indica Tech software consulting services.
+
+## 🚀 Quick Start
+
+### Option 1: Test Locally
+
+1. Open the `index.html` file directly in your browser
+2. Or use a local server:
+   ```bash
+   # Using Python
+   python -m http.server 8000
+   
+   # Using Node.js (npx)
+   npx serve
+   ```
+3. Visit `http://localhost:8000`
+
+---
+
+## 📦 Deploying to GitHub Pages (Step-by-Step)
+
+### Step 1: Create a GitHub Account (if you don't have one)
+
+1. Go to [github.com](https://github.com)
+2. Click "Sign up" and create an account
+3. Verify your email address
+
+### Step 2: Create a New Repository
+
+1. Log into GitHub
+2. Click the **+** icon in the top right → **New repository**
+3. Repository settings:
+   - **Repository name**: `indica-tech` (or any name you prefer)
+   - **Description**: "Indica Tech consulting website"
+   - **Visibility**: Public (required for free GitHub Pages)
+   - **DO NOT** check "Add a README file"
+4. Click **Create repository**
+
+### Step 3: Upload Your Files
+
+**Option A: Using GitHub Web Interface (Easiest)**
+
+1. In your new repository, click **"uploading an existing file"** link
+2. Drag and drop these files:
+   - `index.html`
+   - `styles.css`
+   - `script.js`
+3. Add commit message: "Initial website upload"
+4. Click **Commit changes**
+
+**Option B: Using Git Command Line**
+
+```bash
+# Navigate to your project folder
+cd indica-tech
+
+# Initialize Git
+git init
+
+# Add all files
+git add .
+
+# Commit
+git commit -m "Initial website upload"
+
+# Add remote (replace YOUR_USERNAME)
+git remote add origin https://github.com/YOUR_USERNAME/indica-tech.git
+
+# Push to GitHub
+git branch -M main
+git push -u origin main
+```
+
+### Step 4: Enable GitHub Pages
+
+1. Go to your repository on GitHub
+2. Click **Settings** (tab at the top)
+3. In the left sidebar, click **Pages**
+4. Under "Source", select:
+   - **Branch**: `main`
+   - **Folder**: `/ (root)`
+5. Click **Save**
+6. Wait 2-5 minutes for deployment
+7. Your site will be live at: `https://YOUR_USERNAME.github.io/indica-tech/`
+
+---
+
+## 🌐 Connecting Your GoDaddy Domain
+
+### Step 5: Add Custom Domain in GitHub
+
+1. In GitHub repo → **Settings** → **Pages**
+2. Under "Custom domain", enter: `indica-tech.com`
+3. Click **Save**
+4. Check "Enforce HTTPS" (after DNS propagates)
+
+### Step 6: Configure GoDaddy DNS
+
+1. Log into [GoDaddy](https://www.godaddy.com)
+2. Go to **My Products** → Find your domain → **DNS**
+3. Delete existing A records and CNAME records (if any)
+
+**Add these A Records (for apex domain - indica-tech.com):**
+
+| Type | Name | Value | TTL |
+|------|------|-------|-----|
+| A | @ | 185.199.108.153 | 600 |
+| A | @ | 185.199.109.153 | 600 |
+| A | @ | 185.199.110.153 | 600 |
+| A | @ | 185.199.111.153 | 600 |
+
+**Add this CNAME Record (for www subdomain):**
+
+| Type | Name | Value | TTL |
+|------|------|-------|-----|
+| CNAME | www | YOUR_USERNAME.github.io | 600 |
+
+> Replace `YOUR_USERNAME` with your actual GitHub username
+
+### Step 7: Create CNAME File in Repository
+
+1. In your GitHub repo, click **Add file** → **Create new file**
+2. Name it: `CNAME` (all caps, no extension)
+3. Contents:
+   ```
+   indica-tech.com
+   ```
+4. Click **Commit new file**
+
+### Step 8: Wait for DNS Propagation
+
+- DNS changes can take **15 minutes to 48 hours**
+- Check status at: [whatsmydns.net](https://www.whatsmydns.net/)
+- Search for your domain to see if A records have propagated
+
+### Step 9: Enable HTTPS
+
+1. Once DNS propagates (site loads), go back to:
+   - GitHub → Settings → Pages
+2. Check ✅ **Enforce HTTPS**
+3. Your site is now secure!
+
+---
+
+## 🔧 Making Updates
+
+### To update your website:
+
+**Via GitHub Web:**
+1. Go to your repo
+2. Click on the file you want to edit (e.g., `index.html`)
+3. Click the ✏️ pencil icon
+4. Make changes
+5. Click **Commit changes**
+6. Changes deploy automatically in 1-2 minutes
+
+**Via Git:**
+```bash
+# Make changes locally
+# Then:
+git add .
+git commit -m "Update description"
+git push
+```
+
+---
+
+## 📁 Project Structure
+
+```
+indica-tech/
+├── index.html      # Main HTML file
+├── styles.css      # All styling
+├── script.js       # JavaScript functionality
+├── CNAME           # Custom domain config (create after setup)
+└── README.md       # This file
+```
+
+---
+
+## ✏️ Customization Guide
+
+### Change Contact Email
+In `index.html`, find and replace:
+```html
+<a href="mailto:hello@indica-tech.com"...>
+```
+
+### Update Statistics
+Find the `.stat-card` elements and update numbers:
+```html
+<div class="stat-number">50+</div>
+<div class="stat-label">Projects Delivered</div>
+```
+
+### Change Colors
+In `styles.css`, modify the CSS variables:
+```css
+:root {
+    --primary: #6366f1;        /* Main brand color */
+    --primary-dark: #4f46e5;   /* Darker shade */
+    --accent: #22d3ee;         /* Accent color */
+}
+```
+
+### Add New Industry
+In `index.html`, add within `.industries-grid`:
+```html
+<div class="industry-card">
+    <div class="industry-icon">🎯</div>
+    <h3>New Industry</h3>
+    <p>Description here.</p>
+</div>
+```
+
+---
+
+## 🆘 Troubleshooting
+
+**Site not showing?**
+- Wait 5-10 minutes after enabling Pages
+- Check that source is set to `main` branch
+
+**Custom domain not working?**
+- Verify DNS records are correct
+- Wait up to 48 hours for propagation
+- Ensure CNAME file exists in repo
+
+**HTTPS not available?**
+- DNS must fully propagate first
+- GitHub needs to provision SSL certificate (can take up to 24 hours)
+
+**404 Error?**
+- Make sure `index.html` is in root of repository
+- Check file names are lowercase
+
+---
+
+## 📞 Support
+
+For GitHub Pages issues: [GitHub Pages Documentation](https://docs.github.com/en/pages)
+For GoDaddy DNS help: [GoDaddy Help](https://www.godaddy.com/help)
+
+---
+
+## 📄 License
+
+© 2025 Indica Tech. All rights reserved.
