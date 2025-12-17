@@ -190,6 +190,11 @@ section {
     font-size: 1.5rem;
 }
 
+.logo-img {
+    height: 36px;
+    width: auto;
+}
+
 .nav-links {
     display: flex;
     align-items: center;
@@ -498,7 +503,140 @@ section {
 }
 
 /* ========================================
-   CTA Section
+   Contact Section
+======================================== */
+.contact {
+    background: var(--bg-dark);
+    padding: 100px 0;
+}
+
+.contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+.contact-info h2 {
+    color: white;
+    margin-bottom: 16px;
+}
+
+.contact-info > p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+}
+
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.contact-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.contact-item h4 {
+    color: white;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+}
+
+.contact-item p,
+.contact-item a {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.contact-item a:hover {
+    color: var(--primary-light);
+}
+
+.contact-form-wrapper {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius);
+    color: white;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+}
+
+.form-group select option {
+    background: var(--bg-dark);
+    color: white;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.contact-form .btn {
+    margin-top: 10px;
+}
+
+/* ========================================
+   CTA Section (keeping for reference)
 ======================================== */
 .cta {
     background: var(--bg-dark);
@@ -549,6 +687,11 @@ section {
 .footer-brand .logo {
     color: white;
     margin-bottom: 16px;
+}
+
+.footer-brand .logo-img {
+    height: 32px;
+    filter: brightness(0) invert(1); /* Makes logo white for dark background */
 }
 
 .footer-brand p {
@@ -631,6 +774,11 @@ section {
     .approach-content {
         grid-template-columns: 1fr;
         gap: 50px;
+    }
+
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+        gap: 40px;
     }
 }
 
