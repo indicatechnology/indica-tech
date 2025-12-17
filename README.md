@@ -96,52 +96,6 @@ git push -u origin main
 3. Click **Save**
 4. Check "Enforce HTTPS" (after DNS propagates)
 
-### Step 6: Configure GoDaddy DNS
-
-1. Log into [GoDaddy](https://www.godaddy.com)
-2. Go to **My Products** → Find your domain → **DNS**
-3. Delete existing A records and CNAME records (if any)
-
-**Add these A Records (for apex domain - indica-tech.com):**
-
-| Type | Name | Value | TTL |
-|------|------|-------|-----|
-| A | @ | 185.199.108.153 | 600 |
-| A | @ | 185.199.109.153 | 600 |
-| A | @ | 185.199.110.153 | 600 |
-| A | @ | 185.199.111.153 | 600 |
-
-**Add this CNAME Record (for www subdomain):**
-
-| Type | Name | Value | TTL |
-|------|------|-------|-----|
-| CNAME | www | YOUR_USERNAME.github.io | 600 |
-
-> Replace `YOUR_USERNAME` with your actual GitHub username
-
-### Step 7: Create CNAME File in Repository
-
-1. In your GitHub repo, click **Add file** → **Create new file**
-2. Name it: `CNAME` (all caps, no extension)
-3. Contents:
-   ```
-   indica-tech.com
-   ```
-4. Click **Commit new file**
-
-### Step 8: Wait for DNS Propagation
-
-- DNS changes can take **15 minutes to 48 hours**
-- Check status at: [whatsmydns.net](https://www.whatsmydns.net/)
-- Search for your domain to see if A records have propagated
-
-### Step 9: Enable HTTPS
-
-1. Once DNS propagates (site loads), go back to:
-   - GitHub → Settings → Pages
-2. Check ✅ **Enforce HTTPS**
-3. Your site is now secure!
-
 ---
 
 ## 🔧 Making Updates
@@ -214,34 +168,6 @@ In `index.html`, add within `.industries-grid`:
     <p>Description here.</p>
 </div>
 ```
-
----
-
-## 🆘 Troubleshooting
-
-**Site not showing?**
-- Wait 5-10 minutes after enabling Pages
-- Check that source is set to `main` branch
-
-**Custom domain not working?**
-- Verify DNS records are correct
-- Wait up to 48 hours for propagation
-- Ensure CNAME file exists in repo
-
-**HTTPS not available?**
-- DNS must fully propagate first
-- GitHub needs to provision SSL certificate (can take up to 24 hours)
-
-**404 Error?**
-- Make sure `index.html` is in root of repository
-- Check file names are lowercase
-
----
-
-## 📞 Support
-
-For GitHub Pages issues: [GitHub Pages Documentation](https://docs.github.com/en/pages)
-For GoDaddy DNS help: [GoDaddy Help](https://www.godaddy.com/help)
 
 ---
 
