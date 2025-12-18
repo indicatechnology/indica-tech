@@ -62,7 +62,7 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 // Apply fade-in to cards
-document.querySelectorAll('.service-card, .industry-card, .stat-card').forEach(card => {
+document.querySelectorAll('.service-card, .industry-card, .stat-card, .testimonial-card, .trust-banner-content').forEach(card => {
     card.style.opacity = '0';
     card.style.transform = 'translateY(20px)';
     card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
