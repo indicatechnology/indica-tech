@@ -291,6 +291,25 @@ section {
     flex-wrap: wrap;
 }
 
+.hero-badges {
+    display: flex;
+    gap: 24px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+}
+
+.hero-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.badge-icon {
+    font-size: 1.1rem;
+}
+
 .hero-visual {
     position: relative;
     height: 500px;
@@ -834,6 +853,10 @@ section {
         justify-content: center;
     }
 
+    .hero-badges {
+        justify-content: center;
+    }
+
     .hero-visual {
         display: none;
     }
@@ -954,6 +977,12 @@ section {
 
     .hero-buttons {
         flex-direction: column;
+    }
+
+    .hero-badges {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
     }
 
     .btn {
