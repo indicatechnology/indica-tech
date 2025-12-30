@@ -352,6 +352,14 @@ section {
     border-radius: 4px;
 }
 
+.footnote {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 12px;
+    display: inline-block;
+}
+
 .trust-items-wrapper {
     display: flex;
     align-items: center;
@@ -755,6 +763,68 @@ section {
     font-weight: 600;
     border-radius: 8px;
     border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+/* New Case Study Style Testimonials */
+.testimonial-header {
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.testimonial-role {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--secondary);
+    margin-bottom: 4px;
+}
+
+.testimonial-industry {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+}
+
+.testimonial-outcomes h4 {
+    font-size: 1rem;
+    color: var(--secondary);
+    margin-bottom: 12px;
+}
+
+.testimonial-outcomes ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.testimonial-outcomes li {
+    font-size: 1rem;
+    color: var(--text);
+    padding-left: 24px;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.testimonial-outcomes li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.testimonial-delivery {
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.testimonial-delivery p {
+    font-size: 0.9375rem;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.testimonial-delivery strong {
+    color: var(--secondary);
+    font-weight: 600;
 }
 
 /* ========================================
