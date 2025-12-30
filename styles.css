@@ -825,6 +825,56 @@ section {
 .testimonial-delivery strong {
     color: var(--secondary);
     font-weight: 600;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.tech-tags {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.tech-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 5px;
+    font-size: 0.75rem;
+    color: var(--text-light);
+    font-weight: 500;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tech-tag:hover {
+    background: rgba(99, 102, 241, 0.08);
+    border-color: rgba(99, 102, 241, 0.25);
+    color: var(--text);
+}
+
+.tech-tag::before {
+    content: attr(data-icon);
+    font-size: 0.875rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .tech-tags {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    }
+
+    .tech-tag {
+        font-size: 0.6875rem;
+        padding: 4px 8px;
+    }
 }
 
 /* ========================================
