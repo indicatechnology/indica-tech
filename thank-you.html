@@ -1,108 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Thank you for contacting Indica Tech">
-    <title>Thank You | Indica Tech</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
-    <style>
-        .thank-you {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px 24px;
-            background: var(--bg-dark);
-        }
-        .thank-you-card {
-            max-width: 440px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            padding: 56px 40px;
-            backdrop-filter: blur(10px);
-        }
-        .thank-you-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 28px;
-            background: rgba(34, 197, 94, 0.15);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .thank-you-icon svg {
-            width: 40px;
-            height: 40px;
-            color: #22c55e;
-        }
-        .thank-you-card h1 {
-            font-size: 2rem;
-            margin-bottom: 12px;
-            color: white;
-            font-weight: 600;
-        }
-        .thank-you-card p {
-            font-size: 1.05rem;
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 36px;
-            line-height: 1.6;
-        }
-        .thank-you-card .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 28px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: white;
-            border-radius: 12px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-        .thank-you-card .btn:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.25);
-        }
-        .thank-you-card .btn svg {
-            width: 18px;
-            height: 18px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Message sent — Indica Tech</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230B0B0A'/%3E%3Ccircle cx='32' cy='30' r='9' fill='%2300C46A'/%3E%3Crect x='25' y='42' width='14' height='40' fill='%23F5F2EC'/%3E%3Cpath d='M58 82 L78 18 L71 18 L51 82 Z' fill='%23F5F2EC'/%3E%3C/svg%3E">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <img src="data:image/webp;base64,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" alt="Indica Technology" class="logo-img">
-            </a>
-        </div>
-    </nav>
 
-    <section class="thank-you">
-        <div class="thank-you-card">
-            <div class="thank-you-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-            </div>
-            <h1>Message Sent</h1>
-            <p>Thank you for reaching out. We've received your message and will get back to you within 24 hours.</p>
-            <a href="index.html" class="btn btn-primary">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M19 12H5M12 19l-7-7 7-7"/>
-                </svg>
-                <span>Back to Home</span>
-            </a>
-        </div>
-    </section>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+        <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+        <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+        <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+      </svg>
+      <span>Indica Tech <em>/ demo → prod</em></span>
+    </a>
+    <a href="index.html" class="nav-cta">Back to home <span class="arrow">→</span></a>
+  </div>
+</nav>
+
+<section class="ty">
+  <div class="ty-card">
+    <div class="kicker">Confirmation / 200 OK</div>
+    <span class="check">✓ message received</span>
+    <h1>Got it. You'll hear back within 24 hours.</h1>
+    <p>I read every message personally. If we're a fit, I'll suggest a 30-minute discovery call. If we're not, I'll tell you who is — no ghosting.</p>
+    <p class="mono" style="border-top:1px solid var(--rule);padding-top:20px;">While you wait: <a href="https://instagram.com/demotoprod" target="_blank" rel="noopener" style="border-bottom:1px solid var(--ink);">@demotoprod</a> — sixty-second breakdowns of why AI pilots fail.</p>
+    <div style="margin-top:32px;">
+      <a href="index.html" class="btn btn-primary">← Back to home</a>
+    </div>
+  </div>
+</section>
+
 </body>
 </html>

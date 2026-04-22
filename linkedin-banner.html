@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Indica Tech — LinkedIn Banner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5F2EC;
+    --paper-2: #EDE8DF;
+    --ink: #0B0B0A;
+    --ink-2: #16160F;
+    --ink-mute: #8A857D;
+    --rule: #3A3A32;
+    --signal: #00C46A;
+    --signal-ink: #003B1F;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+    --sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #222; min-height: 100vh; font-family: var(--sans); color: var(--paper); }
+  body {
+    padding: 48px 24px 80px;
+    display: flex; flex-direction: column; align-items: center; gap: 56px;
+  }
+
+  .lede {
+    max-width: 1584px; width: 100%;
+    color: #cfc9be;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    font-family: var(--mono);
+    padding: 18px 24px;
+    border: 1px solid #444;
+    background: #1a1a16;
+  }
+  .lede strong { color: var(--signal); }
+
+  .variant {
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .variant .label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #a8a298;
+  }
+  .variant .label strong { color: var(--signal); }
+
+  .banner {
+    width: 1584px;
+    height: 396px;
+    background: var(--ink);
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+    font-family: var(--sans);
+    display: grid;
+    grid-template-columns: 420px 1fr;
+  }
+
+  /* ========================================================= Variant A — Editorial split */
+  .banner.a {
+    grid-template-columns: 460px 1fr;
+  }
+  .a .left {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 40px 40px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    border-right: 1px solid var(--ink);
+    position: relative;
+  }
+  .a .logo-lockup {
+    display: flex; align-items: center; gap: 18px;
+  }
+  .a .mark-svg { width: 72px; height: 72px; flex-shrink: 0; }
+  .a .wordmark .name {
+    font-weight: 600;
+    font-size: 2.2rem;
+    letter-spacing: -0.035em;
+    line-height: 1;
+  }
+  .a .wordmark .sub {
+    margin-top: 6px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: #5E5B55;
+    letter-spacing: 0.06em;
+  }
+  .a .left-meta {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #5E5B55;
+    line-height: 1.8;
+  }
+  .a .left-meta .row { display: flex; gap: 14px; align-items: center; }
+  .a .left-meta .dot { display: inline-block; width: 6px; height: 6px; background: var(--signal); border-radius: 50%; }
+
+  .a .right {
+    padding: 44px 56px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative;
+  }
+  .a .kicker {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #a8a298;
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-bottom: 14px;
+  }
+  .a .kicker::before { content: ""; width: 24px; height: 1px; background: #a8a298; }
+  .a h1 {
+    font-size: 3.1rem;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    margin-bottom: 18px;
+  }
+  .a h1 em { font-style: normal; color: var(--signal); }
+  .a .roles {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    color: #c9c4ba;
+    letter-spacing: 0.02em;
+    margin-bottom: 20px;
+  }
+  .a .roles .sep { color: var(--rule); margin: 0 10px; }
+  .a .domains {
+    display: flex; flex-wrap: wrap; gap: 0;
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+  }
+  .a .domain {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--signal);
+    padding: 2px 14px 2px 0;
+    border-right: 1px solid var(--rule);
+    margin-right: 14px;
+  }
+  .a .domain:last-child { border-right: 0; margin-right: 0; }
+  .a .cta-strip {
+    position: absolute;
+    right: 56px;
+    top: 44px;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--signal);
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .a .cta-strip .pulse {
+    width: 8px; height: 8px; background: var(--signal); border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,196,106,0.4); }
+    50% { opacity: .6; box-shadow: 0 0 0 6px rgba(0,196,106,0); }
+  }
+
+  /* Circuit backdrop, subtle */
+  .a .right::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  /* ========================================================= Variant B — Terminal-prompt */
+  .banner.b {
+    grid-template-columns: 1fr;
+    padding: 48px 72px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .b::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 25% 20%, rgba(0,196,106,0.08) 0%, transparent 40%);
+    pointer-events: none;
+  }
+  .b .terminal-head {
+    display: flex; align-items: center; gap: 14px;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: #a8a298;
+    margin-bottom: 22px;
+    letter-spacing: 0.04em;
+  }
+  .b .terminal-head .mark-svg { width: 34px; height: 34px; }
+  .b .terminal-head .path { color: var(--signal); }
+  .b .terminal-head .status {
+    margin-left: auto;
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--signal);
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+  }
+  .b .terminal-head .status .pulse {
+    width: 8px; height: 8px; background: var(--signal); border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  .b h1 {
+    font-size: 3.4rem;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    margin-bottom: 8px;
+  }
+  .b h1 .demo { color: #a8a298; }
+  .b h1 .arrow { color: var(--signal); margin: 0 16px; }
+  .b h1 .prod { color: var(--paper); }
+  .b .sub {
+    font-family: var(--mono);
+    font-size: 1rem;
+    color: #c9c4ba;
+    margin-bottom: 20px;
+    letter-spacing: 0.02em;
+  }
+  .b .sub strong { color: var(--paper); font-weight: 500; }
+  .b .bottom {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+  }
+  .b .domains {
+    display: flex; flex-wrap: wrap; gap: 0;
+  }
+  .b .domains .d {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--signal);
+    padding: 2px 16px 2px 0;
+    border-right: 1px solid var(--rule);
+    margin-right: 16px;
+  }
+  .b .domains .d:last-child { border-right: 0; }
+  .b .contact {
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: #a8a298;
+    line-height: 1.7;
+  }
+  .b .contact .site { color: var(--paper); }
+  .b .contact .handle { color: var(--signal); }
+
+  /* ========================================================= Variant C — Bold statement */
+  .banner.c {
+    grid-template-columns: 1fr;
+    padding: 56px 72px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .c .top-row {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .c .logo-lockup {
+    display: flex; align-items: center; gap: 16px;
+  }
+  .c .logo-lockup .mark-svg { width: 48px; height: 48px; }
+  .c .logo-lockup .name {
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .c .logo-lockup .sub {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: #a8a298;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+  .c .top-meta {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #a8a298;
+    text-align: right;
+    line-height: 1.7;
+  }
+  .c .top-meta .signal { color: var(--signal); }
+  .c .middle h1 {
+    font-size: 4.2rem;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+    max-width: 17ch;
+  }
+  .c .middle h1 .hl {
+    background: var(--signal);
+    color: var(--signal-ink);
+    padding: 0 10px;
+  }
+  .c .bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 40px;
+    align-items: end;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+  }
+  .c .bottom .col-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: #888278;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .c .bottom .val {
+    font-family: var(--mono);
+    font-size: 0.92rem;
+    color: var(--paper);
+    letter-spacing: 0.02em;
+  }
+  .c .bottom .val .sig { color: var(--signal); }
+  .c .bottom .cta {
+    font-family: var(--mono);
+    font-size: 0.92rem;
+    color: var(--signal);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 1px solid var(--signal);
+    padding: 10px 18px;
+  }
+
+  /* Credits */
+  .credits {
+    max-width: 1584px;
+    padding: 12px 20px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: #888;
+  }
+</style>
+</head>
+<body>
+
+<!-- Reusable SVG (via <symbol>) -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;" aria-hidden="true">
+  <symbol id="mark" viewBox="0 0 100 100">
+    <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+    <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+    <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<div class="lede">
+  <strong>3 LinkedIn banner options</strong> &nbsp;·&nbsp; 1584×396 &nbsp;·&nbsp; drop-in-ready. Each carries the full message (CTO / SaaS / AI / LLM · tech strategy · transforming ideas into products · industries), rebuilt in our new Indica Tech design language — A2 slash mark, IBM Plex, paper+ink, signal green. To export: screenshot or right-click → "Save as image" on the one you pick. Signal-green pulse animations will freeze on export, which is fine — the static state still reads.
+</div>
+
+<!-- ========================================================= A: Editorial split -->
+<div class="variant">
+  <div class="label">Option A <strong>/ Editorial split</strong> &nbsp;·&nbsp; light+dark · most like the website</div>
+  <div class="banner a">
+    <div class="left">
+      <div class="logo-lockup">
+        <svg class="mark-svg" style="color: #0B0B0A;"><use href="#mark"/></svg>
+        <div class="wordmark">
+          <div class="name">Indica Tech</div>
+          <div class="sub">/ demo → prod</div>
+        </div>
+      </div>
+      <div class="left-meta">
+        <div class="row"><span class="dot"></span>Founder-led · UK · US · Remote-first</div>
+        <div class="row" style="color:#0B0B0A;">CTO <span style="color:#D9D3C6;">|</span> SaaS <span style="color:#D9D3C6;">|</span> AI <span style="color:#D9D3C6;">|</span> LLM</div>
+        <div class="row">indica-tech.com &nbsp; · &nbsp; @demotoprod</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="cta-strip"><span class="pulse"></span>Now taking Q3 engagements</div>
+      <div>
+        <div class="kicker">Tech strategy &amp; AI engineering</div>
+        <h1>AI that <em>ships.</em><br>Not slideware.</h1>
+      </div>
+      <div>
+        <div class="roles">Technology Executive<span class="sep">·</span>Startup Advisor<span class="sep">·</span>Fractional CTO</div>
+        <div class="domains">
+          <span class="domain">Energy</span>
+          <span class="domain">Fintech</span>
+          <span class="domain">IoT</span>
+          <span class="domain">Defence</span>
+          <span class="domain">SaaS</span>
+          <span class="domain">GIS</span>
+          <span class="domain">GenAI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= B: Terminal-prompt -->
+<div class="variant">
+  <div class="label">Option B <strong>/ Terminal-prompt</strong> &nbsp;·&nbsp; all-ink · most "engineer-coded"</div>
+  <div class="banner b">
+    <div class="terminal-head">
+      <svg class="mark-svg" style="color: #F5F2EC;"><use href="#mark"/></svg>
+      <span style="color:#a8a298;">gautam@indica</span>
+      <span style="color:#555;">:</span>
+      <span class="path">~/production</span>
+      <span style="color:#555;">$</span>
+      <span style="color:var(--paper);">ship --from=demo --to=prod</span>
+      <span class="status"><span class="pulse"></span>200 OK</span>
+    </div>
+    <h1><span class="demo">Demo</span><span class="arrow">→</span><span class="prod">Production.</span></h1>
+    <div class="sub">Fractional CTO · SaaS · AI · LLM · tech strategy &amp; innovation. <strong>Transforming ideas into market-leading products.</strong></div>
+    <div class="bottom">
+      <div class="domains">
+        <span class="d">Energy</span>
+        <span class="d">Fintech</span>
+        <span class="d">IoT</span>
+        <span class="d">Defence</span>
+        <span class="d">SaaS</span>
+        <span class="d">GIS</span>
+        <span class="d">GenAI</span>
+      </div>
+      <div class="contact">
+        <div class="site">indica-tech.com</div>
+        <div class="handle">@demotoprod</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= C: Bold statement -->
+<div class="variant">
+  <div class="label">Option C <strong>/ Bold statement</strong> &nbsp;·&nbsp; hero-style · strongest visual impact</div>
+  <div class="banner c">
+    <div class="top-row">
+      <div class="logo-lockup">
+        <svg class="mark-svg" style="color: #F5F2EC;"><use href="#mark"/></svg>
+        <div>
+          <div class="name">Indica Tech</div>
+          <div class="sub">CTO · SaaS · AI · LLM · Tech strategy &amp; innovation</div>
+        </div>
+      </div>
+      <div class="top-meta">
+        <div><span class="signal">●</span> Taking Q3 engagements</div>
+        <div>UK · US · Remote-first · Est. 2022</div>
+      </div>
+    </div>
+    <div class="middle">
+      <h1>Turning AI ideas into <span class="hl">products that ship.</span></h1>
+    </div>
+    <div class="bottom">
+      <div>
+        <div class="col-label">Industries</div>
+        <div class="val"><span class="sig">Energy</span> · <span class="sig">Fintech</span> · <span class="sig">IoT</span> · <span class="sig">Defence</span> · <span class="sig">SaaS</span> · <span class="sig">GIS</span> · <span class="sig">GenAI</span></div>
+      </div>
+      <div>
+        <div class="col-label">Proof</div>
+        <div class="val">£2M+ funded · 99.9% uptime · demo → prod in 4–8 weeks</div>
+      </div>
+      <div class="cta">indica-tech.com →</div>
+    </div>
+  </div>
+</div>
+
+<div class="credits">
+  LinkedIn banner spec: 1584×396 px · 4:1. Upload under "Edit background" on your LinkedIn profile.
+</div>
+
+</body>
+</html>
