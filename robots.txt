@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://indica-tech.com/sitemap.xml

@@ -6,17 +6,19 @@
    ========================================================= */
 
 :root {
-  /* Colors */
-  --paper:       #F5F2EC;   /* warm off-white */
-  --paper-2:     #EDE8DF;   /* slightly deeper */
-  --ink:         #0B0B0A;   /* near-black */
-  --ink-2:       #1C1C1A;
-  --ink-mute:    #5E5B55;   /* body dim */
-  --ink-faint:   #8A857D;   /* captions */
-  --rule:        #D9D3C6;   /* hairline */
-  --rule-2:      #C9C2B2;
+  /* Colors — tuned for clearer hierarchy + higher contrast */
+  --paper:       #F7F4ED;   /* warm off-white, slightly brighter */
+  --paper-2:     #EFEAE0;   /* deeper warm paper for CTAs / callouts */
+  --paper-3:     #E6DFD1;   /* darker stage — for code blocks and emphasis */
+  --ink:         #0B0B0A;   /* near-black — headings, primary */
+  --ink-2:       #18181A;   /* body text */
+  --ink-mute:    #4A4741;   /* secondary text — descriptions, leads */
+  --ink-faint:   #6E6A62;   /* tertiary text — captions, meta */
+  --rule:        #D0C9B9;   /* hairline — visible but subtle */
+  --rule-2:      #BAB2A0;   /* strong rule — section breaks */
   --signal:      #00C46A;   /* terminal green — interactive only */
   --signal-ink:  #003B1F;
+  --signal-soft: #CFF0DD;   /* pale green wash — tag pills, highlights */
   --warn:        #D65A31;   /* numbers / accent */
 
   /* Type */
@@ -1169,4 +1171,600 @@ a.short.accent:hover .play { background: var(--ink); color: var(--signal); }
   .footer-grid { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
   .form-submit { flex-direction: column; align-items: flex-start; }
+}
+
+/* =========================================================
+   Legal / prose pages (privacy, terms, cookies, blog posts)
+   ========================================================= */
+.footer-legal { display: inline-flex; gap: 6px; font-family: var(--mono); font-size: 0.75rem; color: var(--ink-faint); }
+.footer-legal a { color: var(--ink-faint); border-bottom: 1px solid transparent; transition: color .15s, border-color .15s; }
+.footer-legal a:hover { color: var(--ink); border-color: var(--ink); }
+
+.prose {
+  padding: clamp(70px, 9vw, 120px) 0 clamp(60px, 7vw, 100px);
+  border-bottom: 1px solid var(--rule);
+}
+.prose-head { max-width: 760px; margin: 0 auto 48px; }
+.prose-head .kicker { margin-bottom: 20px; }
+.prose-head h1 { font-size: clamp(2rem, 4.8vw, 3.6rem); letter-spacing: -0.025em; margin-bottom: 16px; }
+.prose-head .lead { font-size: clamp(1.05rem, 1.25vw, 1.2rem); color: var(--ink-mute); line-height: 1.6; max-width: 60ch; }
+.prose-head .meta { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 22px; font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
+.prose-head .meta span::before { content: "/ "; color: var(--rule-2); }
+
+.prose-body {
+  max-width: 760px;
+  margin: 0 auto;
+  font-size: 1.0625rem;
+  line-height: 1.72;
+  color: var(--ink-2);
+}
+.prose-body h2 {
+  font-size: 1.55rem;
+  letter-spacing: -0.015em;
+  margin: 56px 0 14px;
+  padding-top: 28px;
+  border-top: 1px solid var(--rule);
+}
+.prose-body h2:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+.prose-body h3 { font-size: 1.15rem; margin: 32px 0 10px; }
+.prose-body p { margin: 0 0 18px; color: var(--ink-2); font-size: 1.0625rem; line-height: 1.72; }
+.prose-body ul, .prose-body ol { margin: 0 0 18px 22px; color: var(--ink-2); }
+.prose-body li { margin-bottom: 8px; line-height: 1.65; }
+.prose-body a { color: var(--ink); border-bottom: 1px solid var(--rule-2); transition: border-color .15s; }
+.prose-body a:hover { border-color: var(--ink); }
+
+/* Buttons inside prose content — don't inherit the text-link underline */
+.prose-body a.btn,
+.prose-cta a.btn,
+.blog-cta a.btn,
+.prose-body a.btn-primary,
+.prose-cta a.btn-primary,
+.blog-cta a.btn-primary {
+  border-bottom: 0 !important;
+}
+.prose-body a.btn-primary,
+.prose-cta a.btn-primary,
+.blog-cta a.btn-primary {
+  color: var(--paper);
+}
+.prose-body a.btn-primary:hover,
+.prose-cta a.btn-primary:hover,
+.blog-cta a.btn-primary:hover {
+  color: var(--signal-ink);
+}
+.prose-body a.btn-ghost,
+.prose-cta a.btn-ghost,
+.blog-cta a.btn-ghost {
+  color: var(--ink);
+}
+.prose-body strong { color: var(--ink); font-weight: 600; }
+.prose-body code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  background: var(--paper-2);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+.prose-body pre {
+  font-family: var(--mono);
+  font-size: 0.88rem;
+  background: var(--ink);
+  color: #E8E4D8;
+  padding: 20px 22px;
+  overflow-x: auto;
+  line-height: 1.6;
+  margin: 20px 0 24px;
+  border-radius: 2px;
+}
+.prose-body pre code { background: transparent; padding: 0; }
+.prose-body blockquote {
+  border-left: 3px solid var(--signal);
+  padding: 4px 0 4px 20px;
+  margin: 24px 0;
+  color: var(--ink);
+  font-style: italic;
+}
+.prose-body figure { margin: 28px 0; }
+.prose-body figure img { width: 100%; border: 1px solid var(--rule); }
+.prose-body figcaption {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 10px;
+  text-align: center;
+}
+.prose-body hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 40px 0;
+}
+.prose-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0 28px;
+  font-size: 0.98rem;
+}
+.prose-body th, .prose-body td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--rule);
+}
+.prose-body th {
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  background: var(--paper-2);
+}
+
+.prose-cta {
+  margin-top: 48px;
+  padding: 32px 36px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--signal);
+  box-shadow: 0 1px 0 rgba(11,11,10,0.04);
+}
+.prose-cta h3 { font-size: 1.15rem; margin-bottom: 8px; color: var(--ink); }
+.prose-cta p { margin-bottom: 16px; font-size: 1rem; color: var(--ink-2); }
+.prose-cta .btn { font-size: 0.78rem; padding: 12px 18px; }
+
+/* =========================================================
+   Blog index — clean Medium-style vertical list
+   ========================================================= */
+.blog-index { padding: clamp(56px, 7vw, 96px) 0 clamp(56px, 7vw, 100px); }
+.blog-index-head {
+  max-width: 760px;
+  margin: 0 auto 56px;
+}
+.blog-index-head .kicker { margin-bottom: 24px; }
+.blog-index-head h1 {
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.blog-index-head .lead {
+  font-size: clamp(1.15rem, 1.4vw, 1.3rem);
+  line-height: 1.5;
+  color: var(--ink-mute);
+  margin-bottom: 22px;
+  max-width: 60ch;
+}
+.blog-index-head .blog-index-sub {
+  font-size: 0.92rem;
+  color: var(--ink-faint);
+  margin: 0;
+}
+
+.post-list {
+  list-style: none;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0;
+  border-top: 1px solid var(--ink);
+}
+
+.post-row { border-bottom: 1px solid var(--rule); }
+
+.post-link {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 28px;
+  padding: 36px 0;
+  color: var(--ink);
+  transition: background .15s;
+}
+.post-link:hover { background: var(--paper-2); }
+.post-link:hover .post-title { color: var(--ink); }
+
+.post-num {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  padding-top: 6px;
+  padding-left: 4px;
+}
+
+.post-body { min-width: 0; }
+
+.post-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--signal-ink);
+  background: var(--signal);
+  padding: 3px 9px;
+  margin-bottom: 14px;
+}
+
+.post-title {
+  font-size: clamp(1.4rem, 2.2vw, 1.75rem);
+  line-height: 1.22;
+  letter-spacing: -0.022em;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 10px;
+  transition: color .15s;
+}
+
+.post-excerpt {
+  font-size: 1.06rem;
+  line-height: 1.55;
+  color: var(--ink-mute);
+  margin: 0 0 14px;
+  max-width: 62ch;
+}
+
+.post-meta {
+  font-size: 0.88rem;
+  color: var(--ink-faint);
+}
+
+/* Bottom CTA on index */
+.blog-cta {
+  max-width: 760px;
+  margin: 72px auto 0;
+  padding: 36px 40px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--signal);
+  box-shadow: 0 1px 0 rgba(11,11,10,0.04);
+}
+.blog-cta h3 {
+  font-size: 1.3rem;
+  letter-spacing: -0.015em;
+  margin-bottom: 10px;
+  color: var(--ink);
+}
+.blog-cta p {
+  margin-bottom: 18px;
+  font-size: 1.06rem;
+  color: var(--ink-2);
+}
+
+@media (max-width: 640px) {
+  .blog-index-head h1 { font-size: clamp(1.9rem, 8vw, 2.4rem); }
+  .blog-index-head .lead { font-size: 1.08rem; }
+  .post-link {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 28px 0;
+  }
+  .post-num { padding-top: 0; padding-left: 0; margin-bottom: 10px; }
+  .post-title { font-size: 1.35rem; }
+  .post-excerpt { font-size: 1rem; }
+  .blog-cta { padding: 26px 22px; margin-top: 48px; }
+}
+
+@media (max-width: 640px) {
+  .prose-body h2 { font-size: 1.35rem; margin-top: 40px; }
+  .prose-head h1 { font-size: clamp(1.8rem, 7vw, 2.4rem); }
+  .footer-legal { font-size: 0.72rem; flex-wrap: wrap; }
+}
+
+/* =========================================================
+   Longform — Medium-style article layout (blog posts)
+   Same palette + type as the rest of the site, but with a
+   wider reading column, larger body type, clean headings,
+   pull-quote, and wider figure bleeds. Follows Medium's
+   actual article patterns: simple byline, three-dot section
+   dividers, no drop cap, generous whitespace.
+   ========================================================= */
+.longform.prose {
+  padding: clamp(56px, 7vw, 96px) 0 clamp(56px, 7vw, 100px);
+}
+
+.longform .prose-head {
+  max-width: 720px;
+  margin: 0 auto 32px;
+}
+.longform .prose-head .kicker { margin-bottom: 28px; }
+.longform .prose-head h1 {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.028em;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--ink);
+}
+.longform .prose-head .lead {
+  font-size: clamp(1.15rem, 1.4vw, 1.3rem);
+  line-height: 1.48;
+  color: var(--ink-mute);
+  margin-bottom: 0;
+  max-width: 62ch;
+  font-weight: 400;
+}
+
+/* Article meta (read time · date) — Medium's small grey line above byline */
+.longform .article-meta {
+  max-width: 720px;
+  margin: 28px auto 0;
+  font-size: 0.9rem;
+  color: var(--ink-faint);
+  letter-spacing: 0;
+  text-transform: none;
+  font-family: var(--sans);
+}
+.longform .article-meta span + span::before {
+  content: " · ";
+  color: var(--ink-faint);
+}
+
+/* Byline block — circle avatar + name, Medium-simple */
+.longform .article-byline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 0 22px;
+  margin: 6px auto 0;
+  border-bottom: 1px solid var(--rule);
+  max-width: 720px;
+}
+.longform .byline-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.longform .byline-avatar svg { width: 22px; height: 22px; color: var(--signal); }
+.longform .byline-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.longform .byline-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.longform .byline-sub {
+  font-size: 0.86rem;
+  color: var(--ink-faint);
+  font-weight: 400;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.longform .byline-sub span + span::before {
+  content: "·";
+  margin-right: 6px;
+  color: var(--ink-faint);
+}
+
+/* Feature figure (sits between byline and body, slightly wider than text) */
+.longform .feature-figure {
+  max-width: 860px;
+  margin: 48px auto 56px;
+}
+.longform .feature-figure svg,
+.longform .feature-figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.longform .feature-figure figcaption {
+  font-size: 0.9rem;
+  color: var(--ink-faint);
+  margin-top: 14px;
+  text-align: center;
+  font-style: italic;
+}
+
+/* Article body */
+.longform .prose-body {
+  max-width: 720px;
+  font-size: 1.18rem;
+  line-height: 1.68;
+  color: var(--ink);
+}
+.longform .prose-body p {
+  font-size: 1.18rem;
+  line-height: 1.68;
+  margin: 0 0 26px;
+  color: var(--ink-2);
+}
+
+/* Section headings — bigger, airier, no border lines */
+.longform .prose-body h2 {
+  font-size: clamp(1.7rem, 2.5vw, 2.1rem);
+  letter-spacing: -0.022em;
+  line-height: 1.2;
+  font-weight: 700;
+  margin: 64px 0 20px;
+  padding: 0;
+  border: 0;
+  color: var(--ink);
+}
+.longform .prose-body h2:first-child { margin-top: 0; }
+.longform .prose-body h3 {
+  font-size: 1.3rem;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+  margin: 40px 0 14px;
+  color: var(--ink);
+}
+
+/* Lists — Medium style: generous spacing, bold leads on numbered items */
+.longform .prose-body ul,
+.longform .prose-body ol {
+  margin: 0 0 28px 26px;
+  padding-left: 4px;
+}
+.longform .prose-body li {
+  font-size: 1.18rem;
+  line-height: 1.68;
+  margin-bottom: 16px;
+  color: var(--ink-2);
+  padding-left: 6px;
+}
+.longform .prose-body li::marker { color: var(--ink); font-weight: 600; }
+.longform .prose-body li strong:first-child { color: var(--ink); }
+
+/* Code */
+.longform .prose-body code {
+  font-size: 0.9em;
+  padding: 2px 7px;
+  background: var(--paper-2);
+  border-radius: 3px;
+}
+.longform .prose-body pre {
+  font-size: 0.92rem;
+  padding: 26px 30px;
+  line-height: 1.65;
+  margin: 36px 0;
+  border-radius: 3px;
+  border: 1px solid var(--ink);
+}
+.longform .prose-body pre code {
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* Blockquote — restrained */
+.longform .prose-body blockquote {
+  border-left: 3px solid var(--signal);
+  padding: 2px 0 2px 24px;
+  margin: 36px 0;
+  font-size: 1.22rem;
+  line-height: 1.5;
+  color: var(--ink);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Pull-quote — dramatic, full width, no quotes */
+.longform .pull-quote {
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  line-height: 1.28;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  padding: 44px 0;
+  margin: 56px 0;
+  text-align: center;
+  color: var(--ink);
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.longform .pull-quote cite {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-style: normal;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 18px;
+  font-weight: 500;
+}
+
+/* Inline figure (within body column) */
+.longform .prose-body figure {
+  margin: 44px 0;
+}
+.longform .prose-body figure svg {
+  width: 100%;
+  height: auto;
+}
+.longform .prose-body figcaption {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* Horizontal rule becomes a typographic mark */
+.longform .prose-body hr {
+  border: 0;
+  margin: 56px auto;
+  text-align: center;
+  width: 100%;
+  overflow: visible;
+}
+.longform .prose-body hr::before {
+  content: "· · ·";
+  letter-spacing: 0.8em;
+  color: var(--ink-faint);
+  font-family: var(--mono);
+  font-size: 1.1rem;
+}
+
+/* CTA block — softer, sits inside article rhythm */
+.longform .prose-cta {
+  margin-top: 64px;
+  padding: 36px 40px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--signal);
+  box-shadow: 0 1px 0 rgba(11,11,10,0.04);
+}
+.longform .prose-cta h3 {
+  font-size: 1.3rem;
+  margin: 0 0 10px;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.longform .prose-cta p {
+  margin: 0 0 18px;
+  font-size: 1.06rem;
+  color: var(--ink-2);
+}
+
+/* Further reading */
+.longform .further-reading h3 {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 48px 0 16px;
+}
+.longform .further-reading ul { margin-left: 0; list-style: none; padding: 0; }
+.longform .further-reading li {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 1.06rem;
+}
+.longform .further-reading li:last-child { border-bottom: 0; }
+.longform .further-reading a { color: var(--ink); font-weight: 500; }
+.longform .further-reading a:hover { border-bottom-color: var(--ink); }
+
+/* Responsive */
+@media (max-width: 800px) {
+  .longform .article-byline { gap: 10px; padding: 16px 0 18px; }
+  .longform .byline-avatar { width: 40px; height: 40px; }
+  .longform .prose-body pre { font-size: 0.82rem; padding: 20px 18px; }
+  .longform .pull-quote { margin: 40px 0; padding: 32px 0; }
+  .longform .feature-figure { margin: 36px auto 44px; }
+}
+@media (max-width: 640px) {
+  .longform .prose-head h1 { font-size: clamp(1.85rem, 7.5vw, 2.3rem); line-height: 1.12; }
+  .longform .prose-head .lead { font-size: 1.05rem; line-height: 1.5; }
+  .longform .prose-body,
+  .longform .prose-body p,
+  .longform .prose-body li { font-size: 1.08rem; line-height: 1.66; }
+  .longform .prose-body p { margin-bottom: 22px; }
+  .longform .prose-body h2 { font-size: 1.5rem; margin-top: 44px; margin-bottom: 14px; }
+  .longform .prose-body h3 { font-size: 1.18rem; }
+  .longform .prose-cta { padding: 24px 22px; }
+  .longform .article-meta { font-size: 0.85rem; }
+  .longform .byline-sub { font-size: 0.82rem; }
 }

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="RAND says 80.3% of AI projects fail. MIT says 95% of GenAI pilots never scale. After 10 years of AI audits, I see the same 5 failure modes every time — and none of them are about model quality.">
+<meta name="keywords" content="why AI projects fail, AI production, AI deployment failure, production-ready AI, AI pilot fail to production, AI project failure modes, ship AI">
+<meta name="robots" content="index, follow">
+<title>Why 80% of AI projects never ship — the 5 failure modes — Indica Tech</title>
+<link rel="canonical" href="https://indica-tech.com/blog/why-ai-projects-never-ship.html">
+<link rel="stylesheet" href="../styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230B0B0A'/%3E%3Ccircle cx='32' cy='30' r='9' fill='%2300C46A'/%3E%3Crect x='25' y='42' width='14' height='40' fill='%23F5F2EC'/%3E%3Cpath d='M58 82 L78 18 L71 18 L51 82 Z' fill='%23F5F2EC'/%3E%3C/svg%3E">
+
+<meta property="og:title" content="Why 80% of AI projects never ship — the 5 failure modes I see on every audit">
+<meta property="og:description" content="RAND 80.3%. MIT 95%. Gartner April 2026 — 1-in-5 AI infra projects fail outright. The failure modes haven't changed — and none of them are about model quality.">
+<meta property="og:type" content="article">
+<meta property="article:author" content="Nitish">
+<meta property="article:published_time" content="2026-04-22">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Why 80% of AI projects never ship — and the 5 failure modes I see on every audit",
+  "datePublished": "2026-04-22",
+  "dateModified": "2026-04-22",
+  "author": {"@type": "Person", "name": "Nitish", "url": "https://indica-tech.com/#about"},
+  "publisher": {"@type": "Organization", "name": "Indica Technology Ltd", "url": "https://indica-tech.com"},
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://indica-tech.com/blog/why-ai-projects-never-ship.html"}
+}
+</script>
+</head>
+<body>
+
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+        <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+        <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+        <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+      </svg>
+      <span>Indica Tech <em>/ demo → prod</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#problem">The gap</a></li>
+      <li><a href="/#offers">Engagements</a></li>
+      <li><a href="/#proof">Proof</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+    </ul>
+    <a href="https://cal.eu/nitishg" target="_blank" rel="noopener" class="nav-cta">Book a call <span class="arrow">→</span></a>
+    <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<section class="prose longform">
+  <div class="container">
+    <div class="prose-head">
+      <div class="kicker">Field notes / strategy</div>
+      <h1>Why 80% of AI projects never ship &mdash; and the 5 failure modes I see on every audit</h1>
+      <p class="lead">The statistic keeps holding. RAND's 2025 analysis put the AI project failure rate at 80.3%. MIT Sloan's 2025 GenAI study put it at 95%. Gartner's April 2026 I&amp;O report found one in five AI infrastructure projects fail outright. After a decade of building and auditing these systems, I see the same five failure modes &mdash; and none of them are about model quality.</p>
+    </div>
+
+    <div class="article-meta">
+      <span>12 min read</span>
+      <span>22 April 2026</span>
+    </div>
+    <div class="article-byline">
+      <div class="byline-avatar" aria-hidden="true">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <circle cx="16" cy="14" r="4" fill="currentColor"/>
+          <rect x="13" y="20" width="6" height="20" fill="currentColor"/>
+          <path d="M28 40 L38 10 L34 10 L24 40 Z" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="byline-text">
+        <span class="byline-name">Nitish</span>
+        <span class="byline-sub">
+          <span>Founder, Indica Tech</span>
+          <span>Field notes / Strategy</span>
+        </span>
+      </div>
+    </div>
+
+    <figure class="feature-figure">
+      <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" style="border:1px solid var(--rule); background:#F5F2EC;">
+        <rect width="760" height="300" fill="#F5F2EC"/>
+        <text x="40" y="60" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="2" fill="#8A857D">THE PIPELINE / AI PROJECTS FROM PITCH TO PRODUCTION</text>
+        <line x1="40" y1="85" x2="720" y2="85" stroke="#D9D3C6" stroke-width="1"/>
+        <rect x="40" y="120" width="130" height="60" fill="#0B0B0A"/>
+        <text x="105" y="145" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#F5F2EC" text-anchor="middle" font-weight="600">100 projects</text>
+        <text x="105" y="164" font-family="IBM Plex Mono, monospace" font-size="10" fill="#8A857D" text-anchor="middle">funded</text>
+        <text x="180" y="155" font-family="IBM Plex Mono, monospace" font-size="14" fill="#5E5B55">→</text>
+        <rect x="200" y="120" width="130" height="60" fill="#1C1C1A"/>
+        <text x="265" y="145" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#F5F2EC" text-anchor="middle" font-weight="600">66 projects</text>
+        <text x="265" y="164" font-family="IBM Plex Mono, monospace" font-size="10" fill="#8A857D" text-anchor="middle">reach pilot</text>
+        <text x="340" y="155" font-family="IBM Plex Mono, monospace" font-size="14" fill="#5E5B55">→</text>
+        <rect x="360" y="120" width="130" height="60" fill="#5E5B55"/>
+        <text x="425" y="145" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#F5F2EC" text-anchor="middle" font-weight="600">38 projects</text>
+        <text x="425" y="164" font-family="IBM Plex Mono, monospace" font-size="10" fill="#EDE8DF" text-anchor="middle">reach prod</text>
+        <text x="500" y="155" font-family="IBM Plex Mono, monospace" font-size="14" fill="#5E5B55">→</text>
+        <rect x="520" y="120" width="130" height="60" fill="#00C46A"/>
+        <text x="585" y="145" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#003B1F" text-anchor="middle" font-weight="600">20 projects</text>
+        <text x="585" y="164" font-family="IBM Plex Mono, monospace" font-size="10" fill="#003B1F" text-anchor="middle">earn ROI</text>
+        <text x="40" y="230" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5E5B55">80% die before ROI.</text>
+        <text x="40" y="250" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5E5B55">Five reasons, every time. None of them are the model.</text>
+      </svg>
+      <figcaption>The attrition pattern I see on every audit. Numbers from RAND 2025 and my own engagement data.</figcaption>
+    </figure>
+
+    <div class="prose-body">
+
+      <h2>The failure rate is real. The reason almost never is the model.</h2>
+      <p>Founders read the 80% statistic and assume the problem is technical. It is not. RAND's decomposition of the 80.3% failure rate shows what actually kills projects: 33.8% are abandoned before they reach production at all, 28.4% ship but never deliver the expected business value, and 18.1% deliver some value but not enough to justify the cost. "The model performed badly" is rarely in the top three.</p>
+      <p>When I run a production-readiness audit, I almost always find the same five failure modes underneath the technical symptoms. These are the ones.</p>
+
+      <aside class="pull-quote">
+        The demo proved the model could do the task. It did not prove anyone would use the product built around the task. Those are completely different claims &mdash; and only the second one matters.
+        <cite>Failure mode 1 &middot; building before validating</cite>
+      </aside>
+
+      <h2>Failure mode 1 — Building before validating</h2>
+      <p>The most expensive version of this story goes like this. A founder sees a ChatGPT demo, builds a weekend prototype that handles the three queries they can think of, walks it around the investor network, gets excited feedback, raises a seed round on the back of it, and spends the next six months scaling the prototype. Then they put it in front of real users and discover those users want something adjacent &mdash; or, more often, nothing at all.</p>
+      <p>The diagnosis is simple. The prototype proved the <em>model</em> could do the task. It did not prove anyone would use the product built around the task. Those are completely different claims, and only the second one matters.</p>
+      <p>The fix is not complicated: before you write production code, put the prototype &mdash; even if it is a Retool front-end over a prompt &mdash; in front of ten real users, and watch them use it. If they come back the next week without you asking, you have something to build. If they don't, the problem is not the model. You just saved yourself six months.</p>
+
+      <h2>Failure mode 2 — Underestimating the last mile</h2>
+      <p>Every founder I have audited who owns a stuck AI project uses roughly the same sentence: "we're at about 80%, we just need to wrap up the last bit." Then they miss their ship date by three months. Then another three. The reason is a property of production software that predates AI and has not been repealed by it.</p>
+      <p>Getting to the first working demo &mdash; the one that handles the happy path on your laptop with clean inputs &mdash; takes about 20% of the total engineering effort. The remaining 80% is distributed across the unsexy things that keep it alive: authentication, rate limiting, retry logic on upstream API failures, cost guardrails, observability, evaluation harnesses, graceful degradation when the model provider has an outage, handling of PII, logging with correlation IDs, and a deployment pipeline that can roll back in two minutes when a prompt regression tanks accuracy.</p>
+      <p>With LLMs the ratio is worse. The demo is cheaper to build than ever (a good prompt and a Streamlit app in a weekend). The production hardening is harder than ever (non-deterministic outputs, prompt injection, context-window overruns, hallucinated tool calls, token-cost blowups under load, provider rate limits). The gap is widening, not closing.</p>
+      <p>The practical consequence: if a team tells you they are "80% done," budget another three to five months, not another three to five weeks. Plan the runway around that, not around the optimism.</p>
+
+      <h2>Failure mode 3 — Wrong team shape</h2>
+      <p>You hire an ML engineer because the project says "AI." You should have hired a production engineer. Different skills. Different mindset. Different failure modes.</p>
+      <p>ML engineers are trained to improve metrics on a held-out test set. That is the job. The skill is feature engineering, hyperparameter tuning, evaluation, paper-reading. It is research-adjacent work. The production engineer's job is to keep a system serving 10,000 requests per second at P99 latency under 400ms while a third of the upstream dependencies are having a bad day. That is ops-adjacent work. The overlap is narrower than most hiring managers assume, and almost nobody is excellent at both.</p>
+      <p>The shape of a team that actually ships an AI product is roughly one applied-ML engineer to own model selection, fine-tuning, and evaluation, paired with two production engineers owning the infrastructure, observability, and deployment pipeline, and a single senior generalist who translates between the two. Four people. I have built that team from scratch twice. I have also walked into two seed-stage companies with five ML engineers, zero production engineers, and a Streamlit demo that nobody can deploy.</p>
+
+      <h2>Failure mode 4 &mdash; No measurable success criteria</h2>
+      <p>"Make the chatbot better." "Improve the retrieval quality." "Enhance the user experience."</p>
+      <p>None of those are success criteria. They are vibes with a verb. The failure mode downstream is predictable: six months of work, a subjective dashboard, a founder who cannot tell if the money has been well spent, an engineer who cannot tell if they are allowed to stop, and an exec team that slowly loses faith because there is no green light anyone agrees on.</p>
+      <p>The fix is one bit of discipline most teams skip: before any model work starts, write the success criterion as a number on a ticket. <em>Reduce average support-ticket resolution time from 14 minutes to under 8 minutes across 80% of tickets, measured over a rolling 30-day window.</em> <em>Cut tier-1 human reviews from 600 per day to under 200 while holding false-positive rate below 1%.</em> <em>Maintain faithfulness &gt; 0.85 and answer-relevancy &gt; 0.80 on the production eval set.</em></p>
+      <p>The numbers matter more than the exact framework. What matters is that you have a test that can be failed. The absence of a failable test is the absence of a project.</p>
+
+      <h2>Failure mode 5 &mdash; Zero production plumbing</h2>
+      <p>The final failure mode is the most expensive and the most avoidable. It is the one I spend most audits documenting.</p>
+      <p>A production AI system needs, at minimum: evaluation that runs in CI and blocks deploys when scores drop below threshold; retry logic with exponential backoff, jitter, and idempotency keys so the third-party API having a bad minute does not take down your request; graceful degradation to a fallback model or a deterministic response when the primary provider fails; cost guardrails that cap per-request and per-day spend; structured logging with correlation IDs across every model call and tool invocation; a rollback mechanism that can revert a prompt or a model version in under two minutes; and observability over token usage, latency P50/P95/P99, error rates by provider, and eval-score drift.</p>
+      <p>Most pilots I look at have none of this. They have a model, a prompt, and an API call. That works for ten friends on a demo. It does not survive a real Tuesday.</p>
+      <p>The good news: none of it is hard engineering. A production-minded team can add all seven capabilities in four to eight weeks. The bad news: nobody builds them until after the first serious outage, and the first serious outage tends to land the week after the investor demo.</p>
+
+      <h2>What I actually do about it</h2>
+      <p>On a two-week production-readiness audit I test all five failure modes against your specific stack and produce a written scorecard, a ranked list of the five highest-risk gaps, a 90-day remediation roadmap with time and cost estimates, and a 30-minute debrief with your engineering lead. It is a fixed-price engagement: £3,500, paid up front, results delivered whether you hire us for the remediation work or not.</p>
+      <p>Most of the value is in the ranking. Every team has twenty things that could be improved. What you need to know is which three will kill you first.</p>
+
+      <div class="prose-cta">
+        <h3>Stuck somewhere in the 80%?</h3>
+        <p>A 30-minute discovery call is free and blunt. If you are in the 80%, I will tell you which of the five failure modes you are in and what it would cost to get out. If I am not the right person, I will refer you on.</p>
+        <a href="/#contact" class="btn btn-primary">Book a discovery call <span class="arrow">→</span></a>
+      </div>
+
+      <hr>
+
+      <div class="further-reading">
+        <h3>Further reading</h3>
+        <ul>
+          <li><a href="/blog/five-evals-that-matter-in-production.html">The five evals that actually matter in production</a> &mdash; how failure mode 4 gets fixed with concrete thresholds.</li>
+          <li><a href="/blog/production-grade-retry-logic-llm-calls.html">What production-grade retry logic looks like for LLM calls</a> &mdash; half of failure mode 5, with code.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="brand">
+          <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+            <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+            <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+            <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+          </svg>
+          <span>Indica Tech</span>
+        </a>
+        <p>Founder-led AI engineering. Demo to production, under NDA, in regulated industries, on fixed scope. UK · US · Remote-first globally.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Engagements</h4>
+        <ul>
+          <li><a href="/#offers">Production Audit</a></li>
+          <li><a href="/#offers">Fractional AI Lead</a></li>
+          <li><a href="/#offers">Build Sprint</a></li>
+          <li><a href="/#offers">Governance</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/#cases">Case studies</a></li>
+          <li><a href="/#about">About Nitish</a></li>
+          <li><a href="/#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/company/indica-technology/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://instagram.com/demotoprod" target="_blank" rel="noopener">@demotoprod</a></li>
+          <li><a href="mailto:hello@indica-tech.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span class="year">2026</span> Indica Technology Ltd · Registered in England</span>
+      <span class="footer-legal">
+        <a href="/privacy.html">Privacy</a> ·
+        <a href="/terms.html">Terms</a> ·
+        <a href="/cookies.html">Cookies</a>
+      </span>
+      <span class="status">Taking new projects · Q2 2026</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
