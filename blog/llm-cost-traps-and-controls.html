@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Your LLM bill is the production budget nobody models accurately. Seven cost traps I see on every audit, and the three controls that stop them before the CFO Slack message arrives.">
+<meta name="keywords" content="LLM cost, OpenAI cost overrun, Anthropic cost control, AI budget, prompt caching, model router, LLM spend limit, production AI cost">
+<meta name="robots" content="index, follow">
+<title>Seven ways an LLM bill runs sideways (and three controls that stop it) — Indica Tech</title>
+<link rel="canonical" href="https://indica-tech.com/blog/llm-cost-traps-and-controls.html">
+<link rel="stylesheet" href="../styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230B0B0A'/%3E%3Ccircle cx='32' cy='30' r='9' fill='%2300C46A'/%3E%3Crect x='25' y='42' width='14' height='40' fill='%23F5F2EC'/%3E%3Cpath d='M58 82 L78 18 L71 18 L51 82 Z' fill='%23F5F2EC'/%3E%3C/svg%3E">
+
+<meta property="og:title" content="Seven ways an LLM bill runs sideways (and three controls that stop it)">
+<meta property="og:description" content="The CFO Slack message arrives on day 11 of the month. Here is what went wrong and how to catch it on day 1 next time.">
+<meta property="og:type" content="article">
+<meta property="article:author" content="Nitish">
+<meta property="article:published_time" content="2026-04-23">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Seven ways an LLM bill runs sideways (and three controls that actually stop it)",
+  "datePublished": "2026-04-23",
+  "dateModified": "2026-04-23",
+  "author": {"@type": "Person", "name": "Nitish", "url": "https://indica-tech.com/#about"},
+  "publisher": {"@type": "Organization", "name": "Indica Technology Ltd", "url": "https://indica-tech.com"},
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://indica-tech.com/blog/llm-cost-traps-and-controls.html"}
+}
+</script>
+</head>
+<body>
+
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+        <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+        <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+        <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+      </svg>
+      <span>Indica Tech <em>/ demo &rarr; prod</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#problem">The gap</a></li>
+      <li><a href="/#offers">Engagements</a></li>
+      <li><a href="/#proof">Proof</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+    </ul>
+    <a href="/#contact" class="nav-cta">Book a call <span class="arrow">&rarr;</span></a>
+    <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<section class="prose longform">
+  <div class="container">
+    <div class="prose-head">
+      <div class="kicker">Field notes / engineering</div>
+      <h1>Seven ways an LLM bill runs sideways <span style="color:var(--ink-faint)">(and three controls that actually stop it)</span></h1>
+      <p class="lead">The CFO Slack message arrives on day 11 of the month. &ldquo;Hey, is OpenAI really charging us &pound;42k this month? Can you look at it?&rdquo; And the founder has to go find out, in real time, why a system they thought would run on &pound;3k a month is running on something closer to fifty.</p>
+    </div>
+
+    <div class="article-meta">
+      <span>10 min read</span>
+      <span>23 April 2026</span>
+    </div>
+    <div class="article-byline">
+      <div class="byline-avatar" aria-hidden="true">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <circle cx="16" cy="14" r="4" fill="currentColor"/>
+          <rect x="13" y="20" width="6" height="20" fill="currentColor"/>
+          <path d="M28 40 L38 10 L34 10 L24 40 Z" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="byline-text">
+        <span class="byline-name">Nitish</span>
+        <span class="byline-sub">
+          <span>Founder, Indica Tech</span>
+          <span>Field notes / Engineering</span>
+        </span>
+      </div>
+    </div>
+
+    <figure class="feature-figure">
+      <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" style="border:1px solid var(--rule); background:#F5F2EC;">
+        <rect width="760" height="300" fill="#F5F2EC"/>
+        <text x="40" y="60" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="2" fill="#8A857D">COST / OPENAI SPEND OVER 14 DAYS</text>
+        <line x1="40" y1="85" x2="720" y2="85" stroke="#D9D3C6" stroke-width="1"/>
+        <line x1="40" y1="250" x2="720" y2="250" stroke="#0B0B0A" stroke-width="1"/>
+        <line x1="40" y1="90" x2="40" y2="250" stroke="#0B0B0A" stroke-width="1"/>
+        <polyline points="40,240 90,236 140,232 190,228 240,223 290,218 340,210 390,195 440,165 490,125 540,95 590,100 640,105 690,108" fill="none" stroke="#0B0B0A" stroke-width="2"/>
+        <circle cx="490" cy="125" r="4" fill="#00C46A"/>
+        <text x="500" y="120" font-family="IBM Plex Mono, monospace" font-size="10" fill="#003B1F">day 11 &mdash; someone asks</text>
+        <text x="40" y="275" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5E5B55">Day 1</text>
+        <text x="690" y="275" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5E5B55">Day 14</text>
+        <text x="20" y="95" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5E5B55" text-anchor="end">&pound;50k</text>
+        <text x="20" y="250" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5E5B55" text-anchor="end">&pound;0</text>
+      </svg>
+      <figcaption>The shape of almost every cost incident I have audited. Quiet for a week, then non-linear.</figcaption>
+    </figure>
+
+    <div class="prose-body">
+
+      <h2>Nobody means to overspend</h2>
+      <p>I have sat on calls like that day-11 CFO call. Sometimes as the auditor. Once, years ago, as the person who had to explain it. The details change, the shape does not. No one intends to overspend. The bill gets big because seven small things combine, and no one put a cap on any of them.</p>
+      <p>Here are the seven I see most often, ranked by how much money they tend to burn before anyone notices. Then the three controls I now insist on before a team ships.</p>
+
+      <aside class="pull-quote">
+        Input tokens are where the money actually goes. Everyone budgets output. Nobody caps input.
+        <cite>Trap 2 &middot; no ceiling on input size</cite>
+      </aside>
+
+      <h2>Trap 1. Retry loops that fan out silently</h2>
+      <p>A user request fails. Your code retries. The retry wraps three tool calls and each tool also retries. The tool calls fan out to a sub-agent that, of course, also retries. Eight seconds later the original timeout fires and the user hits the button again.</p>
+      <p>You have just charged yourself fourteen model calls for one user intent.</p>
+      <p>This is the most common cost leak I see, and it is usually invisible on the provider dashboard because the line item says <code>chat.completions</code> whether one call or fourteen happened. If you are using an agent framework with implicit retries (LangChain, LlamaIndex, and most agent SDKs have them by default), count them. Add them up. You will find a hidden multiplier between 2x and 8x on your request volume.</p>
+
+      <h2>Trap 2. No ceiling on input tokens</h2>
+      <p>The chat endpoint does not care how many tokens you send it. A user uploads a 400-page PDF, your retrieval layer shoves it all into context &ldquo;just to be safe,&rdquo; and the model happily charges you for 380,000 input tokens. Multiply by an hour of traffic. That is the bill.</p>
+      <p>Input tokens are almost always where the money actually goes, not output. Everyone budgets output because that is the more visible number in the docs. Nobody caps input.</p>
+
+      <h2>Trap 3. Fallback to the expensive model</h2>
+      <p>Your primary is a cheap tier: 4o-mini, Haiku, or similar. Something goes wrong. A schema parse fails, a safety filter trips, a token limit blows. Your fallback chain silently promotes the request to Opus or GPT-4.1 and it works. Nobody notices, and your per-request unit cost quietly doubles.</p>
+      <p>I have seen this one specifically hurt a Series A company. Their dashboard showed request counts by hour. It did not show which model served which request. The fallback was firing on 38% of traffic because of a brittle JSON parser. They thought they were running on 4o-mini. They were running on Opus.</p>
+
+      <h2>Trap 4. No prompt caching</h2>
+      <p>Every user session starts with the same 4,000-token system prompt. You are paying for it on every single request. Anthropic&rsquo;s prompt caching cuts that to roughly 10% of the un-cached cost on repeated prefixes, if you set the cache breakpoints. OpenAI applies automatic prompt caching on prompts over about 1,024 tokens with recent models, but only if your prompt is structured to hit it, which means the static part has to come first and the user-specific part last.</p>
+      <p>Most teams have not thought about any of this. On one audit we flipped the cache on and a workflow that was costing roughly &pound;4.20 per thousand sessions dropped to &pound;0.68. Same model, same prompt, same output. Not an optimisation; a switch.</p>
+
+      <h2>Trap 5. Open-ended <code>max_tokens</code></h2>
+      <p>You set <code>max_tokens=4000</code> &ldquo;to be safe&rdquo; because you cannot predict output length. Half your responses are 300 tokens. Fine. But when the model occasionally decides to enumerate all 47 items it found in the context, you are paying for 4,000 output tokens on every one of those outliers. On a pricing tier where output is 3x input cost, the tail is expensive.</p>
+      <p>Cap aggressively. If the response needs more, chunk it. Any model that was going to give you a good answer at 4,000 tokens will give you the same good answer at 600.</p>
+
+      <h2>Trap 6. Eval loops running in production</h2>
+      <p>Your eval harness calls the model on every deployment to score regressions. Sensible. Now it also runs on every pull request, every merge to main, and on a cron every hour because someone thought &ldquo;continuous eval&rdquo; meant &ldquo;constantly.&rdquo; You are spending &pound;600 a month on tests that were supposed to cost &pound;40.</p>
+      <p>This one is preventable the moment anybody looks at the usage dashboard. Nobody looks at the usage dashboard.</p>
+
+      <h2>Trap 7. The log-and-forget bill</h2>
+      <p>Your provider bill arrives on the 3rd of the month. Finance processes it on the 15th. Engineering finds out on the 20th. You have now had 20 days of whatever-went-wrong running before anyone reacted. In a system where daily spend can 10x overnight, that delta is the difference between a &pound;2k overrun and a &pound;40k one.</p>
+
+      <hr>
+
+      <h2>The three controls that actually stop this</h2>
+      <p>Seven traps, three controls. None of these are hard to build. They are hard to prioritise before the first painful bill arrives.</p>
+
+      <h3>Control 1. A per-request budget cap, enforced in code</h3>
+      <p>Not a logging line. Not a dashboard alert. A check that runs before the call and raises an exception if the request would exceed a cap. At its simplest:</p>
+
+      <pre class="code"><code>from tiktoken import encoding_for_model
+
+MAX_INPUT_TOKENS = 25_000   # tune to your workload
+MAX_COST_GBP     = 0.40     # per-request ceiling
+
+enc = encoding_for_model("gpt-4o-mini")
+
+def guard(payload: dict, price_per_1k_in: float, price_per_1k_out: float) -&gt; None:
+    n_in = sum(len(enc.encode(m["content"])) for m in payload["messages"])
+    if n_in &gt; MAX_INPUT_TOKENS:
+        raise BudgetExceeded(f"input tokens {n_in} &gt; cap {MAX_INPUT_TOKENS}")
+    projected_out = payload.get("max_tokens", 0)
+    cost = (n_in / 1000) * price_per_1k_in + (projected_out / 1000) * price_per_1k_out
+    if cost &gt; MAX_COST_GBP:
+        raise BudgetExceeded(f"projected cost &pound;{cost:.2f} &gt; cap &pound;{MAX_COST_GBP:.2f}")</code></pre>
+
+      <p>Start the cap generous. Tighten it with real data. If a single request is about to cost more than fifty pence, someone should know about it before the call fires, not after.</p>
+
+      <h3>Control 2. A model router with a hard price ceiling</h3>
+      <p>Do not let the fallback chain silently promote requests to the expensive tier. Wrap model selection in a router that knows the unit cost of each option and logs every fallback loudly.</p>
+
+      <pre class="code"><code>MODELS = {
+    "mini":  {"gbp_per_1k_in": 0.00012, "gbp_per_1k_out": 0.00048, "provider": openai_mini},
+    "haiku": {"gbp_per_1k_in": 0.00020, "gbp_per_1k_out": 0.00100, "provider": anthropic_haiku},
+    "opus":  {"gbp_per_1k_in": 0.01200, "gbp_per_1k_out": 0.06000, "provider": anthropic_opus},
+}
+
+def route(payload: dict, tier: str = "mini") -&gt; dict:
+    try:
+        return MODELS[tier]["provider"](payload)
+    except ModelFailure as e:
+        metrics.fallback_fired.labels(from_tier=tier, reason=str(e)).inc()
+        if tier == "mini":
+            return route(payload, tier="haiku")     # ~2x cost
+        if tier == "haiku":
+            if not payload.get("allow_opus"):        # guard explicit opt-in
+                raise
+            return route(payload, tier="opus")       # ~60x cost
+        raise</code></pre>
+
+      <p>The metrics line is what matters. If 38% of your traffic is quietly falling through to Opus, your router should be screaming in Grafana, not politely padding the bill.</p>
+
+      <h3>Control 3. A daily spend cap at the provider level</h3>
+      <p>Every major provider now supports project-level or organisation-level spending limits. OpenAI has it per project and per API key. Anthropic has organisation-level usage limits. Google&rsquo;s Vertex AI has quota policies. Turn them on. Set them at roughly 2x your expected daily spend.</p>
+      <p>Yes, this means on the day something goes wrong your product might throttle. That is the feature, not the bug. The alternative is finding out on the 15th that the &ldquo;something going wrong&rdquo; has been running for eleven days.</p>
+
+      <h2>The conversation you actually want</h2>
+      <p>The goal is not zero overruns. It is to have the overrun conversation on day one rather than day eleven, with a &pound;400 number rather than a &pound;42k one, from an alert you built rather than a bill you opened.</p>
+      <p>Three controls. Three to five days of engineering for a team that already has observability. Every audit I run includes a review of exactly this. Roughly half the time it is the single biggest findable saving on the engagement.</p>
+
+      <div class="prose-cta">
+        <h3>Running something you cannot price per request?</h3>
+        <p>Production-readiness audits cover cost infrastructure alongside retries, evals, and governance. Two weeks, fixed price, written report with ranked findings. If cost is your only concern, scope it to a cost-only review.</p>
+        <a href="/#contact" class="btn btn-primary">Start a conversation <span class="arrow">&rarr;</span></a>
+      </div>
+
+      <hr>
+
+      <div class="further-reading">
+        <h3>Further reading</h3>
+        <ul>
+          <li><a href="/blog/production-grade-retry-logic-llm-calls.html">Production-grade retry logic for LLM calls</a> &mdash; because half of Trap 1 is fixed here.</li>
+          <li><a href="/blog/five-evals-that-matter-in-production.html">The five evals that actually matter in production</a> &mdash; because Trap 6 is fixed by running fewer, better evals.</li>
+          <li><a href="/blog/why-ai-projects-never-ship.html">Why 80% of AI projects never ship</a> &mdash; the failure-mode map this all sits inside.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="brand">
+          <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+            <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+            <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+            <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+          </svg>
+          <span>Indica Tech</span>
+        </a>
+        <p>Founder-led AI engineering. Demo to production, under NDA, in regulated industries, on fixed scope. UK &middot; US &middot; Remote-first globally.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Engagements</h4>
+        <ul>
+          <li><a href="/#offers">Production Audit</a></li>
+          <li><a href="/#offers">Fractional AI Lead</a></li>
+          <li><a href="/#offers">Build Sprint</a></li>
+          <li><a href="/#offers">Governance</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/#cases">Case studies</a></li>
+          <li><a href="/#about">About Nitish</a></li>
+          <li><a href="/#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/company/indica-technology/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://instagram.com/demotoprod" target="_blank" rel="noopener">@demotoprod</a></li>
+          <li><a href="mailto:hello@indica-tech.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span class="year">2026</span> Indica Technology Ltd &middot; Registered in England</span>
+      <span class="footer-legal">
+        <a href="/privacy.html">Privacy</a> &middot;
+        <a href="/terms.html">Terms</a> &middot;
+        <a href="/cookies.html">Cookies</a>
+      </span>
+      <span class="status">Taking new projects &middot; Q2 2026</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

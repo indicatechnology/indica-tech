@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Enterprise procurement sends a 47-question AI security questionnaire. Your ISO 27001 and SOC 2 reports do not mention AI once. Here is what the standards actually require when you put an LLM in production, and a 12-week path to answering yes.">
+<meta name="keywords" content="ISO 27001 AI, SOC 2 AI, AI governance, enterprise AI procurement, AI security questionnaire, LLM compliance, AI risk, subprocessor OpenAI Anthropic">
+<meta name="robots" content="index, follow">
+<title>What ISO 27001 and SOC 2 actually require when you add AI to your product — Indica Tech</title>
+<link rel="canonical" href="https://indica-tech.com/blog/iso-27001-soc-2-for-ai-systems.html">
+<link rel="stylesheet" href="../styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230B0B0A'/%3E%3Ccircle cx='32' cy='30' r='9' fill='%2300C46A'/%3E%3Crect x='25' y='42' width='14' height='40' fill='%23F5F2EC'/%3E%3Cpath d='M58 82 L78 18 L71 18 L51 82 Z' fill='%23F5F2EC'/%3E%3C/svg%3E">
+
+<meta property="og:title" content="What ISO 27001 and SOC 2 actually require when you add AI to your product">
+<meta property="og:description" content="The 47-question AI security questionnaire, translated into the five controls that actually answer it. A 12-week plan that will not break the product team.">
+<meta property="og:type" content="article">
+<meta property="article:author" content="Nitish">
+<meta property="article:published_time" content="2026-04-23">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "What ISO 27001 and SOC 2 actually require when you add AI to your product",
+  "datePublished": "2026-04-23",
+  "dateModified": "2026-04-23",
+  "author": {"@type": "Person", "name": "Nitish", "url": "https://indica-tech.com/#about"},
+  "publisher": {"@type": "Organization", "name": "Indica Technology Ltd", "url": "https://indica-tech.com"},
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://indica-tech.com/blog/iso-27001-soc-2-for-ai-systems.html"}
+}
+</script>
+</head>
+<body>
+
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+        <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+        <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+        <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+      </svg>
+      <span>Indica Tech <em>/ demo &rarr; prod</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#problem">The gap</a></li>
+      <li><a href="/#offers">Engagements</a></li>
+      <li><a href="/#proof">Proof</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+    </ul>
+    <a href="/#contact" class="nav-cta">Book a call <span class="arrow">&rarr;</span></a>
+    <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<section class="prose longform">
+  <div class="container">
+    <div class="prose-head">
+      <div class="kicker">Field notes / governance</div>
+      <h1>What ISO 27001 and SOC 2 actually require when you add AI to your product</h1>
+      <p class="lead">The procurement email lands on a Thursday. &ldquo;Please complete our AI Security and Risk Questionnaire. 47 questions. Reply within five business days.&rdquo; Your ISO 27001 certificate is three years old. Your SOC 2 Type II report is twenty pages and does not mention AI once. The buyer is asking about model providers, training data, prompt injection, inference logging, and something called model-drift monitoring, and the clock is running.</p>
+    </div>
+
+    <div class="article-meta">
+      <span>11 min read</span>
+      <span>23 April 2026</span>
+    </div>
+    <div class="article-byline">
+      <div class="byline-avatar" aria-hidden="true">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <circle cx="16" cy="14" r="4" fill="currentColor"/>
+          <rect x="13" y="20" width="6" height="20" fill="currentColor"/>
+          <path d="M28 40 L38 10 L34 10 L24 40 Z" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="byline-text">
+        <span class="byline-name">Nitish</span>
+        <span class="byline-sub">
+          <span>Founder, Indica Tech</span>
+          <span>Field notes / Governance</span>
+        </span>
+      </div>
+    </div>
+
+    <figure class="feature-figure">
+      <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" style="border:1px solid var(--rule); background:#F5F2EC;">
+        <rect width="760" height="300" fill="#F5F2EC"/>
+        <text x="40" y="60" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="2" fill="#8A857D">CONTROL MAPPING / WHERE AI LIVES INSIDE ISO 27001 &amp; SOC 2</text>
+        <line x1="40" y1="85" x2="720" y2="85" stroke="#D9D3C6" stroke-width="1"/>
+        <g font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#0B0B0A">
+          <rect x="40" y="110" width="200" height="36" fill="#0B0B0A"/>
+          <text x="140" y="132" text-anchor="middle" fill="#F5F2EC" font-weight="600">Data flow &amp; boundaries</text>
+          <rect x="40" y="154" width="200" height="36" fill="#1C1C1A"/>
+          <text x="140" y="176" text-anchor="middle" fill="#F5F2EC" font-weight="600">Third-party risk</text>
+          <rect x="40" y="198" width="200" height="36" fill="#1C1C1A"/>
+          <text x="140" y="220" text-anchor="middle" fill="#F5F2EC" font-weight="600">Access &amp; audit logs</text>
+          <rect x="40" y="242" width="200" height="36" fill="#1C1C1A"/>
+          <text x="140" y="264" text-anchor="middle" fill="#F5F2EC" font-weight="600">Change management</text>
+
+          <text x="260" y="132" fill="#5E5B55">&rarr;</text>
+          <text x="260" y="176" fill="#5E5B55">&rarr;</text>
+          <text x="260" y="220" fill="#5E5B55">&rarr;</text>
+          <text x="260" y="264" fill="#5E5B55">&rarr;</text>
+
+          <text x="280" y="132" fill="#0B0B0A">ISO 27001 A.5.34, A.8.10 &middot; SOC 2 CC6.1</text>
+          <text x="280" y="176" fill="#0B0B0A">ISO 27001 A.5.19&ndash;A.5.22 &middot; SOC 2 CC9.2</text>
+          <text x="280" y="220" fill="#0B0B0A">ISO 27001 A.8.15 &middot; SOC 2 CC6.2, CC7.2</text>
+          <text x="280" y="264" fill="#0B0B0A">ISO 27001 A.8.32 &middot; SOC 2 CC8.1</text>
+        </g>
+      </svg>
+      <figcaption>The four themes that cover roughly 85% of every AI security questionnaire I have ever seen. The standards already tell you what to do. They do not tell you that LLMs count.</figcaption>
+    </figure>
+
+    <div class="prose-body">
+
+      <h2>The standards did not change. The scope did.</h2>
+      <p>Here is the bit that catches most teams out. ISO 27001:2022 and SOC 2 do not, for the most part, have new AI-specific controls. What they have is the same set of controls they always had, which now apply to a system your auditor did not look at last time.</p>
+      <p>ISO&nbsp;42001 exists, and it is the standard aimed specifically at AI management systems. It is still rare in procurement requests as of early 2026. Most of what an enterprise buyer is actually testing for sits inside controls that were already in your scope: data classification, access control, supplier management, change management, logging, and monitoring. The 47-question questionnaire is almost entirely a re-asking of those controls with the word &ldquo;model&rdquo; or &ldquo;prompt&rdquo; stapled on.</p>
+      <p>This is actually good news. The fix is not a new certification. It is a scope extension of the one you already have, with four themes to document and operate.</p>
+
+      <aside class="pull-quote">
+        Your legal team cares about whether OpenAI counts as a subprocessor under your DPA. Your security team cares whether a prompt-injected output could leak data. Both answers live inside the controls you already have.
+        <cite>Theme 2 &middot; third-party risk, re-scoped</cite>
+      </aside>
+
+      <h2>Theme 1. Data flow and the trust boundary</h2>
+      <p>Before you can answer any AI-related question, you need a diagram that is honest about where data actually goes. Not the marketing diagram. The real one.</p>
+      <p>For a typical LLM-enabled product the answer involves at least four hops. The user&rsquo;s input touches your application. Your application sends it to a retrieval layer, which reads from a vector store that was populated from a set of internal documents. The retrieved context plus the user input is sent to a model provider, usually OpenAI or Anthropic, over HTTPS. The response comes back and is rendered to the user, often with the intermediate output logged.</p>
+      <p>Every one of those hops is a data-classification question under ISO 27001 A.5.12 and the equivalent SOC 2 Confidentiality criteria. The questions you need clean answers to:</p>
+      <p>What classes of data flow to the model provider (PII, PHI, regulated, confidential)? Is that within the contractual scope of your DPA with that provider? Is the data used for training? The answer to the training question is &ldquo;no&rdquo; for OpenAI&rsquo;s API business tier and Anthropic&rsquo;s business plans by default as of the 2026 terms, but the buyer will want that in writing, from you, not from my blog post. Check the live terms before you answer.</p>
+      <p>Document this once, properly, with a real diagram. You will reuse it in every single questionnaire that lands for the next three years.</p>
+
+      <h2>Theme 2. Third-party risk, re-scoped</h2>
+      <p>OpenAI, Anthropic, Google Vertex, Azure OpenAI, and any inference endpoint you call are subprocessors under your data-processing terms. Your existing supplier-management control (ISO 27001 A.5.19&ndash;A.5.22, SOC 2 CC9.2) already tells you how to handle this: due diligence, contractual terms, review cadence. You just have not done it for model providers yet.</p>
+      <p>What an enterprise buyer expects to see:</p>
+      <p>A named DPA or MSA with each model provider, in your vendor register. The business tier of that provider, documented, because the free-tier terms differ on data-use-for-training. An annual review of their published security posture (SOC 2 Type II, ISO 27001, or equivalent). A documented exit plan if the provider has an incident or a policy change. This last one is easier for AI workloads than for databases, because most of your prompt-and-response logic is portable between providers if you wrote it that way. Say so.</p>
+      <p>Every buyer I have watched go through this process accepts &ldquo;we use OpenAI under their API Business Tier with no training opt-in, documented in our vendor register, reviewed annually&rdquo; as a clean answer. The problem is almost never the answer. It is that the answer is nowhere in writing.</p>
+
+      <h2>Theme 3. Access control and audit logs</h2>
+      <p>ISO 27001 A.8.15 (logging) and SOC 2 CC6.2 and CC7.2 together effectively require that you can answer three questions for any request: who made it, what data was seen, what action was taken. In a web app that is solved. In an AI system the question has three new seams.</p>
+      <p>One, prompts and responses. If the prompt includes PII and you log prompts, that is an extension of the personal-data processing footprint. Log, but redact. Or log structured metadata (model, token counts, latency, classification of inputs) rather than raw content. Pick one pattern, document it, and hold the line.</p>
+      <p>Two, tool calls. An agent that can call tools is making privileged decisions on behalf of the user. Every tool invocation should be logged with the same rigour as a direct API call from a human: actor, intent, parameters, outcome, correlation ID.</p>
+      <p>Three, model decisions. Where a model output materially affects a user outcome (a credit decision, a clinical triage, a trade recommendation), regulators increasingly expect an explainable audit trail. You do not necessarily need a full interpretability stack. You do need to be able to reconstruct, a year later, which model version, which prompt revision, and which input produced which output for a given user. That is the minimum.</p>
+
+      <h2>Theme 4. Change management for prompts and models</h2>
+      <p>ISO 27001 A.8.32 and SOC 2 CC8.1 require a documented change-management process for anything that affects the security or integrity of production. Model versions and prompt templates absolutely qualify, and roughly zero teams I audit treat them that way on day one.</p>
+      <p>A change to a prompt can move the behaviour of your product as much as a code change can, sometimes more. If your review process covers Python but not the YAML file where the system prompt lives, half of your production surface is changing without review.</p>
+      <p>The pattern that passes an audit and survives a late-night incident looks roughly like this. Prompts live in the codebase, version-controlled, reviewed by a second engineer. Model version is pinned in config, never &ldquo;latest.&rdquo; Every prompt or model change is gated by the eval harness from the earlier post, with minimum thresholds that must pass before deploy. Rollback is a config change, not a code change. All of this is logged so that six months later you can show the auditor what changed, when, by whom, and what evidence said it was safe.</p>
+
+      <h2>The 12-week path</h2>
+      <p>For a team with an existing ISO 27001 or SOC 2 programme, adding AI scope typically runs eight to twelve weeks end to end. Roughly:</p>
+      <p>Weeks 1&ndash;2. Data-flow mapping and trust-boundary documentation. Updating the information-asset register to include prompts, embeddings, and model outputs where they are stored. Classifying each class of data that touches the model.</p>
+      <p>Weeks 3&ndash;4. Supplier-management update. DPA review for every model provider in use. Vendor register additions. Exit-plan documentation.</p>
+      <p>Weeks 5&ndash;8. Logging and access-control upgrades. Redaction patterns for prompts, structured tool-call logging, role-based access to inference logs. This is usually the engineering-heavy block.</p>
+      <p>Weeks 9&ndash;10. Change-management formalisation. Prompts and model versions into the change-control register. Eval gates wired to CI. Rollback drills documented.</p>
+      <p>Weeks 11&ndash;12. Internal audit, evidence collection, and a dry-run of the enterprise questionnaire against the new documentation. Remediate what comes up.</p>
+      <p>Most of the effort is documentation of work you should already be doing, not new engineering. The engineering-heavy items (logging, eval gates, rollback) are the same items on the production-readiness checklist for reliability reasons. This is the rare compliance exercise that actually makes the product more robust, not less.</p>
+
+      <h2>What the buyer is actually testing for</h2>
+      <p>I have watched enough enterprise reviews to know the scoring is not really about the 47 questions. It is about whether your answers hang together. A buyer is testing for one thing: does this vendor know what their AI system actually does with data, and do they have controls that match?</p>
+      <p>Teams that fail the review are rarely the ones with gaps in a specific control. They are the ones where the security lead and the engineering lead and the product lead each tell the buyer a different story about where the data goes. A consistent, honest, documented story beats a polished one with gaps in it every time.</p>
+
+      <div class="prose-cta">
+        <h3>Got an enterprise AI questionnaire sitting in your inbox?</h3>
+        <p>The governance engagement is fixed-scope: a written AI-scope extension to your ISO 27001 or SOC 2 programme, a control map, a completed reference questionnaire, and an internal-audit pass. Built so your security lead can defend it without me in the room.</p>
+        <a href="/services/governance.html" class="btn btn-primary">See the governance engagement <span class="arrow">&rarr;</span></a>
+      </div>
+
+      <hr>
+
+      <div class="further-reading">
+        <h3>Further reading</h3>
+        <ul>
+          <li><a href="/blog/why-ai-projects-never-ship.html">Why 80% of AI projects never ship</a> &mdash; governance is failure mode 5 with a certificate.</li>
+          <li><a href="/blog/five-evals-that-matter-in-production.html">The five evals that actually matter in production</a> &mdash; the eval-gate half of Theme 4.</li>
+          <li><a href="/blog/llm-cost-traps-and-controls.html">Seven ways an LLM bill runs sideways</a> &mdash; a different kind of control, same discipline.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="brand">
+          <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+            <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+            <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+            <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+          </svg>
+          <span>Indica Tech</span>
+        </a>
+        <p>Founder-led AI engineering. Demo to production, under NDA, in regulated industries, on fixed scope. UK &middot; US &middot; Remote-first globally.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Engagements</h4>
+        <ul>
+          <li><a href="/#offers">Production Audit</a></li>
+          <li><a href="/#offers">Fractional AI Lead</a></li>
+          <li><a href="/#offers">Build Sprint</a></li>
+          <li><a href="/#offers">Governance</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/#cases">Case studies</a></li>
+          <li><a href="/#about">About Nitish</a></li>
+          <li><a href="/#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/company/indica-technology/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://instagram.com/demotoprod" target="_blank" rel="noopener">@demotoprod</a></li>
+          <li><a href="mailto:hello@indica-tech.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span class="year">2026</span> Indica Technology Ltd &middot; Registered in England</span>
+      <span class="footer-legal">
+        <a href="/privacy.html">Privacy</a> &middot;
+        <a href="/terms.html">Terms</a> &middot;
+        <a href="/cookies.html">Cookies</a>
+      </span>
+      <span class="status">Taking new projects &middot; Q2 2026</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
