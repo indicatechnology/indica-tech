@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="The RAG demo always works. Production breaks at six predictable points — chunking, embedding drift, retrieval relevance, context overflow, freshness, and citation faithfulness. The six failure points, with the controls that fix each.">
+<meta name="keywords" content="RAG production, retrieval augmented generation production, RAG failure modes, vector database production, RAG eval, hybrid search rerankers, embedding drift">
+<meta name="robots" content="index, follow">
+<title>Shipping RAG to production — where retrieval pipelines actually fail — Indica Tech</title>
+<link rel="canonical" href="https://indica-tech.com/blog/shipping-rag-to-production.html">
+<link rel="stylesheet" href="../styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230B0B0A'/%3E%3Ccircle cx='32' cy='30' r='9' fill='%2300C46A'/%3E%3Crect x='25' y='42' width='14' height='40' fill='%23F5F2EC'/%3E%3Cpath d='M58 82 L78 18 L71 18 L51 82 Z' fill='%23F5F2EC'/%3E%3C/svg%3E">
+
+<meta property="og:title" content="Shipping RAG to production — where retrieval pipelines actually fail">
+<meta property="og:description" content="Six predictable failure points in a production RAG system, and the controls that fix each — chunking, drift, retrieval relevance, context overflow, freshness, citation faithfulness.">
+<meta property="og:type" content="article">
+<meta property="article:author" content="Nitish">
+<meta property="article:published_time" content="2026-04-27">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Shipping RAG to production — where retrieval pipelines actually fail",
+  "datePublished": "2026-04-27",
+  "dateModified": "2026-04-27",
+  "author": {"@type": "Person", "name": "Nitish", "url": "https://indica-tech.com/#about"},
+  "publisher": {"@type": "Organization", "name": "Indica Technology Ltd", "url": "https://indica-tech.com"},
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://indica-tech.com/blog/shipping-rag-to-production.html"}
+}
+</script>
+</head>
+<body>
+
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+        <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+        <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+        <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+      </svg>
+      <span>Indica Tech <em>/ demo &rarr; prod</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#problem">The gap</a></li>
+      <li><a href="/#offers">Engagements</a></li>
+      <li><a href="/#proof">Proof</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+    </ul>
+    <a href="/#contact" class="nav-cta">Book a call <span class="arrow">&rarr;</span></a>
+    <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<section class="prose longform">
+  <div class="container">
+    <div class="prose-head">
+      <div class="kicker">Field notes / engineering</div>
+      <h1>Shipping RAG to production &mdash; where retrieval pipelines actually fail</h1>
+      <p class="lead">The RAG demo always works. The first thirty queries are the ones the founder thought of when they built it, and the model handles them beautifully. Then real users arrive and the system breaks at six predictable points &mdash; chunking, embedding drift, retrieval relevance, context overflow, freshness, and citation faithfulness. The good news: each one has a known control, and you can fit all six into a fortnight of work.</p>
+    </div>
+
+    <div class="article-meta">
+      <span>13 min read</span>
+      <span>27 April 2026</span>
+    </div>
+    <div class="article-byline">
+      <div class="byline-avatar" aria-hidden="true">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <circle cx="16" cy="14" r="4" fill="currentColor"/>
+          <rect x="13" y="20" width="6" height="20" fill="currentColor"/>
+          <path d="M28 40 L38 10 L34 10 L24 40 Z" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="byline-text">
+        <span class="byline-name">Nitish</span>
+        <span class="byline-sub">
+          <span>Founder, Indica Tech</span>
+          <span>Field notes / Engineering</span>
+        </span>
+      </div>
+    </div>
+
+    <figure class="feature-figure">
+      <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" style="border:1px solid var(--rule); background:#F5F2EC;">
+        <rect width="760" height="360" fill="#F5F2EC"/>
+        <text x="40" y="45" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="2" fill="#8A857D">RAG PIPELINE / where it breaks under real traffic</text>
+        <line x1="40" y1="65" x2="720" y2="65" stroke="#D9D3C6" stroke-width="1"/>
+
+        <!-- Indexing path -->
+        <text x="40" y="95" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5E5B55">INDEXING</text>
+        <rect x="40"  y="110" width="120" height="50" fill="#0B0B0A"/>
+        <text x="100" y="132" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#F5F2EC" text-anchor="middle" font-weight="600">Source docs</text>
+        <text x="100" y="148" font-family="IBM Plex Mono, monospace" font-size="10" fill="#8A857D" text-anchor="middle">truth</text>
+        <text x="170" y="140" font-family="IBM Plex Mono, monospace" font-size="14" fill="#5E5B55">&rarr;</text>
+        <rect x="190" y="110" width="120" height="50" fill="#1C1C1A"/>
+        <text x="250" y="132" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#F5F2EC" text-anchor="middle" font-weight="600">Chunk &amp; clean</text>
+        <text x="250" y="148" font-family="IBM Plex Mono, monospace" font-size="10" fill="#FF7D57" text-anchor="middle">FAIL 01</text>
+        <text x="320" y="140" font-family="IBM Plex Mono, monospace" font-size="14" fill="#5E5B55">&rarr;</text>
+        <rect x="340" y="110" width="120" height="50" fill="#3A3833"/>
+        <text x="400" y="132" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#F5F2EC" text-anchor="middle" font-weight="600">Embed</text>
+        <text x="400" y="148" font-family="IBM Plex Mono, monospace" font-size="10" fill="#FF7D57" text-anchor="middle">FAIL 02</text>
+        <text x="470" y="140" font-family="IBM Plex Mono, monospace" font-size="14" fill="#5E5B55">&rarr;</text>
+        <rect x="490" y="110" width="120" height="50" fill="#5E5B55"/>
+        <text x="550" y="132" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#F5F2EC" text-anchor="middle" font-weight="600">Index store</text>
+        <text x="550" y="148" font-family="IBM Plex Mono, monospace" font-size="10" fill="#FF7D57" text-anchor="middle">FAIL 05</text>
+
+        <!-- Query path -->
+        <text x="40" y="200" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5E5B55">QUERY</text>
+        <rect x="40"  y="215" width="120" height="50" fill="#0B0B0A"/>
+        <text x="100" y="237" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#F5F2EC" text-anchor="middle" font-weight="600">User question</text>
+        <text x="170" y="245" font-family="IBM Plex Mono, monospace" font-size="14" fill="#5E5B55">&rarr;</text>
+        <rect x="190" y="215" width="120" height="50" fill="#1C1C1A"/>
+        <text x="250" y="237" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#F5F2EC" text-anchor="middle" font-weight="600">Retrieve k</text>
+        <text x="250" y="253" font-family="IBM Plex Mono, monospace" font-size="10" fill="#FF7D57" text-anchor="middle">FAIL 03</text>
+        <text x="320" y="245" font-family="IBM Plex Mono, monospace" font-size="14" fill="#5E5B55">&rarr;</text>
+        <rect x="340" y="215" width="120" height="50" fill="#3A3833"/>
+        <text x="400" y="237" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#F5F2EC" text-anchor="middle" font-weight="600">Pack context</text>
+        <text x="400" y="253" font-family="IBM Plex Mono, monospace" font-size="10" fill="#FF7D57" text-anchor="middle">FAIL 04</text>
+        <text x="470" y="245" font-family="IBM Plex Mono, monospace" font-size="14" fill="#5E5B55">&rarr;</text>
+        <rect x="490" y="215" width="120" height="50" fill="#00C46A"/>
+        <text x="550" y="237" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#003B1F" text-anchor="middle" font-weight="600">Generate + cite</text>
+        <text x="550" y="253" font-family="IBM Plex Mono, monospace" font-size="10" fill="#003B1F" text-anchor="middle">FAIL 06</text>
+
+        <text x="40" y="310" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5E5B55">Six failure points. Each has a known control.</text>
+        <text x="40" y="330" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5E5B55">Most teams ship with controls on three. The other three become the support backlog.</text>
+      </svg>
+      <figcaption>The two-line pipeline most demos draw. The six places it actually breaks under production traffic.</figcaption>
+    </figure>
+
+    <div class="prose-body">
+
+      <h2>Why retrieval looks easy and isn&rsquo;t</h2>
+      <p>Retrieval-augmented generation has the friendliest demo in AI. Drop a thousand PDFs into a vector store, hand the model the top-five chunks, ask a question, get a credible answer. The first founder demo lands in a weekend. The investor demo lands in a fortnight. Then the system meets a real user, and one of six things happens.</p>
+      <p>None of these are about the model. All of them are about the pipeline around it. Audit work confirms the pattern: when a RAG product underperforms in production, the retrieval step is the cause four times out of five, not the generation step. Fix retrieval, and the answer quality follows.</p>
+
+      <aside class="pull-quote">
+        When a RAG product underperforms in production, retrieval is the cause four times out of five &mdash; not generation. Fix retrieval and the answer quality follows.
+      </aside>
+
+      <h2>Failure 01 &mdash; Chunking that destroys meaning</h2>
+      <p>The default chunking strategy in every RAG tutorial is &ldquo;split every 1,000 characters with 200 overlap.&rdquo; It is fine for blog posts. It is catastrophic for almost everything else. A 1,000-character split through a contract lands halfway through a clause, separating &ldquo;notwithstanding the foregoing&rdquo; from the obligation it modifies. A split through a how-to article cuts a numbered list across two chunks, so the model sees step 4 without steps 1&ndash;3.</p>
+      <p>The control is to chunk on semantic boundaries, not byte counts. For most corpora that means a hierarchical splitter that respects, in order: document &rarr; section heading &rarr; paragraph &rarr; sentence. Each chunk is annotated with its parent heading so the embedding picks up topical context the chunk itself lacks. Token-length distribution is monitored: when a single document produces a 50-token chunk and a 4,000-token chunk, the splitter is wrong, not the document.</p>
+      <p>For tabular data, code, and structured records, do not chunk text at all. Render the row or function as a small canonical document, embed that, and store a back-pointer to the source.</p>
+
+      <h2>Failure 02 &mdash; Embedding drift</h2>
+      <p>The embedding model that indexed your corpus eighteen months ago is not the embedding model that should be running today. Providers ship new versions. The new one is usually better &mdash; but it produces vectors in a different space. If you re-embed the queries with the new model and search against vectors built with the old one, you are comparing nonsense to nonsense.</p>
+      <p>Two controls. First, version-pin the embedding model in the index metadata: every record carries the model name and version that produced it. The query path checks that the query embedder matches before searching, and refuses to compare across versions. Second, when you upgrade the embedder, treat it as a full reindex &mdash; blue/green the new index, run an eval comparing top-k recall on a frozen test set, and only switch when the new index clears the threshold.</p>
+      <p>The thing that breaks teams here is doing it casually. Someone bumps the model name in a config file because the docs recommend it. Recall silently drops 12%. The team blames the prompt for three weeks before tracing it back.</p>
+
+      <h2>Failure 03 &mdash; Retrieval that is dense-only</h2>
+      <p>Dense vector search is great at semantic similarity and bad at exact-match. A user asks &ldquo;What does error <code>E_AUTH_437</code> mean?&rdquo; and the cosine-similarity search returns five chunks about authentication in general, none of which contain the literal string. The right chunk &mdash; one that mentions <code>E_AUTH_437</code> by name &mdash; ranks tenth.</p>
+      <p>The control is hybrid search: dense retrieval combined with a sparse lexical retriever (BM25 over the same corpus), then fused with reciprocal rank fusion. Adding the sparse channel costs almost nothing and recovers a class of queries that pure-vector search consistently misses &mdash; product codes, acronyms, names, IDs, anything where the user remembers the exact token.</p>
+      <p>On top of fused retrieval, add a small reranker. Cross-encoder rerankers (a few hundred ms of latency, models like BGE-reranker or Cohere&rsquo;s rerank API) take the top-25 fused candidates and re-score them against the query in a way pure embedding similarity cannot. On most production corpora, fused retrieval plus a reranker pulls top-3 precision from somewhere around 0.55 to somewhere around 0.85. That is the difference between &ldquo;sometimes useful&rdquo; and &ldquo;product&rdquo;.</p>
+
+      <h2>Failure 04 &mdash; Context overflow and lost-in-the-middle</h2>
+      <p>You have a 200,000-token context window so you stuff thirty chunks into the prompt. The model produces a confident answer that ignores chunks five through twenty-five. This is the lost-in-the-middle phenomenon, and it has been documented across every long-context model on the market. Adding more context past a point makes performance <em>worse</em>, not better &mdash; and adds latency and cost on the way down.</p>
+      <p>The control is discipline. Keep the packed context tight: typically three to eight chunks for a question-answering task, ranked by reranker score, deduplicated against each other. If a chunk overlaps another by more than 60% on a tri-gram comparison, drop the lower-ranked one. Order chunks by relevance descending, not by source order. Include a short header per chunk with its source document and section so the model can produce citations &mdash; this is also the foundation for failure 06.</p>
+      <p>Token budget is monitored: <code>context_tokens_used / context_window</code> as a histogram, alerts when P95 exceeds 60%. If you are routinely filling the window, you are losing answer quality, not gaining it.</p>
+
+      <h2>Failure 05 &mdash; Stale data nobody noticed</h2>
+      <p>The index was built off a Notion export from December. The team rewrote the refund policy in February. The bot is still telling customers about the December version, confidently and with a citation, because the citation is &mdash; technically &mdash; correct. It is the corpus that is wrong.</p>
+      <p>The control is a freshness SLO with the same seriousness as a latency SLO. Every chunk has a <code>source_updated_at</code>. The pipeline has a target lag (e.g. source change to indexed and serving in under one hour). A monitor compares the latest <code>source_updated_at</code> in the upstream system to the latest in the index every five minutes; lag &gt; SLO pages oncall. The reindexer is owned by a person, not a cron job that nobody checks.</p>
+      <p>Bonus control: filter retrieval results by recency where the data is time-sensitive. The bot answering a 2026 customer should not be matching against 2022 docs unless explicitly asked.</p>
+
+      <h2>Failure 06 &mdash; Citations the model cannot defend</h2>
+      <p>The model produces an answer with footnotes. The footnotes look authoritative. Half of them point to chunks the answer did not actually use. The other half cite the right chunk for the wrong claim. Users trust the footnotes for two weeks until one of them clicks through and the trust cliff arrives.</p>
+      <p>The control is structural, not prompt-engineering. Pack each chunk with an explicit ID in the context (<code>[doc_id: 84]</code>), and instruct the model to return its answer as JSON with each claim mapped to the IDs that support it. A post-hoc validator checks that (a) every cited ID is one we actually retrieved, (b) the cited chunk lexically supports the claim using a small judge prompt, and (c) the answer contains no claims without at least one valid citation. Failures rerun once with a corrective system message; if they fail twice, the answer is suppressed and a fallback (&ldquo;I don&rsquo;t have a confident answer for that&rdquo;) is returned.</p>
+      <p>This is the single highest-leverage control in the whole pipeline. It catches hallucination before the user sees it, gives compliance reviewers a defensible audit trail, and turns the eval from &ldquo;does this look right&rdquo; into something a CI gate can score.</p>
+
+      <h2>The minimum viable production RAG</h2>
+      <p>Stack the controls together and you get a system that looks like this. Hierarchical chunking, version-pinned embeddings, hybrid retrieval (dense + BM25), cross-encoder reranker, three-to-eight-chunk packed context with explicit chunk IDs, freshness SLO on the index, structured cited-JSON output, post-hoc citation validator, eval set with faithfulness and citation-precision as gates in CI.</p>
+      <p>Ten components. Roughly two engineer-weeks to assemble from open-source pieces if you have someone who has done it before, four weeks if you do not. None of it is novel work. All of it is the difference between a RAG that wins the demo and a RAG that survives the year.</p>
+
+      <div class="prose-cta">
+        <h3>Have a RAG system that&rsquo;s past the demo and wobbling?</h3>
+        <p>The two-week production-readiness audit covers retrieval pipelines end-to-end &mdash; chunking strategy, embedding hygiene, retrieval-eval baseline, citation faithfulness, freshness controls. Written report, ranked gaps, fixed price.</p>
+        <a href="/#offers" class="btn btn-primary">See the audit engagement <span class="arrow">&rarr;</span></a>
+      </div>
+
+      <hr>
+
+      <div class="further-reading">
+        <h3>Further reading</h3>
+        <ul>
+          <li><a href="/blog/five-evals-that-matter-in-production.html">The five evals that actually matter in production</a> &mdash; the eval set that turns failure 06 into a CI gate.</li>
+          <li><a href="/blog/production-grade-retry-logic-llm-calls.html">Production-grade retry logic for LLM calls</a> &mdash; the resilience layer around every embedding and rerank call.</li>
+          <li><a href="/blog/production-readiness-checklist-37-points.html">The 37-point production-readiness checklist</a> &mdash; where these six controls sit in the wider audit.</li>
+          <li><a href="/blog/why-ai-projects-never-ship.html">Why 80% of AI projects never ship</a> &mdash; the failure modes RAG products fall into when these controls are missing.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="brand">
+          <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+            <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+            <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+            <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+          </svg>
+          <span>Indica Tech</span>
+        </a>
+        <p>Founder-led AI engineering. Demo to production, under NDA, in regulated industries, on fixed scope. UK &middot; US &middot; Remote-first globally.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Engagements</h4>
+        <ul>
+          <li><a href="/#offers">Production Audit</a></li>
+          <li><a href="/#offers">Fractional AI Lead</a></li>
+          <li><a href="/#offers">Build Sprint</a></li>
+          <li><a href="/#offers">Governance</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/#cases">Case studies</a></li>
+          <li><a href="/#about">About Nitish</a></li>
+          <li><a href="/#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/company/indica-technology/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://instagram.com/demotoprod" target="_blank" rel="noopener">@demotoprod</a></li>
+          <li><a href="mailto:hello@indica-tech.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span class="year">2026</span> Indica Technology Ltd &middot; Registered in England</span>
+      <span class="footer-legal">
+        <a href="/privacy.html">Privacy</a> &middot;
+        <a href="/terms.html">Terms</a> &middot;
+        <a href="/cookies.html">Cookies</a>
+      </span>
+      <span class="status">Taking new projects &middot; Q2 2026</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
