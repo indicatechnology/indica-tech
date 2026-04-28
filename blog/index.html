@@ -6,6 +6,7 @@
 <meta name="description" content="Field notes on shipping AI to production — the failure modes, the evals that matter, the retry logic that actually survives 3am. Written by Nitish @ Indica Tech.">
 <meta name="robots" content="index, follow">
 <title>Field notes on shipping AI — Indica Tech blog</title>
+<link rel="canonical" href="https://indica-tech.com/blog/">
 <link rel="stylesheet" href="../styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,6 +17,19 @@
 <meta property="og:description" content="Why 80% of AI projects never ship, the five evals that actually matter, and what production-grade retry logic looks like.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
+
+<script>
+// Pre-paint filter — reads ?tag=engineering and stamps <html data-active-tag="..."> before
+// the post list paints, so the CSS rules hide non-matching rows with no flicker.
+(function () {
+  try {
+    var t = new URLSearchParams(window.location.search).get('tag');
+    document.documentElement.dataset.activeTag = (t || 'all').toLowerCase();
+  } catch (e) {
+    document.documentElement.dataset.activeTag = 'all';
+  }
+})();
+</script>
 </head>
 <body>
 
@@ -50,10 +64,22 @@
       <p class="blog-index-sub">Updated monthly &middot; Written by Nitish</p>
     </div>
 
+    <div class="tag-filters" role="toolbar" aria-label="Filter articles by topic" id="tag-filters">
+      <span class="tag-filters-label">Filter by</span>
+      <button class="tag-filter" data-tag="all" aria-pressed="true" type="button">All <span class="count"></span></button>
+      <button class="tag-filter" data-tag="strategy" aria-pressed="false" type="button">Strategy <span class="count"></span></button>
+      <button class="tag-filter" data-tag="engineering" aria-pressed="false" type="button">Engineering <span class="count"></span></button>
+      <button class="tag-filter" data-tag="governance" aria-pressed="false" type="button">Governance <span class="count"></span></button>
+      <button class="tag-filter" data-tag="leadership" aria-pressed="false" type="button">Leadership <span class="count"></span></button>
+    </div>
+
+    <p class="tag-result-count" id="tag-result" aria-hidden="true">Showing all 12 articles</p>
+    <p class="visually-hidden" id="tag-live" aria-live="polite" aria-atomic="true"></p>
+
     <ol class="post-list" aria-label="Articles">
-      <li class="post-row">
+      <li class="post-row" data-tag="strategy">
         <a href="/blog/why-ai-projects-never-ship.html" class="post-link">
-          <span class="post-num">01</span>
+          <span class="post-num"></span>
           <div class="post-body">
             <span class="post-tag">Strategy</span>
             <h2 class="post-title">Why 80% of AI projects never ship &mdash; and the 5 failure modes I see on every audit</h2>
@@ -63,9 +89,9 @@
         </a>
       </li>
 
-      <li class="post-row">
+      <li class="post-row" data-tag="engineering">
         <a href="/blog/five-evals-that-matter-in-production.html" class="post-link">
-          <span class="post-num">02</span>
+          <span class="post-num"></span>
           <div class="post-body">
             <span class="post-tag">Engineering</span>
             <h2 class="post-title">The five evals that actually matter in production</h2>
@@ -75,9 +101,9 @@
         </a>
       </li>
 
-      <li class="post-row">
+      <li class="post-row" data-tag="engineering">
         <a href="/blog/production-grade-retry-logic-llm-calls.html" class="post-link">
-          <span class="post-num">03</span>
+          <span class="post-num"></span>
           <div class="post-body">
             <span class="post-tag">Engineering</span>
             <h2 class="post-title">What production-grade retry logic looks like for LLM calls</h2>
@@ -87,9 +113,9 @@
         </a>
       </li>
 
-      <li class="post-row">
+      <li class="post-row" data-tag="engineering">
         <a href="/blog/llm-cost-traps-and-controls.html" class="post-link">
-          <span class="post-num">04</span>
+          <span class="post-num"></span>
           <div class="post-body">
             <span class="post-tag">Engineering</span>
             <h2 class="post-title">Seven ways an LLM bill runs sideways (and three controls that stop it)</h2>
@@ -99,9 +125,9 @@
         </a>
       </li>
 
-      <li class="post-row">
+      <li class="post-row" data-tag="governance">
         <a href="/blog/iso-27001-soc-2-for-ai-systems.html" class="post-link">
-          <span class="post-num">05</span>
+          <span class="post-num"></span>
           <div class="post-body">
             <span class="post-tag">Governance</span>
             <h2 class="post-title">What ISO 27001 and SOC 2 actually require when you add AI to your product</h2>
@@ -111,9 +137,9 @@
         </a>
       </li>
 
-      <li class="post-row">
+      <li class="post-row" data-tag="engineering">
         <a href="/blog/production-readiness-checklist-37-points.html" class="post-link">
-          <span class="post-num">06</span>
+          <span class="post-num"></span>
           <div class="post-body">
             <span class="post-tag">Engineering</span>
             <h2 class="post-title">The 37-point production-readiness checklist for AI systems</h2>
@@ -123,9 +149,9 @@
         </a>
       </li>
 
-      <li class="post-row">
+      <li class="post-row" data-tag="engineering">
         <a href="/blog/shipping-rag-to-production.html" class="post-link">
-          <span class="post-num">07</span>
+          <span class="post-num"></span>
           <div class="post-body">
             <span class="post-tag">Engineering</span>
             <h2 class="post-title">Shipping RAG to production &mdash; where retrieval pipelines actually fail</h2>
@@ -135,9 +161,9 @@
         </a>
       </li>
 
-      <li class="post-row">
+      <li class="post-row" data-tag="leadership">
         <a href="/blog/ai-agents-reduce-operational-costs.html" class="post-link">
-          <span class="post-num">08</span>
+          <span class="post-num"></span>
           <div class="post-body">
             <span class="post-tag">Leadership</span>
             <h2 class="post-title">How AI agents can reduce operational costs without hiring more staff</h2>
@@ -147,9 +173,9 @@
         </a>
       </li>
 
-      <li class="post-row">
+      <li class="post-row" data-tag="leadership">
         <a href="/blog/ceo-guide-ai-automation-2026.html" class="post-link">
-          <span class="post-num">09</span>
+          <span class="post-num"></span>
           <div class="post-body">
             <span class="post-tag">Leadership</span>
             <h2 class="post-title">The CEO&rsquo;s guide to AI automation in 2026</h2>
@@ -159,9 +185,9 @@
         </a>
       </li>
 
-      <li class="post-row">
+      <li class="post-row" data-tag="strategy">
         <a href="/blog/what-the-five-percent-do-differently.html" class="post-link">
-          <span class="post-num">10</span>
+          <span class="post-num"></span>
           <div class="post-body">
             <span class="post-tag">Strategy</span>
             <h2 class="post-title">What the 5% do differently &mdash; patterns from production AI in regulated industries</h2>
@@ -171,9 +197,9 @@
         </a>
       </li>
 
-      <li class="post-row">
+      <li class="post-row" data-tag="leadership">
         <a href="/blog/the-invisible-operations-tax.html" class="post-link">
-          <span class="post-num">11</span>
+          <span class="post-num"></span>
           <div class="post-body">
             <span class="post-tag">Leadership</span>
             <h2 class="post-title">The invisible operations tax &mdash; what manual work actually costs before you automate anything</h2>
@@ -183,9 +209,9 @@
         </a>
       </li>
 
-      <li class="post-row">
+      <li class="post-row" data-tag="leadership">
         <a href="/blog/ai-is-not-the-strategy.html" class="post-link">
-          <span class="post-num">12</span>
+          <span class="post-num"></span>
           <div class="post-body">
             <span class="post-tag">Leadership</span>
             <h2 class="post-title">AI is not the strategy. The bottleneck you remove with it is.</h2>
@@ -195,6 +221,11 @@
         </a>
       </li>
     </ol>
+
+    <div class="tag-empty" id="tag-empty" role="status">
+      <p>No field notes under this topic yet.</p>
+      <p><button class="tag-empty-reset" type="button" data-tag="all">Show all articles <span class="arrow">→</span></button></p>
+    </div>
 
     <div class="blog-cta">
       <h3>Want the full production-readiness checklist?</h3>
@@ -231,9 +262,10 @@
         <h4>Learn</h4>
         <ul>
           <li><a href="/blog/">Blog</a></li>
-          <li><a href="/#cases">Case studies</a></li>
-          <li><a href="/#about">About Nitish</a></li>
-          <li><a href="/#faq">FAQ</a></li>
+          <li><a href="/blog/?tag=strategy">Strategy</a></li>
+          <li><a href="/blog/?tag=engineering">Engineering</a></li>
+          <li><a href="/blog/?tag=governance">Governance</a></li>
+          <li><a href="/blog/?tag=leadership">Leadership</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -256,6 +288,93 @@
     </div>
   </div>
 </footer>
+
+<script>
+(function () {
+  var listEl = document.querySelector('.post-list');
+  var filterBar = document.getElementById('tag-filters');
+  var resultEl = document.getElementById('tag-result');
+  var liveEl = document.getElementById('tag-live');
+  var emptyEl = document.getElementById('tag-empty');
+  if (!listEl || !filterBar) return;
+
+  var rows = Array.prototype.slice.call(listEl.querySelectorAll('.post-row'));
+  var pills = Array.prototype.slice.call(filterBar.querySelectorAll('.tag-filter'));
+  var resetBtn = document.querySelector('.tag-empty-reset');
+
+  // Count posts per tag (drives the (n) badge on each pill)
+  var counts = { all: rows.length };
+  rows.forEach(function (r) {
+    var t = (r.dataset.tag || '').toLowerCase();
+    counts[t] = (counts[t] || 0) + 1;
+  });
+  pills.forEach(function (p) {
+    var t = p.dataset.tag;
+    var c = counts[t] || 0;
+    var span = p.querySelector('.count');
+    if (span) span.textContent = '(' + c + ')';
+  });
+
+  function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  function applyFilter(tag, opts) {
+    opts = opts || {};
+    tag = (tag || 'all').toLowerCase();
+    if (counts[tag] === undefined) tag = 'all'; // unknown tag → fall back
+
+    document.documentElement.dataset.activeTag = tag;
+
+    pills.forEach(function (p) {
+      p.setAttribute('aria-pressed', p.dataset.tag === tag ? 'true' : 'false');
+    });
+
+    var visible = tag === 'all' ? rows.length : counts[tag];
+    var label = tag === 'all'
+      ? 'Showing all ' + rows.length + ' articles'
+      : 'Showing ' + visible + ' of ' + rows.length + ' articles · ' + capitalize(tag);
+    if (resultEl) resultEl.textContent = label;
+    if (liveEl) liveEl.textContent = label;
+    if (emptyEl) emptyEl.style.display = visible === 0 ? 'block' : 'none';
+
+    if (opts.updateUrl) {
+      var url = tag === 'all' ? location.pathname : location.pathname + '?tag=' + tag;
+      history.pushState({ tag: tag }, '', url);
+    }
+  }
+
+  function scrollToList() {
+    // Keep the list anchored just below the filter bar — avoids a disorienting jump.
+    var top = filterBar.getBoundingClientRect().top + window.scrollY - 96;
+    if (window.scrollY > top + 40) {
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    }
+  }
+
+  // Initial paint — read the URL once, sync UI to the pre-paint dataset value.
+  var initialTag = (new URLSearchParams(location.search).get('tag') || 'all').toLowerCase();
+  applyFilter(initialTag, { updateUrl: false });
+
+  pills.forEach(function (p) {
+    p.addEventListener('click', function () {
+      applyFilter(p.dataset.tag, { updateUrl: true });
+      scrollToList();
+    });
+  });
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', function () {
+      applyFilter('all', { updateUrl: true });
+      scrollToList();
+    });
+  }
+
+  // Browser back/forward — restore filter from URL.
+  window.addEventListener('popstate', function () {
+    var tag = (new URLSearchParams(location.search).get('tag') || 'all').toLowerCase();
+    applyFilter(tag, { updateUrl: false });
+  });
+})();
+</script>
 
 </body>
 </html>
