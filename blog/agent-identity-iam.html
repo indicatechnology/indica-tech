@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="You probably have 10–20 AI agents in production. None of them appear in your quarterly access review. Microsoft just shipped Agent 365 Runtime Protection because every prod AI org now has agents acting as ghost users in their own IAM stack. The five-gate hygiene checklist for agent identity, and what to do this week.">
+<meta name="keywords" content="AI agent identity, agent IAM, AI security, Microsoft Agent 365 Runtime Protection, agent governance, AI agent service account, AI agent audit, prod AI security, agent lifecycle">
+<meta name="robots" content="index, follow">
+<title>Your AI agents are ghost users in your IAM stack &mdash; Indica Tech</title>
+<link rel="canonical" href="https://indica-tech.com/blog/agent-identity-iam.html">
+<link rel="stylesheet" href="../styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230B0B0A'/%3E%3Ccircle cx='32' cy='30' r='9' fill='%2300C46A'/%3E%3Crect x='25' y='42' width='14' height='40' fill='%23F5F2EC'/%3E%3Cpath d='M58 82 L78 18 L71 18 L51 82 Z' fill='%23F5F2EC'/%3E%3C/svg%3E">
+
+<meta property="og:title" content="Your AI agents are ghost users in your IAM stack">
+<meta property="og:description" content="10–20 agents per prod AI org. One shared service account. Zero in the quarterly access review. The five hygiene gates every CTO should pass.">
+<meta property="og:type" content="article">
+<meta property="article:author" content="Nitish">
+<meta property="article:published_time" content="2026-07-02">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Your AI agents are ghost users in your IAM stack",
+  "datePublished": "2026-07-02",
+  "dateModified": "2026-07-02",
+  "author": {"@type": "Person", "name": "Nitish", "url": "https://indica-tech.com/#about"},
+  "publisher": {"@type": "Organization", "name": "Indica Technology Ltd", "url": "https://indica-tech.com"},
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://indica-tech.com/blog/agent-identity-iam.html"}
+}
+</script>
+</head>
+<body>
+
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+        <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+        <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+        <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+      </svg>
+      <span>Indica Tech <em>/ demo &rarr; prod</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#problem">The gap</a></li>
+      <li><a href="/#offers">Engagements</a></li>
+      <li><a href="/#proof">Proof</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+    </ul>
+    <a href="/#contact" class="nav-cta">Book a call <span class="arrow">&rarr;</span></a>
+    <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<section class="prose longform">
+  <div class="container">
+    <div class="prose-head">
+      <div class="kicker">Field notes / governance</div>
+      <h1>Your AI agents are ghost users in your IAM stack</h1>
+      <p class="lead">You probably have 10&ndash;20 AI agents in production. None of them appear in your quarterly access review. Microsoft just shipped Agent 365 Runtime Protection because every prod AI org now has agents acting as ghost users in its own IAM stack. If your security team is reviewing humans but not agents, you have privileged service accounts running 24/7 that nobody is watching. This is the five-gate hygiene checklist, the failure modes underneath each one, and what to do this week.</p>
+    </div>
+
+    <div class="article-meta">
+      <span>12 min read</span>
+      <span>2 July 2026</span>
+    </div>
+    <div class="article-byline">
+      <div class="byline-avatar" aria-hidden="true">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <circle cx="16" cy="14" r="4" fill="currentColor"/>
+          <rect x="13" y="20" width="6" height="20" fill="currentColor"/>
+          <path d="M28 40 L38 10 L34 10 L24 40 Z" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="byline-text">
+        <span class="byline-name">Nitish</span>
+        <span class="byline-sub">
+          <span>Founder, Indica Tech</span>
+          <span>Field notes / Governance</span>
+        </span>
+      </div>
+    </div>
+
+    <figure class="feature-figure">
+      <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" style="border:1px solid var(--rule); background:#F5F2EC;">
+        <rect width="760" height="360" fill="#F5F2EC"/>
+        <text x="40" y="45" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="2" fill="#8A857D">THE GAP / PROD AI ORG IN 2026</text>
+        <line x1="40" y1="65" x2="720" y2="65" stroke="#D9D3C6" stroke-width="1"/>
+
+        <g font-family="IBM Plex Sans, sans-serif" font-size="13">
+          <rect x="40" y="90"  width="680" height="48" fill="#0B0B0A"/>
+          <text x="55"  y="119" fill="#F5F2EC" font-weight="600">18 agents per prod AI org (typical)</text>
+          <text x="720" y="119" text-anchor="end" fill="#8A857D" font-family="IBM Plex Mono, monospace" font-size="11">inventory baseline</text>
+
+          <rect x="40" y="142" width="680" height="48" fill="#7A2D2D"/>
+          <text x="55"  y="171" fill="#F5F2EC" font-weight="600">1 shared service account they all use</text>
+          <text x="720" y="171" text-anchor="end" fill="#F2C2C2" font-family="IBM Plex Mono, monospace" font-size="11">ai-svc, .env, two repos</text>
+
+          <rect x="40" y="194" width="680" height="48" fill="#7A2D2D"/>
+          <text x="55"  y="223" fill="#F5F2EC" font-weight="600">0 in the last quarterly access review</text>
+          <text x="720" y="223" text-anchor="end" fill="#F2C2C2" font-family="IBM Plex Mono, monospace" font-size="11">humans only</text>
+
+          <rect x="40" y="246" width="680" height="48" fill="#7A2D2D"/>
+          <text x="55"  y="275" fill="#F5F2EC" font-weight="600">0 with documented offboarding</text>
+          <text x="720" y="275" text-anchor="end" fill="#F2C2C2" font-family="IBM Plex Mono, monospace" font-size="11">when the engineer leaves</text>
+        </g>
+
+        <text x="40" y="320" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5E5B55">Most orgs hit zero on three of four. Microsoft shipped a runtime control plane because the gap is now product-line-shaped.</text>
+        <text x="40" y="340" font-family="IBM Plex Mono, monospace" font-size="11" fill="#00684A" font-weight="600">Treat agents as identities, not as code.</text>
+      </svg>
+      <figcaption>The shape of the agent-identity gap on the typical 2026 production AI estate. The five gates below close it.</figcaption>
+    </figure>
+
+    <div class="prose-body">
+
+      <h2>Executive summary</h2>
+      <p>The 2026 production AI org has 10&ndash;20 agents in active service: cron jobs, Slack bots, internal automations, customer-facing assistants. They authenticate, call APIs, read and write customer data, and run on a schedule. They behave like employees. Most teams govern them like code &mdash; static review at deploy, maybe a secret scan, then forgotten. Microsoft&rsquo;s Agent 365 Runtime Protection, in public preview from Apr 30 2026 with a Q3 GA, is a market-level admission that this gap exists. The five gates below are the upstream hygiene every CTO should land before bolting on a runtime product. Most orgs start at 1/5. Three weeks of disciplined work gets a production-minded team to 5/5.</p>
+
+      <aside class="pull-quote">
+        Agents are first-class identities. You&rsquo;re treating them as code. Microsoft&rsquo;s product launch is the market admitting it.
+      </aside>
+
+      <h2>The business problem</h2>
+      <p>Your security team reviews humans every quarter. Joiners. Movers. Leavers. Privilege escalations. Shared-secret rotations. The runbook is mature, the tooling is mature, the audit trail satisfies the regulator. None of it covers the agents.</p>
+      <p>Meanwhile your engineering team has shipped, over the last twelve to eighteen months, a quiet portfolio of automations. The cron called <em>daily summariser</em>. The Slack bot that creates Jira tickets from incoming customer emails. The internal automation a contractor wrote in 2024 and forgot. The new agent that drafts responses in your support inbox. Each one has credentials. Each one runs on a schedule. Each one touches customer data. None of them appear on the access review.</p>
+      <p>This is not a hypothetical. I have walked into eight production AI estates this year, and every one had a version of the same finding.</p>
+
+      <h2>Why traditional approaches fail</h2>
+      <p>The reflex when a CTO hears this is to ask security for a tool. There are now several &mdash; including Microsoft&rsquo;s &mdash; and they will help. But buying a runtime-protection product before fixing the upstream hygiene buys you a dashboard with one red light per agent, no clear owner, no remediation path, and a security team that now has more visibility than authority.</p>
+      <p>The other reflex is to extend the human IAM playbook unchanged. That doesn&rsquo;t work either, because humans and agents have different lifecycles. A human onboards once and offboards once. An agent forks. The same engineer ships v1, v2, v3 of the same agent across four months; v1 still runs in a dusty corner of staging; v2 is in test; v3 is in prod. Five service accounts, one engineer, one purpose. Human IAM doesn&rsquo;t model that.</p>
+      <p>The fix is not a tool. It is a discipline, ordered, that you apply once and maintain quarterly. The five gates below are that discipline.</p>
+
+      <h2>Gate 1 &mdash; Inventory: you don&rsquo;t know how many agents you run</h2>
+      <p>The honest test is timed. If you cannot answer &ldquo;how many agents do we have in production&rdquo; in under five minutes, that is the finding. Not later, not after the meeting &mdash; in under five minutes, in writing, with names.</p>
+      <p>The fix is a one-page inventory. Every agent: name, owner, purpose, last-changed date, identity used, data classes touched. Maintained as a checked-in file or as a row per agent in the same system that holds your service catalogue. Not a spreadsheet on someone&rsquo;s laptop. Not a Notion page nobody updates. The act of maintaining the inventory is what closes the gate; the artefact is just the byproduct.</p>
+      <p>The worst case is the contractor-2024 agent. It runs, it has credentials, it touches customer data, nobody knows it exists. The quarter you discover it during an incident is the quarter the regulator stops trusting your access controls.</p>
+
+      <h2>Gate 2 &mdash; Identity model: one shared service account</h2>
+      <p>The most common 2026 setup: three engineers shipped four agents, all four share one service account named <code>ai-svc</code>, the credentials live in a <code>.env</code> file in two repos. Probably also pasted in a Slack thread three months ago. This is the AI-era equivalent of the shared admin password.</p>
+      <p>The problem is not theoretical. When something breaks, you cannot tell which agent broke it. When credentials need rotating, you cannot rotate without coordinating across four code paths owned by three people. When the regulator asks who acted, the answer is &ldquo;the service account&rdquo; &mdash; which is no answer at all.</p>
+      <p>The fix is one identity per agent. A service principal, an IAM role, a scoped API key. Named after the agent, owned by the same engineer, lifecycle-bound to the same source repository. Rotate any agent that breaks the rule first &mdash; the ones that share an account are also the ones with the most permissions, in my experience, because the shared account accreted permissions across four different jobs.</p>
+
+      <h2>Gate 3 &mdash; Permission scope: implicit, not written</h2>
+      <p>Most agent permissions are inherited rather than designed. The shared service account has read access to half your warehouse. Therefore the new agent has read access to half your warehouse. Nobody decided that; it&rsquo;s just where the credentials lived.</p>
+      <p>The fix is a five-line written contract per agent. Which APIs can it call. Which data classes can it read. Which customer accounts can it act on. Which actions are logged with what fields. What is its kill switch. Five lines. Reviewed at deploy. Re-reviewed at the quarterly access review.</p>
+      <p>The point is the writing, not the ceremony. If the document doesn&rsquo;t exist, the agent has every permission its credentials inherited. Once the document exists, you can grant capability-scoped least privilege &mdash; the agent has only the permissions its written contract requires, your IAM enforces it, your SIEM detects deviations, and the security team can answer the regulator&rsquo;s questions in minutes rather than days.</p>
+
+      <h2>Gate 4 &mdash; Logging: agent actions hidden under service-account</h2>
+      <p>When the breach happens, your incident response is one-day archaeology. &ldquo;Who called this API at 14:32?&rdquo; The SIEM says <em>the service account</em>. Which agent? Which workflow? Which engineer owns it? Which customer was affected? Unknown. By the time you trace it, the regulator&rsquo;s clock has been running for six hours.</p>
+      <p>The fix is named-identity logging end-to-end. Every agent action lands in your SIEM under the agent&rsquo;s named identity, with workflow and owner attribution, with a trace ID that ties the action to the upstream request that caused it. Named identities in the SIEM cost an afternoon to wire. Anonymous service-account logging costs you the breach narrative the day it matters.</p>
+      <p>Bonus: once your agents are named in the SIEM, your existing detection rules start to work on them. The threshold-based alerts your security team built for human accounts &mdash; access from new geographies, unusual API patterns, off-hours data exfiltration &mdash; suddenly cover agents too, with no new tooling.</p>
+
+      <h2>Gate 5 &mdash; Lifecycle: no offboarding for agents</h2>
+      <p>Your offboarding runbook covers humans. Revoke SSO. Disable accounts. Rotate shared secrets. Review the access matrix. The runbook does not cover the agents the leaving engineer deployed. Those agents are still running, still authenticated, still touching customer data, still nobody&rsquo;s job &mdash; until something breaks and the team realises a former colleague&rsquo;s name appears in the most recent commit.</p>
+      <p>The fix is to add agents to the quarterly access review and to the leaver checklist. When an engineer leaves, every agent they own is rotated, retired, or transferred &mdash; same day. No exceptions, no &ldquo;we&rsquo;ll do it next week,&rdquo; no waiting for the next sprint. The reason this gate is last is that it is the cheapest of the five and the one teams skip first; the reason it matters is that it&rsquo;s where the breach narrative starts, every time.</p>
+
+      <h2>The five-gate hygiene checklist, in one place</h2>
+      <p>Run this on a Friday afternoon. The whole pass takes about two hours on a system you know well, four on one you don&rsquo;t. Score each gate green / amber / red. Three weeks of focused work moves a typical org from 1/5 to 5/5 &mdash; this is well-trodden ground.</p>
+      <p><strong>Gate 1 &mdash; Inventory.</strong> Every agent, owner, identity, data scope listed. Maintained quarterly.</p>
+      <p><strong>Gate 2 &mdash; Identity model.</strong> One service principal per agent. No shared accounts. No <code>.env</code> credentials.</p>
+      <p><strong>Gate 3 &mdash; Permission scope.</strong> Written capability contract per agent. Capability-scoped least privilege enforced in IAM.</p>
+      <p><strong>Gate 4 &mdash; Logging.</strong> Named-identity attribution in SIEM. Every action ties to a named agent and an upstream request.</p>
+      <p><strong>Gate 5 &mdash; Lifecycle.</strong> Agents on the quarterly access review and the leaver checklist. Rotated, retired, or transferred when the owner leaves.</p>
+
+      <h2>Risks and what to avoid</h2>
+      <p><strong>Don&rsquo;t buy the runtime tool first.</strong> Microsoft&rsquo;s Agent 365 Runtime Protection (and its competitors) is a useful layer once gates 1&ndash;3 are in place; it is a frustrating dashboard before then, because every alert points at a problem you cannot fix without knowing which agent it is and who owns it. Hygiene first, runtime tooling second.</p>
+      <p><strong>Don&rsquo;t over-rotate.</strong> The temptation when you discover the shared service account is to rotate everything immediately. That breaks production. The right shape is: stop the bleeding (no new agents on the shared account), then plan a methodical migration to per-agent identities over four to six weeks, with rollback paths for each agent.</p>
+      <p><strong>Don&rsquo;t put agents in your human IAM groups.</strong> The temptation is to drop the agents into the same groups as the engineers who own them. The blast radius of that decision shows up six months later when an engineer&rsquo;s permissions get reviewed and the agent silently inherits the upgrade. Agents need their own group structure, mapped to capability not personnel.</p>
+
+      <h2>What good looks like &mdash; one quarter from now</h2>
+      <p>The inventory exists, lives in the same source-of-truth as your service catalogue, and is updated automatically when an agent is deployed. Each agent has its own service principal with capability-scoped permissions and a one-page written contract. Every agent action lands in the SIEM under a named identity with workflow attribution. The quarterly access review covers humans <em>and</em> agents, with the same rigour and the same template. When an engineer leaves, agents are rotated or retired the same day &mdash; and the leaver checklist has a checkbox to prove it.</p>
+      <p>The CISO can answer, in writing, the question &ldquo;who or what acted on customer data at 14:32 on Tuesday&rdquo; in under five minutes. Most can&rsquo;t. The orgs that get to that answer this quarter are the orgs that won&rsquo;t feature in the breach narrative when the first big agent-identity incident lands.</p>
+
+      <h2>Final thought</h2>
+      <p>Microsoft&rsquo;s Agent 365 Runtime Protection is a useful tool. It is also a market signal: the gap between how organisations govern agents and how they govern humans is now visible enough to fund a product line. The CTOs who close that gap with hygiene first &mdash; inventory, identity, scope, logging, lifecycle &mdash; will use the runtime tool well when it lands. The CTOs who skip the hygiene and buy the dashboard will spend the next year explaining red lights they cannot remediate. Your call.</p>
+
+      <div class="prose-cta">
+        <h3>How many of the five gates does your stack pass?</h3>
+        <p>Indica Tech&rsquo;s two-week agent-identity audit produces a full inventory of every production agent, scores you against the five-gate hygiene checklist, ranks risk gaps by likelihood and blast radius, and gives you an implementation roadmap aligned to your IAM stack. Fixed price &pound;3,500. Written report. Whether you hire us for the remediation or not.</p>
+        <a href="/#offers" class="btn btn-primary">See the audit engagement <span class="arrow">&rarr;</span></a>
+      </div>
+
+      <hr>
+
+      <div class="further-reading">
+        <h3>Further reading</h3>
+        <ul>
+          <li><a href="/blog/iso-27001-soc-2-for-ai-systems.html">What ISO 27001 and SOC 2 actually require when you add AI to your product</a> &mdash; the governance backdrop these gates fit into.</li>
+          <li><a href="/blog/production-readiness-checklist-37-points.html">The 37-point production-readiness checklist</a> &mdash; security gates 1&ndash;6 in detail.</li>
+          <li><a href="/blog/ai-agents-reduce-operational-costs.html">How AI agents can reduce operational costs without hiring more staff</a> &mdash; the operations side of the same agents.</li>
+          <li><a href="/blog/vertical-ai-procurement-shift.html">Vertical AI just buried horizontal Copilot in regulated industries</a> &mdash; the procurement context this hygiene shows up inside.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="brand">
+          <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+            <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+            <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+            <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+          </svg>
+          <span>Indica Tech</span>
+        </a>
+        <p>Founder-led AI engineering. Demo to production, under NDA, in regulated industries, on fixed scope. UK &middot; US &middot; Remote-first globally.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Engagements</h4>
+        <ul>
+          <li><a href="/#offers">Production Audit</a></li>
+          <li><a href="/#offers">Fractional AI Lead</a></li>
+          <li><a href="/#offers">Build Sprint</a></li>
+          <li><a href="/#offers">Governance</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/#cases">Case studies</a></li>
+          <li><a href="/#about">About Nitish</a></li>
+          <li><a href="/#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/company/indica-technology/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://instagram.com/demotoprod" target="_blank" rel="noopener">@demotoprod</a></li>
+          <li><a href="mailto:hello@indica-tech.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span class="year">2026</span> Indica Technology Ltd &middot; Registered in England</span>
+      <span class="footer-legal">
+        <a href="/privacy.html">Privacy</a> &middot;
+        <a href="/terms.html">Terms</a> &middot;
+        <a href="/cookies.html">Cookies</a>
+      </span>
+      <span class="status">Taking new projects &middot; Q2 2026</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
