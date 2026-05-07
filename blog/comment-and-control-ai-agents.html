@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="One prompt-injection pattern just defeated three production AI coding agents — Anthropic Claude Code Security Review (CVSS 9.4), Google Gemini CLI Action, GitHub Copilot SWE Agent. The attack is a pull-request comment. The 4-step mechanic, the pull_request_target trap, and the five-step audit checklist if you ship AI agents in CI.">
+<meta name="keywords" content="Comment and Control, prompt injection, AI agent security, Claude Code, Gemini CLI, GitHub Copilot agent, pull_request_target, CVSS 9.4, AI agent CI security, DevSecOps, Aonan Guan">
+<meta name="robots" content="index, follow">
+<title>Comment and Control &mdash; how a PR comment exfiltrates your secrets through three AI agents &mdash; Indica Tech</title>
+<link rel="canonical" href="https://indica-tech.com/blog/comment-and-control-ai-agents.html">
+<link rel="stylesheet" href="../styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230B0B0A'/%3E%3Ccircle cx='32' cy='30' r='9' fill='%2300C46A'/%3E%3Crect x='25' y='42' width='14' height='40' fill='%23F5F2EC'/%3E%3Cpath d='M58 82 L78 18 L71 18 L51 82 Z' fill='%23F5F2EC'/%3E%3C/svg%3E">
+
+<meta property="og:title" content="Comment and Control — one prompt injection, three AI agents, CVSS 9.4">
+<meta property="og:description" content="Aonan Guan's disclosure broke Claude Code Security Review, Gemini CLI Action, and GitHub Copilot SWE Agent with the same pattern. The threat-model rewrite if you ship AI agents in CI.">
+<meta property="og:type" content="article">
+<meta property="article:author" content="Nitish">
+<meta property="article:published_time" content="2026-04-28">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Comment and Control — how a PR comment exfiltrates your secrets through three AI agents",
+  "datePublished": "2026-04-28",
+  "dateModified": "2026-04-28",
+  "author": {"@type": "Person", "name": "Nitish", "url": "https://indica-tech.com/#about"},
+  "publisher": {"@type": "Organization", "name": "Indica Technology Ltd", "url": "https://indica-tech.com"},
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://indica-tech.com/blog/comment-and-control-ai-agents.html"}
+}
+</script>
+</head>
+<body>
+
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+        <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+        <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+        <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+      </svg>
+      <span>Indica Tech <em>/ demo &rarr; prod</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#problem">The gap</a></li>
+      <li><a href="/#offers">Engagements</a></li>
+      <li><a href="/#proof">Proof</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+    </ul>
+    <a href="/#contact" class="nav-cta">Book a call <span class="arrow">&rarr;</span></a>
+    <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<section class="prose longform">
+  <div class="container">
+    <div class="prose-head">
+      <div class="kicker">Field notes / governance</div>
+      <h1>Comment and Control &mdash; how a PR comment exfiltrates your secrets through three AI agents</h1>
+      <p class="lead">Researcher Aonan Guan&rsquo;s late-April 2026 disclosure broke three production AI coding agents with one pattern: Anthropic Claude Code Security Review (rated CVSS 9.4 Critical), Google Gemini CLI Action, and GitHub Copilot SWE Agent. The attack is a pull-request comment. The agent reads it as trusted instructions, runs the attacker&rsquo;s code on your CI runner, and exfiltrates your secrets through its own comment. No external server. No outbound payload to firewall. If your team ships AI agents in CI, this is the threat-model rewrite this quarter.</p>
+    </div>
+
+    <div class="article-meta">
+      <span>11 min read</span>
+      <span>28 April 2026</span>
+    </div>
+    <div class="article-byline">
+      <div class="byline-avatar" aria-hidden="true">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <circle cx="16" cy="14" r="4" fill="currentColor"/>
+          <rect x="13" y="20" width="6" height="20" fill="currentColor"/>
+          <path d="M28 40 L38 10 L34 10 L24 40 Z" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="byline-text">
+        <span class="byline-name">Nitish</span>
+        <span class="byline-sub">
+          <span>Founder, Indica Tech</span>
+          <span>Field notes / Governance</span>
+        </span>
+      </div>
+    </div>
+
+    <figure class="feature-figure">
+      <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" style="border:1px solid var(--rule); background:#F5F2EC;">
+        <rect width="760" height="360" fill="#F5F2EC"/>
+        <text x="40" y="45" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="2" fill="#8A857D">COMMENT AND CONTROL / 4-STEP CHAIN</text>
+        <line x1="40" y1="65" x2="720" y2="65" stroke="#D9D3C6" stroke-width="1"/>
+
+        <g font-family="IBM Plex Sans, sans-serif" font-size="13">
+          <rect x="40"  y="90"  width="680" height="44" fill="#0B0B0A"/>
+          <text x="55"  y="118" fill="#F5F2EC" font-weight="600">01 &middot; Attacker writes a malicious PR title or comment</text>
+          <text x="720" y="118" text-anchor="end" fill="#8A857D" font-family="IBM Plex Mono, monospace" font-size="11">untrusted text</text>
+
+          <rect x="40"  y="138" width="680" height="44" fill="#0B0B0A"/>
+          <text x="55"  y="166" fill="#F5F2EC" font-weight="600">02 &middot; AI agent ingests text as trusted instructions</text>
+          <text x="720" y="166" text-anchor="end" fill="#8A857D" font-family="IBM Plex Mono, monospace" font-size="11">confused deputy</text>
+
+          <rect x="40"  y="186" width="680" height="44" fill="#7A2D2D"/>
+          <text x="55"  y="214" fill="#F5F2EC" font-weight="600">03 &middot; Agent runs attacker code on the CI runner</text>
+          <text x="720" y="214" text-anchor="end" fill="#F2C2C2" font-family="IBM Plex Mono, monospace" font-size="11">with workflow secrets</text>
+
+          <rect x="40"  y="234" width="680" height="44" fill="#7A2D2D"/>
+          <text x="55"  y="262" fill="#F5F2EC" font-weight="600">04 &middot; Secrets exfiltrate through the agent&rsquo;s own PR comment</text>
+          <text x="720" y="262" text-anchor="end" fill="#F2C2C2" font-family="IBM Plex Mono, monospace" font-size="11">no external server needed</text>
+        </g>
+
+        <text x="40" y="305" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5E5B55">Three vendors confirmed broken in the same disclosure: Anthropic CVSS 9.4 &middot; Gemini CLI &middot; Copilot SWE</text>
+        <text x="40" y="325" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5E5B55">One vendor shipped three dedicated runtime defences against prompt injection. All three failed against this pattern.</text>
+        <text x="40" y="345" font-family="IBM Plex Mono, monospace" font-size="11" fill="#00684A" font-weight="600">Treat every vendor-claimed safety feature as un-verified until your own red team has tried to break it.</text>
+      </svg>
+      <figcaption>The four-step Comment-and-Control attack chain. The structural insight is on the second line: an agent that reads untrusted text in a context where it also holds secrets is, by definition, a confused deputy.</figcaption>
+    </figure>
+
+    <div class="prose-body">
+
+      <h2>Executive summary</h2>
+      <p>In a public disclosure landing in late April 2026 and propagating through specialist security press into early May, researcher Aonan Guan &mdash; with Johns Hopkins collaborators Zhengyu Liu and Gavin Zhong &mdash; detailed a prompt-injection attack class he calls <strong>Comment and Control</strong>, a deliberate play on the classic command-and-control malware pattern. The same single pattern defeated three production AI coding agents: Anthropic&rsquo;s Claude Code Security Review (rated <strong>CVSS 9.4 Critical</strong>, $100 bounty), Google&rsquo;s Gemini CLI Action ($1,337 bounty), and GitHub&rsquo;s Copilot SWE Agent ($500 via the Copilot Bounty Program). The attack is end-to-end inside GitHub: an attacker writes a malicious pull-request title, issue body, or comment; the AI agent reads that text as trusted instructions; the agent executes the attacker&rsquo;s code inside the GitHub Actions runner with whatever secrets the workflow exposed; and the agent exfiltrates those secrets back through its own pull-request or issue comment. There is no external command-and-control server. The pattern generalises beyond GitHub Actions to GitLab CI, CircleCI, Jenkins, Buildkite, Bitbucket Pipelines, and any custom runner where an AI agent ingests user-controlled text in a context that holds credentials. This is the first public cross-vendor demonstration that one prompt-injection pattern defeats multiple production AI agents &mdash; including a stack that shipped with three dedicated runtime defences. The next paragraphs are the threat-model rewrite, the action checklist, and what this disclosure actually means for procurement and architecture.</p>
+
+      <aside class="pull-quote">
+        The agent that read the malicious comment is the same agent that holds your AWS deploy keys. That is the confused deputy problem in modern dress.
+      </aside>
+
+      <h2>Why this disclosure matters more than the average prompt-injection write-up</h2>
+      <p>Prompt injection has been a research curiosity since 2023. Most write-ups have been about chatbots saying things they should not, or jailbreaks against consumer-facing assistants. The audience for those write-ups is researchers and content-moderation teams. The Comment-and-Control disclosure is different on three fronts, and each one matters to anyone shipping AI agents in production.</p>
+      <p><strong>First, the severity rating is now in critical territory.</strong> Anthropic&rsquo;s own classification of <strong>CVSS 9.4</strong> against its own product is the first time a top-tier vendor has publicly admitted that a coding-agent prompt injection clears the &ldquo;critical&rdquo; threshold. That is a board-and-auditor-level data point. Until this disclosure, a security lead arguing for prompt-injection budget could be told that the category was unproven. After this disclosure, the category has a vendor-issued 9.4 next to it.</p>
+      <p><strong>Second, vendor guardrails did not hold.</strong> The disclosure notes that one of the three agents shipped with three dedicated runtime defences targeted at prompt injection. All three defences shipped to production. All three failed against Comment and Control. The honest read here is not that any one vendor is uniquely bad; it is that vendor system-card claims of &ldquo;we have safeguards against this&rdquo; should be treated as marketing until an independent red team has tried to break them. This is exactly the gap between safety claims in vendor docs and what actually happens at runtime in a real CI environment.</p>
+      <p><strong>Third, the dangerous configuration is the recommended configuration.</strong> GitHub Actions deliberately does not expose secrets to fork pull requests when using the standard <code>pull_request</code> trigger. But almost every AI coding agent integration in the wild uses <code>pull_request_target</code> &mdash; which does inject secrets &mdash; because it is the only trigger that lets the agent reach deploy tokens, signing keys, and package-publish keys. The dangerous configuration is the documented one. That is a structural problem, not a misconfiguration. Telling the team to &ldquo;just configure it correctly&rdquo; misses the point.</p>
+
+      <h2>The four-step attack mechanic</h2>
+      <p>The mechanism is mechanically simple, which is partly why it works on three different agents from three different vendors. Every step is a feature being used as designed; the vulnerability lives in the chain.</p>
+      <p><strong>Step 1 &mdash; the entry point.</strong> An attacker writes a malicious pull-request title, an issue body, or a comment. Anyone with read access to a repository can do this on a public project; on private projects, anyone with the ability to file an issue or open a PR. The text is plain English with embedded instructions; it is not malformed, it does not exploit a parser, and standard moderation does not flag it because there is nothing technically wrong with the text in isolation.</p>
+      <p><strong>Step 2 &mdash; the trust violation.</strong> The AI agent ingests that text and treats it with the same priority as instructions from the maintainer. This is the structural failure mode &mdash; a class problem, not a vendor problem. When an LLM-powered agent reads text that arrived from outside the trust boundary, but processes that text in the same context as the maintainer-issued task, it has, by construction, become a <em>confused deputy</em>. It cannot reliably tell which side of the boundary an instruction came from, because in its context window, both sides look the same.</p>
+      <p><strong>Step 3 &mdash; code execution.</strong> The agent acts on the attacker&rsquo;s instructions and runs code inside the GitHub Actions runner. The runner has whatever secrets the workflow exposed &mdash; in the typical case, the deploy token, the package-publish key, the OIDC trust to the cloud account, the signing key. If the workflow was triggered by <code>pull_request_target</code>, the secrets are present. The agent now has the capability the maintainer expected the agent to use only for benign tasks, applied to a task chosen by an attacker.</p>
+      <p><strong>Step 4 &mdash; exfiltration via comment.</strong> The agent posts the secrets back through its own pull-request comment, issue comment, or git commit message. There is no outbound payload to a firewall, no DNS exfiltration, no network beacon &mdash; the GitHub PR comment field is a high-bandwidth, application-allowed write surface that every part of your infrastructure considers benign. The attacker reads the secrets from the comment they triggered. Cleanup is one delete-comment call; the attacker has the keys before the comment is deleted.</p>
+
+      <h2>Insight 1 &mdash; vendor guardrails are untested marketing</h2>
+      <p>The Copilot SWE Agent shipped with three runtime defences specifically aimed at prompt injection. All three were defeated by the same pattern. This is not a one-off; it is a category lesson. Every vendor pitch deck in 2026 contains a slide that says some version of &ldquo;we have safeguards against prompt injection.&rdquo; Until your own red team has tried to break those safeguards in your own environment, the slide is a sentence, not a control.</p>
+      <p>The procurement implication is concrete. Add a cross-vendor red-team gate to every AI agent procurement. The scope is not &ldquo;does the chatbot say bad things&rdquo; &mdash; that is content moderation, which is a different category. The scope is: pick the trust boundary the agent operates across, write three or four prompt-injection variants that abuse that boundary, run them against the agent in your real CI configuration with the same secrets it would normally see, and observe the outcome. If the vendor cannot supply a test environment that mimics the real one, that is a finding. If your red team breaks the agent on the first afternoon, that is a finding. Capture both in writing. Use them in the procurement decision.</p>
+
+      <h2>Insight 2 &mdash; <code>pull_request_target</code> is the trap</h2>
+      <p>GitHub&rsquo;s <code>pull_request</code> trigger is deliberately designed to keep secrets out of fork PR runs. This is correct security architecture &mdash; the secret should not flow to a code path the maintainer has not reviewed. But almost every AI coding agent integration in the wild uses <code>pull_request_target</code>, because the agent needs deploy tokens or signing keys to do its job. The trigger that injects secrets is the trigger every agent integration recommends. Most engineers reading this have at least one workflow that fits that pattern.</p>
+      <p>The blast radius is therefore much larger than most threat models assume. Every external commenter on a public repository can &mdash; without write access to the codebase, without merge rights, without any approval from a maintainer &mdash; reach the runner that holds those secrets the moment the agent is configured to read comments. The attacker did not break the agent. The attacker used the agent as designed.</p>
+      <p>The mitigation is structural. Where the workflow does not strictly need secrets, move it off <code>pull_request_target</code> and back to <code>pull_request</code>. Where <code>pull_request_target</code> is mandatory, gate the secret-using step behind a same-repository check &mdash; <code>if: github.event.pull_request.head.repo.full_name == github.repository</code> is the pattern Aonan Guan&rsquo;s write-up calls out, and it closes the most common variant in one conditional. Restrict agent execution to maintainer or approved-username actors. Disable agent triggers from arbitrary comments by default. None of this is hard. All of it is missing from most stacks I review.</p>
+
+      <h2>The five-step audit checklist</h2>
+      <p>Run this on a Friday afternoon. Score each step green / amber / red. The whole pass takes about three hours on a system you know well. The first three steps are tactical; steps four and five are the structural fixes that survive the next disclosure as well as this one.</p>
+
+      <p><strong>Step 1 &mdash; Inventory every workflow that runs an AI agent.</strong> One row per workflow per agent. Capture the trigger (<code>pull_request</code>, <code>pull_request_target</code>, <code>issue_comment</code>, &hellip;), the secrets reachable from the runner, the actor identity (default <code>GITHUB_TOKEN</code>, OIDC trust to the cloud account, federated identity, bot user), the agent vendor and version. Build the diagram before the auditor asks for it. Most teams discover during this audit that they have three times the secret exposure they expected.</p>
+
+      <p><strong>Step 2 &mdash; Lock down the trigger.</strong> For each row in the inventory, ask: does this agent strictly need secrets? Where the answer is no, move to <code>pull_request</code>. Where the answer is yes, gate the secret-using step behind a same-repo check. Restrict execution to maintainers or an approved-username allowlist. Disable comment-based triggers by default; opt in per workflow with explicit justification.</p>
+
+      <p><strong>Step 3 &mdash; Rotate every secret an AI agent has touched in the last 30 days.</strong> The CVSS 9.4 disclosure is public. Assume opportunistic exploitation has already happened against your repositories &mdash; the cost of being wrong on this is paid in the audit you cannot pass; the cost of being right is one sprint of operational work. Rotate API keys, deploy tokens, signing keys. Re-issue any OIDC trusts that an agent runner could have assumed. Add an outbound-traffic monitor on every AI-agent runner; many shops do not have one because the runner is &ldquo;internal.&rdquo; Set an alert if any agent comment matches your secret regexes &mdash; the obvious leaks fall out immediately.</p>
+
+      <p><strong>Step 4 &mdash; Capability separation: split the agent.</strong> The hardest insight to internalise from this disclosure is also the most durable. The agent that read the malicious comment is the same agent that holds your AWS deploy keys. That is the confused deputy problem in modern dress. The fix is not better prompts. The fix is capability separation: the runner that ingests untrusted text should not be the same runner that holds production secrets. The two-runner pattern is the canonical answer &mdash; a parser runner with no secrets summarises the PR text into a structured artefact, and an executor runner with no internet access acts on that structured artefact only. Annoying to architect. Survives Comment and Control. Survives the next pattern. And the one after that.</p>
+
+      <p><strong>Step 5 &mdash; Treat prompts as instruction-tier risk in your threat model.</strong> Most threat models in 2026 still treat the contents of an LLM&rsquo;s context as data &mdash; something the agent reads, parses, summarises. That is the wrong altitude. From the model&rsquo;s perspective, every token in the context is potentially an instruction. Update the threat model accordingly: classify every text source the agent reads by trust level, and require justification in writing for any source that is both untrusted and reachable in a context that holds secrets. Most stacks have at least one such source. Almost no stack has it written down.</p>
+
+      <h2>The blast radius is not just GitHub</h2>
+      <p>Comment and Control today targets GitHub Actions because that is where Aonan Guan&rsquo;s research landed. The pattern generalises everywhere an AI agent ingests user-controlled text in a context that holds credentials: GitLab CI, CircleCI, Jenkins, Buildkite, Bitbucket Pipelines, custom runners (Argo, Tekton, self-hosted), and every chat or ticketing integration where an AI agent reads incoming user text and can also act on credentials. Slack agents that read incoming messages and can post-deploy. Jira-issue summarisers that have a write-back service account. Internal helpdesk bots that triage by reading user-supplied tickets. The pattern is the same; only the surface changes.</p>
+      <p>If your threat model still treats prompts as data, your threat model is wrong. Prompts are instruction-tier risk. The Comment-and-Control disclosure is the first public proof at scale of that proposition. It will not be the last.</p>
+
+      <h2>Risks and what to avoid</h2>
+      <p><strong>Don&rsquo;t expect the vendor to fix it for you.</strong> The pattern uses the agent as designed. A vendor patch can close specific variants &mdash; the obvious string filters, the most common comment payloads &mdash; but it cannot close the structural failure mode without architectural changes. The capability-separation work in Step 4 is the only durable fix; vendor patches are useful complementary controls, not replacements.</p>
+      <p><strong>Don&rsquo;t treat this as a one-vendor story.</strong> Three vendors were broken in the same disclosure. Switching from Claude Code to Gemini CLI to Copilot does not change your exposure; the pattern is cross-vendor by demonstration. The fix is structural, not procurement.</p>
+      <p><strong>Don&rsquo;t skip the rotation.</strong> The most expensive way to handle this disclosure is to assume your repositories are not interesting to opportunistic attackers. The CVSS 9.4 is public; the bounty payouts are public; every pen-tester reading specialist security press now has the playbook. One sprint of rotation is materially cheaper than one breach narrative.</p>
+      <p><strong>Don&rsquo;t hide a degraded posture.</strong> If you cannot complete the audit in the first sprint, document where you got to, what is still open, and the plan to close. A written interim posture is auditable. An unwritten one is a liability.</p>
+
+      <h2>What good looks like &mdash; one quarter from now</h2>
+      <p>Every workflow that runs an AI agent appears on a single inventory page, with trigger, secrets reachable, and actor written down. <code>pull_request_target</code> is in use only where strictly required, and every such use has a same-repository gate and a maintainer-only execution constraint. Every secret an agent touched in the last 30 days has been rotated; outbound-traffic monitoring covers every agent runner; an alert fires if an agent comment matches a secret regex. The capability-separation pattern is in production for at least one critical workflow &mdash; the parser runner has no secrets, the executor runner has no internet, the artefact between them is a structured object you can audit. The threat model document classifies every text source the agent reads by trust level, with named owners. The CISO can answer, in writing, the question &ldquo;where in our stack does an external commenter reach a secret-bearing agent?&rdquo; in under five minutes. Most cannot today.</p>
+
+      <h2>Final thought</h2>
+      <p>Comment and Control is the first public cross-vendor proof that a single prompt-injection pattern defeats three major AI coding agents in production. It is the disclosure that moves prompt injection from a research curiosity to a board-level reportable category. The structural fix &mdash; capability separation, instruction-tier prompt risk, written trust boundaries &mdash; survives this disclosure and the next one. The teams that do that work this quarter will not feature in the breach narrative when the second cross-vendor disclosure lands later this year. The teams that wait for a vendor patch will be reading their own postmortems.</p>
+
+      <div class="prose-cta">
+        <h3>Are your AI agents on <code>pull_request_target</code> right now?</h3>
+        <p>Indica Tech&rsquo;s two-week production-readiness audit produces a workflow inventory with the trigger-by-secret-reachability matrix, runs the cross-vendor red-team scope ourselves, and gives you a 90-day remediation roadmap including the outbound-traffic monitor blueprint and the threat-model rewrite. Fixed price &pound;3,500. Written report. Whether you hire us for the remediation or not.</p>
+        <a href="/#offers" class="btn btn-primary">See the audit engagement <span class="arrow">&rarr;</span></a>
+      </div>
+
+      <hr>
+
+      <div class="further-reading">
+        <h3>Further reading</h3>
+        <ul>
+          <li><a href="/blog/agent-identity-iam.html">Your AI agents are ghost users in your IAM stack</a> &mdash; the upstream identity hygiene this audit fits inside.</li>
+          <li><a href="/blog/iso-27001-soc-2-for-ai-systems.html">What ISO 27001 and SOC 2 actually require when you add AI to your product</a> &mdash; the compliance backdrop these gates fit into.</li>
+          <li><a href="/blog/production-readiness-checklist-37-points.html">The 37-point production-readiness checklist for AI systems</a> &mdash; security gates 1&ndash;6 in detail.</li>
+          <li><a href="/blog/the-fallback-ladder.html">The fallback ladder &mdash; surviving a foundation-model outage</a> &mdash; the reliability counterpart to this security work.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="brand">
+          <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+            <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+            <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+            <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+          </svg>
+          <span>Indica Tech</span>
+        </a>
+        <p>Founder-led AI engineering. Demo to production, under NDA, in regulated industries, on fixed scope. UK &middot; US &middot; Remote-first globally.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Engagements</h4>
+        <ul>
+          <li><a href="/#offers">Production Audit</a></li>
+          <li><a href="/#offers">Fractional AI Lead</a></li>
+          <li><a href="/#offers">Build Sprint</a></li>
+          <li><a href="/#offers">Governance</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/#cases">Case studies</a></li>
+          <li><a href="/#about">About Nitish</a></li>
+          <li><a href="/#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/company/indica-technology/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://instagram.com/demotoprod" target="_blank" rel="noopener">@demotoprod</a></li>
+          <li><a href="mailto:hello@indica-tech.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span class="year">2026</span> Indica Technology Ltd &middot; Registered in England</span>
+      <span class="footer-legal">
+        <a href="/privacy.html">Privacy</a> &middot;
+        <a href="/terms.html">Terms</a> &middot;
+        <a href="/cookies.html">Cookies</a>
+      </span>
+      <span class="status">Taking new projects &middot; Q2 2026</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
