@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A 20-step agent with 95% per-step reliability succeeds 36% of the time. Gartner puts the 2026 agentic-pilot failure rate at 78%. The compounding-error math is why your AI agent demos beautifully and dies in production — and the five-part architecture that fixes it: bounded autonomy, verification gates, subagent isolation, idempotent replay, and human gates on high-blast-radius actions.">
+<meta name="keywords" content="AI agent reliability, compounding error AI agents, why AI agents fail in production, agent chain failure, agentic AI production, multi-agent reliability, verification gates, bounded autonomy, agent architecture, demo to production, LLM agents">
+<meta name="robots" content="index, follow">
+<title>The 20-step problem &mdash; why production AI agents fail, and the architecture that fixes it &mdash; Indica Tech</title>
+<link rel="canonical" href="https://indica-tech.com/blog/the-twenty-step-problem.html">
+<link rel="stylesheet" href="../styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230B0B0A'/%3E%3Ccircle cx='32' cy='30' r='9' fill='%2300C46A'/%3E%3Crect x='25' y='42' width='14' height='40' fill='%23F5F2EC'/%3E%3Cpath d='M58 82 L78 18 L71 18 L51 82 Z' fill='%23F5F2EC'/%3E%3C/svg%3E">
+
+<meta property="og:title" content="The 20-step problem — why production AI agents fail, and the architecture that fixes it">
+<meta property="og:description" content="95% per step sounds safe. At 20 steps it is a 36% success rate. The compounding-error math behind the 78% agentic-pilot failure rate — and the architecture that survives it.">
+<meta property="og:type" content="article">
+<meta property="article:author" content="Nitish">
+<meta property="article:published_time" content="2026-06-18">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The 20-step problem — why production AI agents fail, and the architecture that fixes it",
+  "datePublished": "2026-06-18",
+  "dateModified": "2026-06-18",
+  "author": {"@type": "Person", "name": "Nitish", "url": "https://indica-tech.com/#about"},
+  "publisher": {"@type": "Organization", "name": "Indica Technology Ltd", "url": "https://indica-tech.com"},
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://indica-tech.com/blog/the-twenty-step-problem.html"}
+}
+</script>
+</head>
+<body>
+
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+        <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+        <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+        <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+      </svg>
+      <span>Indica Tech <em>/ demo &rarr; prod</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#problem">The gap</a></li>
+      <li><a href="/#offers">Engagements</a></li>
+      <li><a href="/#proof">Proof</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+    </ul>
+    <a href="/#contact" class="nav-cta">Book a call <span class="arrow">&rarr;</span></a>
+    <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<section class="prose longform">
+  <div class="container">
+    <div class="prose-head">
+      <div class="kicker">Field notes / engineering</div>
+      <h1>The 20-step problem &mdash; why production AI agents fail, and the architecture that fixes it</h1>
+      <p class="lead">Your agent demos beautifully. Five steps, clean output, the room nods. Then it meets production, the task is twenty steps long, and it reaches a correct end-state about a third of the time. Nothing got worse &mdash; the model is the same one that demoed. What changed is the arithmetic. A 95% per-step success rate compounds to 36% over twenty steps, and real chains behave worse than that because the errors are correlated. Gartner puts the 2026 agentic-pilot failure rate at 78%. This is the mechanism behind that number, and the architecture that survives it.</p>
+    </div>
+
+    <div class="article-meta">
+      <span>12 min read</span>
+      <span>18 June 2026</span>
+    </div>
+    <div class="article-byline">
+      <div class="byline-avatar" aria-hidden="true">
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <circle cx="16" cy="14" r="4" fill="currentColor"/>
+          <rect x="13" y="20" width="6" height="20" fill="currentColor"/>
+          <path d="M28 40 L38 10 L34 10 L24 40 Z" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="byline-text">
+        <span class="byline-name">Nitish</span>
+        <span class="byline-sub">
+          <span>Founder, Indica Tech</span>
+          <span>Field notes / Engineering</span>
+        </span>
+      </div>
+    </div>
+
+    <figure class="feature-figure">
+      <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" style="border:1px solid var(--rule); background:#F5F2EC;">
+        <rect width="760" height="360" fill="#F5F2EC"/>
+        <text x="40" y="45" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="2" fill="#8A857D">RELIABILITY DECAY / PER-STEP ACCURACY vs CHAIN LENGTH</text>
+        <line x1="40" y1="65" x2="720" y2="65" stroke="#D9D3C6" stroke-width="1"/>
+
+        <g font-family="IBM Plex Mono, monospace" font-size="12" fill="#5E5B55">
+          <text x="55"  y="92">CHAIN LENGTH</text>
+          <text x="300" y="92" text-anchor="middle">95% PER STEP</text>
+          <text x="500" y="92" text-anchor="middle">99% PER STEP</text>
+          <text x="680" y="92" text-anchor="end">99.9% PER STEP</text>
+        </g>
+        <line x1="40" y1="104" x2="720" y2="104" stroke="#D9D3C6" stroke-width="1"/>
+
+        <g font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#0B0B0A">
+          <text x="55" y="132">5 steps</text>
+          <text x="300" y="132" text-anchor="middle">77%</text>
+          <text x="500" y="132" text-anchor="middle">95%</text>
+          <text x="680" y="132" text-anchor="end">99.5%</text>
+
+          <text x="55" y="162">10 steps</text>
+          <text x="300" y="162" text-anchor="middle">60%</text>
+          <text x="500" y="162" text-anchor="middle">90%</text>
+          <text x="680" y="162" text-anchor="end">99%</text>
+
+          <rect x="40" y="174" width="680" height="34" fill="#003B1F"/>
+          <text x="55" y="196" fill="#F5F2EC" font-weight="600">20 steps</text>
+          <text x="300" y="196" text-anchor="middle" fill="#00C46A" font-weight="600">36%</text>
+          <text x="500" y="196" text-anchor="middle" fill="#9DD4B5">82%</text>
+          <text x="680" y="196" text-anchor="end" fill="#9DD4B5">98%</text>
+
+          <text x="55" y="232">50 steps</text>
+          <text x="300" y="232" text-anchor="middle">8%</text>
+          <text x="500" y="232" text-anchor="middle">61%</text>
+          <text x="680" y="232" text-anchor="end">95%</text>
+
+          <text x="55" y="262">100 steps</text>
+          <text x="300" y="262" text-anchor="middle">0.6%</text>
+          <text x="500" y="262" text-anchor="middle">37%</text>
+          <text x="680" y="262" text-anchor="end">90%</text>
+        </g>
+
+        <line x1="40" y1="280" x2="720" y2="280" stroke="#D9D3C6" stroke-width="1"/>
+        <text x="40" y="305" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5E5B55">Success of the whole chain = (per-step success) ^ (number of steps). The decay is multiplicative,</text>
+        <text x="40" y="323" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5E5B55">not additive &mdash; and these are the optimistic numbers, before correlated errors make it worse.</text>
+      </svg>
+      <figcaption>The compounding-error table. A per-step success rate that looks production-grade in isolation collapses across a long chain. 95% per step &mdash; the number most agent demos quietly run at &mdash; is a 36% end-to-end success rate by step 20.</figcaption>
+    </figure>
+
+    <div class="prose-body">
+
+      <h2>Executive summary</h2>
+      <p>The single most expensive misunderstanding in production AI right now is that an agent&rsquo;s reliability is a property of the model. It is not. It is a property of the chain. An individual step that succeeds 95% of the time looks production-ready when you inspect it on its own. String twenty of those steps together into an autonomous task and the chain reaches a correct end-state <strong>36%</strong> of the time, because success multiplies: <code>0.95 ^ 20 = 0.36</code>. Push the per-step number to a heroic 99% and a hundred-step task still fails <strong>63%</strong> of the time. Gartner&rsquo;s Q1 2026 data put the agentic-pilot failure rate at <strong>78%</strong>, and analysts expect over 40% of agentic projects to be cancelled by 2027. The 2026 International AI Safety Report found the same shape from the model side: frontier models succeed reliably on tasks that take minutes and fall apart as tasks stretch into the hours that real work requires. None of this is a reason not to build agents. It is a reason to stop building them as single long chains and start building them the way every other reliable distributed system has been built for decades &mdash; bounded units of work, verification at the seams, isolation between components, idempotent retries, and a human gate in front of anything irreversible. This post is the math, then the architecture.</p>
+
+      <aside class="pull-quote">
+        Your agent didn&rsquo;t get less capable in production. The task got longer, and reliability multiplies. 95% per step is a coin-flip by step 14 and a 36% success rate by step 20.
+      </aside>
+
+      <h2>The math nobody runs before the demo</h2>
+      <p>Take a single agent step &mdash; read a record, call a tool, parse a result, decide the next action. Suppose it does the right thing 95% of the time. That is a genuinely good step. In a traditional service you would ship it. The mistake is assuming the chain inherits the step&rsquo;s reliability. It does not. The chain inherits the <em>product</em> of every step&rsquo;s reliability, because the whole task only succeeds if every step succeeds.</p>
+      <p>So the arithmetic is <code>p ^ n</code>, where <code>p</code> is per-step success and <code>n</code> is the number of steps. At 95% per step: five steps succeed 77% of the time, ten steps 60%, and twenty steps just <strong>36%</strong>. By the time the agent is doing the kind of multi-tool, multi-decision work that justified building an agent in the first place, it is failing the majority of the time &mdash; not because any step is bad, but because there are a lot of them. The same model that earned applause at five steps is now below a coin flip.</p>
+      <p>Two numbers from this table are worth committing to memory. First, <strong>95% per step is a 36% task at 20 steps</strong> &mdash; the headline of this post. Second, <strong>99% per step is a 37% task at 100 steps</strong> &mdash; meaning even a near-perfect step rate does not save you once chains get long; it just moves the cliff further out. There is no per-step accuracy that makes a long unguarded chain reliable. The structure has to change.</p>
+
+      <h2>Why real chains are worse than the table</h2>
+      <p>The <code>p ^ n</code> model is the <em>optimistic</em> case, because it assumes every step fails independently. Production chains do not fail independently. They fail in correlated bursts, and that makes the real-world numbers worse than the arithmetic suggests.</p>
+      <p>The mechanism is context. When an agent makes a small error in step three &mdash; misreads a field, picks a slightly wrong tool, hallucinates a plausible value &mdash; that error does not stay in step three. It is written into the context that step four reads. Now step four is reasoning from a premise that is already wrong, and it is more likely to produce its own error, which step five then inherits. DeepMind&rsquo;s Demis Hassabis described this as &ldquo;compound interest in reverse,&rdquo; and it is the right image: the chain does not just accumulate errors, it accelerates into them. A misunderstanding in step one is not one bad step out of twenty &mdash; it is a poisoned premise that raises the failure probability of every step after it.</p>
+      <p>This is why agents in production fail in a recognisable way: they do not stop at the broken step and raise their hand. They confidently keep going, building an increasingly elaborate structure on top of the early mistake, and they end with a fluent, well-formatted, completely wrong result. The fluency is the danger. A traditional system throws an exception; an agent narrates its way to the wrong answer. That is the failure mode the architecture below is designed to interrupt.</p>
+
+      <h2>Fix 1 &mdash; Bounded autonomy</h2>
+      <p>The first move is the cheapest and the one teams resist most, because it feels like admitting the agent is not as autonomous as the pitch deck said. Cap the chain. An agent should have a hard ceiling on how many steps it may take before it must either finish or hand back, and that ceiling should be set deliberately against the reliability table, not left unbounded because &ldquo;the model will figure it out.&rdquo;</p>
+      <p>Concretely: decompose the big task into sub-tasks that are each short enough to sit in the high-reliability part of the curve &mdash; typically a handful of steps, not dozens. A twenty-step task becomes four bounded sub-tasks of five steps each, with a checkpoint between them. The end-to-end reliability of four 77% sub-tasks with verification at each seam is dramatically higher than one unguarded 36% chain, because a failure is now caught and contained at a seam instead of silently propagating to the end. Bounded autonomy is not the opposite of agency. It is the thing that makes agency survive contact with a real task.</p>
+
+      <h2>Fix 2 &mdash; Verification gates at the seams</h2>
+      <p>A checkpoint is only useful if something checks it. The second fix is a verification gate between bounded units &mdash; a deliberate step whose only job is to ask &ldquo;is the state still correct?&rdquo; before the next unit is allowed to build on it. This is the single highest-leverage pattern in agent reliability, and it is the one most builds skip entirely.</p>
+      <p>Verification does not have to be expensive. The gate can be a deterministic check where one exists (does the SQL parse, does the JSON match the schema, does the total reconcile, does the referenced file exist), an LLM-as-judge rubric scored against the sub-task&rsquo;s acceptance criteria where it does not, or a cross-check by a second model with a different prompt. The point is that the gate either passes the state forward, triggers a bounded retry of the failed unit, or escalates &mdash; and crucially, it stops the poisoned premise from reaching the next unit. Every gate you add converts a silent compounding failure into a caught, local one. That is the entire game: catch errors at the seam, where they are cheap, instead of at the end, where they are a wrong answer with a customer attached.</p>
+
+      <h2>Fix 3 &mdash; Subagent isolation</h2>
+      <p>When you do decompose, isolate. A subagent handed one bounded sub-task should receive only the context it needs and return only the result the parent needs &mdash; not the entire running transcript of everything every other subagent has done. This matters for reliability, not just tidiness: a shared, ever-growing context is exactly the channel through which one subagent&rsquo;s early error contaminates another&rsquo;s reasoning. Isolation breaks the correlation.</p>
+      <p>The pattern is an orchestrator that owns the plan and the verified state, and subagents that are stateless workers against a clean brief. The orchestrator passes a subagent a tight, validated input; the subagent does its bounded work; the orchestrator verifies the output before merging it back into the canonical state. Errors are contained inside the subagent that made them, surfaced at the merge gate, and never silently inherited by a sibling. This is the same separation of concerns that makes microservices debuggable &mdash; applied to the place agents actually break.</p>
+
+      <h2>Fix 4 &mdash; Idempotent steps and replay</h2>
+      <p>Bounded retries only help if retrying is safe. The fourth fix is borrowed wholesale from distributed systems: make each step idempotent, and make the chain replayable. If a step calls a tool that sends an email, charges a card, or writes a row, then a naive retry after a transient failure will send the email twice, charge the card twice, write the row twice. The reliability table already told you retries will be frequent; without idempotency keys, every retry is a new way to corrupt state.</p>
+      <p>Give every side-effecting step an idempotency key so a repeat is a no-op rather than a duplicate. Persist the verified state after each bounded unit so a failure resumes from the last good checkpoint instead of restarting the whole chain &mdash; restarting a twenty-step task from scratch on every hiccup is how a 36% task becomes a 0% one. The combination &mdash; idempotent side effects plus checkpointed, replayable state &mdash; is what lets you retry aggressively at the seams without the retries themselves becoming the incident. It is the same discipline behind the queue layer in the <a href="/blog/the-fallback-ladder.html">fallback ladder</a> and the idempotency section of <a href="/blog/production-grade-retry-logic-llm-calls.html">production-grade retry logic</a>, pointed at agent steps.</p>
+
+      <h2>Fix 5 &mdash; Human gates on high-blast-radius actions</h2>
+      <p>Not every step is equal. Reading a record and sending a refund are not the same risk, and the architecture should not treat them the same. The fifth fix is to classify actions by blast radius and require a human approval gate in front of the irreversible, high-consequence ones &mdash; the same triage logic behind capping hallucination exposure: you do not need a human on 100% of steps, you need a human on the 100% of steps that can actually hurt you.</p>
+      <p>In a regulated deployment this is non-negotiable, and it is also where the trust comes from. A FinTech agent that drafts the customer remediation and routes it to a human before it sends is both safer and more sellable than one that sends autonomously and is right 36% of the time. The pattern is: low-blast-radius steps run autonomously, high-blast-radius steps pause for an approval with full context attached, and the agent is designed from the start to operate in a world where some of its actions require a human yes. The teams that get this right do not bolt the human on after an incident &mdash; they decide the blast-radius map before the first line of agent code, the same way they decide the <a href="/blog/agent-identity-iam.html">identity and privilege</a> the agent runs under.</p>
+
+      <h2>The pattern, in one place</h2>
+      <p>Run this as a design review before you ship an agent, and as an audit on one that is already misbehaving. Score each on your current build.</p>
+      <p><strong>1 &mdash; Bounded autonomy.</strong> Hard ceiling on chain length. Big tasks decomposed into short, high-reliability sub-tasks with checkpoints between them. No unbounded &ldquo;keep going until done&rdquo; loops.</p>
+      <p><strong>2 &mdash; Verification gates.</strong> A deterministic check, judge rubric, or cross-model check between every bounded unit. The gate passes forward, retries locally, or escalates &mdash; it never lets unverified state propagate.</p>
+      <p><strong>3 &mdash; Subagent isolation.</strong> An orchestrator owns the plan and the verified state. Subagents get a tight brief and return a tight result. No shared, ever-growing transcript.</p>
+      <p><strong>4 &mdash; Idempotent steps and replay.</strong> Idempotency keys on every side-effecting step. Verified state checkpointed after each unit so failures resume from the last good point.</p>
+      <p><strong>5 &mdash; Human gates on blast radius.</strong> Actions classified by consequence. Irreversible, high-consequence steps pause for a human approval with full context. Decided before the build, not after the incident.</p>
+
+      <h2>Risks and what to avoid</h2>
+      <p><strong>Don&rsquo;t try to fix it with a better model.</strong> The most common reaction to a flaky agent is to swap in the newest, highest-benchmark model and hope. It moves the cliff out by a few steps and costs more per call. The reliability table is exponential; a linear improvement in per-step accuracy cannot beat it. Structure beats model on long chains, every time.</p>
+      <p><strong>Don&rsquo;t mistake a longer prompt for a verification gate.</strong> Adding &ldquo;think carefully and double-check your work&rdquo; to the system prompt is not a gate &mdash; it is the same fallible step marking its own homework inside the same context that already contains the error. A real gate is a separate step, ideally with different logic or a different model, that can fail the work and stop the chain.</p>
+      <p><strong>Don&rsquo;t let the agent self-report success.</strong> Agents are fluent, and fluency reads as competence. An agent that says &ldquo;task complete&rdquo; has told you nothing about whether the task is correct. Measure end-to-end success against an external acceptance check, not against the agent&rsquo;s own summary of what it did.</p>
+      <p><strong>Don&rsquo;t skip idempotency because &ldquo;it usually works the first time.&rdquo;</strong> The reliability table guarantees retries. The first time a retry double-charges a customer or double-files a ticket, you will wish the idempotency key had been five lines of work up front. It is cheaper than the incident, always.</p>
+
+      <h2>What good looks like &mdash; one quarter from now</h2>
+      <p>The big autonomous task is gone, replaced by an orchestrator running a sequence of bounded sub-tasks. Each sub-task sits in the high-reliability part of the curve and is verified at its seam before the next one begins. Subagents work from clean briefs and return clean results; no early error silently contaminates a later step. Every side-effecting action is idempotent, and a failure resumes from the last verified checkpoint instead of restarting from zero. The handful of genuinely irreversible actions pause for a human, with full context, every time. End-to-end success is measured against an external check, not the agent&rsquo;s own optimism &mdash; and it reads in the high nineties, not the mid thirties, because the architecture stopped the compounding instead of hoping the model would.</p>
+      <p>That agent is slower than the demo. It is also one you can put in front of a regulated customer, because when it fails it fails at a seam, locally and visibly, instead of narrating its way to a confident wrong answer twenty steps deep. That difference &mdash; failing safely at the seam versus failing silently at the end &mdash; is the entire distance between a demo and a production system.</p>
+
+      <h2>Final thought</h2>
+      <p>2026 is being sold as the year of the agent, and the failure-rate numbers are being read as a verdict on the technology. They are not. They are a verdict on the architecture. The agents failing 78% of the time are mostly single long chains run at a per-step accuracy that the compounding math was always going to defeat. The fix is not a better model or a more clever prompt. It is the boring, decades-old engineering discipline of bounding the work, verifying at the seams, isolating the components, making retries safe, and keeping a human in front of the irreversible. Do that, and the same model that failed at twenty steps succeeds &mdash; because you stopped asking it to be reliable across twenty steps and started building a system that is reliable around it.</p>
+
+      <div class="prose-cta">
+        <h3>Is your agent a single long chain &mdash; or an architecture?</h3>
+        <p>Indica Tech&rsquo;s two-week agent reliability audit maps your agent&rsquo;s chain length against the compounding-error curve, scores it on the five-part pattern above, identifies the steps where errors compound silently and the actions that need a human gate, and gives you a 90-day implementation roadmap with named owners. Fixed price &pound;3,500. Written report. Whether you hire us for the remediation or not.</p>
+        <a href="/#offers" class="btn btn-primary">See the audit engagement <span class="arrow">&rarr;</span></a>
+      </div>
+
+      <hr>
+
+      <div class="further-reading">
+        <h3>Further reading</h3>
+        <ul>
+          <li><a href="/blog/production-grade-retry-logic-llm-calls.html">What production-grade retry logic looks like for LLM calls</a> &mdash; the idempotency and circuit-breaker depth behind Fix 4.</li>
+          <li><a href="/blog/the-fallback-ladder.html">The fallback ladder &mdash; surviving a foundation-model outage</a> &mdash; the resilience layers that keep a bounded chain alive when a provider wobbles.</li>
+          <li><a href="/blog/agent-identity-iam.html">Your AI agents are ghost users in your IAM stack</a> &mdash; the identity and privilege model behind the human-gate and blast-radius fixes.</li>
+          <li><a href="/blog/production-readiness-checklist-37-points.html">The 37-point production-readiness checklist for AI systems</a> &mdash; the wider list this five-part pattern is a section inside.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="brand">
+          <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+            <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+            <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+            <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+          </svg>
+          <span>Indica Tech</span>
+        </a>
+        <p>Founder-led AI engineering. Demo to production, under NDA, in regulated industries, on fixed scope. UK &middot; US &middot; Remote-first globally.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Engagements</h4>
+        <ul>
+          <li><a href="/#offers">Production Audit</a></li>
+          <li><a href="/#offers">Fractional AI Lead</a></li>
+          <li><a href="/#offers">Build Sprint</a></li>
+          <li><a href="/#offers">Governance</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/#cases">Case studies</a></li>
+          <li><a href="/#about">About Nitish</a></li>
+          <li><a href="/#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/company/indica-technology/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://instagram.com/demotoprod" target="_blank" rel="noopener">@demotoprod</a></li>
+          <li><a href="mailto:hello@indica-tech.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span class="year">2026</span> Indica Technology Ltd &middot; Registered in England &middot; VAT No. GB 517 173 008</span>
+      <span class="footer-legal">
+        <a href="/privacy.html">Privacy</a> &middot;
+        <a href="/terms.html">Terms</a> &middot;
+        <a href="/cookies.html">Cookies</a>
+      </span>
+      <span class="status">Taking new projects &middot; Q2 2026</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
