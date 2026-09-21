@@ -3,6 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Region detection. Runs before first paint so the correct currency is
+     the first thing painted — never a flash of the wrong price. Order:
+     ?region= → saved choice → browser timezone → language → GBP. -->
+<script>
+(function () {
+  var OK = ['uk', 'us', 'eu'], r, p, tz, l;
+  try {
+    p = new URLSearchParams(location.search).get('region');
+    if (p && OK.indexOf(p) > -1) { r = p; try { localStorage.setItem('indica_region', r); } catch (e) {} }
+    if (!r) { try { r = localStorage.getItem('indica_region'); } catch (e) {} }
+    if (!r) {
+      tz = (Intl.DateTimeFormat().resolvedOptions().timeZone) || '';
+      if (/^America\//.test(tz)) r = 'us';
+      else if (tz === 'Europe/London') r = 'uk';
+      else if (/^Europe\//.test(tz)) r = 'eu';
+    }
+    if (!r) {
+      l = (navigator.language || '').toLowerCase();
+      if (l === 'en-us') r = 'us';
+      else if (/^(de|fr|nl|es|it|pt|pl|sv|da|fi|cs|el|ro|hu)/.test(l)) r = 'eu';
+    }
+  } catch (e) {}
+  document.documentElement.setAttribute('data-region', OK.indexOf(r) > -1 ? r : 'uk');
+})();
+</script>
 <meta name="description" content="Indica Tech — the engineer founders call when they need AI that actually ships. 80% of AI projects never reach production. We're the gap closers. £2M+ funding enabled, 99.9% uptime in regulated industries.">
 <title>Indica Tech — AI that ships. Not slideware.</title>
 <link rel="stylesheet" href="styles.css">
@@ -37,6 +62,11 @@
       <li><a href="/blog/">Blog</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
+    <div class="region-switch" role="group" aria-label="Show prices in">
+      <button type="button" data-region-set="uk" aria-pressed="false">GBP</button>
+      <button type="button" data-region-set="us" aria-pressed="false">USD</button>
+      <button type="button" data-region-set="eu" aria-pressed="false">EUR</button>
+    </div>
     <a href="#contact" class="nav-cta">Book a call <span class="arrow">→</span></a>
     <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
@@ -60,6 +90,10 @@
           <a href="#contact" class="btn btn-primary">Book a production audit <span class="arrow">→</span></a>
           <a href="#offers" class="btn btn-ghost">See engagements</a>
         </div>
+        <p class="availability" data-us-only>
+          <span class="av-dot" aria-hidden="true"></span>
+          <span>UK-based. On US East Coast hours every day until 1pm ET.</span>
+        </p>
       </div>
 
       <div class="reveal">
@@ -122,7 +156,11 @@
       <div class="offer reveal">
         <div class="num"><span>01</span><span class="tag">Entry</span></div>
         <h3>Production Readiness Audit</h3>
-        <span class="price">£3,500 fixed · 2 weeks · paid in full up-front</span>
+        <span class="price">
+          <span data-cur="gbp">£3,500 fixed · 2 weeks · paid in full up-front</span>
+          <span data-cur="usd">$6,000 fixed · 2 weeks · paid in full up-front</span>
+          <span data-cur="eur">€5,500 fixed · 2 weeks · paid in full up-front</span>
+        </span>
         <ul>
           <li>5-dimension readiness scorecard</li>
           <li>Cost + latency + failure-mode analysis</li>
@@ -134,7 +172,11 @@
       <div class="offer flag reveal">
         <div class="num"><span>02</span><span class="tag">Most chosen</span></div>
         <h3>Fractional AI Lead</h3>
-        <span class="price">£9,000 / month · rolling · 30-day notice</span>
+        <span class="price">
+          <span data-cur="gbp">£9,000 / month · rolling · 30-day notice</span>
+          <span data-cur="usd">$15,000 / month · rolling · 30-day notice</span>
+          <span data-cur="eur">€13,500 / month · rolling · 30-day notice</span>
+        </span>
         <ul>
           <li>Weekly 1:1 with founder / CTO</li>
           <li>Architecture + code review cadence</li>
@@ -146,7 +188,11 @@
       <div class="offer reveal">
         <div class="num"><span>03</span><span class="tag">Delivery</span></div>
         <h3>AI Build Sprint</h3>
-        <span class="price">from £45,000 · 4–8 weeks · scoped in writing</span>
+        <span class="price">
+          <span data-cur="gbp">from £45,000 · 4–8 weeks · scoped in writing</span>
+          <span data-cur="usd">from $75,000 · 4–8 weeks · scoped in writing</span>
+          <span data-cur="eur">from €65,000 · 4–8 weeks · scoped in writing</span>
+        </span>
         <ul>
           <li>Scoped deliverable, signed off up-front</li>
           <li>Weekly demos, no surprises</li>
@@ -158,7 +204,11 @@
       <div class="offer reveal">
         <div class="num"><span>04</span><span class="tag">Regulated</span></div>
         <h3>Governance &amp; Compliance</h3>
-        <span class="price">£18,000 · 4 weeks · fixed</span>
+        <span class="price">
+          <span data-cur="gbp">£18,000 · 4 weeks · fixed</span>
+          <span data-cur="usd">$30,000 · 4 weeks · fixed</span>
+          <span data-cur="eur">€26,000 · 4 weeks · fixed</span>
+        </span>
         <ul>
           <li>ISO 27001 / SOC 2-aligned controls</li>
           <li>Model risk management framework</li>
@@ -167,6 +217,12 @@
         </ul>
       </div>
     </div>
+
+    <p class="price-note reveal">
+      <span data-cur="gbp" class="cur-block">All prices exclude VAT. Invoiced in GBP from the UK.</span>
+      <span data-cur="usd" class="cur-block">All prices in USD, exclusive of any applicable taxes. Invoiced from the UK — no US sales tax applies.</span>
+      <span data-cur="eur" class="cur-block">All prices exclude VAT. Invoiced in EUR from the UK — EU business customers account for VAT under the reverse charge.</span>
+    </p>
   </div>
 </section>
 
@@ -515,6 +571,11 @@
           <div class="contact-point"><span class="k">Location</span><span class="v">UK · US · Europe · remote-first globally</span></div>
           <div class="contact-point"><span class="k">Engagement</span><span class="v">Fixed scope · fixed price · written</span></div>
         </div>
+        <p class="availability" data-us-only>
+          <span class="av-dot" aria-hidden="true"></span>
+          <span>UK-based. On US East Coast hours every day until 1pm ET.</span>
+          <span class="av-clock">now in London <b data-london-clock>—</b></span>
+        </p>
       </div>
 
       <form class="form reveal" action="https://formsubmit.co/hello@indica-tech.com" method="POST">
@@ -570,10 +631,10 @@
             <label for="budget">Budget <span class="opt">ballpark</span></label>
             <select id="budget" name="budget">
               <option value="" disabled selected>—</option>
-              <option>Under £10k</option>
-              <option>£10k – £50k</option>
-              <option>£50k – £150k</option>
-              <option>£150k+</option>
+              <option data-gbp="Under £10k"    data-usd="Under $15k"     data-eur="Under €12k">Under £10k</option>
+              <option data-gbp="£10k – £50k"   data-usd="$15k – $75k"    data-eur="€12k – €65k">£10k – £50k</option>
+              <option data-gbp="£50k – £150k"  data-usd="$75k – $250k"   data-eur="€65k – €200k">£50k – £150k</option>
+              <option data-gbp="£150k+"        data-usd="$250k+"         data-eur="€200k+">£150k+</option>
               <option>Figuring it out</option>
             </select>
           </div>

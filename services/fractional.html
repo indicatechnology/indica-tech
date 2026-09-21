@@ -3,10 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Fractional AI Lead — £9,000/month retainer, 30-day rolling notice. Weekly 1:1 with founder or CTO, architecture and code review cadence, technical hiring support, investor-ready DD prep.">
+<!-- Region detection. Runs before first paint so the correct currency is
+     the first thing painted — never a flash of the wrong price. Order:
+     ?region= → saved choice → browser timezone → language → GBP. -->
+<script>
+(function () {
+  var OK = ['uk', 'us', 'eu'], r, p, tz, l;
+  try {
+    p = new URLSearchParams(location.search).get('region');
+    if (p && OK.indexOf(p) > -1) { r = p; try { localStorage.setItem('indica_region', r); } catch (e) {} }
+    if (!r) { try { r = localStorage.getItem('indica_region'); } catch (e) {} }
+    if (!r) {
+      tz = (Intl.DateTimeFormat().resolvedOptions().timeZone) || '';
+      if (/^America\//.test(tz)) r = 'us';
+      else if (tz === 'Europe/London') r = 'uk';
+      else if (/^Europe\//.test(tz)) r = 'eu';
+    }
+    if (!r) {
+      l = (navigator.language || '').toLowerCase();
+      if (l === 'en-us') r = 'us';
+      else if (/^(de|fr|nl|es|it|pt|pl|sv|da|fi|cs|el|ro|hu)/.test(l)) r = 'eu';
+    }
+  } catch (e) {}
+  document.documentElement.setAttribute('data-region', OK.indexOf(r) > -1 ? r : 'uk');
+})();
+</script>
+<meta name="description" content="Fractional AI Lead — monthly retainer, 30-day rolling notice. Weekly 1:1 with founder or CTO, architecture and code review cadence, technical hiring support, investor-ready DD prep.">
 <meta name="keywords" content="fractional AI lead UK, fractional CTO AI, fractional AI engineer, AI advisor retainer, AI consultant ongoing">
 <meta name="robots" content="index, follow">
-<title>Fractional AI Lead — £9,000/month — Indica Tech</title>
+<title>Fractional AI Lead — monthly retainer — Indica Tech</title>
 <link rel="canonical" href="https://indica-tech.com/services/fractional.html">
 <link rel="stylesheet" href="../styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +45,11 @@
   "@type": "Service",
   "serviceType": "Fractional AI Lead",
   "provider": {"@type": "Organization", "name": "Indica Technology Ltd"},
-  "offers": {"@type": "Offer", "price": "9000", "priceCurrency": "GBP"}
+  "offers": [
+    {"@type": "Offer", "price": "9000", "priceCurrency": "GBP", "eligibleRegion": {"@type": "Country", "name": "GB"}},
+    {"@type": "Offer", "price": "15000", "priceCurrency": "USD", "eligibleRegion": {"@type": "Country", "name": "US"}},
+    {"@type": "Offer", "price": "13500", "priceCurrency": "EUR", "eligibleRegion": {"@type": "Place", "name": "European Union"}}
+  ]
 }
 </script>
 </head>
@@ -43,6 +72,11 @@
       <li><a href="/blog/">Blog</a></li>
       <li><a href="/#faq">FAQ</a></li>
     </ul>
+    <div class="region-switch" role="group" aria-label="Show prices in">
+      <button type="button" data-region-set="uk" aria-pressed="false">GBP</button>
+      <button type="button" data-region-set="us" aria-pressed="false">USD</button>
+      <button type="button" data-region-set="eu" aria-pressed="false">EUR</button>
+    </div>
     <a href="/#contact" class="nav-cta">Book a call <span class="arrow">→</span></a>
     <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
@@ -53,9 +87,9 @@
     <div class="prose-head">
       <div class="kicker">Engagements / 02 · Most chosen</div>
       <h1>Fractional AI Lead</h1>
-      <p class="lead">A senior AI leader embedded in your team for a day a week. Weekly 1:1 with the founder or CTO, running architecture and code review, supporting your technical hires, and getting you investor-ready. £9,000/month, rolling, 30-day notice on either side.</p>
+      <p class="lead">A senior AI leader embedded in your team for a day a week. Weekly 1:1 with the founder or CTO, running architecture and code review, supporting your technical hires, and getting you investor-ready. <span data-cur="gbp">£9,000</span><span data-cur="usd">$15,000</span><span data-cur="eur">€13,500</span>/month, rolling, 30-day notice on either side.</p>
       <div class="meta">
-        <span>£9,000 / month</span>
+        <span data-cur="gbp">£9,000 / month</span><span data-cur="usd">$15,000 / month</span><span data-cur="eur">€13,500 / month</span>
         <span>Rolling, 30-day notice</span>
         <span>~1 day / week equivalent</span>
       </div>
@@ -63,7 +97,7 @@
 
     <div class="prose-body">
       <h2>Who this is for</h2>
-      <p>You are a founder or CTO between £500k and £10M ARR, with a real product and a team that ships &mdash; but the AI surface is new for you. You do not need a full-time VP of AI on &pound;180k plus equity. You need senior judgement on architecture, hiring, and due-diligence prep without paying for a headcount you cannot fully use.</p>
+      <p>You are a founder or CTO between <span data-cur="gbp">&pound;500k and &pound;10M</span><span data-cur="usd">$650k and $13M</span><span data-cur="eur">&euro;600k and &euro;12M</span> ARR, with a real product and a team that ships &mdash; but the AI surface is new for you. You do not need a full-time VP of AI on <span data-cur="gbp">&pound;180k</span><span data-cur="usd">$280k</span><span data-cur="eur">&euro;220k</span> plus equity. You need senior judgement on architecture, hiring, and due-diligence prep without paying for a headcount you cannot fully use.</p>
       <p>This is also the retainer most clients move onto after a Production Audit or Build Sprint ends &mdash; a way to keep shipped work shipping without the cost of another full engagement.</p>
 
       <h2>What you get</h2>

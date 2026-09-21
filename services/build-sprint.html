@@ -3,10 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI Build Sprint — from £45,000, 4–8 weeks. Scoped deliverable signed off up front, weekly demos, CI/CD and observability included, 30-day production warranty. For founders shipping an AI feature that has to work.">
+<!-- Region detection. Runs before first paint so the correct currency is
+     the first thing painted — never a flash of the wrong price. Order:
+     ?region= → saved choice → browser timezone → language → GBP. -->
+<script>
+(function () {
+  var OK = ['uk', 'us', 'eu'], r, p, tz, l;
+  try {
+    p = new URLSearchParams(location.search).get('region');
+    if (p && OK.indexOf(p) > -1) { r = p; try { localStorage.setItem('indica_region', r); } catch (e) {} }
+    if (!r) { try { r = localStorage.getItem('indica_region'); } catch (e) {} }
+    if (!r) {
+      tz = (Intl.DateTimeFormat().resolvedOptions().timeZone) || '';
+      if (/^America\//.test(tz)) r = 'us';
+      else if (tz === 'Europe/London') r = 'uk';
+      else if (/^Europe\//.test(tz)) r = 'eu';
+    }
+    if (!r) {
+      l = (navigator.language || '').toLowerCase();
+      if (l === 'en-us') r = 'us';
+      else if (/^(de|fr|nl|es|it|pt|pl|sv|da|fi|cs|el|ro|hu)/.test(l)) r = 'eu';
+    }
+  } catch (e) {}
+  document.documentElement.setAttribute('data-region', OK.indexOf(r) > -1 ? r : 'uk');
+})();
+</script>
+<meta name="description" content="AI Build Sprint — fixed price, 4–8 weeks. Scoped deliverable signed off up front, weekly demos, CI/CD and observability included, 30-day production warranty. For founders shipping an AI feature that has to work.">
 <meta name="keywords" content="AI build sprint UK, fixed price AI development, production AI MVP, LLM MVP build, AI pilot to production">
 <meta name="robots" content="index, follow">
-<title>AI Build Sprint — from £45,000 — Indica Tech</title>
+<title>AI Build Sprint — fixed price, 4–8 weeks — Indica Tech</title>
 <link rel="canonical" href="https://indica-tech.com/services/build-sprint.html">
 <link rel="stylesheet" href="../styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +45,11 @@
   "@type": "Service",
   "serviceType": "AI Build Sprint",
   "provider": {"@type": "Organization", "name": "Indica Technology Ltd"},
-  "offers": {"@type": "Offer", "price": "45000", "priceCurrency": "GBP", "availability": "https://schema.org/InStock"}
+  "offers": [
+    {"@type": "Offer", "price": "45000", "priceCurrency": "GBP", "eligibleRegion": {"@type": "Country", "name": "GB"}, "availability": "https://schema.org/InStock"},
+    {"@type": "Offer", "price": "75000", "priceCurrency": "USD", "eligibleRegion": {"@type": "Country", "name": "US"}, "availability": "https://schema.org/InStock"},
+    {"@type": "Offer", "price": "65000", "priceCurrency": "EUR", "eligibleRegion": {"@type": "Place", "name": "European Union"}, "availability": "https://schema.org/InStock"}
+  ]
 }
 </script>
 </head>
@@ -43,6 +72,11 @@
       <li><a href="/blog/">Blog</a></li>
       <li><a href="/#faq">FAQ</a></li>
     </ul>
+    <div class="region-switch" role="group" aria-label="Show prices in">
+      <button type="button" data-region-set="uk" aria-pressed="false">GBP</button>
+      <button type="button" data-region-set="us" aria-pressed="false">USD</button>
+      <button type="button" data-region-set="eu" aria-pressed="false">EUR</button>
+    </div>
     <a href="/#contact" class="nav-cta">Book a call <span class="arrow">→</span></a>
     <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
@@ -53,9 +87,9 @@
     <div class="prose-head">
       <div class="kicker">Engagements / 03 · Delivery</div>
       <h1>AI Build Sprint</h1>
-      <p class="lead">Four to eight weeks. Scoped deliverable signed off up front. Weekly demos, no surprises. CI/CD, observability, and evaluation harness included from day one. 30-day production warranty on whatever ships. From £45,000, fixed.</p>
+      <p class="lead">Four to eight weeks. Scoped deliverable signed off up front. Weekly demos, no surprises. CI/CD, observability, and evaluation harness included from day one. 30-day production warranty on whatever ships. From <span data-cur="gbp">£45,000</span><span data-cur="usd">$75,000</span><span data-cur="eur">€65,000</span>, fixed.</p>
       <div class="meta">
-        <span>From £45,000</span>
+        <span data-cur="gbp">From £45,000</span><span data-cur="usd">From $75,000</span><span data-cur="eur">From €65,000</span>
         <span>4–8 weeks</span>
         <span>Scoped in writing</span>
       </div>
@@ -84,7 +118,7 @@
       <p>Because T&amp;M incentivises slowness. Fixed scope and fixed price means my incentive matches yours: ship well, fast. Genuine scope changes are handled in writing with a written amendment, <em>before</em> the next invoice.</p>
 
       <h3>What if the spec is still fuzzy?</h3>
-      <p>Then the right first step is the Production Audit or a paid Discovery Sprint (one week, £8,500) where the deliverable is the SOW for the full Build Sprint. We tighten the scope until fixed pricing is safe for both sides.</p>
+      <p>Then the right first step is the Production Audit or a paid Discovery Sprint (one week, <span data-cur="gbp">£8,500</span><span data-cur="usd">$14,000</span><span data-cur="eur">€12,500</span>) where the deliverable is the SOW for the full Build Sprint. We tighten the scope until fixed pricing is safe for both sides.</p>
 
       <h3>Will you work with our existing engineers?</h3>
       <p>Yes &mdash; that is the point. Your team owns the code afterwards. They pair on PRs, sit in on demos, and learn the patterns by doing. No "consultant leaves, nobody knows how it works" situations.</p>
