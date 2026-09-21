@@ -3,10 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI Governance &amp; Compliance — £18,000 fixed, 4 weeks. ISO 27001 / SOC 2-aligned controls, model risk management framework, human-in-the-loop and audit logging, regulator-ready documentation.">
+<!-- Region detection. Runs before first paint so the correct currency is
+     the first thing painted — never a flash of the wrong price. Order:
+     ?region= → saved choice → browser timezone → language → GBP. -->
+<script>
+(function () {
+  var OK = ['uk', 'us', 'eu'], r, p, tz, l;
+  try {
+    p = new URLSearchParams(location.search).get('region');
+    if (p && OK.indexOf(p) > -1) { r = p; try { localStorage.setItem('indica_region', r); } catch (e) {} }
+    if (!r) { try { r = localStorage.getItem('indica_region'); } catch (e) {} }
+    if (!r) {
+      tz = (Intl.DateTimeFormat().resolvedOptions().timeZone) || '';
+      if (/^America\//.test(tz)) r = 'us';
+      else if (tz === 'Europe/London') r = 'uk';
+      else if (/^Europe\//.test(tz)) r = 'eu';
+    }
+    if (!r) {
+      l = (navigator.language || '').toLowerCase();
+      if (l === 'en-us') r = 'us';
+      else if (/^(de|fr|nl|es|it|pt|pl|sv|da|fi|cs|el|ro|hu)/.test(l)) r = 'eu';
+    }
+  } catch (e) {}
+  document.documentElement.setAttribute('data-region', OK.indexOf(r) > -1 ? r : 'uk');
+})();
+</script>
+<meta name="description" content="AI Governance &amp; Compliance — fixed price, 4 weeks. ISO 27001 / SOC 2-aligned controls, model risk management framework, human-in-the-loop and audit logging, regulator-ready documentation.">
 <meta name="keywords" content="AI governance UK, AI compliance consultant, ISO 27001 AI, SOC 2 AI, model risk management framework, EU AI Act compliance, AI audit logging">
 <meta name="robots" content="index, follow">
-<title>AI Governance &amp; Compliance — £18,000 fixed — Indica Tech</title>
+<title>AI Governance &amp; Compliance — fixed price, 4 weeks — Indica Tech</title>
 <link rel="canonical" href="https://indica-tech.com/services/governance.html">
 <link rel="stylesheet" href="../styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +45,11 @@
   "@type": "Service",
   "serviceType": "AI Governance and Compliance",
   "provider": {"@type": "Organization", "name": "Indica Technology Ltd"},
-  "offers": {"@type": "Offer", "price": "18000", "priceCurrency": "GBP"}
+  "offers": [
+    {"@type": "Offer", "price": "18000", "priceCurrency": "GBP", "eligibleRegion": {"@type": "Country", "name": "GB"}},
+    {"@type": "Offer", "price": "25000", "priceCurrency": "USD", "eligibleRegion": {"@type": "Country", "name": "US"}},
+    {"@type": "Offer", "price": "22000", "priceCurrency": "EUR", "eligibleRegion": {"@type": "Place", "name": "European Union"}}
+  ]
 }
 </script>
 </head>
@@ -43,6 +72,11 @@
       <li><a href="/blog/">Blog</a></li>
       <li><a href="/#faq">FAQ</a></li>
     </ul>
+    <div class="region-switch" role="group" aria-label="Show prices in">
+      <button type="button" data-region-set="uk" aria-pressed="false">GBP</button>
+      <button type="button" data-region-set="us" aria-pressed="false">USD</button>
+      <button type="button" data-region-set="eu" aria-pressed="false">EUR</button>
+    </div>
     <a href="/#contact" class="nav-cta">Book a call <span class="arrow">→</span></a>
     <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
@@ -53,9 +87,9 @@
     <div class="prose-head">
       <div class="kicker">Engagements / 04 · Regulated</div>
       <h1>AI Governance &amp; Compliance</h1>
-      <p class="lead">Four weeks. £18,000 fixed. ISO 27001 and SOC 2-aligned controls mapped to your AI surface, a model risk management framework your regulator will recognise, human-in-the-loop and audit logging where they matter, and the written documentation an auditor will actually accept.</p>
+      <p class="lead">Four weeks. <span data-cur="gbp">£18,000</span><span data-cur="usd">$25,000</span><span data-cur="eur">€22,000</span> fixed. ISO 27001 and SOC 2-aligned controls mapped to your AI surface, a model risk management framework your regulator will recognise, human-in-the-loop and audit logging where they matter, and the written documentation an auditor will actually accept.</p>
       <div class="meta">
-        <span>£18,000 fixed</span>
+        <span data-cur="gbp">£18,000 fixed</span><span data-cur="usd">$25,000 fixed</span><span data-cur="eur">€22,000 fixed</span>
         <span>4 weeks</span>
         <span>Regulator-ready deliverables</span>
       </div>

@@ -87,3 +87,79 @@ document.querySelectorAll('.faq-item').forEach(item => {
 
 // Year
 document.querySelectorAll('.year').forEach(el => { el.textContent = new Date().getFullYear(); });
+
+// =========================================================
+// REGIONAL PRICING
+// The region is already stamped on <html> by the inline script in
+// <head> (before first paint). This only handles the things that
+// have to happen after the DOM exists: the switch, the budget
+// <option> text, and the London clock.
+// =========================================================
+(function region() {
+  const REGIONS = ['uk', 'us', 'eu'];
+  const CUR = { uk: 'gbp', us: 'usd', eu: 'eur' };
+  const root = document.documentElement;
+
+  const current = () => {
+    const r = root.getAttribute('data-region');
+    return REGIONS.indexOf(r) > -1 ? r : 'uk';
+  };
+
+  // Budget bands carry their currency in the submitted value, so a
+  // lead's answer is unambiguous in the inbox.
+  const syncBudget = (r) => {
+    const key = CUR[r];
+    document.querySelectorAll('#budget option[data-' + key + ']').forEach(opt => {
+      const label = opt.getAttribute('data-' + key);
+      if (label) { opt.textContent = label; opt.value = label; }
+    });
+  };
+
+  const syncSwitch = (r) => {
+    document.querySelectorAll('[data-region-set]').forEach(btn => {
+      btn.setAttribute('aria-pressed', String(btn.dataset.regionSet === r));
+    });
+  };
+
+  const apply = (r, persist) => {
+    root.setAttribute('data-region', r);
+    syncSwitch(r);
+    syncBudget(r);
+    if (!persist) return;
+    try { localStorage.setItem('indica_region', r); } catch (e) { /* storage blocked */ }
+    // Keep ?region= on the URL so a copied link carries the view the
+    // sender was actually looking at.
+    try {
+      const u = new URL(window.location.href);
+      u.searchParams.set('region', r);
+      history.replaceState(null, '', u);
+    } catch (e) { /* older browser — the choice still applies */ }
+  };
+
+  document.querySelectorAll('[data-region-set]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const r = btn.dataset.regionSet;
+      if (REGIONS.indexOf(r) === -1) return;
+      apply(r, true);
+    });
+  });
+
+  apply(current(), false);
+
+  // London clock — turns the availability claim into something the
+  // visitor can check rather than take on trust.
+  const clocks = document.querySelectorAll('[data-london-clock]');
+  if (clocks.length) {
+    const tick = () => {
+      let t;
+      try {
+        t = new Date().toLocaleTimeString('en-GB', {
+          timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit'
+        });
+      } catch (e) { return; }
+      clocks.forEach(el => { el.textContent = t; });
+    };
+    tick();
+    setInterval(tick, 30000);
+  }
+})();

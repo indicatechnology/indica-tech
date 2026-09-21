@@ -3,10 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI Production Readiness Audit — £3,500 fixed, 2 weeks. 5-dimension scorecard, cost and failure analysis, 90-day execution roadmap. For teams with a working demo and a stuck production path.">
+<!-- Region detection. Runs before first paint so the correct currency is
+     the first thing painted — never a flash of the wrong price. Order:
+     ?region= → saved choice → browser timezone → language → GBP. -->
+<script>
+(function () {
+  var OK = ['uk', 'us', 'eu'], r, p, tz, l;
+  try {
+    p = new URLSearchParams(location.search).get('region');
+    if (p && OK.indexOf(p) > -1) { r = p; try { localStorage.setItem('indica_region', r); } catch (e) {} }
+    if (!r) { try { r = localStorage.getItem('indica_region'); } catch (e) {} }
+    if (!r) {
+      tz = (Intl.DateTimeFormat().resolvedOptions().timeZone) || '';
+      if (/^America\//.test(tz)) r = 'us';
+      else if (tz === 'Europe/London') r = 'uk';
+      else if (/^Europe\//.test(tz)) r = 'eu';
+    }
+    if (!r) {
+      l = (navigator.language || '').toLowerCase();
+      if (l === 'en-us') r = 'us';
+      else if (/^(de|fr|nl|es|it|pt|pl|sv|da|fi|cs|el|ro|hu)/.test(l)) r = 'eu';
+    }
+  } catch (e) {}
+  document.documentElement.setAttribute('data-region', OK.indexOf(r) > -1 ? r : 'uk');
+})();
+</script>
+<meta name="description" content="AI Production Readiness Audit — fixed price, 2 weeks. 5-dimension scorecard, cost and failure analysis, 90-day execution roadmap. For teams with a working demo and a stuck production path.">
 <meta name="keywords" content="AI production readiness audit UK, AI audit fixed price, LLM production audit, AI deployment audit, AI readiness scorecard">
 <meta name="robots" content="index, follow">
-<title>AI Production Readiness Audit — £3,500 fixed — Indica Tech</title>
+<title>AI Production Readiness Audit — fixed price, 2 weeks — Indica Tech</title>
 <link rel="canonical" href="https://indica-tech.com/services/audit.html">
 <link rel="stylesheet" href="../styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +45,11 @@
   "@type": "Service",
   "serviceType": "AI Production Readiness Audit",
   "provider": {"@type": "Organization", "name": "Indica Technology Ltd", "url": "https://indica-tech.com"},
-  "offers": {"@type": "Offer", "price": "3500", "priceCurrency": "GBP", "availability": "https://schema.org/InStock"}
+  "offers": [
+    {"@type": "Offer", "price": "3500", "priceCurrency": "GBP", "eligibleRegion": {"@type": "Country", "name": "GB"}, "availability": "https://schema.org/InStock"},
+    {"@type": "Offer", "price": "7500", "priceCurrency": "USD", "eligibleRegion": {"@type": "Country", "name": "US"}, "availability": "https://schema.org/InStock"},
+    {"@type": "Offer", "price": "6500", "priceCurrency": "EUR", "eligibleRegion": {"@type": "Place", "name": "European Union"}, "availability": "https://schema.org/InStock"}
+  ]
 }
 </script>
 </head>
@@ -43,6 +72,11 @@
       <li><a href="/blog/">Blog</a></li>
       <li><a href="/#faq">FAQ</a></li>
     </ul>
+    <div class="region-switch" role="group" aria-label="Show prices in">
+      <button type="button" data-region-set="uk" aria-pressed="false">GBP</button>
+      <button type="button" data-region-set="us" aria-pressed="false">USD</button>
+      <button type="button" data-region-set="eu" aria-pressed="false">EUR</button>
+    </div>
     <a href="/#contact" class="nav-cta">Book a call <span class="arrow">→</span></a>
     <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
@@ -53,9 +87,9 @@
     <div class="prose-head">
       <div class="kicker">Engagements / 01 · Entry</div>
       <h1>Production Readiness Audit</h1>
-      <p class="lead">Two weeks. Fixed price, £3,500, paid in full up front. You get a written scorecard, a ranked list of the five highest-risk gaps, and a 90-day execution roadmap. Whether or not you ever hire us for the remediation.</p>
+      <p class="lead">Two weeks. Fixed price, <span data-cur="gbp">£3,500</span><span data-cur="usd">$7,500</span><span data-cur="eur">€6,500</span>, paid in full up front. You get a written scorecard, a ranked list of the five highest-risk gaps, and a 90-day execution roadmap. Whether or not you ever hire us for the remediation.</p>
       <div class="meta">
-        <span>£3,500 fixed</span>
+        <span data-cur="gbp">£3,500 fixed</span><span data-cur="usd">$7,500 fixed</span><span data-cur="eur">€6,500 fixed</span>
         <span>2 weeks</span>
         <span>Paid up front</span>
       </div>
