@@ -2198,3 +2198,76 @@ html[data-active-tag="leadership"]  .post-row:not([data-tag="leadership"]) {
   .region-switch button { padding: 4px 7px; font-size: 0.62rem; letter-spacing: 0.05em; }
   .availability { font-size: 0.74rem; }
 }
+
+/* =========================================================
+   REEL FACADE — click-to-load YouTube
+   The reels used plain youtube.com/embed iframes, which contact
+   Google and can set cookies as soon as they scroll into view,
+   with no user action. The facade below makes no third-party
+   request at all; the player is injected only on click, and then
+   from youtube-nocookie.com. This is what makes the privacy
+   policy's "loads only when you click play" true.
+   ========================================================= */
+
+.reel-facade {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  padding: 24px 20px;
+  background: var(--ink);
+  border: 0;
+  cursor: pointer;
+  text-align: center;
+  font-family: var(--mono);
+  color: var(--paper);
+  transition: background .2s ease;
+}
+.reel-facade:hover { background: #16160F; }
+.reel-facade:focus-visible { outline: 2px solid var(--signal); outline-offset: -3px; }
+
+.reel-facade-play {
+  width: 54px;
+  height: 54px;
+  border: 1.5px solid var(--signal);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  transition: background .2s ease, transform .2s ease;
+}
+.reel-facade-play::after {
+  content: "";
+  width: 0; height: 0;
+  border-left: 14px solid var(--signal);
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  margin-left: 4px;
+}
+.reel-facade:hover .reel-facade-play { background: rgba(0, 196, 106, 0.12); transform: scale(1.05); }
+
+.reel-facade-title {
+  font-size: 0.86rem;
+  line-height: 1.45;
+  font-weight: 500;
+  color: var(--paper);
+  max-width: 22ch;
+}
+.reel-facade-note {
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* Injected player keeps the facade's box exactly */
+.reel iframe { width: 100%; aspect-ratio: 9 / 16; border: 0; display: block; background: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .reel-facade, .reel-facade-play { transition: none; }
+  .reel-facade:hover .reel-facade-play { transform: none; }
+}
