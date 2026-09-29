@@ -41,20 +41,43 @@
     <div class="prose-head">
       <div class="kicker">Legal / cookies</div>
       <h1>Cookie Policy</h1>
-      <p class="lead">The short version: indica-tech.com does not use tracking cookies, advertising cookies, or analytics cookies. There is no cookie banner because there is nothing to consent to. The long version, for completeness, is below.</p>
+      <p class="lead">The short version: indica-tech.com sets no tracking, advertising or analytics cookies. It stores one thing in your browser — the currency you chose to see prices in — and nothing else. There is no cookie banner because there is nothing to consent to. The long version, for completeness, is below.</p>
       <div class="meta">
-        <span>Effective 22 April 2026</span>
-        <span>Version 1.0</span>
+        <span>Version 1.1</span>
+        <span>Effective 29 September 2026</span>
       </div>
     </div>
 
     <div class="prose-body">
 
       <h2>What is a cookie?</h2>
-      <p>A cookie is a small text file a website can ask your browser to store. Cookies can hold session information ("you are logged in"), preferences ("you chose dark mode"), or tracking identifiers ("you are the same visitor who came back"). Under UK law (the Privacy and Electronic Communications Regulations, PECR), websites must get consent before setting any cookie that is not strictly necessary for the service you requested.</p>
+      <p>A cookie is a small text file a website can ask your browser to store. Cookies can hold session information ("you are logged in"), preferences ("you chose dark mode"), or tracking identifiers ("you are the same visitor who came back"). Under UK law (the Privacy and Electronic Communications Regulations, PECR), websites must get consent before storing anything on your device that is not strictly necessary for the service you requested. PECR covers more than cookies — other browser storage counts too, which is why the next section names the one thing we store.</p>
 
       <h2>Cookies this site sets</h2>
       <p><strong>None.</strong> indica-tech.com is a static marketing site. It does not set first-party cookies for analytics, advertising, or behavioural tracking. We chose this deliberately — if we are going to ask you for a five-figure engagement we should not be the site that drops 20 tracking pixels on you.</p>
+
+      <h2>What this site does store in your browser</h2>
+      <p>One item, and only if you use the currency switch in the navigation bar:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>What it is for</th>
+            <th>How long it lasts</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>indica_region</code></td>
+            <td>Local storage — not a cookie</td>
+            <td>Remembers whether you asked to see prices in GBP, USD or EUR, so your choice survives when you move to another page.</td>
+            <td>Until you clear your browser storage.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>It holds one of three values — &ldquo;uk&rdquo;, &ldquo;us&rdquo; or &ldquo;eu&rdquo;. It contains no identifier, it is never sent to us or to anyone else, and it never leaves your browser. It is a preference you set deliberately, in the same category as choosing dark mode, so it is exempt from the PECR consent requirement. Clearing your site data removes it and the site works exactly as before.</p>
+      <p>If you never touch the currency switch, nothing is stored at all. The site picks a currency from your browser's own time-zone setting, which it reads on your device and does not record or transmit.</p>
 
       <h2>What about the third-party services linked from this site?</h2>
       <p>This site embeds a small number of third-party resources. Some may set their own cookies when you interact with them. We disclose them here so you can make an informed choice:</p>
@@ -76,12 +99,17 @@
           <tr>
             <td>FormSubmit</td>
             <td>Only when you submit the contact form.</td>
-            <td>Delivers the form submission to our inbox. See <a href="https://formsubmit.co/privacy" target="_blank" rel="noopener">FormSubmit privacy</a>.</td>
+            <td>Delivers the form submission to our inbox, and shows an anti-spam captcha step on its own domain before accepting it. Any cookies involved are set there, not here. See <a href="https://formsubmit.co/privacy" target="_blank" rel="noopener">FormSubmit privacy</a>.</td>
           </tr>
           <tr>
             <td>Cal.com</td>
             <td>Only when you click through to book a discovery call.</td>
             <td>Scheduling. Cal.com sets its own cookies on its own domain — not ours. See <a href="https://cal.com/privacy" target="_blank" rel="noopener">Cal.com privacy</a>.</td>
+          </tr>
+          <tr>
+            <td>YouTube (Google)</td>
+            <td>Only when you click play on one of the video panels on our home page.</td>
+            <td>Until you click, the panel is drawn by us and makes no request to Google at all — no player, no thumbnail, no beacon. Clicking loads the player from <code>youtube-nocookie.com</code>, Google's reduced-tracking domain, which may then set cookies and receive your IP address. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google privacy</a>.</td>
           </tr>
           <tr>
             <td>LinkedIn, Instagram, TikTok, YouTube</td>
@@ -91,7 +119,7 @@
         </tbody>
       </table>
 
-      <p>None of these third parties set cookies via this site unless you interact with them. They are not used for cross-site tracking or advertising on our behalf.</p>
+      <p>None of these third parties set cookies via this site unless you interact with them. Google Fonts is the one exception in that it is requested on every page load, which is why it is listed first. None of them are used for cross-site tracking or advertising on our behalf.</p>
 
       <h2>How to control cookies in your browser</h2>
       <p>Every modern browser lets you block, delete, or audit cookies. We recommend it as a general good habit even though we do not set any ourselves:</p>
@@ -105,6 +133,9 @@
 
       <h2>What if this changes?</h2>
       <p>If we ever add analytics, session recording, A/B testing, or any other cookie-setting tool in the future, we will update this page first and add a proper consent banner before collecting anything. The effective date at the top of the page tells you when this document last changed.</p>
+
+      <h2>What changed in version 1.1</h2>
+      <p><strong>29 September 2026.</strong> We added the currency switch to the site, so this page now discloses the one item it stores in your browser. We also changed the home-page video panels so they load nothing from Google until you click play, and gave YouTube its own row above to describe that. The contact form now has an anti-spam captcha step, noted in the same table.</p>
 
       <div class="prose-cta">
         <h3>Spotted a cookie we missed?</h3>
@@ -167,5 +198,6 @@
   </div>
 </footer>
 
+<script src="script.js"></script>
 </body>
 </html>
