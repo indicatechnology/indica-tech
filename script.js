@@ -163,3 +163,25 @@ document.querySelectorAll('.year').forEach(el => { el.textContent = new Date().g
     setInterval(tick, 30000);
   }
 })();
+
+// =========================================================
+// REEL FACADE — load YouTube only on click
+// Nothing contacts Google until the visitor asks for the video.
+// The player is then loaded from youtube-nocookie.com.
+// =========================================================
+document.querySelectorAll('.reel-facade').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.yt;
+    if (!id) return;
+
+    const frame = document.createElement('iframe');
+    frame.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) +
+                '?autoplay=1&rel=0';
+    frame.title = btn.querySelector('.reel-facade-title').textContent;
+    frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    frame.allowFullscreen = true;
+    frame.referrerPolicy = 'strict-origin-when-cross-origin';
+
+    btn.replaceWith(frame);
+  });
+});
