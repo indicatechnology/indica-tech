@@ -57,6 +57,14 @@ We ran one AI inbox assistant 180 times against a mock inbox: three emails, thre
 
 The lab: one local open-weights model, invented people on .example addresses, send tools that only write to a log, 180 logged runs on 7 Oct 2026. These numbers show what can happen, not what every model will do.
 
-Want this as a one-page PDF? Email hello@indica-tech.com with the word GATES in the subject. On the videos, the same word in a comment does the same.
+The live version of this list, with every source link, is at https://indica-tech.com/checklists/#ai-email-assistant — it prints to a one-page PDF.
+
+---
+
+**Nitish Gautam — Indica Technology Ltd.** Founder-led AI engineering: demo to production, in regulated industries, on fixed scope.
+
+Website https://indica-tech.com · Book a call https://indica-tech.com/#contact · hello@indica-tech.com
+
+YouTube youtube.com/@demotoprod · LinkedIn linkedin.com/company/indica-technology · Instagram and TikTok @demotoprod
 
 _Three gates for an AI email assistant · October 2026 · @demotoprod_

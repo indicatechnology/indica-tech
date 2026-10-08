@@ -57,6 +57,14 @@ client: { timeout: 8s, retries: 3 }                  # one pool for both provide
 
 The outage count and the suspension length are the report's figures; the incident shape in check 2 is from the provider's own write-up. Nothing here is a vendor claim.
 
-Want this as a one-page PDF? Email hello@indica-tech.com with the word CHECKLIST in the subject. On the videos, the same word in a comment does the same.
+The live version of this list, with every source link, is at https://indica-tech.com/checklists/#ai-failover — it prints to a one-page PDF.
+
+---
+
+**Nitish Gautam — Indica Technology Ltd.** Founder-led AI engineering: demo to production, in regulated industries, on fixed scope.
+
+Website https://indica-tech.com · Book a call https://indica-tech.com/#contact · hello@indica-tech.com
+
+YouTube youtube.com/@demotoprod · LinkedIn linkedin.com/company/indica-technology · Instagram and TikTok @demotoprod
 
 _AI failover test · October 2026 · @demotoprod_
