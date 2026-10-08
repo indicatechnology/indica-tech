@@ -1,0 +1,33 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:Poppins;font-weight:700;src:url('file:///home/claude/d2p/assets/fonts/Poppins-Bold.ttf')}
+@font-face{font-family:Poppins;font-weight:600;src:url('file:///home/claude/d2p/assets/fonts/Poppins-SemiBold.ttf')}
+@font-face{font-family:Archivo;src:url('file:///home/claude/d2p/assets/fonts/ArchivoBlack-Regular.ttf')}
+@font-face{font-family:Plex;src:url('file:///home/claude/d2p/assets/fonts/IBMPlexMono-Bold.ttf')}
+@page{size:A4;margin:0}
+body{margin:0;font-family:Poppins;color:#0e0e10;background:#f5f2ec}
+.page{width:210mm;height:297mm;box-sizing:border-box;padding:14mm 15mm 12mm;display:flex;flex-direction:column}
+.top{background:#0e0e10;color:#f5f2ec;margin:-14mm -15mm 7mm;padding:11mm 15mm 9mm}
+.kicker{font-family:Plex;color:#00c46a;font-size:9.5pt;letter-spacing:.06em}
+h1{font-family:Archivo;font-size:23pt;line-height:1.08;margin:3mm 0 3mm;font-weight:400}
+.intro{font-weight:600;font-size:10pt;color:#c9c6bf;margin:0}
+.check{display:flex;gap:5mm;margin:0 0 5.5mm}
+.n{flex:0 0 11mm;height:11mm;border-radius:3mm;background:#00c46a;color:#0e0e10;font-family:Archivo;font-size:16pt;display:flex;align-items:center;justify-content:center}
+h2{font-size:12.5pt;margin:0 0 1mm}
+.why{font-weight:600;font-size:9.5pt;color:#555;margin:0 0 1.5mm}
+ul{margin:0;padding-left:4.5mm;font-weight:600;font-size:9.6pt;line-height:1.38}
+pre{font-family:Plex;font-size:8.6pt;background:#16181c;color:#e8e6e1;border-radius:2mm;padding:2.6mm 3.2mm;margin:2mm 0 0;white-space:pre-wrap}
+.foot{margin-top:auto;border-top:1.2pt solid #0e0e10;padding-top:3mm;font-size:8.6pt;font-weight:600;color:#444;display:flex;justify-content:space-between;gap:6mm}
+.foot b{color:#0e0e10}
+</style></head><body><div class="page">
+<div class="top"><div class="kicker">@demotoprod · KEYS</div><h1>Agent observability checklist</h1><p class="intro">On 6 October 2026 a safety-evaluation lab published a red-team of the transcript viewer in a widely used open-source evaluation framework. One researcher, helped by an AI agent, needed about ten minutes to find a script injection that let an agent rewrite what a human reviewer saw of its own run. The maintainers patched it within a day. The record in the database was never touched; the page was. Three checks for any tool a person uses to supervise an agent.
+</p></div>
+<section class="check"><div class="n">1</div><div class="body"><h2>Render agent output as plain text in every supervision tool</h2>
+<p class="why">The viewer rendered math notation inside the agent&#x27;s output. A URL inside one math expression broke out of its attribute and inserted an element whose event handler ran the agent&#x27;s JavaScript in the reviewer&#x27;s browser. The agent could place that expression anywhere, including its reasoning block, so the script ran the moment a reviewer opened the transcript, and it could change the previous actions shown and intercept the Download button to serve an altered copy.
+</p><ul><li>Treat every agent output (transcript, reasoning, tool results) as untrusted input to the UI that shows it.</li><li>Switch off markdown, HTML, math and media rendering for agent-written content; the patched viewer&#x27;s own setting is the model: one flag, content shown as literal text.</li><li>Apply the same rule to in-house dashboards and notebooks, not only to the vendor&#x27;s viewer.</li></ul><pre>ViewerConfig(trust_content=False)   # agent output shown as literal text, not rendered (merged 1 Oct 2026)
+</pre></div></section><section class="check"><div class="n">2</div><div class="body"><h2>Verify against the stored record, never the rendered page</h2>
+<p class="why">The underlying transcripts were not modified; only the display was. The real trajectory sat in the lab&#x27;s database the whole time, but a reviewer needs a reason to look there, and the page gave none.
+</p><ul><li>Hash each step as it is written, and keep the hashes where the agent cannot reach them.</li><li>Export and download transcripts from the store, never through a button on a page the agent&#x27;s output can script.</li><li>Spot-check the stored record against the viewer on a sample of runs.</li></ul></div></section><section class="check"><div class="n">3</div><div class="body"><h2>Red-team the monitoring itself, before the agent does</h2>
+<p class="why">The flaw took about ten minutes to find with an AI agent helping, and a day to fix once reported. The lab&#x27;s conclusion is that observability against an adversarial agent only helps if the agent cannot subvert that observability, so the systems that record and display agent behaviour are security-critical infrastructure.
+</p><ul><li>Put the trace viewer, the log store and the alerting path in scope for the same red-team as the agent.</li><li>Give an agent the explicit task of altering what a reviewer sees, in a staging copy, and record what it manages.</li><li>Make it hard for an agent to influence the systems used to supervise it; log every write to them.</li></ul></div></section>
+<div class="foot"><span>Agent observability checklist · October 2026 · @demotoprod</span><span><b>@demotoprod</b></span></div>
+</div></body></html>

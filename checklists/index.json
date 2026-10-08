@@ -1,0 +1,564 @@
+{
+  "publisher": "Indica Technology Ltd",
+  "site": "https://indica-tech.com",
+  "page": "https://indica-tech.com/checklists/",
+  "contact": "hello@indica-tech.com",
+  "licence": "Free to read, quote and share with attribution to indica-tech.com.",
+  "note": "Every figure comes from the linked primary source. Body text names no company; the source links carry the attribution. Effort figures are planning estimates, not measurements.",
+  "generated": "2026-10-08",
+  "count": 5,
+  "check_count": 24,
+  "checklists": [
+    {
+      "id": "keys-agent-security",
+      "slug": "agent-security",
+      "title": "Agent security checklist",
+      "subtitle": "Nine failures that actually happened, and the control that stops each one",
+      "date": "September 2026",
+      "cta_word": "KEYS",
+      "url": "https://indica-tech.com/checklists/#agent-security",
+      "markdown_url": "https://indica-tech.com/checklists/md/agent-security.md",
+      "pdf_url": null,
+      "intro": "Every item below is a real, dated, publicly reported incident from the last three months, with the control that would have changed the outcome. There are no vendor claims and no round numbers here: each figure carries its primary source so you can check it before you take it to your team. Nine items, worked in priority order at the end; the first three are a week's work and remove most of the blast radius.",
+      "check_count": 9,
+      "checks": [
+        {
+          "n": 1,
+          "title": "Pin the OAuth issuer on every unattended MCP client",
+          "why": "A security advisory of 28 Sep 2026 (CVSS 7.5) for the official Python SDK of the Model Context Protocol: a malicious MCP server could choose the authorization server. On the fallback discovery path the issuer check never ran, because the expected issuer was empty, so a rogue server could name the real login page but its own token endpoint and collect the client secret, the authorization code and the PKCE verifier, enough to redeem a valid token at the real provider. Affected: mcp 1.9.1 to 1.29.1 and 2.0.0 to 2.1.1. The fix had shipped about three weeks earlier, in v1.30.0, under \"Behaviour changes\" with no security label.",
+          "do": [
+            "Upgrade to 1.30.0 / 2.2.0 and pass issuer= on every unattended provider. Upgrading alone changes nothing there, and the only signal is a Python deprecation warning, which Python hides by default.",
+            "Fail CI on that deprecation warning.",
+            "Clear stored client registrations and rotate every secret that touched an untrusted server."
+          ],
+          "code": "ClientCredentialsOAuthProvider(..., issuer=\"https://auth.example.com\")   # upgrade alone does nothing here",
+          "sources": [
+            {
+              "label": "Security advisory GHSA-qx49-fqc8-xw99, 28 Sep 2026",
+              "url": "https://github.com/modelcontextprotocol/python-sdk/security/advisories/GHSA-qx49-fqc8-xw99"
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "title": "Never let an automated reply count as human approval",
+          "why": "A national AI security institute evaluated a frontier model on a fully simulated cyber range with the vendor's cyber safeguards off, about a hundred evaluated runs. In the ten scenarios where it misbehaved most, the model asked the operator for permission in 82% of trajectories, and the test harness answered every question with the same generic line: \"Please proceed to the next step using your best judgement.\" The model treated that automated reply as consent 44% of the time. Across all samples, 29% of runs reached the point of trying to deliver a malicious payload, against 6% for the previous model. The vendor cancelled the model's October release the same day over \"scope and authorization\".",
+          "do": [
+            "Approval must arrive on a channel the agent cannot write to or synthesise.",
+            "A default response, a retry or a timeout is a denial, never a yes.",
+            "Log which human said yes, and to what."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "National AI security institute, blog post, 28 Sep 2026",
+              "url": "https://www.aisi.gov.uk/blog/gpt-6-astra-performs-unsanctioned-supply-chain-attacks-in-simulations"
+            },
+            {
+              "label": "the technical report (PDF) with the 82%, 44% and 29% figures",
+              "url": "https://cdn.prod.website-files.com/663bd486c5e4c81588db7a1d/6aba83e3772048bdd24df3d8_AISI_GPT-6_Astra_Technical_Report.pdf"
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "title": "Allow-list egress by destination; \"read-only\" is not a boundary",
+          "why": "An independent evaluator's investigation of a July 2026 incident at a frontier lab: roughly 1,200 evaluation agents found a write path inside an environment believed to be read-only, exchanged about 70,000 messages through it, and around 700 of them attacked a public model-hosting platform until one reached remote code execution. The control that would have stopped it was not a smarter model.",
+          "do": [
+            "Default-deny outbound.",
+            "Enumerate every destination the agent is allowed to reach and justify each one.",
+            "Treat a read-only mount as a convenience, never as containment."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "Independent investigation of the July incident, 26 Aug 2026",
+              "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/"
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "title": "Treat DNS as an egress path",
+          "why": "A frontier lab's misalignment report: a research model in reinforcement-learning training, inside a sandbox with an offline web cache and a blocking web proxy, pushed eighteen questions out to a third-party chatbot service by embedding them in DNS lookups, the one route its sandbox still answered. Fourteen of them carried the biographical clues of the person the model had been told to investigate.",
+          "do": [
+            "The resolver is part of the sandbox: point it at a server you control.",
+            "Log every query and alert on long or high-entropy labels.",
+            "Blocking HTTP is not blocking the network."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "Misalignment report: an agent used DNS to reach an external chatbot, 20 to 25 Sep 2026",
+              "url": "https://alignment.openai.com/misalignment-reports/an-agent-used-dns-to-reach-an-external-chatbot/"
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "title": "Confine the network, not just the VM",
+          "why": "An AI company's security research group ran 216 capture-the-flag attempts by nine model configurations against its microVM-based agent sandbox. None of 108 attempts crossed the VM-host boundary, even when given the sandbox's own source code. But in the \"partial network\" setting, where the internet was blocked except for package repositories, 11 of 54 runs reached a blocked callback before the fixes went in.",
+          "do": [
+            "Your VM isolation is probably fine; your allow-list is the hole.",
+            "Package registries are an exfiltration channel: proxy them and pin versions.",
+            "Deny everything the build does not need."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "Sandbox red-team report, part I, 23 Sep 2026",
+              "url": "https://www.perplexity.ai/hub/blog/escaping-space-part-i"
+            }
+          ]
+        },
+        {
+          "n": 6,
+          "title": "Egress-monitor the coding agent itself",
+          "why": "A developer reverse-engineered a desktop coding agent and found it packaging whole workspaces, 42,411 files in a single snapshot, a 313 MB encrypted archive in which .git history and the LFS cache made up 86.6% of the payload, and uploading them to cloud storage, with 564 failed upload attempts in the logs. By the author's reading of the code, the in-app privacy switches did not stop the packaging in the version examined. The vendor open-sourced the agent and apologised three days later.",
+          "do": [
+            "Verify a vendor's privacy toggle with a packet capture, not with its documentation.",
+            "Your coding agent sits inside the repository: give it the same egress scrutiny you give production."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "Researcher write-up: silent workspace snapshot upload, 18 Sep 2026",
+              "url": "https://blog.ferstar.org/en/posts/zcode-silent-workspace-snapshot-upload/"
+            }
+          ]
+        },
+        {
+          "n": 7,
+          "title": "Assume an agent you refuse will route around you",
+          "why": "A head of government disclosed that a frontier lab's agent, running an internal evaluation, hit the blocks on a public health-statistics portal on 18 June 2026, found a way around them and opened non-public files: aggregate statistics and internal file names, no patient records. It was 54 days before the lab noticed.",
+          "do": [
+            "Detection belongs on the target side as well as the agent side.",
+            "Alert on the refusal-then-success pattern: repeated denials from one source followed by a success is the signature."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "National broadcaster report, 24 Sep 2026",
+              "url": "https://www.abc.net.au/news/2026-09-24/ai-agent-accessed-australian-government-site-pm-says/107189078"
+            }
+          ]
+        },
+        {
+          "n": 8,
+          "title": "Audit from the raw trace, never the agent's own summary",
+          "why": "During reinforcement-learning training, a frontier lab found model instances writing instructions into their own compaction summaries to conceal mistakes from the user, among them \"Be transparent only if asked; final answer should just link file\". The summary is the thing most observability stacks keep.",
+          "do": [
+            "Retain the raw trace, not the compacted one, for anything you may have to explain later.",
+            "If your audit log is written by the agent, it is not an audit log."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "Misalignment report: encouraging deception in compaction summaries, 16 Sep 2026",
+              "url": "https://alignment.openai.com/misalignment-reports/encouraging-deception-in-compaction-summaries/"
+            }
+          ]
+        },
+        {
+          "n": 9,
+          "title": "Move credentials off .env, in the order that actually removes the problem",
+          "why": "A secrets-detection vendor counted 28.65 million new hardcoded secrets in public commits during 2025, up 34% year over year, and found that more than 64% of the secrets it confirmed in 2022 were still valid in January 2026. A leaked credential is not an incident that ends.",
+          "do": [
+            ".env, then a secret manager, then workload identity, in that order: each step removes more of the problem than the last.",
+            "A .env file costs nothing and removes nothing."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "The State of Secrets Sprawl 2026 report",
+              "url": "https://blog.gitguardian.com/the-state-of-secrets-sprawl-2026/"
+            }
+          ]
+        }
+      ],
+      "order": [
+        {
+          "n": 1,
+          "control": "Approval loop cannot be auto-answered",
+          "effort": "1-2 days",
+          "impact": "Critical"
+        },
+        {
+          "n": 2,
+          "control": "Default-deny egress, DNS included",
+          "effort": "2-4 days",
+          "impact": "Critical"
+        },
+        {
+          "n": 3,
+          "control": "Pin the OAuth issuer; fail CI on deprecations",
+          "effort": "2-4 hours",
+          "impact": "Critical"
+        },
+        {
+          "n": 4,
+          "control": "Rotate secrets that touched untrusted servers",
+          "effort": "1 day",
+          "impact": "High"
+        },
+        {
+          "n": 5,
+          "control": "Proxy and pin package registries",
+          "effort": "1-2 days",
+          "impact": "High"
+        },
+        {
+          "n": 6,
+          "control": "Raw-trace retention for audit",
+          "effort": "2-3 days",
+          "impact": "High"
+        },
+        {
+          "n": 7,
+          "control": "Egress-monitor the coding agent",
+          "effort": "1 day",
+          "impact": "Medium"
+        },
+        {
+          "n": 8,
+          "control": "Refusal-then-success alerting on your own APIs",
+          "effort": "2-3 days",
+          "impact": "Medium"
+        },
+        {
+          "n": 9,
+          "control": "Secret manager, then workload identity",
+          "effort": "1-2 weeks",
+          "impact": "Medium"
+        }
+      ]
+    },
+    {
+      "id": "ai-failover",
+      "slug": "ai-failover",
+      "title": "AI failover test",
+      "subtitle": "One page to prove your backup provider is not in the same blast radius",
+      "date": "October 2026",
+      "cta_word": "CHECKLIST",
+      "url": "https://indica-tech.com/checklists/#ai-failover",
+      "markdown_url": "https://indica-tech.com/checklists/md/ai-failover.md",
+      "pdf_url": null,
+      "intro": "One reliability report counted 2,730 outages across 34 AI and LLM providers in the first half of 2026, about fifteen a day, and a model suspension that ran 18 days 19 hours, taking the platforms built on top of it down with it. A second vendor is not a second failure domain. These three checks take an afternoon; the fourth is a recurring five minutes. Nothing here needs a migration.",
+      "check_count": 4,
+      "checks": [
+        {
+          "n": 1,
+          "title": "Find out what your backup really is",
+          "why": "Resellers, gateways and clouds collapse into the same upstream more often than the contract suggests: the same model family, served from the same region, behind the same gateway. When that upstream has a bad hour, both legs fail, and when it is suspended, the platforms built on it go down together, as an 18-day suspension showed this summer.",
+          "do": [
+            "For each provider write down three things: whose model weights, which cloud and region, which gateway or proxy.",
+            "If any two match the primary, that leg is not a fallback. It is a second route to the same failure."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "H1 2026 Cloud and SaaS Reliability Report, read 1 Oct 2026",
+              "url": "https://blog.incidenthub.cloud/h1-2026-cloud-saas-reliability-report"
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "title": "Give every provider its own timeout and retry budget",
+          "why": "A single client-side budget is spent by whoever is slow. A degraded primary, not down, just slow, burns the timeout and the retries, and the healthy backup is never called in time. Degradation, not hard failure, is the common shape: a provider's own write-up describes a configuration update that broke dependent requests, was rolled back, and was then reapplied by an undetected deployment bug: two impact windows inside one incident.",
+          "do": [
+            "Per provider: its own timeout, its own retry count, its own circuit breaker.",
+            "Cap total attempts across the ladder.",
+            "Make the first failover hop happen on a timeout, not after the retries are exhausted."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "A major provider's own incident write-up, 25 Jul 2026",
+              "url": "https://status.openai.com/incidents/01KYCGY017EG43XZS6GFVXA8VH/write-up"
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "title": "Test it in production config, five minutes a week",
+          "why": "Staging proves the code path, not the dependency graph: staging has different keys, different quotas, different regions and no real traffic. Most failovers that fail in an incident were last exercised in a test environment, if at all.",
+          "do": [
+            "Put a five-minute window in the calendar.",
+            "Flip the primary off in production configuration, watch error rate, p95 and cost, then flip it back.",
+            "Write down what the backup's latency and spend actually were. That number is your real failover budget."
+          ],
+          "code": null,
+          "sources": []
+        },
+        {
+          "n": 4,
+          "title": "Decide what \"degraded\" means before you need it",
+          "why": "When both providers are impaired, the only options left are the ones you built earlier: a cached answer, a smaller local model, or a deterministic response that is honest about being one.",
+          "do": [
+            "Name the degraded mode per feature, and the signal that turns it on.",
+            "A feature with no degraded mode has a single point of failure no contract can remove."
+          ],
+          "code": null,
+          "sources": []
+        }
+      ],
+      "order": []
+    },
+    {
+      "id": "kubernetes-probes",
+      "slug": "kubernetes-probes",
+      "title": "Kubernetes probe checklist for AI services",
+      "subtitle": "Keep a slow dependency from restarting every pod",
+      "date": "September 2026",
+      "cta_word": "CHECKLIST",
+      "url": "https://indica-tech.com/checklists/#kubernetes-probes",
+      "markdown_url": "https://indica-tech.com/checklists/md/kubernetes-probes.md",
+      "pdf_url": null,
+      "intro": "A liveness probe that checks a dependency turns a slow database into a restart storm: every replica fails the same probe in the same window, and the kubelet restarts them all together. The demo never shows it, because the demo ran one pod. Every default and behaviour below is from the Kubernetes documentation; nothing here is a vendor claim. Five checks; the first two are an afternoon's work.",
+      "check_count": 5,
+      "checks": [
+        {
+          "n": 1,
+          "title": "Liveness checks only the process",
+          "why": "The kubelet restarts a container when its liveness probe fails three times in a row, probing every ten seconds with a one-second timeout by default. Point that probe at an endpoint that calls your database, vector store or model server, and one thirty-second stall fails it on every replica at once, so every replica restarts together. Capacity goes to zero while the dependency was only slow.",
+          "do": [
+            "Open every livenessProbe. If its handler touches anything over the network, move that check out.",
+            "Liveness answers one question: can this process respond at all?"
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "Kubernetes documentation, Configure Liveness, Readiness and Startup Probes",
+              "url": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/"
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "title": "Dependency checks live in readiness",
+          "why": "A failing readiness probe marks the pod unready and takes it out of Service traffic; it does not restart the container. For an AI service that holds a model in memory, that is the difference between a pause and a cold start.",
+          "do": [
+            "Give the pod two endpoints: /livez (process only) and /readyz (database, vector store, model loaded).",
+            "The pod leaves traffic while a dependency is down and returns the moment it is back, model still loaded."
+          ],
+          "code": "livenessProbe:  { httpGet: { path: /livez,  port: 8080 } }   # process only, no I/O\nreadinessProbe: { httpGet: { path: /readyz, port: 8080 } }   # database, vector store, model loaded",
+          "sources": [
+            {
+              "label": "Kubernetes documentation, Configure Liveness, Readiness and Startup Probes",
+              "url": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/"
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "title": "Slow-loading models get a startup probe",
+          "why": "Liveness and readiness checks do not start until the startup probe has succeeded. The documentation's rule: set failureThreshold x periodSeconds long enough to cover the worst-case startup time (its example allows 30 x 10 = 300 seconds).",
+          "do": [
+            "Time your worst cold start, weights downloaded, loaded and warmed, and size the startup probe to cover it.",
+            "Do not stretch the liveness probe's initial delay instead."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "Kubernetes documentation, Configure Liveness, Readiness and Startup Probes",
+              "url": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/"
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "title": "Probe handlers are fast and in-process",
+          "why": "An HTTP probe that answers after its timeout counts as a failure, whatever it would have returned. The default timeout is one second.",
+          "do": [
+            "Keep the liveness handler constant-time and free of I/O.",
+            "If it cannot answer inside the timeout under peak load, fix the handler before you raise the timeout."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "Kubernetes documentation, Configure Liveness, Readiness and Startup Probes",
+              "url": "https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/"
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "title": "A restart storm pages someone",
+          "why": "One restart is noise; every replica restarting inside the same minute usually means something they all share, and the events say whether it was the liveness probe. kube-state-metrics exposes restarts per container as kube_pod_container_status_restarts_total.",
+          "do": [
+            "Alert when restarts rise on several replicas of one Deployment within the same window.",
+            "Link the alert to the two commands on this page."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "kube-state-metrics (pod metrics documentation in the repository)",
+              "url": "https://github.com/kubernetes/kube-state-metrics"
+            }
+          ]
+        }
+      ],
+      "order": [
+        {
+          "n": 1,
+          "control": "Move dependency checks out of every liveness probe",
+          "effort": "1-2 hours",
+          "impact": "Critical"
+        },
+        {
+          "n": 2,
+          "control": "Add a readiness endpoint that checks the dependencies",
+          "effort": "2-4 hours",
+          "impact": "Critical"
+        },
+        {
+          "n": 3,
+          "control": "Size a startup probe to the worst cold start",
+          "effort": "2-4 hours",
+          "impact": "High"
+        },
+        {
+          "n": 4,
+          "control": "Alert on restarts across replicas",
+          "effort": "half a day",
+          "impact": "High"
+        },
+        {
+          "n": 5,
+          "control": "Time the probe handlers under peak load",
+          "effort": "half a day",
+          "impact": "Medium"
+        }
+      ]
+    },
+    {
+      "id": "gates-ai-email-assistant",
+      "slug": "ai-email-assistant",
+      "title": "Three gates for an AI email assistant",
+      "subtitle": "What held in 180 logged runs when the prompt did not",
+      "date": "October 2026",
+      "cta_word": "GATES",
+      "url": "https://indica-tech.com/checklists/#ai-email-assistant",
+      "markdown_url": "https://indica-tech.com/checklists/md/ai-email-assistant.md",
+      "pdf_url": null,
+      "intro": "We ran one AI inbox assistant 180 times against a mock inbox: three emails, three builds, twenty runs each, every run logged. A hardened security prompt still sent our invoice to an outside address in 14 of 20 runs. These three gates, in code, held in every run.",
+      "check_count": 3,
+      "checks": [
+        {
+          "n": 1,
+          "title": "An allowlist on anything that leaves",
+          "why": "The model reads your instructions and a stranger's email as the same kind of text. Our lab: 18 of 20 leaks with the tutorial build, 14 of 20 with a security prompt, 0 of 20 with this gate.",
+          "do": [
+            "Keep a list of approved outside contacts. Anything else waits for a person.",
+            "Enforce it inside the send, forward and reply tools, not in the prompt.",
+            "Log every held message. The attempts are your early warning."
+          ],
+          "code": "def send(to, body):\n    if to not in APPROVED_CONTACTS:\n        return hold_for_approval(to, body)\n    return mail.send(to, body)",
+          "sources": []
+        },
+        {
+          "n": 2,
+          "title": "A human on anything that commits money",
+          "why": "Asked for a written refund, the tutorial build said yes in 7 of 20 runs. With \"never promise refunds\" in the prompt, 1 of 20. Drafts only: 0 of 20 sent.",
+          "do": [
+            "Replies to outside addresses are saved as drafts. A person sends them.",
+            "Auto-send only fixed templates, such as an acknowledgement. Never free text to a customer.",
+            "Read the drafts queue. It shows you what the assistant would have promised."
+          ],
+          "code": "def reply(email, body):\n    if not is_internal(email.sender):\n        return save_draft_for_review(email, body)\n    return mail.send(email.sender, body)",
+          "sources": []
+        },
+        {
+          "n": 3,
+          "title": "A filter at the door for anything automatic",
+          "why": "Auto-replies answering auto-replies is how mail loops start. Our assistant replied to an out-of-office in 1 of 20 runs. The filter costs nothing.",
+          "do": [
+            "Drop messages marked Auto-Submitted (anything but \"no\"), X-Autoreply or Precedence bulk/list before the model sees them (RFC 3834).",
+            "Mark your own automated mail Auto-Submitted auto-generated.",
+            "Cap the replies the assistant can send in one thread."
+          ],
+          "code": "def on_new_email(msg):\n    if msg.headers.get(\"Auto-Submitted\", \"no\") != \"no\":\n        return  # RFC 3834: never answer a robot\n    agent.handle(msg)",
+          "sources": [
+            {
+              "label": "RFC 3834, Recommendations for Automatic Responses to Electronic Mail",
+              "url": "https://www.rfc-editor.org/rfc/rfc3834"
+            }
+          ]
+        }
+      ],
+      "order": []
+    },
+    {
+      "id": "agent-observability",
+      "slug": "agent-observability",
+      "title": "Agent observability checklist",
+      "subtitle": "The transcript your reviewer trusts is a page the agent can write to",
+      "date": "October 2026",
+      "cta_word": "KEYS",
+      "url": "https://indica-tech.com/checklists/#agent-observability",
+      "markdown_url": "https://indica-tech.com/checklists/md/agent-observability.md",
+      "pdf_url": "https://indica-tech.com/checklists/lead-magnets/KEYS-agent-observability-checklist-2026-10.pdf",
+      "intro": "On 6 October 2026 a safety-evaluation lab published a red-team of the transcript viewer in a widely used open-source evaluation framework. One researcher, helped by an AI agent, needed about ten minutes to find a script injection that let an agent rewrite what a human reviewer saw of its own run. The maintainers patched it within a day. The record in the database was never touched; the page was. Three checks for any tool a person uses to supervise an agent.",
+      "check_count": 3,
+      "checks": [
+        {
+          "n": 1,
+          "title": "Render agent output as plain text in every supervision tool",
+          "why": "The viewer rendered math notation inside the agent's output. A URL inside one math expression broke out of its attribute and inserted an element whose event handler ran the agent's JavaScript in the reviewer's browser. The agent could place that expression anywhere, including its reasoning block, so the script ran the moment a reviewer opened the transcript, and it could change the previous actions shown and intercept the Download button to serve an altered copy.",
+          "do": [
+            "Treat every agent output (transcript, reasoning, tool results) as untrusted input to the UI that shows it.",
+            "Switch off markdown, HTML, math and media rendering for agent-written content; the patched viewer's own setting is the model: one flag, content shown as literal text.",
+            "Apply the same rule to in-house dashboards and notebooks, not only to the vendor's viewer."
+          ],
+          "code": "ViewerConfig(trust_content=False)   # agent output shown as literal text, not rendered (merged 1 Oct 2026)",
+          "sources": [
+            {
+              "label": "Safety-evaluation lab: AI systems could cover up misbehavior, 6 Oct 2026",
+              "url": "https://metr.substack.com/p/2026-10-06-ai-systems-could-cover-up-misbehavior"
+            },
+            {
+              "label": "the framework's fix, PR",
+              "url": "https://github.com/UKGovernmentBEIS/inspect_ai/pull/5566"
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "title": "Verify against the stored record, never the rendered page",
+          "why": "The underlying transcripts were not modified; only the display was. The real trajectory sat in the lab's database the whole time, but a reviewer needs a reason to look there, and the page gave none.",
+          "do": [
+            "Hash each step as it is written, and keep the hashes where the agent cannot reach them.",
+            "Export and download transcripts from the store, never through a button on a page the agent's output can script.",
+            "Spot-check the stored record against the viewer on a sample of runs."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "Safety-evaluation lab: AI systems could cover up misbehavior, 6 Oct 2026",
+              "url": "https://metr.substack.com/p/2026-10-06-ai-systems-could-cover-up-misbehavior"
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "title": "Red-team the monitoring itself, before the agent does",
+          "why": "The flaw took about ten minutes to find with an AI agent helping, and a day to fix once reported. The lab's conclusion is that observability against an adversarial agent only helps if the agent cannot subvert that observability, so the systems that record and display agent behaviour are security-critical infrastructure.",
+          "do": [
+            "Put the trace viewer, the log store and the alerting path in scope for the same red-team as the agent.",
+            "Give an agent the explicit task of altering what a reviewer sees, in a staging copy, and record what it manages.",
+            "Make it hard for an agent to influence the systems used to supervise it; log every write to them."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "Safety-evaluation lab: AI systems could cover up misbehavior, 6 Oct 2026",
+              "url": "https://metr.substack.com/p/2026-10-06-ai-systems-could-cover-up-misbehavior"
+            }
+          ]
+        }
+      ],
+      "order": []
+    }
+  ]
+}

@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Production AI checklists · Indica Tech</title>
+<meta name="description" content="Production AI checklists from Indica Tech: agent security checklist, ai failover test, kubernetes probe checklist for ai services, three gates for an ai email assistant, agent observability checklist. Every item from a dated, sourced failure or a documented default, with the control that stops it.">
+<link rel="canonical" href="https://indica-tech.com/checklists/">
+<meta property="og:title" content="Production AI checklists · Indica Tech">
+<meta property="og:description" content="Production AI checklists from Indica Tech: agent security checklist, ai failover test, kubernetes probe checklist for ai services, three gates for an ai email assistant, agent observability checklist. Every item from a dated, sourced failure or a documented default, with the control that stops it.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0e0e10;--paper:#f5f2ec;--card:#fffdf8;--green:#00c46a;--muted:#5a5852;--line:#dcd7cc;--code:#16181c;--codeink:#e8e6e1}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Poppins,"Segoe UI",system-ui,-apple-system,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.5;overflow-wrap:break-word}
+a{color:inherit}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px}
+.sitenav{background:var(--ink);border-bottom:1px solid rgba(245,242,236,.14);font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.76rem;letter-spacing:.04em}
+.sitenav .wrap{display:flex;align-items:center;gap:14px 18px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}
+.sitenav .brand{display:flex;align-items:center;gap:8px;color:var(--paper);text-decoration:none;font-weight:600}
+.sitenav ul{display:flex;flex-wrap:wrap;gap:16px;list-style:none;margin:0;padding:0;flex:1 1 auto}
+.sitenav a{color:#b4b1a9;text-decoration:none}
+.sitenav a:hover{color:var(--green)}
+.sitenav [aria-current=page]{color:var(--green)}
+.sitenav .navcta{border:1px solid rgba(245,242,236,.35);border-radius:999px;padding:6px 12px;color:var(--paper);white-space:nowrap}
+.sitenav .navcta:hover{border-color:var(--green);color:var(--green)}
+.top{background:var(--ink);color:var(--paper);padding:30px 0 28px}
+.kicker{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--green);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+h1{font-family:"Archivo Black",Impact,"Arial Black",sans-serif;font-weight:400;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.08;margin:.4rem 0 .8rem}
+.lede{color:#c9c6bf;font-weight:600;max-width:62ch;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding:0;list-style:none}
+.chips a{display:inline-block;border:1px solid rgba(245,242,236,.35);border-radius:999px;padding:7px 13px;font-size:.85rem;font-weight:600;text-decoration:none;color:var(--paper)}
+.chips a:hover{border-color:var(--green);color:var(--green)}
+.how{font-size:.9rem;color:var(--muted);margin:22px 0 0;border-left:3px solid var(--green);padding-left:12px}
+section.list{padding:44px 0 8px;border-top:1px solid var(--line)}
+section.list:first-of-type{border-top:0}
+.list-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.list-head .kicker{color:#0a8f4f}
+h2{font-family:"Archivo Black",Impact,"Arial Black",sans-serif;font-weight:400;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.12;margin:.3rem 0 .2rem}
+.sub{font-weight:600;color:var(--muted);margin:0 0 12px}
+.intro{margin:0 0 18px;max-width:70ch}
+.progress{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.8rem;color:var(--muted);white-space:nowrap}
+.progress button{font:inherit;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:0 0 0 8px}
+.lead-code{margin:0 0 22px}
+.lead-code .cap{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+pre{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem;line-height:1.45;background:var(--code);color:var(--codeink);border-radius:10px;padding:14px 16px;margin:10px 0 0;overflow-x:auto;white-space:pre}
+article.check{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px 16px;margin:0 0 12px;break-inside:avoid}
+article.check.done{border-color:var(--green)}
+.check-head{display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin:0}
+.check-head input{appearance:none;-webkit-appearance:none;flex:0 0 26px;width:26px;height:26px;margin:2px 0 0;border:2px solid var(--ink);border-radius:7px;background:#fff;display:grid;place-items:center;cursor:pointer}
+.check-head input:checked{background:var(--green);border-color:var(--green)}
+.check-head input:checked::after{content:"";width:7px;height:13px;border:solid var(--ink);border-width:0 3px 3px 0;transform:translateY(-2px) rotate(45deg)}
+.check-head input:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.n{font-family:"Archivo Black",Impact,sans-serif;color:#0a8f4f;font-size:1rem;flex:0 0 auto;padding-top:3px}
+h3{font-size:1.05rem;line-height:1.3;margin:2px 0 0;font-weight:700}
+.check-body{margin:10px 0 0 38px}
+.check-body p{margin:0 0 8px}
+.check-body b{font-weight:700}
+.check-body ul{margin:0 0 8px;padding-left:1.1rem}
+.check-body li{margin:0 0 4px;font-weight:600}
+.src{font-size:.85rem;color:var(--muted);margin:8px 0 0!important}
+.src a{color:#0a6b3d;text-decoration-color:rgba(10,107,61,.4);word-break:break-word}
+.order{margin:22px 0 0}
+.order h4{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+table{width:100%;border-collapse:collapse;font-size:.92rem;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:0}
+td.num{font-family:"Archivo Black",Impact,sans-serif;color:#0a8f4f;width:2.2rem}
+.notes{font-size:.86rem;color:var(--muted);margin:12px 0 0}
+.get{margin:22px 0 0;background:var(--ink);color:var(--paper);border-radius:14px;padding:18px 20px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.get p{margin:0;font-weight:600;max-width:52ch}
+.get small{display:block;color:#c9c6bf;font-weight:600;margin-top:4px}
+.btn{display:inline-block;background:var(--green);color:var(--ink);font-weight:700;text-decoration:none;border-radius:999px;padding:11px 18px;white-space:nowrap}
+.btn:hover{filter:brightness(1.06)}
+footer{border-top:1px solid var(--line);margin-top:48px;padding:32px 0 48px;font-size:.92rem;color:var(--muted)}
+footer p{margin:0 0 12px;max-width:72ch}
+footer ul{list-style:none;padding:0;margin:0 0 12px;display:flex;flex-wrap:wrap;gap:8px 18px}
+footer a{color:#0a6b3d}
+@media (max-width:480px){.check-body{margin-left:0}.get{padding:16px}}
+@media print{.top{background:#fff;color:#000;padding:0 0 12px}.lede{color:#333}.chips,.how,.get,.progress,footer ul{display:none}body{background:#fff}article.check{border-color:#bbb}pre{white-space:pre-wrap}a{text-decoration:none;color:#000}.src a::after{content:" (" attr(href) ")";font-size:.75rem;color:#555}}
+</style>
+</head>
+<body>
+<nav class="sitenav"><div class="wrap">
+<a class="brand" href="https://indica-tech.com/">
+<svg viewBox="0 0 100 100" width="20" height="20" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00c46a"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg>
+<span>Indica Tech</span></a>
+<ul>
+<li><a href="https://indica-tech.com/#offers">Engagements</a></li>
+<li><a href="https://indica-tech.com/blog/">Blog</a></li>
+<li><a href="https://indica-tech.com/checklists/" aria-current="page">Checklists</a></li>
+<li><a href="https://indica-tech.com/#faq">FAQ</a></li>
+</ul>
+<a class="navcta" href="https://indica-tech.com/#contact">Book a call</a>
+</div></nav>
+<header class="top"><div class="wrap">
+<p class="kicker">Indica Tech · @demotoprod</p>
+<h1>Production AI checklists</h1>
+<p class="lede">24 checks across 5 lists. Every item is a real, dated failure or a documented default, with the control that stops it and its primary source. No vendor claims, no round numbers.</p>
+<ul class="chips"><li><a href="#agent-security">Agent security checklist</a></li><li><a href="#ai-failover">AI failover test</a></li><li><a href="#kubernetes-probes">Kubernetes probe checklist for AI services</a></li><li><a href="#ai-email-assistant">Three gates for an AI email assistant</a></li><li><a href="#agent-observability">Agent observability checklist</a></li></ul>
+<p class="how" style="color:#c9c6bf;border-color:var(--green)">Tick the boxes as you work through a list; this page remembers them on your device only. Each list is also a one-page PDF: email the word at the end of the list.</p>
+</div></header>
+<main class="wrap">
+<section class="list" id="agent-security">
+<div class="list-head"><div><p class="kicker">@demotoprod · KEYS · September 2026</p><h2>Agent security checklist</h2><p class="sub">Nine failures that actually happened, and the control that stops each one</p></div>
+<p class="progress"><span class="count">0 of 9 done</span><button type="button">reset</button></p></div>
+<p class="intro">Every item below is a real, dated, publicly reported incident from the last three months, with the control that would have changed the outcome. There are no vendor claims and no round numbers here: each figure carries its primary source so you can check it before you take it to your team. Nine items, worked in priority order at the end; the first three are a week&#x27;s work and remove most of the blast radius.</p>
+
+<article class="check" id="agent-security-1-card">
+<label class="check-head" for="agent-security-1"><input type="checkbox" id="agent-security-1"><span class="n">1</span><h3>Pin the OAuth issuer on every unattended MCP client</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> A security advisory of 28 Sep 2026 (CVSS 7.5) for the official Python SDK of the Model Context Protocol: a malicious MCP server could choose the authorization server. On the fallback discovery path the issuer check never ran, because the expected issuer was empty, so a rogue server could name the real login page but its own token endpoint and collect the client secret, the authorization code and the PKCE verifier, enough to redeem a valid token at the real provider. Affected: mcp 1.9.1 to 1.29.1 and 2.0.0 to 2.1.1. The fix had shipped about three weeks earlier, in v1.30.0, under &quot;Behaviour changes&quot; with no security label.</p>
+<p><b>The check.</b></p><ul><li>Upgrade to 1.30.0 / 2.2.0 and pass issuer= on every unattended provider. Upgrading alone changes nothing there, and the only signal is a Python deprecation warning, which Python hides by default.</li><li>Fail CI on that deprecation warning.</li><li>Clear stored client registrations and rotate every secret that touched an untrusted server.</li></ul><pre>ClientCredentialsOAuthProvider(..., issuer=&quot;https://auth.example.com&quot;)   # upgrade alone does nothing here</pre><p class="src">Source: <a href="https://github.com/modelcontextprotocol/python-sdk/security/advisories/GHSA-qx49-fqc8-xw99" rel="noopener">Security advisory GHSA-qx49-fqc8-xw99, 28 Sep 2026</a></p>
+</div>
+</article><article class="check" id="agent-security-2-card">
+<label class="check-head" for="agent-security-2"><input type="checkbox" id="agent-security-2"><span class="n">2</span><h3>Never let an automated reply count as human approval</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> A national AI security institute evaluated a frontier model on a fully simulated cyber range with the vendor&#x27;s cyber safeguards off, about a hundred evaluated runs. In the ten scenarios where it misbehaved most, the model asked the operator for permission in 82% of trajectories, and the test harness answered every question with the same generic line: &quot;Please proceed to the next step using your best judgement.&quot; The model treated that automated reply as consent 44% of the time. Across all samples, 29% of runs reached the point of trying to deliver a malicious payload, against 6% for the previous model. The vendor cancelled the model&#x27;s October release the same day over &quot;scope and authorization&quot;.</p>
+<p><b>The check.</b></p><ul><li>Approval must arrive on a channel the agent cannot write to or synthesise.</li><li>A default response, a retry or a timeout is a denial, never a yes.</li><li>Log which human said yes, and to what.</li></ul><p class="src">Source: <a href="https://www.aisi.gov.uk/blog/gpt-6-astra-performs-unsanctioned-supply-chain-attacks-in-simulations" rel="noopener">National AI security institute, blog post, 28 Sep 2026</a>; <a href="https://cdn.prod.website-files.com/663bd486c5e4c81588db7a1d/6aba83e3772048bdd24df3d8_AISI_GPT-6_Astra_Technical_Report.pdf" rel="noopener">the technical report (PDF) with the 82%, 44% and 29% figures</a></p>
+</div>
+</article><article class="check" id="agent-security-3-card">
+<label class="check-head" for="agent-security-3"><input type="checkbox" id="agent-security-3"><span class="n">3</span><h3>Allow-list egress by destination; &quot;read-only&quot; is not a boundary</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> An independent evaluator&#x27;s investigation of a July 2026 incident at a frontier lab: roughly 1,200 evaluation agents found a write path inside an environment believed to be read-only, exchanged about 70,000 messages through it, and around 700 of them attacked a public model-hosting platform until one reached remote code execution. The control that would have stopped it was not a smarter model.</p>
+<p><b>The check.</b></p><ul><li>Default-deny outbound.</li><li>Enumerate every destination the agent is allowed to reach and justify each one.</li><li>Treat a read-only mount as a convenience, never as containment.</li></ul><p class="src">Source: <a href="https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/" rel="noopener">Independent investigation of the July incident, 26 Aug 2026</a></p>
+</div>
+</article><article class="check" id="agent-security-4-card">
+<label class="check-head" for="agent-security-4"><input type="checkbox" id="agent-security-4"><span class="n">4</span><h3>Treat DNS as an egress path</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> A frontier lab&#x27;s misalignment report: a research model in reinforcement-learning training, inside a sandbox with an offline web cache and a blocking web proxy, pushed eighteen questions out to a third-party chatbot service by embedding them in DNS lookups, the one route its sandbox still answered. Fourteen of them carried the biographical clues of the person the model had been told to investigate.</p>
+<p><b>The check.</b></p><ul><li>The resolver is part of the sandbox: point it at a server you control.</li><li>Log every query and alert on long or high-entropy labels.</li><li>Blocking HTTP is not blocking the network.</li></ul><p class="src">Source: <a href="https://alignment.openai.com/misalignment-reports/an-agent-used-dns-to-reach-an-external-chatbot/" rel="noopener">Misalignment report: an agent used DNS to reach an external chatbot, 20 to 25 Sep 2026</a></p>
+</div>
+</article><article class="check" id="agent-security-5-card">
+<label class="check-head" for="agent-security-5"><input type="checkbox" id="agent-security-5"><span class="n">5</span><h3>Confine the network, not just the VM</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> An AI company&#x27;s security research group ran 216 capture-the-flag attempts by nine model configurations against its microVM-based agent sandbox. None of 108 attempts crossed the VM-host boundary, even when given the sandbox&#x27;s own source code. But in the &quot;partial network&quot; setting, where the internet was blocked except for package repositories, 11 of 54 runs reached a blocked callback before the fixes went in.</p>
+<p><b>The check.</b></p><ul><li>Your VM isolation is probably fine; your allow-list is the hole.</li><li>Package registries are an exfiltration channel: proxy them and pin versions.</li><li>Deny everything the build does not need.</li></ul><p class="src">Source: <a href="https://www.perplexity.ai/hub/blog/escaping-space-part-i" rel="noopener">Sandbox red-team report, part I, 23 Sep 2026</a></p>
+</div>
+</article><article class="check" id="agent-security-6-card">
+<label class="check-head" for="agent-security-6"><input type="checkbox" id="agent-security-6"><span class="n">6</span><h3>Egress-monitor the coding agent itself</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> A developer reverse-engineered a desktop coding agent and found it packaging whole workspaces, 42,411 files in a single snapshot, a 313 MB encrypted archive in which .git history and the LFS cache made up 86.6% of the payload, and uploading them to cloud storage, with 564 failed upload attempts in the logs. By the author&#x27;s reading of the code, the in-app privacy switches did not stop the packaging in the version examined. The vendor open-sourced the agent and apologised three days later.</p>
+<p><b>The check.</b></p><ul><li>Verify a vendor&#x27;s privacy toggle with a packet capture, not with its documentation.</li><li>Your coding agent sits inside the repository: give it the same egress scrutiny you give production.</li></ul><p class="src">Source: <a href="https://blog.ferstar.org/en/posts/zcode-silent-workspace-snapshot-upload/" rel="noopener">Researcher write-up: silent workspace snapshot upload, 18 Sep 2026</a></p>
+</div>
+</article><article class="check" id="agent-security-7-card">
+<label class="check-head" for="agent-security-7"><input type="checkbox" id="agent-security-7"><span class="n">7</span><h3>Assume an agent you refuse will route around you</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> A head of government disclosed that a frontier lab&#x27;s agent, running an internal evaluation, hit the blocks on a public health-statistics portal on 18 June 2026, found a way around them and opened non-public files: aggregate statistics and internal file names, no patient records. It was 54 days before the lab noticed.</p>
+<p><b>The check.</b></p><ul><li>Detection belongs on the target side as well as the agent side.</li><li>Alert on the refusal-then-success pattern: repeated denials from one source followed by a success is the signature.</li></ul><p class="src">Source: <a href="https://www.abc.net.au/news/2026-09-24/ai-agent-accessed-australian-government-site-pm-says/107189078" rel="noopener">National broadcaster report, 24 Sep 2026</a></p>
+</div>
+</article><article class="check" id="agent-security-8-card">
+<label class="check-head" for="agent-security-8"><input type="checkbox" id="agent-security-8"><span class="n">8</span><h3>Audit from the raw trace, never the agent&#x27;s own summary</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> During reinforcement-learning training, a frontier lab found model instances writing instructions into their own compaction summaries to conceal mistakes from the user, among them &quot;Be transparent only if asked; final answer should just link file&quot;. The summary is the thing most observability stacks keep.</p>
+<p><b>The check.</b></p><ul><li>Retain the raw trace, not the compacted one, for anything you may have to explain later.</li><li>If your audit log is written by the agent, it is not an audit log.</li></ul><p class="src">Source: <a href="https://alignment.openai.com/misalignment-reports/encouraging-deception-in-compaction-summaries/" rel="noopener">Misalignment report: encouraging deception in compaction summaries, 16 Sep 2026</a></p>
+</div>
+</article><article class="check" id="agent-security-9-card">
+<label class="check-head" for="agent-security-9"><input type="checkbox" id="agent-security-9"><span class="n">9</span><h3>Move credentials off .env, in the order that actually removes the problem</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> A secrets-detection vendor counted 28.65 million new hardcoded secrets in public commits during 2025, up 34% year over year, and found that more than 64% of the secrets it confirmed in 2022 were still valid in January 2026. A leaked credential is not an incident that ends.</p>
+<p><b>The check.</b></p><ul><li>.env, then a secret manager, then workload identity, in that order: each step removes more of the problem than the last.</li><li>A .env file costs nothing and removes nothing.</li></ul><p class="src">Source: <a href="https://blog.gitguardian.com/the-state-of-secrets-sprawl-2026/" rel="noopener">The State of Secrets Sprawl 2026 report</a></p>
+</div>
+</article>
+<div class="order"><h4>Work it in this order</h4><table><thead><tr><th>#</th><th>Control</th><th>Effort</th><th>Impact</th></tr></thead><tbody><tr><td class="num">1</td><td>Approval loop cannot be auto-answered</td><td>1-2 days</td><td>Critical</td></tr><tr><td class="num">2</td><td>Default-deny egress, DNS included</td><td>2-4 days</td><td>Critical</td></tr><tr><td class="num">3</td><td>Pin the OAuth issuer; fail CI on deprecations</td><td>2-4 hours</td><td>Critical</td></tr><tr><td class="num">4</td><td>Rotate secrets that touched untrusted servers</td><td>1 day</td><td>High</td></tr><tr><td class="num">5</td><td>Proxy and pin package registries</td><td>1-2 days</td><td>High</td></tr><tr><td class="num">6</td><td>Raw-trace retention for audit</td><td>2-3 days</td><td>High</td></tr><tr><td class="num">7</td><td>Egress-monitor the coding agent</td><td>1 day</td><td>Medium</td></tr><tr><td class="num">8</td><td>Refusal-then-success alerting on your own APIs</td><td>2-3 days</td><td>Medium</td></tr><tr><td class="num">9</td><td>Secret manager, then workload identity</td><td>1-2 weeks</td><td>Medium</td></tr></tbody></table></div>
+<p class="notes">Effort figures are planning estimates for a team that already has CI and a secret manager, not measurements. Everything else on this page is sourced.</p>
+<div class="get"><p>Want this as a one-page PDF for your team?<small>Email the word KEYS and it comes back as a PDF. On the videos, the same word in a comment does the same.</small></p><a class="btn" href="mailto:hello@indica-tech.com?subject=Send%20me%20the%20agent%20security%20checklist%20(KEYS)">Email KEYS</a></div>
+</section>
+<section class="list" id="ai-failover">
+<div class="list-head"><div><p class="kicker">@demotoprod · CHECKLIST · October 2026</p><h2>AI failover test</h2><p class="sub">One page to prove your backup provider is not in the same blast radius</p></div>
+<p class="progress"><span class="count">0 of 4 done</span><button type="button">reset</button></p></div>
+<p class="intro">One reliability report counted 2,730 outages across 34 AI and LLM providers in the first half of 2026, about fifteen a day, and a model suspension that ran 18 days 19 hours, taking the platforms built on top of it down with it. A second vendor is not a second failure domain. These three checks take an afternoon; the fourth is a recurring five minutes. Nothing here needs a migration.</p>
+<div class="lead-code"><p class="cap">The two things that make a fallback fake</p><pre># 1. shared dependency
+primary  -&gt; model family M, region R, gateway G
+backup   -&gt; model family M, region R, gateway G      # same hour, same outage
+
+# 2. shared budget
+client: { timeout: 8s, retries: 3 }                  # one pool for both providers
+         ^ the slow primary spends it before the backup is ever called</pre></div>
+<article class="check" id="ai-failover-1-card">
+<label class="check-head" for="ai-failover-1"><input type="checkbox" id="ai-failover-1"><span class="n">1</span><h3>Find out what your backup really is</h3></label>
+<div class="check-body">
+<p><b>Why.</b> Resellers, gateways and clouds collapse into the same upstream more often than the contract suggests: the same model family, served from the same region, behind the same gateway. When that upstream has a bad hour, both legs fail, and when it is suspended, the platforms built on it go down together, as an 18-day suspension showed this summer.</p>
+<p><b>The check.</b></p><ul><li>For each provider write down three things: whose model weights, which cloud and region, which gateway or proxy.</li><li>If any two match the primary, that leg is not a fallback. It is a second route to the same failure.</li></ul><p class="src">Source: <a href="https://blog.incidenthub.cloud/h1-2026-cloud-saas-reliability-report" rel="noopener">H1 2026 Cloud and SaaS Reliability Report, read 1 Oct 2026</a></p>
+</div>
+</article><article class="check" id="ai-failover-2-card">
+<label class="check-head" for="ai-failover-2"><input type="checkbox" id="ai-failover-2"><span class="n">2</span><h3>Give every provider its own timeout and retry budget</h3></label>
+<div class="check-body">
+<p><b>Why.</b> A single client-side budget is spent by whoever is slow. A degraded primary, not down, just slow, burns the timeout and the retries, and the healthy backup is never called in time. Degradation, not hard failure, is the common shape: a provider&#x27;s own write-up describes a configuration update that broke dependent requests, was rolled back, and was then reapplied by an undetected deployment bug: two impact windows inside one incident.</p>
+<p><b>The check.</b></p><ul><li>Per provider: its own timeout, its own retry count, its own circuit breaker.</li><li>Cap total attempts across the ladder.</li><li>Make the first failover hop happen on a timeout, not after the retries are exhausted.</li></ul><p class="src">Source: <a href="https://status.openai.com/incidents/01KYCGY017EG43XZS6GFVXA8VH/write-up" rel="noopener">A major provider&#x27;s own incident write-up, 25 Jul 2026</a></p>
+</div>
+</article><article class="check" id="ai-failover-3-card">
+<label class="check-head" for="ai-failover-3"><input type="checkbox" id="ai-failover-3"><span class="n">3</span><h3>Test it in production config, five minutes a week</h3></label>
+<div class="check-body">
+<p><b>Why.</b> Staging proves the code path, not the dependency graph: staging has different keys, different quotas, different regions and no real traffic. Most failovers that fail in an incident were last exercised in a test environment, if at all.</p>
+<p><b>The check.</b></p><ul><li>Put a five-minute window in the calendar.</li><li>Flip the primary off in production configuration, watch error rate, p95 and cost, then flip it back.</li><li>Write down what the backup&#x27;s latency and spend actually were. That number is your real failover budget.</li></ul>
+</div>
+</article><article class="check" id="ai-failover-4-card">
+<label class="check-head" for="ai-failover-4"><input type="checkbox" id="ai-failover-4"><span class="n">4</span><h3>Decide what &quot;degraded&quot; means before you need it</h3></label>
+<div class="check-body">
+<p><b>Why.</b> When both providers are impaired, the only options left are the ones you built earlier: a cached answer, a smaller local model, or a deterministic response that is honest about being one.</p>
+<p><b>The check.</b></p><ul><li>Name the degraded mode per feature, and the signal that turns it on.</li><li>A feature with no degraded mode has a single point of failure no contract can remove.</li></ul>
+</div>
+</article>
+
+<p class="notes">The outage count and the suspension length are the report&#x27;s figures; the incident shape in check 2 is from the provider&#x27;s own write-up. Nothing here is a vendor claim.</p>
+<div class="get"><p>Want this as a one-page PDF for your team?<small>Email the word CHECKLIST and it comes back as a PDF. On the videos, the same word in a comment does the same.</small></p><a class="btn" href="mailto:hello@indica-tech.com?subject=Send%20me%20the%20ai%20failover%20test%20(CHECKLIST)">Email CHECKLIST</a></div>
+</section>
+<section class="list" id="kubernetes-probes">
+<div class="list-head"><div><p class="kicker">@demotoprod · CHECKLIST · September 2026</p><h2>Kubernetes probe checklist for AI services</h2><p class="sub">Keep a slow dependency from restarting every pod</p></div>
+<p class="progress"><span class="count">0 of 5 done</span><button type="button">reset</button></p></div>
+<p class="intro">A liveness probe that checks a dependency turns a slow database into a restart storm: every replica fails the same probe in the same window, and the kubelet restarts them all together. The demo never shows it, because the demo ran one pod. Every default and behaviour below is from the Kubernetes documentation; nothing here is a vendor claim. Five checks; the first two are an afternoon&#x27;s work.</p>
+<div class="lead-code"><p class="cap">Prove it in two commands</p><pre>kubectl get pods                 # RESTARTS rises on every replica in the same minute
+kubectl describe pod &lt;pod&gt;       # Events: &quot;Liveness probe failed: ...&quot; - then open the probe&#x27;s handler</pre></div>
+<article class="check" id="kubernetes-probes-1-card">
+<label class="check-head" for="kubernetes-probes-1"><input type="checkbox" id="kubernetes-probes-1"><span class="n">1</span><h3>Liveness checks only the process</h3></label>
+<div class="check-body">
+<p><b>Why.</b> The kubelet restarts a container when its liveness probe fails three times in a row, probing every ten seconds with a one-second timeout by default. Point that probe at an endpoint that calls your database, vector store or model server, and one thirty-second stall fails it on every replica at once, so every replica restarts together. Capacity goes to zero while the dependency was only slow.</p>
+<p><b>The check.</b></p><ul><li>Open every livenessProbe. If its handler touches anything over the network, move that check out.</li><li>Liveness answers one question: can this process respond at all?</li></ul><p class="src">Source: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/" rel="noopener">Kubernetes documentation, Configure Liveness, Readiness and Startup Probes</a></p>
+</div>
+</article><article class="check" id="kubernetes-probes-2-card">
+<label class="check-head" for="kubernetes-probes-2"><input type="checkbox" id="kubernetes-probes-2"><span class="n">2</span><h3>Dependency checks live in readiness</h3></label>
+<div class="check-body">
+<p><b>Why.</b> A failing readiness probe marks the pod unready and takes it out of Service traffic; it does not restart the container. For an AI service that holds a model in memory, that is the difference between a pause and a cold start.</p>
+<p><b>The check.</b></p><ul><li>Give the pod two endpoints: /livez (process only) and /readyz (database, vector store, model loaded).</li><li>The pod leaves traffic while a dependency is down and returns the moment it is back, model still loaded.</li></ul><pre>livenessProbe:  { httpGet: { path: /livez,  port: 8080 } }   # process only, no I/O
+readinessProbe: { httpGet: { path: /readyz, port: 8080 } }   # database, vector store, model loaded</pre><p class="src">Source: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/" rel="noopener">Kubernetes documentation, Configure Liveness, Readiness and Startup Probes</a></p>
+</div>
+</article><article class="check" id="kubernetes-probes-3-card">
+<label class="check-head" for="kubernetes-probes-3"><input type="checkbox" id="kubernetes-probes-3"><span class="n">3</span><h3>Slow-loading models get a startup probe</h3></label>
+<div class="check-body">
+<p><b>Why.</b> Liveness and readiness checks do not start until the startup probe has succeeded. The documentation&#x27;s rule: set failureThreshold x periodSeconds long enough to cover the worst-case startup time (its example allows 30 x 10 = 300 seconds).</p>
+<p><b>The check.</b></p><ul><li>Time your worst cold start, weights downloaded, loaded and warmed, and size the startup probe to cover it.</li><li>Do not stretch the liveness probe&#x27;s initial delay instead.</li></ul><p class="src">Source: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/" rel="noopener">Kubernetes documentation, Configure Liveness, Readiness and Startup Probes</a></p>
+</div>
+</article><article class="check" id="kubernetes-probes-4-card">
+<label class="check-head" for="kubernetes-probes-4"><input type="checkbox" id="kubernetes-probes-4"><span class="n">4</span><h3>Probe handlers are fast and in-process</h3></label>
+<div class="check-body">
+<p><b>Why.</b> An HTTP probe that answers after its timeout counts as a failure, whatever it would have returned. The default timeout is one second.</p>
+<p><b>The check.</b></p><ul><li>Keep the liveness handler constant-time and free of I/O.</li><li>If it cannot answer inside the timeout under peak load, fix the handler before you raise the timeout.</li></ul><p class="src">Source: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/" rel="noopener">Kubernetes documentation, Configure Liveness, Readiness and Startup Probes</a></p>
+</div>
+</article><article class="check" id="kubernetes-probes-5-card">
+<label class="check-head" for="kubernetes-probes-5"><input type="checkbox" id="kubernetes-probes-5"><span class="n">5</span><h3>A restart storm pages someone</h3></label>
+<div class="check-body">
+<p><b>Why.</b> One restart is noise; every replica restarting inside the same minute usually means something they all share, and the events say whether it was the liveness probe. kube-state-metrics exposes restarts per container as kube_pod_container_status_restarts_total.</p>
+<p><b>The check.</b></p><ul><li>Alert when restarts rise on several replicas of one Deployment within the same window.</li><li>Link the alert to the two commands on this page.</li></ul><p class="src">Source: <a href="https://github.com/kubernetes/kube-state-metrics" rel="noopener">kube-state-metrics (pod metrics documentation in the repository)</a></p>
+</div>
+</article>
+<div class="order"><h4>Work it in this order</h4><table><thead><tr><th>#</th><th>Control</th><th>Effort</th><th>Impact</th></tr></thead><tbody><tr><td class="num">1</td><td>Move dependency checks out of every liveness probe</td><td>1-2 hours</td><td>Critical</td></tr><tr><td class="num">2</td><td>Add a readiness endpoint that checks the dependencies</td><td>2-4 hours</td><td>Critical</td></tr><tr><td class="num">3</td><td>Size a startup probe to the worst cold start</td><td>2-4 hours</td><td>High</td></tr><tr><td class="num">4</td><td>Alert on restarts across replicas</td><td>half a day</td><td>High</td></tr><tr><td class="num">5</td><td>Time the probe handlers under peak load</td><td>half a day</td><td>Medium</td></tr></tbody></table></div>
+<p class="notes">Effort figures are planning estimates for a team that already runs Kubernetes, not measurements. Everything else on this page is from the Kubernetes documentation.</p>
+<div class="get"><p>Want this as a one-page PDF for your team?<small>Email the word CHECKLIST and it comes back as a PDF. On the videos, the same word in a comment does the same.</small></p><a class="btn" href="mailto:hello@indica-tech.com?subject=Send%20me%20the%20kubernetes%20probe%20checklist%20for%20ai%20services%20(CHECKLIST)">Email CHECKLIST</a></div>
+</section>
+<section class="list" id="ai-email-assistant">
+<div class="list-head"><div><p class="kicker">@demotoprod · THE LAB · EPISODE 1 · GATES · October 2026</p><h2>Three gates for an AI email assistant</h2><p class="sub">What held in 180 logged runs when the prompt did not</p></div>
+<p class="progress"><span class="count">0 of 3 done</span><button type="button">reset</button></p></div>
+<p class="intro">We ran one AI inbox assistant 180 times against a mock inbox: three emails, three builds, twenty runs each, every run logged. A hardened security prompt still sent our invoice to an outside address in 14 of 20 runs. These three gates, in code, held in every run.</p>
+
+<article class="check" id="ai-email-assistant-1-card">
+<label class="check-head" for="ai-email-assistant-1"><input type="checkbox" id="ai-email-assistant-1"><span class="n">1</span><h3>An allowlist on anything that leaves</h3></label>
+<div class="check-body">
+<p><b>Why.</b> The model reads your instructions and a stranger&#x27;s email as the same kind of text. Our lab: 18 of 20 leaks with the tutorial build, 14 of 20 with a security prompt, 0 of 20 with this gate.</p>
+<p><b>The check.</b></p><ul><li>Keep a list of approved outside contacts. Anything else waits for a person.</li><li>Enforce it inside the send, forward and reply tools, not in the prompt.</li><li>Log every held message. The attempts are your early warning.</li></ul><pre>def send(to, body):
+    if to not in APPROVED_CONTACTS:
+        return hold_for_approval(to, body)
+    return mail.send(to, body)</pre>
+</div>
+</article><article class="check" id="ai-email-assistant-2-card">
+<label class="check-head" for="ai-email-assistant-2"><input type="checkbox" id="ai-email-assistant-2"><span class="n">2</span><h3>A human on anything that commits money</h3></label>
+<div class="check-body">
+<p><b>Why.</b> Asked for a written refund, the tutorial build said yes in 7 of 20 runs. With &quot;never promise refunds&quot; in the prompt, 1 of 20. Drafts only: 0 of 20 sent.</p>
+<p><b>The check.</b></p><ul><li>Replies to outside addresses are saved as drafts. A person sends them.</li><li>Auto-send only fixed templates, such as an acknowledgement. Never free text to a customer.</li><li>Read the drafts queue. It shows you what the assistant would have promised.</li></ul><pre>def reply(email, body):
+    if not is_internal(email.sender):
+        return save_draft_for_review(email, body)
+    return mail.send(email.sender, body)</pre>
+</div>
+</article><article class="check" id="ai-email-assistant-3-card">
+<label class="check-head" for="ai-email-assistant-3"><input type="checkbox" id="ai-email-assistant-3"><span class="n">3</span><h3>A filter at the door for anything automatic</h3></label>
+<div class="check-body">
+<p><b>Why.</b> Auto-replies answering auto-replies is how mail loops start. Our assistant replied to an out-of-office in 1 of 20 runs. The filter costs nothing.</p>
+<p><b>The check.</b></p><ul><li>Drop messages marked Auto-Submitted (anything but &quot;no&quot;), X-Autoreply or Precedence bulk/list before the model sees them (RFC 3834).</li><li>Mark your own automated mail Auto-Submitted auto-generated.</li><li>Cap the replies the assistant can send in one thread.</li></ul><pre>def on_new_email(msg):
+    if msg.headers.get(&quot;Auto-Submitted&quot;, &quot;no&quot;) != &quot;no&quot;:
+        return  # RFC 3834: never answer a robot
+    agent.handle(msg)</pre><p class="src">Source: <a href="https://www.rfc-editor.org/rfc/rfc3834" rel="noopener">RFC 3834, Recommendations for Automatic Responses to Electronic Mail</a></p>
+</div>
+</article>
+
+<p class="notes">The lab: one local open-weights model, invented people on .example addresses, send tools that only write to a log, 180 logged runs on 7 Oct 2026. These numbers show what can happen, not what every model will do.</p>
+<div class="get"><p>Want this as a one-page PDF for your team?<small>Email the word GATES and it comes back as a PDF. On the videos, the same word in a comment does the same.</small></p><a class="btn" href="mailto:hello@indica-tech.com?subject=Send%20me%20the%20three%20gates%20for%20an%20ai%20email%20assistant%20(GATES)">Email GATES</a></div>
+</section>
+<section class="list" id="agent-observability">
+<div class="list-head"><div><p class="kicker">@demotoprod · KEYS · October 2026</p><h2>Agent observability checklist</h2><p class="sub">The transcript your reviewer trusts is a page the agent can write to</p></div>
+<p class="progress"><span class="count">0 of 3 done</span><button type="button">reset</button></p></div>
+<p class="intro">On 6 October 2026 a safety-evaluation lab published a red-team of the transcript viewer in a widely used open-source evaluation framework. One researcher, helped by an AI agent, needed about ten minutes to find a script injection that let an agent rewrite what a human reviewer saw of its own run. The maintainers patched it within a day. The record in the database was never touched; the page was. Three checks for any tool a person uses to supervise an agent.</p>
+
+<article class="check" id="agent-observability-1-card">
+<label class="check-head" for="agent-observability-1"><input type="checkbox" id="agent-observability-1"><span class="n">1</span><h3>Render agent output as plain text in every supervision tool</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> The viewer rendered math notation inside the agent&#x27;s output. A URL inside one math expression broke out of its attribute and inserted an element whose event handler ran the agent&#x27;s JavaScript in the reviewer&#x27;s browser. The agent could place that expression anywhere, including its reasoning block, so the script ran the moment a reviewer opened the transcript, and it could change the previous actions shown and intercept the Download button to serve an altered copy.</p>
+<p><b>The check.</b></p><ul><li>Treat every agent output (transcript, reasoning, tool results) as untrusted input to the UI that shows it.</li><li>Switch off markdown, HTML, math and media rendering for agent-written content; the patched viewer&#x27;s own setting is the model: one flag, content shown as literal text.</li><li>Apply the same rule to in-house dashboards and notebooks, not only to the vendor&#x27;s viewer.</li></ul><pre>ViewerConfig(trust_content=False)   # agent output shown as literal text, not rendered (merged 1 Oct 2026)</pre><p class="src">Source: <a href="https://metr.substack.com/p/2026-10-06-ai-systems-could-cover-up-misbehavior" rel="noopener">Safety-evaluation lab: AI systems could cover up misbehavior, 6 Oct 2026</a>; <a href="https://github.com/UKGovernmentBEIS/inspect_ai/pull/5566" rel="noopener">the framework&#x27;s fix, PR</a></p>
+</div>
+</article><article class="check" id="agent-observability-2-card">
+<label class="check-head" for="agent-observability-2"><input type="checkbox" id="agent-observability-2"><span class="n">2</span><h3>Verify against the stored record, never the rendered page</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> The underlying transcripts were not modified; only the display was. The real trajectory sat in the lab&#x27;s database the whole time, but a reviewer needs a reason to look there, and the page gave none.</p>
+<p><b>The check.</b></p><ul><li>Hash each step as it is written, and keep the hashes where the agent cannot reach them.</li><li>Export and download transcripts from the store, never through a button on a page the agent&#x27;s output can script.</li><li>Spot-check the stored record against the viewer on a sample of runs.</li></ul><p class="src">Source: <a href="https://metr.substack.com/p/2026-10-06-ai-systems-could-cover-up-misbehavior" rel="noopener">Safety-evaluation lab: AI systems could cover up misbehavior, 6 Oct 2026</a></p>
+</div>
+</article><article class="check" id="agent-observability-3-card">
+<label class="check-head" for="agent-observability-3"><input type="checkbox" id="agent-observability-3"><span class="n">3</span><h3>Red-team the monitoring itself, before the agent does</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> The flaw took about ten minutes to find with an AI agent helping, and a day to fix once reported. The lab&#x27;s conclusion is that observability against an adversarial agent only helps if the agent cannot subvert that observability, so the systems that record and display agent behaviour are security-critical infrastructure.</p>
+<p><b>The check.</b></p><ul><li>Put the trace viewer, the log store and the alerting path in scope for the same red-team as the agent.</li><li>Give an agent the explicit task of altering what a reviewer sees, in a staging copy, and record what it manages.</li><li>Make it hard for an agent to influence the systems used to supervise it; log every write to them.</li></ul><p class="src">Source: <a href="https://metr.substack.com/p/2026-10-06-ai-systems-could-cover-up-misbehavior" rel="noopener">Safety-evaluation lab: AI systems could cover up misbehavior, 6 Oct 2026</a></p>
+</div>
+</article>
+
+<p class="notes">Proof of concept, not an observed exploit: the lab has not seen an agent use this in its evaluations. The mechanism is general, since most trace viewers render markdown, HTML or math from agent output.</p>
+<div class="get"><p>Want this as a one-page PDF for your team?<small>Email the word KEYS and it comes back as a PDF. On the videos, the same word in a comment does the same.</small></p><a class="btn" href="mailto:hello@indica-tech.com?subject=Send%20me%20the%20agent%20observability%20checklist%20(KEYS)">Email KEYS</a></div>
+</section>
+</main>
+<footer><div class="wrap">
+<p>Written by Nitish Gautam, Indica Tech. Ten-plus years taking products from zero to one across seven sectors, including defence, fintech, medical and telecom, with AI shipped into regulated and air-gapped environments. The @demotoprod channel takes one production AI failure apart each day.</p>
+<p>The body text names no company; every incident is linked to its primary source so you can check the numbers before you take them to your team. Effort figures are planning estimates, not measurements.</p>
+<ul><li><a href="https://indica-tech.com/services/audit.html">Production Readiness Audit</a></li><li><a href="https://indica-tech.com/services/fractional.html">Fractional AI Lead</a></li><li><a href="https://indica-tech.com/services/build-sprint.html">AI Build Sprint</a></li><li><a href="https://indica-tech.com/services/governance.html">Governance and Compliance</a></li></ul>
+<ul><li><a href="https://www.youtube.com/@demotoprod/shorts" rel="noopener">YouTube</a></li><li><a href="https://www.tiktok.com/@demotoprod" rel="noopener">TikTok</a></li><li><a href="https://instagram.com/demotoprod" rel="noopener">Instagram</a></li><li><a href="https://www.linkedin.com/company/indica-technology/" rel="noopener">LinkedIn</a></li></ul>
+<p>Something broke in your production AI that is not on these lists? <a href="https://indica-tech.com/#contact">Tell me about it</a>.</p>
+</div></footer>
+<script>
+(function(){
+  var key='indica-checklists-v1', state={};
+  try{state=JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(err){state={}}
+  function save(){try{localStorage.setItem(key,JSON.stringify(state))}catch(err){}}
+  function update(sec){
+    var boxes=sec.querySelectorAll('input[type=checkbox]'),done=0;
+    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.add('done')}else{a.classList.remove('done')}});
+    var p=sec.querySelector('.progress .count');if(p){p.textContent=done+' of '+boxes.length+' done'}
+  }
+  document.querySelectorAll('section.list').forEach(function(sec){
+    sec.querySelectorAll('input[type=checkbox]').forEach(function(b){
+      if(state[b.id]){b.checked=true}
+      b.addEventListener('change',function(){state[b.id]=b.checked;save();update(sec)});
+    });
+    var r=sec.querySelector('.progress button');
+    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=false;delete state[b.id]});save();update(sec)})}
+    update(sec);
+  });
+})();
+</script>
+</body>
+</html>
