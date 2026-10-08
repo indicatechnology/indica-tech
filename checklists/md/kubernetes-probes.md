@@ -79,6 +79,14 @@ kubectl describe pod <pod>       # Events: "Liveness probe failed: ..." - then o
 
 Effort figures are planning estimates for a team that already runs Kubernetes, not measurements. Everything else on this page is from the Kubernetes documentation.
 
-Want this as a one-page PDF? Email hello@indica-tech.com with the word CHECKLIST in the subject. On the videos, the same word in a comment does the same.
+The live version of this list, with every source link, is at https://indica-tech.com/checklists/#kubernetes-probes — it prints to a one-page PDF.
+
+---
+
+**Nitish Gautam — Indica Technology Ltd.** Founder-led AI engineering: demo to production, in regulated industries, on fixed scope.
+
+Website https://indica-tech.com · Book a call https://indica-tech.com/#contact · hello@indica-tech.com
+
+YouTube youtube.com/@demotoprod · LinkedIn linkedin.com/company/indica-technology · Instagram and TikTok @demotoprod
 
 _Kubernetes probe checklist for AI services · September 2026 · @demotoprod_
