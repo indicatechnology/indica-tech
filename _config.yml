@@ -1,0 +1,38 @@
+# GitHub Pages (Jekyll) configuration.
+#
+# This site has no templates and no front matter — every page is plain static
+# HTML that Jekyll copies through untouched. The only job of this file is the
+# exclude list below: GitHub Pages publishes everything in the repository by
+# default, so without it the checklist tooling would be served as live URLs on
+# indica-tech.com.
+#
+# Excluded paths stay in the repository (and remain visible on GitHub, which is
+# public) — they are simply not copied to the published site, so they get no
+# indexable URL on the domain.
+
+exclude:
+  # Checklist build tooling and source. The published output — index.html,
+  # index.json, md/ and lead-magnets/ — is NOT excluded and ships normally.
+  - checklists/build_checklists.py
+  - checklists/validate.py
+  - checklists/CHECKLIST-PROMPT.md
+  - checklists/README.md
+  - checklists/specs/
+
+  # Working files that are not part of the site.
+  - MANUAL-COMMANDS.md
+  - 90-day-focus-plan.md
+  - deploy.sh
+  - demotoprod-social-bios.md
+  - demotoprod-social-kit.html
+  - linkedin-banner.html
+
+  # Jekyll's own defaults, restated because naming `exclude` replaces them.
+  - .sass-cache/
+  - .jekyll-cache/
+  - Gemfile
+  - Gemfile.lock
+  - gemfiles/
+  - node_modules/
+  - vendor/
+  - venv/
