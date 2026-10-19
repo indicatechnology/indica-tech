@@ -57,7 +57,7 @@ We ran one AI inbox assistant 180 times against a mock inbox: three emails, thre
 
 The lab: one local open-weights model, invented people on .example addresses, send tools that only write to a log, 180 logged runs on 7 Oct 2026. These numbers show what can happen, not what every model will do.
 
-The live version of this list, with every source link, is at https://indica-tech.com/checklists/#ai-email-assistant — it prints to a one-page PDF.
+The live version of this list, with every source link, is at https://indica-tech.com/checklists/#ai-email-assistant. The PDF is at https://indica-tech.com/checklists/lead-magnets/GATES-ai-email-assistant-2026-10.pdf.
 
 ---
 

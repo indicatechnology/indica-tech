@@ -45,7 +45,7 @@ client: { timeout: 8s, retries: 3 }                  # one pool for both provide
   **The check.**
   - Put a five-minute window in the calendar.
   - Flip the primary off in production configuration, watch error rate, p95 and cost, then flip it back.
-  - Write down what the backup's latency and spend actually were. That number is your real failover budget.
+  - Write down what the backup's latency and spend were. That number is your failover budget.
 
 - [ ] **4. Decide what "degraded" means before you need it**
 
@@ -57,7 +57,7 @@ client: { timeout: 8s, retries: 3 }                  # one pool for both provide
 
 The outage count and the suspension length are the report's figures; the incident shape in check 2 is from the provider's own write-up. Nothing here is a vendor claim.
 
-The live version of this list, with every source link, is at https://indica-tech.com/checklists/#ai-failover — it prints to a one-page PDF.
+The live version of this list, with every source link, is at https://indica-tech.com/checklists/#ai-failover. The PDF is at https://indica-tech.com/checklists/lead-magnets/CHECKLIST-ai-failover-2026-10.pdf.
 
 ---
 

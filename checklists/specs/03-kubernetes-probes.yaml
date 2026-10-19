@@ -5,6 +5,7 @@ title: Kubernetes probe checklist for AI services
 subtitle: Keep a slow dependency from restarting every pod
 kicker: "@demotoprod · CHECKLIST"
 date: September 2026
+compact: true
 pdf: CHECKLIST-kubernetes-probes-2026-09.pdf
 out: reference/lead-magnets/CHECKLIST-kubernetes-probes-2026-09.pdf
 intro: >

@@ -79,7 +79,7 @@ kubectl describe pod <pod>       # Events: "Liveness probe failed: ..." - then o
 
 Effort figures are planning estimates for a team that already runs Kubernetes, not measurements. Everything else on this page is from the Kubernetes documentation.
 
-The live version of this list, with every source link, is at https://indica-tech.com/checklists/#kubernetes-probes — it prints to a one-page PDF.
+The live version of this list, with every source link, is at https://indica-tech.com/checklists/#kubernetes-probes. The PDF is at https://indica-tech.com/checklists/lead-magnets/CHECKLIST-kubernetes-probes-2026-09.pdf.
 
 ---
 

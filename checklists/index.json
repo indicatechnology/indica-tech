@@ -5,21 +5,21 @@
   "contact": "hello@indica-tech.com",
   "licence": "Free to read, quote and share with attribution to indica-tech.com.",
   "note": "Every figure comes from the linked primary source. Body text names no company; the source links carry the attribution. Effort figures are planning estimates, not measurements.",
-  "generated": "2026-10-08",
-  "count": 5,
-  "check_count": 24,
+  "generated": "2026-10-19",
+  "count": 10,
+  "check_count": 47,
   "checklists": [
     {
       "id": "keys-agent-security",
       "slug": "agent-security",
       "title": "Agent security checklist",
-      "subtitle": "Nine failures that actually happened, and the control that stops each one",
+      "subtitle": "Nine failures from 2026, and the control that stops each one",
       "date": "September 2026",
       "cta_word": "KEYS",
       "url": "https://indica-tech.com/checklists/#agent-security",
       "markdown_url": "https://indica-tech.com/checklists/md/agent-security.md",
-      "pdf_url": null,
-      "intro": "Every item below is a real, dated, publicly reported incident from the last three months, with the control that would have changed the outcome. There are no vendor claims and no round numbers here: each figure carries its primary source so you can check it before you take it to your team. Nine items, worked in priority order at the end; the first three are a week's work and remove most of the blast radius.",
+      "pdf_url": "https://indica-tech.com/checklists/lead-magnets/KEYS-agent-security-checklist-2026-09.pdf",
+      "intro": "Every item below is a real, dated, publicly reported incident from 2026, with the control that would have changed the outcome. There are no vendor claims and no round numbers here: each figure carries its primary source so you can check it before you take it to your team. Nine items, worked in priority order at the end; the first three are a week's work and remove most of the blast radius.",
       "check_count": 9,
       "checks": [
         {
@@ -161,7 +161,7 @@
         },
         {
           "n": 9,
-          "title": "Move credentials off .env, in the order that actually removes the problem",
+          "title": "Move credentials off .env, in the order that removes the problem",
           "why": "A secrets-detection vendor counted 28.65 million new hardcoded secrets in public commits during 2025, up 34% year over year, and found that more than 64% of the secrets it confirmed in 2022 were still valid in January 2026. A leaked credential is not an incident that ends.",
           "do": [
             ".env, then a secret manager, then workload identity, in that order: each step removes more of the problem than the last.",
@@ -242,7 +242,7 @@
       "cta_word": "CHECKLIST",
       "url": "https://indica-tech.com/checklists/#ai-failover",
       "markdown_url": "https://indica-tech.com/checklists/md/ai-failover.md",
-      "pdf_url": null,
+      "pdf_url": "https://indica-tech.com/checklists/lead-magnets/CHECKLIST-ai-failover-2026-10.pdf",
       "intro": "One reliability report counted 2,730 outages across 34 AI and LLM providers in the first half of 2026, about fifteen a day, and a model suspension that ran 18 days 19 hours, taking the platforms built on top of it down with it. A second vendor is not a second failure domain. These three checks take an afternoon; the fourth is a recurring five minutes. Nothing here needs a migration.",
       "check_count": 4,
       "checks": [
@@ -286,7 +286,7 @@
           "do": [
             "Put a five-minute window in the calendar.",
             "Flip the primary off in production configuration, watch error rate, p95 and cost, then flip it back.",
-            "Write down what the backup's latency and spend actually were. That number is your real failover budget."
+            "Write down what the backup's latency and spend were. That number is your failover budget."
           ],
           "code": null,
           "sources": []
@@ -314,7 +314,7 @@
       "cta_word": "CHECKLIST",
       "url": "https://indica-tech.com/checklists/#kubernetes-probes",
       "markdown_url": "https://indica-tech.com/checklists/md/kubernetes-probes.md",
-      "pdf_url": null,
+      "pdf_url": "https://indica-tech.com/checklists/lead-magnets/CHECKLIST-kubernetes-probes-2026-09.pdf",
       "intro": "A liveness probe that checks a dependency turns a slow database into a restart storm: every replica fails the same probe in the same window, and the kubelet restarts them all together. The demo never shows it, because the demo ran one pod. Every default and behaviour below is from the Kubernetes documentation; nothing here is a vendor claim. Five checks; the first two are an afternoon's work.",
       "check_count": 5,
       "checks": [
@@ -441,7 +441,7 @@
       "cta_word": "GATES",
       "url": "https://indica-tech.com/checklists/#ai-email-assistant",
       "markdown_url": "https://indica-tech.com/checklists/md/ai-email-assistant.md",
-      "pdf_url": null,
+      "pdf_url": "https://indica-tech.com/checklists/lead-magnets/GATES-ai-email-assistant-2026-10.pdf",
       "intro": "We ran one AI inbox assistant 180 times against a mock inbox: three emails, three builds, twenty runs each, every run logged. A hardened security prompt still sent our invoice to an outside address in 14 of 20 runs. These three gates, in code, held in every run.",
       "check_count": 3,
       "checks": [
@@ -554,6 +554,483 @@
             {
               "label": "Safety-evaluation lab: AI systems could cover up misbehavior, 6 Oct 2026",
               "url": "https://metr.substack.com/p/2026-10-06-ai-systems-could-cover-up-misbehavior"
+            }
+          ]
+        }
+      ],
+      "order": []
+    },
+    {
+      "id": "air-gapped-ai",
+      "slug": "air-gapped-ai",
+      "title": "Air-gapped AI deployment checklist",
+      "subtitle": "What a tutorial agent stack tried to reach with the cable out, and the three checks that stop it",
+      "date": "October 2026",
+      "cta_word": "CHECKLIST",
+      "url": "https://indica-tech.com/checklists/#air-gapped-ai",
+      "markdown_url": "https://indica-tech.com/checklists/md/air-gapped-ai.md",
+      "pdf_url": "https://indica-tech.com/checklists/lead-magnets/CHECKLIST-air-gapped-ai-2026-10.pdf",
+      "intro": "We ran a tutorial agent stack (a multi-agent framework, a graph framework, a chat-model client, an embedding model, a tokenizer) with every outside connection refused, the way a deny-all network behaves. Before any task ran it made 37 connection attempts to three outside hosts: 12 to a telemetry server, 24 to a model hub with 70 seconds of retries, one for an encoding file. With the offline switches set, the same code made one attempt. Three checks before you ship behind a fence.",
+      "check_count": 3,
+      "checks": [
+        {
+          "n": 1,
+          "title": "Pull the cable in staging before the fence does",
+          "why": "Frameworks fetch what they need at the first call, not at install. A demo on a connected laptop never runs the path that fails on day one inside the fence. In our run the embedding load retried the hub five times with backoff and took 69.5 seconds to give up; the telemetry thread tried 12 times in the background.",
+          "do": [
+            "Run the whole demo in staging with all egress denied (a deny-all rule, or a resolver that answers nothing).",
+            "Keep the list of every host it tried and every step that failed. That list is the migration plan.",
+            "Repeat it on every dependency upgrade; a new version can add a new call."
+          ],
+          "code": null,
+          "sources": []
+        },
+        {
+          "n": 2,
+          "title": "Stage every file behind the fence with a manifest and hashes",
+          "why": "Model weights, tokenizers, encoding files, Python wheels and container images are all fetched lazily by default. One of the three hosts in our run was a tokenizer fetching its encoding file on first use; it has no offline switch, so the only fix is to carry the file in.",
+          "do": [
+            "List every artefact the demo downloaded (the failure list from check one tells you).",
+            "Transfer them with a manifest and a hash per file; verify the hashes on the inside.",
+            "Point the libraries at the local cache (the hub's cache directory, the tokenizer's cache directory, a local wheel index)."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "Hub client documentation, environment variables (offline mode and cache location)",
+              "url": "https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables"
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "title": "Switch off every phone-home in config, not only at the firewall",
+          "why": "A firewall rule makes a call fail; a config switch makes it never happen. The difference is retries, timeouts and threads that block the task. With the telemetry SDK disabled, the framework's telemetry flag set and the hub in offline mode, the same code made one attempt instead of 37 and failed fast where it had to.",
+          "do": [
+            "Disable the telemetry SDK for every signal (OTEL_SDK_DISABLED=true) and the framework's own telemetry flag.",
+            "Put the model hub and the model library in offline mode so a cache miss is an error in milliseconds, not a 70-second retry.",
+            "Turn off tracing, auto-update and licence checks in config; keep the firewall as the second line."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "Multi-agent framework documentation, telemetry (collected by default; how to disable)",
+              "url": "https://docs.crewai.com/telemetry"
+            },
+            {
+              "label": "OpenTelemetry specification, SDK environment variables (OTEL_SDK_DISABLED)",
+              "url": "https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/"
+            }
+          ]
+        }
+      ],
+      "order": []
+    },
+    {
+      "id": "edge-ai-security",
+      "slug": "edge-ai-security",
+      "title": "Edge AI security checklist",
+      "subtitle": "Five checks before your model ships to hardware you do not physically guard",
+      "date": "October 2026",
+      "cta_word": "EDGE",
+      "url": "https://indica-tech.com/checklists/#edge-ai-security",
+      "markdown_url": "https://indica-tech.com/checklists/md/edge-ai-security.md",
+      "pdf_url": "https://indica-tech.com/checklists/lead-magnets/EDGE-edge-ai-security-checklist-2026-10.pdf",
+      "intro": "On 17 Sep 2026 a group reported unbolting one licence-plate-reader camera and finding the encryption key next to the recorded media: about 1.6 million images and 27,321 clips from roughly 21 days, from a device whose vendor had said footage is only briefly stored. A device that scores frames locally must decrypt them locally, so \"encrypted at rest\" protects a dead disk, not a working device.",
+      "check_count": 5,
+      "checks": [
+        {
+          "n": 1,
+          "title": "Pull one unit off the wall and count what is on it",
+          "why": "The claim was \"briefly stored\"; the device held about 21 days of media, and nobody knew because nobody had taken a unit down and counted. Retention on the edge is a claim until someone counts, and the count is what a thief gets.",
+          "do": [
+            "Once a quarter, image one deployed device per hardware revision and list every file with its age.",
+            "Put the counted retention in the questionnaire; set the on-device window in minutes and alert past it."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "News report with the extracted counts, 17 Sep 2026",
+              "url": "https://www.tomshardware.com/tech-industry/cyber-security/hackers-find-encryption-key-stored-on-flock-camera-group-extracts-more-than-27-000-clips-1-6-million-images-captured-in-a-span-of-21-days-from-device"
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "title": "Keep keys in a secure element the board cannot read as a file",
+          "why": "The stolen camera's media partition carried the key that unlocked the media, so on-device encryption changed nothing for whoever held it. The consumer IoT baseline standard says sensitive security parameters shall be stored securely and a per-device identity shall resist physical, electrical and software tampering.",
+          "do": [
+            "Per-device keys in a secure element or TEE, generated on the device, never on flash; no shared fleet key.",
+            "The cloud accepts a device only after attestation; \"encrypted at rest\" is true only when the device is off."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "ETSI EN 303 645 V2.1.1, provisions 5.4-1 and 5.4-2, June 2020",
+              "url": "https://www.etsi.org/deliver/etsi_en/303600_303699/303645/02.01.01_60/en_303645v020101p.pdf"
+            },
+            {
+              "label": "News report with the partition layout, 17 Sep 2026",
+              "url": "https://www.tomshardware.com/tech-industry/cyber-security/hackers-find-encryption-key-stored-on-flock-camera-group-extracts-more-than-27-000-clips-1-6-million-images-captured-in-a-span-of-21-days-from-device"
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "title": "Store the result, not the frame",
+          "why": "The model needed each frame for milliseconds; the device kept it for weeks. About 50,200 vehicles and 11 people were in the extracted media because raw frames stayed after the inference that used them. The NIST core baseline makes data protection a capability of the device itself.",
+          "do": [
+            "Write the inference output (class, count, score) and at most a thumbnail; drop the frame after scoring.",
+            "Anything waiting for upload is encrypted with a key the device does not hold; delete on acknowledgement."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "NISTIR 8259A, IoT Device Cybersecurity Capability Core Baseline, May 2020",
+              "url": "https://nvlpubs.nist.gov/nistpubs/ir/2020/NIST.IR.8259A.pdf"
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "title": "Sign the model and the firmware, and refuse anything unsigned",
+          "why": "A device nobody guards can be opened, re-flashed and put back, so the model and the firmware must prove where they came from. The baseline standard asks for secure boot and updatable software; UK law for consumer connectable products (in force 29 April 2024) requires a published minimum security-update period.",
+          "do": [
+            "Secure boot with anti-rollback; the model is signed with a key that never lives on the device, and an unsigned model does not load.",
+            "Signed over-the-air updates with a tested rollback; publish the support period per hardware revision."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "ETSI EN 303 645 V2.1.1, provisions 5.3 and 5.7-1, June 2020",
+              "url": "https://www.etsi.org/deliver/etsi_en/303600_303699/303645/02.01.01_60/en_303645v020101p.pdf"
+            },
+            {
+              "label": "UK product security regime for connectable products, in force 29 April 2024",
+              "url": "https://www.gov.uk/government/publications/the-uk-product-security-and-telecommunications-infrastructure-product-security-regime"
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "title": "Rehearse losing the box",
+          "why": "One unit gave up 21 days of media; with a shared key it would have been the fleet. The NIST baseline asks that each device be uniquely identifiable and report its own state, which helps only if revoking one has been rehearsed.",
+          "do": [
+            "Per-device identity and certificate, and a \"reported stolen\" runbook that revokes it within minutes.",
+            "Remote wipe on next contact; rehearse the runbook on a real unit twice a year."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "NISTIR 8259A, Device Identification and Cybersecurity State Awareness, May 2020",
+              "url": "https://nvlpubs.nist.gov/nistpubs/ir/2020/NIST.IR.8259A.pdf"
+            },
+            {
+              "label": "UK product security regime for connectable products, in force 29 April 2024",
+              "url": "https://www.gov.uk/government/publications/the-uk-product-security-and-telecommunications-infrastructure-product-security-regime"
+            }
+          ]
+        }
+      ],
+      "order": []
+    },
+    {
+      "id": "disputed-ai-answer",
+      "slug": "disputed-ai-answer",
+      "title": "Disputed-answer checklist",
+      "subtitle": "Five records to keep so a chatbot's answer can be defended, from the tribunal case that cost an airline C$812",
+      "date": "October 2026",
+      "cta_word": "CHECKLIST",
+      "url": "https://indica-tech.com/checklists/#disputed-ai-answer",
+      "markdown_url": "https://indica-tech.com/checklists/md/disputed-ai-answer.md",
+      "pdf_url": "https://indica-tech.com/checklists/lead-magnets/CHECKLIST-disputed-ai-answer-2026-10.pdf",
+      "intro": "An airline's website chatbot invented a ninety-day refund window. The policy page said the opposite. In February 2024 a tribunal awarded the customer C$812.02, called the \"separate legal entity\" defence remarkable, and found no reason a customer should know which part of a website to trust. The side that lost was the side with no evidence. Five checks.",
+      "check_count": 5,
+      "checks": [
+        {
+          "n": 1,
+          "title": "Log every answer as evidence",
+          "why": "The company could not show what its bot had been told or why its page should outrank the bot. A dispute is won by whoever can replay the conversation.",
+          "do": [
+            "Store, per answer: an id, the timestamp, the exact text shown, the sources used (with their version), the prompt version, the model id and the retrieval set.",
+            "Keep it for the whole dispute window of your market, hashed as it is written, where the bot cannot change it.",
+            "Replay from the log, never from memory, when a customer disputes an answer."
+          ],
+          "code": "{\"answer\":\"a81f\",\"ts\":\"2026-10-16T09:12Z\",\"shown\":\"...\",\"sources\":[\"policy/bereavement#v12\"],\n \"prompt_v\":\"14\",\"model\":\"pinned-2026-09\",\"retrieved\":[\"doc-2231\",\"doc-0917\"]}",
+          "sources": [
+            {
+              "label": "legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024",
+              "url": "https://www.law360.ca/ca/articles/1804075"
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "title": "Cite or decline",
+          "why": "The ninety-day window came from nowhere. A figure, a date or a rule that the bot cannot point to is a promise nobody authorised.",
+          "do": [
+            "Every answer that carries a number, a date or a policy rule quotes the page it came from, with a link.",
+            "No source found means the bot says so and hands over; it never fills the gap from training data.",
+            "Count answers with an empty sources list every day; the target is zero."
+          ],
+          "code": "grep -c '\"sources\": \\[\\]' answers.jsonl    # answers with no citation: want 0",
+          "sources": [
+            {
+              "label": "legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024",
+              "url": "https://www.law360.ca/ca/articles/1804075"
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "title": "One source of truth, stated in writing",
+          "why": "The tribunal found no reason a customer should know that one section of the website is accurate and another is not. Precedence has to be yours, written down, before a dispute tests it.",
+          "do": [
+            "The policy page is canonical; the bot's answer is derived from it and says so in its footer.",
+            "When they disagree, the page wins and the bot is corrected inside a set time; log every correction.",
+            "Put the precedence statement in the terms the customer accepts, and in the bot's own first message."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024",
+              "url": "https://www.law360.ca/ca/articles/1804075"
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "title": "A named owner and a deadline",
+          "why": "Disputed answers that sit in a queue become claims. A person, a replay and a reply inside a fixed number of days turn them back into tickets.",
+          "do": [
+            "Route every disputed answer to a named owner with the replay attached; the deadline is in days, not 'soon'.",
+            "Track the count and the time to reply as a release metric, alongside accuracy."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "AI Incident Database, incident 639 (the chatbot's answer, Nov 2022)",
+              "url": "https://incidentdatabase.ai/cite/639/"
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "title": "Rehearse the dispute",
+          "why": "A process that has never been run is a process that does not exist. The airline found out in front of a tribunal.",
+          "do": [
+            "Take one real wrong answer from last month, run the replay, the source check and the reply, and time it end to end.",
+            "If any step needs a person to search a chat channel for a screenshot, fix the log first."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024",
+              "url": "https://www.law360.ca/ca/articles/1804075"
+            }
+          ]
+        }
+      ],
+      "order": []
+    },
+    {
+      "id": "runaway-agent",
+      "slug": "runaway-agent",
+      "title": "Runaway-agent checklist",
+      "subtitle": "One null value, over 15,000 reasoning calls in under an hour, a $50,000 bill; five controls that stop the loop",
+      "date": "October 2026",
+      "cta_word": "BUDGET",
+      "url": "https://indica-tech.com/checklists/#runaway-agent",
+      "markdown_url": "https://indica-tech.com/checklists/md/runaway-agent.md",
+      "pdf_url": "https://indica-tech.com/checklists/lead-magnets/BUDGET-runaway-agent-checklist-2026-10.pdf",
+      "intro": "One corrupted null value broke a ledger agent's formatting tool. It tried to brute-force a fix: more than 15,000 reasoning calls in under an hour, about $50,000 of cloud spend, and database locks that halted live transactions. Nothing capped the calls, the cost or the failures, and every retry re-sent the whole history as billable input. Five controls.",
+      "check_count": 5,
+      "checks": [
+        {
+          "n": 1,
+          "title": "A daily budget per agent identity",
+          "why": "The incident report's first control: cost-cap thresholds at the service-ID and project level. One key per agent, one budget per key; when it trips the agent stops, not the finance team.",
+          "do": [
+            "Give every agent its own API key or service identity; never a shared team key.",
+            "Set a hard daily spend per identity at the provider or gateway, and a soft alert at half.",
+            "A tripped budget stops the agent and pages a person; it never raises itself."
+          ],
+          "code": "agent: ledger-reconcile   identity: svc-ledger-agent   # its own key, nobody else's\ndaily_budget_usd: 50      # hard stop at the gateway; soft alert at 25",
+          "sources": [
+            {
+              "label": "threat-intelligence special report, AI risk and resilience in 2026, case study 6 (Sep 2026)",
+              "url": "https://cloud.google.com/security/resources/ai-risk-and-resilience-2026"
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "title": "A circuit breaker on consecutive failures",
+          "why": "The loop was the agent retrying its own fix. The report asks for automated financial circuit breakers that halt an agent after a set number of consecutive task failures.",
+          "do": [
+            "Count failures per task, not per session; three in a row ends the run and files the task for a human.",
+            "Treat a tool error, a schema failure and an empty result as failures; a retry is not progress.",
+            "Log the last failing input with the task so the fix starts from evidence."
+          ],
+          "code": "max_consecutive_failures: 3   on_trip: halt_task + notify_owner",
+          "sources": [
+            {
+              "label": "threat-intelligence special report, AI risk and resilience in 2026, case study 6 (Sep 2026)",
+              "url": "https://cloud.google.com/security/resources/ai-risk-and-resilience-2026"
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "title": "A step limit and a depth limit per task",
+          "why": "Bounded recursion is the third control in the report. A task that needs more than the limit needs a person, and the limit is what turns a runaway loop into a ticket.",
+          "do": [
+            "Cap tool calls per task (25 is a sane default for a reconciliation step) and sub-task depth (2).",
+            "Make hitting the limit a normal, logged outcome, never an exception that triggers a retry."
+          ],
+          "code": "max_steps: 25   max_depth: 2",
+          "sources": [
+            {
+              "label": "threat-intelligence special report, AI risk and resilience in 2026, case study 6 (Sep 2026)",
+              "url": "https://cloud.google.com/security/resources/ai-risk-and-resilience-2026"
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "title": "Stop re-billing the history",
+          "why": "Tool output re-entering the context is billed again on every call. A September 2026 study measured a session's cumulative input at 14,293 times its first call; raw history adds 21 to 36 percent to its cost.",
+          "do": [
+            "Summarise tool output before it re-enters the context; keep the raw result in a store read by reference.",
+            "Put a ceiling on context growth per task and on prompt size per call; measure input tokens per call, not only per session."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "Persistent Billable State: Denial-of-Wallet Attacks and Defenses in Tool-Calling LLM Agents, arXiv 2609.28585 (23 Sep 2026)",
+              "url": "https://arxiv.org/abs/2609.28585"
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "title": "Watch the cost curve, not the total",
+          "why": "A loop shows up as calls per minute and input tokens per call climbing together, long before the invoice; the report's observability control would have caught this in minutes.",
+          "do": [
+            "Alert when calls per minute per identity and input tokens per call rise together for a few calls.",
+            "Rate-limit each identity at the gateway so a loop degrades instead of spiking.",
+            "Rehearse it: break a tool in staging and confirm the breaker, the budget and the alert fire."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "threat-intelligence special report, AI risk and resilience in 2026, case study 6 (Sep 2026)",
+              "url": "https://cloud.google.com/security/resources/ai-risk-and-resilience-2026"
+            }
+          ]
+        }
+      ],
+      "order": []
+    },
+    {
+      "id": "agent-budget",
+      "slug": "agent-budget",
+      "title": "Agent budget checklist",
+      "subtitle": "A launch price that doubles on 1 December 2026, and the five numbers to set before it does",
+      "date": "October 2026",
+      "cta_word": "BUDGET",
+      "url": "https://indica-tech.com/checklists/#agent-budget",
+      "markdown_url": "https://indica-tech.com/checklists/md/agent-budget.md",
+      "pdf_url": "https://indica-tech.com/checklists/lead-magnets/BUDGET-model-price-cliff-2026-10.pdf",
+      "intro": "A frontier model went on sale on 13 October 2026 at two dollars per million input tokens and ten per million output, for seven weeks. From 1 December the same tokens cost four and twenty. Output is five times input and includes the reasoning nobody reads. A pilot priced on the launch rate meets a December invoice at twice the price. Five checks.",
+      "check_count": 5,
+      "checks": [
+        {
+          "n": 1,
+          "title": "Budget at the list price",
+          "why": "The discount has an end date; the budget line does not. A cost model built on the launch rate is wrong by a factor of two from the first of December.",
+          "do": [
+            "Put the list price in the cost model today, with the discount's end date on the ticket that owns the line.",
+            "Set the spend alert at the list price now, so the alarm is tested while the bill is still small."
+          ],
+          "code": "price_per_million: {input: 4.00, output: 20.00, cached: 0.20}   # list price\nalert_usd_per_day: 120   # list-price projection, from today",
+          "sources": [
+            {
+              "label": "trade-press report of the launch pricing, 13 Oct 2026",
+              "url": "https://venturebeat.com/technology/google-makes-gemini-4-argon-broadly-available-with-limited-time-low-api-pricing-of-2-10-per-1m-token"
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "title": "An output ceiling per route",
+          "why": "Agents are output machines, and output costs five times input. A request cap written when the ceiling was sixty-four thousand tokens does nothing against a million-token task.",
+          "do": [
+            "Size max output tokens to the job, per route, and log every request that hits the ceiling.",
+            "A million-token task is a batch job with its own approval, at half the standard rate.",
+            "Count ceiling hits every day; a rising count is a prompt problem before it is a budget problem."
+          ],
+          "code": "routes: {support-answer: {max_output_tokens: 4000}, code-migration: {max_output_tokens: 64000, tier: batch}}",
+          "sources": [
+            {
+              "label": "trade-press report of the launch pricing, 13 Oct 2026 (the 64,000-token ceiling raised to a million)",
+              "url": "https://venturebeat.com/technology/google-makes-gemini-4-argon-broadly-available-with-limited-time-low-api-pricing-of-2-10-per-1m-token"
+            },
+            {
+              "label": "the full price table, 14 Oct 2026 (batch at half the standard rate)",
+              "url": "https://dev.to/paullovelace/gemini-4-argons-210-api-pricing-doubles-december-1-full-price-table-2k02"
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "title": "Cache hit rate on the dashboard",
+          "why": "Cached input is ninety-five percent off: at the list price, twenty cents per million against four dollars. The order of the prompt decides the bill more than the model does.",
+          "do": [
+            "Stable content first: system prompt, tool schemas, reference documents; the user's turn last.",
+            "Put the cache hit rate per route next to latency and error rate; a falling rate pages someone before the invoice does.",
+            "Treat a prompt change that breaks the cache as a cost regression in review."
+          ],
+          "code": "cache_hit_rate{route=\"support-answer\"} < 0.8 for 30m   # page: prefix changed",
+          "sources": [
+            {
+              "label": "the full price table, 14 Oct 2026 (cached input $0.10 now, $0.20 from 1 December)",
+              "url": "https://dev.to/paullovelace/gemini-4-argons-210-api-pricing-doubles-december-1-full-price-table-2k02"
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "title": "Thinking tokens are output",
+          "why": "The output rate includes the model's reasoning; the published price table says so in as many words. The answer on screen is a fraction of what was billed.",
+          "do": [
+            "Log output tokens per task, split into visible answer and reasoning, and watch the ratio per route.",
+            "Set the reasoning effort per route; the cheapest setting that passes the eval is the default."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "the full price table, 14 Oct 2026 (output prices include thinking tokens)",
+              "url": "https://dev.to/paullovelace/gemini-4-argons-210-api-pricing-doubles-december-1-full-price-table-2k02"
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "title": "Rehearse 1 December",
+          "why": "A price step with a known date is the easiest incident to prepare for. The launch rate runs to 30 November 2026 and the list rate applies from 1 December; both dates were published on launch day.",
+          "do": [
+            "Run one day of traffic through the cost model at the list price, compare it with the alert thresholds, and name who approves the line after the step."
+          ],
+          "code": null,
+          "sources": [
+            {
+              "label": "trade-press report of the launch pricing, 13 Oct 2026",
+              "url": "https://venturebeat.com/technology/google-makes-gemini-4-argon-broadly-available-with-limited-time-low-api-pricing-of-2-10-per-1m-token"
+            },
+            {
+              "label": "the vendor's launch post, 13 Oct 2026",
+              "url": "https://blog.google/innovation-and-ai/technology/developers-tools/build-with-gemini-4-argon/"
             }
           ]
         }

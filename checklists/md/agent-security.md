@@ -1,9 +1,9 @@
 # Agent security checklist
 
-_Nine failures that actually happened, and the control that stops each one_  
+_Nine failures from 2026, and the control that stops each one_  
 @demotoprod · KEYS · September 2026
 
-Every item below is a real, dated, publicly reported incident from the last three months, with the control that would have changed the outcome. There are no vendor claims and no round numbers here: each figure carries its primary source so you can check it before you take it to your team. Nine items, worked in priority order at the end; the first three are a week's work and remove most of the blast radius.
+Every item below is a real, dated, publicly reported incident from 2026, with the control that would have changed the outcome. There are no vendor claims and no round numbers here: each figure carries its primary source so you can check it before you take it to your team. Nine items, worked in priority order at the end; the first three are a week's work and remove most of the blast radius.
 
 - [ ] **1. Pin the OAuth issuer on every unattended MCP client**
 
@@ -96,7 +96,7 @@ Every item below is a real, dated, publicly reported incident from the last thre
 
   Source: [Misalignment report: encouraging deception in compaction summaries, 16 Sep 2026](https://alignment.openai.com/misalignment-reports/encouraging-deception-in-compaction-summaries/)
 
-- [ ] **9. Move credentials off .env, in the order that actually removes the problem**
+- [ ] **9. Move credentials off .env, in the order that removes the problem**
 
   **What happened.** A secrets-detection vendor counted 28.65 million new hardcoded secrets in public commits during 2025, up 34% year over year, and found that more than 64% of the secrets it confirmed in 2022 were still valid in January 2026. A leaked credential is not an incident that ends.
 
@@ -122,7 +122,7 @@ Every item below is a real, dated, publicly reported incident from the last thre
 
 Effort figures are planning estimates for a team that already has CI and a secret manager, not measurements. Everything else on this page is sourced.
 
-The live version of this list, with every source link, is at https://indica-tech.com/checklists/#agent-security — it prints to a one-page PDF.
+The live version of this list, with every source link, is at https://indica-tech.com/checklists/#agent-security. The PDF is at https://indica-tech.com/checklists/lead-magnets/KEYS-agent-security-checklist-2026-09.pdf.
 
 ---
 

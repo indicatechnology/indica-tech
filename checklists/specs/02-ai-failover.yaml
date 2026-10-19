@@ -54,7 +54,7 @@ checks:
     do:
       - Put a five-minute window in the calendar.
       - Flip the primary off in production configuration, watch error rate, p95 and cost, then flip it back.
-      - Write down what the backup's latency and spend actually were. That number is your real failover budget.
+      - Write down what the backup's latency and spend were. That number is your failover budget.
   - title: Decide what "degraded" means before you need it
     why: >
       When both providers are impaired, the only options left are the ones you built earlier: a cached answer, a smaller local

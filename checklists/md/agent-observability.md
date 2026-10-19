@@ -46,7 +46,7 @@ On 6 October 2026 a safety-evaluation lab published a red-team of the transcript
 
 Proof of concept, not an observed exploit: the lab has not seen an agent use this in its evaluations. The mechanism is general, since most trace viewers render markdown, HTML or math from agent output.
 
-The live version of this list, with every source link, is at https://indica-tech.com/checklists/#agent-observability — it prints to a one-page PDF.
+The live version of this list, with every source link, is at https://indica-tech.com/checklists/#agent-observability. The PDF is at https://indica-tech.com/checklists/lead-magnets/KEYS-agent-observability-checklist-2026-10.pdf.
 
 ---
 
