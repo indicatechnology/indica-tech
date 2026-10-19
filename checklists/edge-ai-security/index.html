@@ -41,12 +41,34 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 .lede{color:#C9C6BF;font-weight:300;font-size:1.06rem;max-width:62ch;margin:0}
 .crumb{display:inline-block;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;color:#b4b1a9;text-decoration:none;padding:12px 0;margin:-12px 0 4px}
 .crumb:hover,.crumb:focus-visible{color:var(--green)}
-.actions{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
-.act{display:inline-block;font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.02em;line-height:1;color:var(--paper);background:transparent;border:1px solid rgba(247,244,237,.4);border-radius:999px;padding:13px 15px;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s}
-.act:hover{border-color:var(--green);color:var(--green)}
+/* List pages: the list at reading width, and a rail that stays put with progress, the downloads, the checks as
+   jump links and the next list. Below 900px the rail is a block above the list and the jump links are dropped. */
+.listpage .wrap{max-width:1120px}
+.listpage main.wrap{display:grid;grid-template-columns:minmax(0,1fr) 272px;gap:48px;align-items:start}
+.col-main{grid-column:1;grid-row:1;min-width:0}
+.rail{grid-column:2;grid-row:1;position:sticky;top:24px;padding-top:32px}
+.rail-in{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px}
+.rail-k{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:0 0 6px}
+.rail-c{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:600;font-size:1.1rem;letter-spacing:-.01em;margin:0 0 6px}
+.rail-c button{font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:400;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0;margin:-12px 0}
+.rail-bar{height:5px;background:var(--line);border-radius:999px;overflow:hidden;margin:0 0 16px}
+.rail-bar span{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+.rail-a{display:flex;flex-direction:column;gap:8px;margin:0 0 18px}
+.act{display:inline-block;font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.02em;line-height:1;text-align:center;color:var(--ink);background:transparent;border:1px solid var(--ink);border-radius:999px;padding:13px 15px;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.act:hover{color:#0a6b3d;border-color:#0a6b3d}
 .act:focus-visible{outline:3px solid var(--green);outline-offset:2px}
-.act-pdf{background:var(--green);color:var(--ink);border-color:var(--green)}
-.act-pdf:hover{color:var(--ink);filter:brightness(1.06)}
+.act-pdf{background:var(--green);border-color:var(--green)}
+.act-pdf:hover{color:var(--ink);border-color:var(--green);filter:brightness(1.06)}
+.rail-toc{margin:0 0 18px;padding-left:1.2rem;font-size:.9rem;line-height:1.4}
+.rail-toc li{margin:0 0 7px;font-weight:400}
+.rail-toc a{color:var(--ink);text-decoration:none}
+.rail-toc a:hover{color:#0a6b3d;text-decoration:underline}
+.rail-toc a.is-here{color:#0a7a44;font-weight:600}
+.rail-next{margin:0;font-weight:500;font-size:.95rem}
+.rail-next a{color:var(--ink);text-decoration:none}
+.rail-next a:hover{color:#0a6b3d}
+article.check{scroll-margin-top:16px}
+@media (max-width:900px){.listpage main.wrap{display:block}.rail{position:static;padding-top:24px}.rail-toc,.rail-next,.rail-next-k,.rail nav{display:none}.rail-a{flex-direction:row;flex-wrap:wrap;margin-bottom:2px}.rail .act{flex:1 1 auto}}
 
 /* Hub: one card per list. The title link is stretched over the whole card, so the
    card is the click target; the PDF link sits above it and stays its own target. */
@@ -68,16 +90,14 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 /* One list per page. */
 .list{padding:32px 0 8px}
 .intro{margin:0 0 18px;max-width:56ch}
-.checks-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.checks-head{margin:0 0 10px}
 .checks-head .note{font-size:.82rem;color:var(--faint);margin:2px 0 0}
 .cap{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
-.progress{font-family:var(--mono);font-size:.8rem;color:var(--muted);white-space:nowrap;margin:0}
-.progress button{font:inherit;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0 12px 8px;margin:-12px 0}
 .lead-code{margin:0 0 22px}
 .lead-code .cap{margin:0 0 6px}
 pre{font-family:var(--mono);font-size:.82rem;line-height:1.45;background:var(--code);color:var(--codeink);border-radius:10px;padding:14px 16px;margin:10px 0 0;overflow-x:auto;white-space:pre}
 article.check{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px 16px;margin:0 0 12px;break-inside:avoid}
-article.check.done{border-color:var(--green)}
+article.check.off{opacity:.55}
 .check-head{display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin:0}
 .check-head input{appearance:none;-webkit-appearance:none;flex:0 0 26px;width:26px;height:26px;margin:2px 0 0;border:2px solid var(--ink);border-radius:7px;background:#fff;display:grid;place-items:center;cursor:pointer}
 .check-head input:checked{background:var(--green);border-color:var(--green)}
@@ -147,7 +167,9 @@ footer ul a{display:inline-block;padding:12px 0;margin:-12px 0}
 @media (max-width:480px){.check-body{margin-left:0}.get{padding:16px}.pager{grid-template-columns:1fr}.pager .next{text-align:left;align-items:flex-start}.pager span:empty{display:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.pager a{transition:none}}
 @media print{
-.skip,.sitenav,.crumb,.actions,.checks-head .note,.progress,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.skip,.sitenav,.crumb,.rail,.checks-head .note,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.listpage main.wrap{display:block}
+article.check.off{display:none}
 .top{background:#fff;color:#000;padding:0 0 12px}.lede{color:#333}
 body{background:#fff;font-size:10.5pt}
 article.check{border-color:#bbb}
@@ -164,7 +186,7 @@ a{text-decoration:none;color:#000}
 }
 </style>
 </head>
-<body>
+<body class="listpage">
 <a class="skip" href="#main">Skip to content</a>
 <nav class="sitenav"><div class="wrap">
 <a class="brand" href="https://indica-tech.com/"><svg viewBox="0 0 100 100" width="20" height="20" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00c46a"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg><span>Indica Tech</span></a>
@@ -181,39 +203,47 @@ a{text-decoration:none;color:#000}
 <p class="kicker">Checklist 07 of 10 · October 2026</p>
 <h1>Edge AI security checklist</h1>
 <p class="lede">Five checks before your model ships to hardware you do not physically guard</p>
-<p class="actions"><a class="act act-pdf" href="https://indica-tech.com/checklists/lead-magnets/EDGE-edge-ai-security-checklist-2026-10.pdf" download>Download the PDF</a><a class="act" href="https://indica-tech.com/checklists/md/edge-ai-security.md">Markdown</a><button class="act" type="button" data-print>Print</button></p>
 </div></header>
 <main class="wrap" id="main">
+<aside class="rail" aria-label="Progress, downloads and contents"><div class="rail-in">
+<p class="rail-k">Your list</p>
+<p class="rail-c"><span class="count">5 of 5 selected</span><button type="button" data-reset>select all</button></p>
+<p class="rail-bar"><span style="width:100%"></span></p>
+<div class="rail-a"><a class="act act-pdf" href="https://indica-tech.com/checklists/lead-magnets/EDGE-edge-ai-security-checklist-2026-10.pdf" download>Download the PDF</a><a class="act" href="https://indica-tech.com/checklists/md/edge-ai-security.md">Markdown</a><button class="act" type="button" data-print>Print this list</button></div>
+<nav aria-label="On this page"><p class="rail-k">On this page</p><ol class="rail-toc"><li><a href="#edge-ai-security-1-card">Pull one unit off the wall and count what is on it</a></li><li><a href="#edge-ai-security-2-card">Keep keys in a secure element the board cannot read as a file</a></li><li><a href="#edge-ai-security-3-card">Store the result, not the frame</a></li><li><a href="#edge-ai-security-4-card">Sign the model and the firmware, and refuse anything unsigned</a></li><li><a href="#edge-ai-security-5-card">Rehearse losing the box</a></li></ol></nav>
+<p class="rail-k rail-next-k">Next</p><p class="rail-next"><a href="https://indica-tech.com/checklists/disputed-ai-answer/">Disputed-answer checklist &rarr;</a></p>
+</div></aside>
+<div class="col-main">
 <article class="list" id="edge-ai-security">
 <p class="intro">On 17 Sep 2026 a group reported unbolting one licence-plate-reader camera and finding the encryption key next to the recorded media: about 1.6 million images and 27,321 clips from roughly 21 days, from a device whose vendor had said footage is only briefly stored. A device that scores frames locally must decrypt them locally, so &quot;encrypted at rest&quot; protects a dead disk, not a working device.</p>
 
-<div class="checks-head"><div><p class="cap">The checks</p><p class="note">Ticks are saved on this device only.</p></div><p class="progress"><span class="count">0 of 5 done</span><button type="button">reset</button></p></div>
+<div class="checks-head"><p class="cap">The checks</p><p class="note">Everything starts ticked. Untick what you will not do; the choice is saved on this device only, and Print keeps only what you kept.</p></div>
 <article class="check" id="edge-ai-security-1-card">
-<label class="check-head" for="edge-ai-security-1"><input type="checkbox" id="edge-ai-security-1"><span class="n">1</span><h2>Pull one unit off the wall and count what is on it</h2></label>
+<label class="check-head" for="edge-ai-security-1"><input type="checkbox" id="edge-ai-security-1" checked><span class="n">1</span><h2>Pull one unit off the wall and count what is on it</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> The claim was &quot;briefly stored&quot;; the device held about 21 days of media, and nobody knew because nobody had taken a unit down and counted. Retention on the edge is a claim until someone counts, and the count is what a thief gets.</p>
 <p><b>The check.</b></p><ul><li>Once a quarter, image one deployed device per hardware revision and list every file with its age.</li><li>Put the counted retention in the questionnaire; set the on-device window in minutes and alert past it.</li></ul><p class="src">Source: <a href="https://www.tomshardware.com/tech-industry/cyber-security/hackers-find-encryption-key-stored-on-flock-camera-group-extracts-more-than-27-000-clips-1-6-million-images-captured-in-a-span-of-21-days-from-device" rel="noopener">News report with the extracted counts, 17 Sep 2026</a></p>
 </div>
 </article><article class="check" id="edge-ai-security-2-card">
-<label class="check-head" for="edge-ai-security-2"><input type="checkbox" id="edge-ai-security-2"><span class="n">2</span><h2>Keep keys in a secure element the board cannot read as a file</h2></label>
+<label class="check-head" for="edge-ai-security-2"><input type="checkbox" id="edge-ai-security-2" checked><span class="n">2</span><h2>Keep keys in a secure element the board cannot read as a file</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> The stolen camera&#x27;s media partition carried the key that unlocked the media, so on-device encryption changed nothing for whoever held it. The consumer IoT baseline standard says sensitive security parameters shall be stored securely and a per-device identity shall resist physical, electrical and software tampering.</p>
 <p><b>The check.</b></p><ul><li>Per-device keys in a secure element or TEE, generated on the device, never on flash; no shared fleet key.</li><li>The cloud accepts a device only after attestation; &quot;encrypted at rest&quot; is true only when the device is off.</li></ul><p class="src">Source: <a href="https://www.etsi.org/deliver/etsi_en/303600_303699/303645/02.01.01_60/en_303645v020101p.pdf" rel="noopener">ETSI EN 303 645 V2.1.1, provisions 5.4-1 and 5.4-2, June 2020</a>; <a href="https://www.tomshardware.com/tech-industry/cyber-security/hackers-find-encryption-key-stored-on-flock-camera-group-extracts-more-than-27-000-clips-1-6-million-images-captured-in-a-span-of-21-days-from-device" rel="noopener">News report with the partition layout, 17 Sep 2026</a></p>
 </div>
 </article><article class="check" id="edge-ai-security-3-card">
-<label class="check-head" for="edge-ai-security-3"><input type="checkbox" id="edge-ai-security-3"><span class="n">3</span><h2>Store the result, not the frame</h2></label>
+<label class="check-head" for="edge-ai-security-3"><input type="checkbox" id="edge-ai-security-3" checked><span class="n">3</span><h2>Store the result, not the frame</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> The model needed each frame for milliseconds; the device kept it for weeks. About 50,200 vehicles and 11 people were in the extracted media because raw frames stayed after the inference that used them. The NIST core baseline makes data protection a capability of the device itself.</p>
 <p><b>The check.</b></p><ul><li>Write the inference output (class, count, score) and at most a thumbnail; drop the frame after scoring.</li><li>Anything waiting for upload is encrypted with a key the device does not hold; delete on acknowledgement.</li></ul><p class="src">Source: <a href="https://nvlpubs.nist.gov/nistpubs/ir/2020/NIST.IR.8259A.pdf" rel="noopener">NISTIR 8259A, IoT Device Cybersecurity Capability Core Baseline, May 2020</a></p>
 </div>
 </article><article class="check" id="edge-ai-security-4-card">
-<label class="check-head" for="edge-ai-security-4"><input type="checkbox" id="edge-ai-security-4"><span class="n">4</span><h2>Sign the model and the firmware, and refuse anything unsigned</h2></label>
+<label class="check-head" for="edge-ai-security-4"><input type="checkbox" id="edge-ai-security-4" checked><span class="n">4</span><h2>Sign the model and the firmware, and refuse anything unsigned</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> A device nobody guards can be opened, re-flashed and put back, so the model and the firmware must prove where they came from. The baseline standard asks for secure boot and updatable software; UK law for consumer connectable products (in force 29 April 2024) requires a published minimum security-update period.</p>
 <p><b>The check.</b></p><ul><li>Secure boot with anti-rollback; the model is signed with a key that never lives on the device, and an unsigned model does not load.</li><li>Signed over-the-air updates with a tested rollback; publish the support period per hardware revision.</li></ul><p class="src">Source: <a href="https://www.etsi.org/deliver/etsi_en/303600_303699/303645/02.01.01_60/en_303645v020101p.pdf" rel="noopener">ETSI EN 303 645 V2.1.1, provisions 5.3 and 5.7-1, June 2020</a>; <a href="https://www.gov.uk/government/publications/the-uk-product-security-and-telecommunications-infrastructure-product-security-regime" rel="noopener">UK product security regime for connectable products, in force 29 April 2024</a></p>
 </div>
 </article><article class="check" id="edge-ai-security-5-card">
-<label class="check-head" for="edge-ai-security-5"><input type="checkbox" id="edge-ai-security-5"><span class="n">5</span><h2>Rehearse losing the box</h2></label>
+<label class="check-head" for="edge-ai-security-5"><input type="checkbox" id="edge-ai-security-5" checked><span class="n">5</span><h2>Rehearse losing the box</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> One unit gave up 21 days of media; with a shared key it would have been the fleet. The NIST baseline asks that each device be uniquely identifiable and report its own state, which helps only if revoking one has been rehearsed.</p>
 <p><b>The check.</b></p><ul><li>Per-device identity and certificate, and a &quot;reported stolen&quot; runbook that revokes it within minutes.</li><li>Remote wipe on next contact; rehearse the runbook on a real unit twice a year.</li></ul><p class="src">Source: <a href="https://nvlpubs.nist.gov/nistpubs/ir/2020/NIST.IR.8259A.pdf" rel="noopener">NISTIR 8259A, Device Identification and Cybersecurity State Awareness, May 2020</a>; <a href="https://www.gov.uk/government/publications/the-uk-product-security-and-telecommunications-infrastructure-product-security-regime" rel="noopener">UK product security regime for connectable products, in force 29 April 2024</a></p>
@@ -242,6 +272,7 @@ a{text-decoration:none;color:#000}
 <button class="btn" type="submit">Send me new checklists</button>
 </form>
 </section>
+</div>
 </main>
 <aside class="printonly" aria-hidden="true">
 <p class="pc-name">Nitish Gautam &mdash; Indica Technology Ltd</p>
@@ -270,18 +301,27 @@ a{text-decoration:none;color:#000}
   function save(){try{localStorage.setItem(key,JSON.stringify(state))}catch(err){}}
   function update(sec){
     var boxes=sec.querySelectorAll('input[type=checkbox]'),done=0;
-    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.add('done')}else{a.classList.remove('done')}});
-    var p=sec.querySelector('.progress .count');if(p){p.textContent=done+' of '+boxes.length+' done'}
+    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.remove('off')}else{a.classList.add('off')}});
+    document.querySelectorAll('.count').forEach(function(p){p.textContent=done+' of '+boxes.length+' selected'});
+    var bar=document.querySelector('.rail-bar span');if(bar){bar.style.width=(boxes.length?Math.round(done/boxes.length*100):0)+'%'}
   }
   document.querySelectorAll('.list').forEach(function(sec){
     sec.querySelectorAll('input[type=checkbox]').forEach(function(b){
-      if(state[b.id]){b.checked=true}
+      b.checked=(b.id in state)?!!state[b.id]:true;
       b.addEventListener('change',function(){state[b.id]=b.checked;save();update(sec)});
     });
-    var r=sec.querySelector('.progress button');
-    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=false;delete state[b.id]});save();update(sec)})}
+    var r=document.querySelector('[data-reset]');
+    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=true;delete state[b.id]});save();update(sec)})}
     update(sec);
   });
+})();
+/* The jump link for the check currently in view is marked. */
+(function(){
+  var links=document.querySelectorAll('.rail-toc a');if(!links.length||!('IntersectionObserver' in window)){return}
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  links[0].classList.add('is-here');
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){links.forEach(function(a){a.classList.remove('is-here')});var a=map[en.target.id];if(a){a.classList.add('is-here')}}})},{rootMargin:'-15% 0px -70% 0px'});
+  Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el){io.observe(el)}});
 })();
 /* Print: the browser's own print dialogue. The page holds one list, so the print
    stylesheet only drops the navigation and the calls to action and adds the contact

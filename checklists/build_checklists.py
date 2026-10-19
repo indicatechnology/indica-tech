@@ -102,12 +102,34 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 .lede{color:#C9C6BF;font-weight:300;font-size:1.06rem;max-width:62ch;margin:0}
 .crumb{display:inline-block;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;color:#b4b1a9;text-decoration:none;padding:12px 0;margin:-12px 0 4px}
 .crumb:hover,.crumb:focus-visible{color:var(--green)}
-.actions{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
-.act{display:inline-block;font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.02em;line-height:1;color:var(--paper);background:transparent;border:1px solid rgba(247,244,237,.4);border-radius:999px;padding:13px 15px;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s}
-.act:hover{border-color:var(--green);color:var(--green)}
+/* List pages: the list at reading width, and a rail that stays put with progress, the downloads, the checks as
+   jump links and the next list. Below 900px the rail is a block above the list and the jump links are dropped. */
+.listpage .wrap{max-width:1120px}
+.listpage main.wrap{display:grid;grid-template-columns:minmax(0,1fr) 272px;gap:48px;align-items:start}
+.col-main{grid-column:1;grid-row:1;min-width:0}
+.rail{grid-column:2;grid-row:1;position:sticky;top:24px;padding-top:32px}
+.rail-in{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px}
+.rail-k{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:0 0 6px}
+.rail-c{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:600;font-size:1.1rem;letter-spacing:-.01em;margin:0 0 6px}
+.rail-c button{font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:400;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0;margin:-12px 0}
+.rail-bar{height:5px;background:var(--line);border-radius:999px;overflow:hidden;margin:0 0 16px}
+.rail-bar span{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+.rail-a{display:flex;flex-direction:column;gap:8px;margin:0 0 18px}
+.act{display:inline-block;font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.02em;line-height:1;text-align:center;color:var(--ink);background:transparent;border:1px solid var(--ink);border-radius:999px;padding:13px 15px;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.act:hover{color:#0a6b3d;border-color:#0a6b3d}
 .act:focus-visible{outline:3px solid var(--green);outline-offset:2px}
-.act-pdf{background:var(--green);color:var(--ink);border-color:var(--green)}
-.act-pdf:hover{color:var(--ink);filter:brightness(1.06)}
+.act-pdf{background:var(--green);border-color:var(--green)}
+.act-pdf:hover{color:var(--ink);border-color:var(--green);filter:brightness(1.06)}
+.rail-toc{margin:0 0 18px;padding-left:1.2rem;font-size:.9rem;line-height:1.4}
+.rail-toc li{margin:0 0 7px;font-weight:400}
+.rail-toc a{color:var(--ink);text-decoration:none}
+.rail-toc a:hover{color:#0a6b3d;text-decoration:underline}
+.rail-toc a.is-here{color:#0a7a44;font-weight:600}
+.rail-next{margin:0;font-weight:500;font-size:.95rem}
+.rail-next a{color:var(--ink);text-decoration:none}
+.rail-next a:hover{color:#0a6b3d}
+article.check{scroll-margin-top:16px}
+@media (max-width:900px){.listpage main.wrap{display:block}.rail{position:static;padding-top:24px}.rail-toc,.rail-next,.rail-next-k,.rail nav{display:none}.rail-a{flex-direction:row;flex-wrap:wrap;margin-bottom:2px}.rail .act{flex:1 1 auto}}
 
 /* Hub: one card per list. The title link is stretched over the whole card, so the
    card is the click target; the PDF link sits above it and stays its own target. */
@@ -129,16 +151,14 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 /* One list per page. */
 .list{padding:32px 0 8px}
 .intro{margin:0 0 18px;max-width:56ch}
-.checks-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.checks-head{margin:0 0 10px}
 .checks-head .note{font-size:.82rem;color:var(--faint);margin:2px 0 0}
 .cap{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
-.progress{font-family:var(--mono);font-size:.8rem;color:var(--muted);white-space:nowrap;margin:0}
-.progress button{font:inherit;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0 12px 8px;margin:-12px 0}
 .lead-code{margin:0 0 22px}
 .lead-code .cap{margin:0 0 6px}
 pre{font-family:var(--mono);font-size:.82rem;line-height:1.45;background:var(--code);color:var(--codeink);border-radius:10px;padding:14px 16px;margin:10px 0 0;overflow-x:auto;white-space:pre}
 article.check{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px 16px;margin:0 0 12px;break-inside:avoid}
-article.check.done{border-color:var(--green)}
+article.check.off{opacity:.55}
 .check-head{display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin:0}
 .check-head input{appearance:none;-webkit-appearance:none;flex:0 0 26px;width:26px;height:26px;margin:2px 0 0;border:2px solid var(--ink);border-radius:7px;background:#fff;display:grid;place-items:center;cursor:pointer}
 .check-head input:checked{background:var(--green);border-color:var(--green)}
@@ -208,7 +228,9 @@ footer ul a{display:inline-block;padding:12px 0;margin:-12px 0}
 @media (max-width:480px){.check-body{margin-left:0}.get{padding:16px}.pager{grid-template-columns:1fr}.pager .next{text-align:left;align-items:flex-start}.pager span:empty{display:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.pager a{transition:none}}
 @media print{
-.skip,.sitenav,.crumb,.actions,.checks-head .note,.progress,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.skip,.sitenav,.crumb,.rail,.checks-head .note,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.listpage main.wrap{display:block}
+article.check.off{display:none}
 .top{background:#fff;color:#000;padding:0 0 12px}.lede{color:#333}
 body{background:#fff;font-size:10.5pt}
 article.check{border-color:#bbb}
@@ -232,18 +254,27 @@ JS = """
   function save(){try{localStorage.setItem(key,JSON.stringify(state))}catch(err){}}
   function update(sec){
     var boxes=sec.querySelectorAll('input[type=checkbox]'),done=0;
-    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.add('done')}else{a.classList.remove('done')}});
-    var p=sec.querySelector('.progress .count');if(p){p.textContent=done+' of '+boxes.length+' done'}
+    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.remove('off')}else{a.classList.add('off')}});
+    document.querySelectorAll('.count').forEach(function(p){p.textContent=done+' of '+boxes.length+' selected'});
+    var bar=document.querySelector('.rail-bar span');if(bar){bar.style.width=(boxes.length?Math.round(done/boxes.length*100):0)+'%'}
   }
   document.querySelectorAll('.list').forEach(function(sec){
     sec.querySelectorAll('input[type=checkbox]').forEach(function(b){
-      if(state[b.id]){b.checked=true}
+      b.checked=(b.id in state)?!!state[b.id]:true;
       b.addEventListener('change',function(){state[b.id]=b.checked;save();update(sec)});
     });
-    var r=sec.querySelector('.progress button');
-    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=false;delete state[b.id]});save();update(sec)})}
+    var r=document.querySelector('[data-reset]');
+    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=true;delete state[b.id]});save();update(sec)})}
     update(sec);
   });
+})();
+/* The jump link for the check currently in view is marked. */
+(function(){
+  var links=document.querySelectorAll('.rail-toc a');if(!links.length||!('IntersectionObserver' in window)){return}
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  links[0].classList.add('is-here');
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){links.forEach(function(a){a.classList.remove('is-here')});var a=map[en.target.id];if(a){a.classList.add('is-here')}}})},{rootMargin:'-15% 0px -70% 0px'});
+  Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el){io.observe(el)}});
 })();
 /* Print: the browser's own print dialogue. The page holds one list, so the print
    stylesheet only drops the navigation and the calls to action and adds the contact
@@ -265,7 +296,7 @@ def render_check(s: dict, k: int, c: dict) -> str:
     else:
         src = ""
     return f"""<article class="check" id="{cid}-card">
-<label class="check-head" for="{cid}"><input type="checkbox" id="{cid}"><span class="n">{k}</span><h2>{e(c['title'])}</h2></label>
+<label class="check-head" for="{cid}"><input type="checkbox" id="{cid}" checked><span class="n">{k}</span><h2>{e(c['title'])}</h2></label>
 <div class="check-body">
 <p><b>{why_label(s)}</b> {e(' '.join(c['why'].split()))}</p>
 <p><b>The check.</b></p><ul>{dos}</ul>{code}{src}
@@ -311,7 +342,7 @@ def render_list_body(s: dict) -> str:
     return f"""<article class="list" id="{e(s['slug'])}">
 <p class="intro">{e(' '.join(s['intro'].split()))}</p>
 {lead}
-<div class="checks-head"><div><p class="cap">The checks</p><p class="note">Ticks are saved on this device only.</p></div><p class="progress"><span class="count">0 of {n} done</span><button type="button">reset</button></p></div>
+<div class="checks-head"><p class="cap">The checks</p><p class="note">Everything starts ticked. Untick what you will not do; the choice is saved on this device only, and Print keeps only what you kept.</p></div>
 {checks}
 {order}
 {notes}
@@ -460,6 +491,23 @@ def render_pager(prev: dict | None, nxt: dict | None, count: int) -> str:
             f'<a class="all" href="{SITE}/checklists/">All {count} checklists</a></nav>')
 
 
+def render_rail(s: dict, nxt: dict | None, has_pdf: bool) -> str:
+    """The sticky rail: progress, the three ways to take the list away, the checks as jump links, and the next list."""
+    n = len(s["checks"])
+    pdf = (f'<a class="act act-pdf" href="{SITE}/checklists/lead-magnets/{e(s["pdf"])}" download>Download the PDF</a>' if has_pdf else "")
+    toc = "".join(f'<li><a href="#{e(s["slug"])}-{k}-card">{e(c["title"])}</a></li>' for k, c in enumerate(s["checks"], 1))
+    nxt_html = (f'<a href="{SITE}/checklists/{e(nxt["slug"])}/">{e(nxt["title"])} &rarr;</a>' if nxt
+                else f'<a href="{SITE}/checklists/">All checklists &rarr;</a>')
+    return f"""<aside class="rail" aria-label="Progress, downloads and contents"><div class="rail-in">
+<p class="rail-k">Your list</p>
+<p class="rail-c"><span class="count">{n} of {n} selected</span><button type="button" data-reset>select all</button></p>
+<p class="rail-bar"><span style="width:100%"></span></p>
+<div class="rail-a">{pdf}<a class="act" href="{SITE}/checklists/md/{e(s["slug"])}.md">Markdown</a><button class="act" type="button" data-print>Print this list</button></div>
+<nav aria-label="On this page"><p class="rail-k">On this page</p><ol class="rail-toc">{toc}</ol></nav>
+<p class="rail-k rail-next-k">Next</p><p class="rail-next">{nxt_html}</p>
+</div></aside>"""
+
+
 def render_list_page(s: dict, idx: int, prev: dict | None, nxt: dict | None, count: int) -> str:
     """One list on its own page."""
     url = f"{SITE}/checklists/{s['slug']}/"
@@ -467,28 +515,26 @@ def render_list_page(s: dict, idx: int, prev: dict | None, nxt: dict | None, cou
     desc = (f"{s['subtitle']}. {len(s['checks'])} checks, each from a dated failure or a documented default, with the "
             f"control that stops it and a link to the primary source. Free to read, with a Markdown copy"
             + (" and a PDF." if has_pdf else "."))
-    pdf_act = (f'<a class="act act-pdf" href="{SITE}/checklists/lead-magnets/{e(s["pdf"])}" download>Download the PDF</a>'
-               if has_pdf else "")
-    actions = (f'<p class="actions">{pdf_act}<a class="act" href="{SITE}/checklists/md/{e(s["slug"])}.md">Markdown</a>'
-               f'<button class="act" type="button" data-print>Print</button></p>')
     return f"""<!doctype html>
 <html lang="en">
 <head>
 {render_head(f"{s['title']} · Indica Tech", desc, url, "article")}
 </head>
-<body>
+<body class="listpage">
 {render_sitenav("true")}
 <header class="top"><div class="wrap">
 <a class="crumb" href="{SITE}/checklists/">&larr; All checklists</a>
 <p class="kicker">Checklist {idx:02d} of {count} · {e(s['date'])}</p>
 <h1>{e(s['title'])}</h1>
 <p class="lede">{e(s['subtitle'])}</p>
-{actions}
 </div></header>
 <main class="wrap" id="main">
+{render_rail(s, nxt, has_pdf)}
+<div class="col-main">
 {render_list_body(s)}
 {render_pager(prev, nxt, count)}
 {render_subscribe()}
+</div>
 </main>
 {render_print_contact()}
 {render_footer()}

@@ -41,12 +41,34 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 .lede{color:#C9C6BF;font-weight:300;font-size:1.06rem;max-width:62ch;margin:0}
 .crumb{display:inline-block;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;color:#b4b1a9;text-decoration:none;padding:12px 0;margin:-12px 0 4px}
 .crumb:hover,.crumb:focus-visible{color:var(--green)}
-.actions{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
-.act{display:inline-block;font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.02em;line-height:1;color:var(--paper);background:transparent;border:1px solid rgba(247,244,237,.4);border-radius:999px;padding:13px 15px;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s}
-.act:hover{border-color:var(--green);color:var(--green)}
+/* List pages: the list at reading width, and a rail that stays put with progress, the downloads, the checks as
+   jump links and the next list. Below 900px the rail is a block above the list and the jump links are dropped. */
+.listpage .wrap{max-width:1120px}
+.listpage main.wrap{display:grid;grid-template-columns:minmax(0,1fr) 272px;gap:48px;align-items:start}
+.col-main{grid-column:1;grid-row:1;min-width:0}
+.rail{grid-column:2;grid-row:1;position:sticky;top:24px;padding-top:32px}
+.rail-in{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px}
+.rail-k{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:0 0 6px}
+.rail-c{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:600;font-size:1.1rem;letter-spacing:-.01em;margin:0 0 6px}
+.rail-c button{font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:400;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0;margin:-12px 0}
+.rail-bar{height:5px;background:var(--line);border-radius:999px;overflow:hidden;margin:0 0 16px}
+.rail-bar span{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+.rail-a{display:flex;flex-direction:column;gap:8px;margin:0 0 18px}
+.act{display:inline-block;font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.02em;line-height:1;text-align:center;color:var(--ink);background:transparent;border:1px solid var(--ink);border-radius:999px;padding:13px 15px;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.act:hover{color:#0a6b3d;border-color:#0a6b3d}
 .act:focus-visible{outline:3px solid var(--green);outline-offset:2px}
-.act-pdf{background:var(--green);color:var(--ink);border-color:var(--green)}
-.act-pdf:hover{color:var(--ink);filter:brightness(1.06)}
+.act-pdf{background:var(--green);border-color:var(--green)}
+.act-pdf:hover{color:var(--ink);border-color:var(--green);filter:brightness(1.06)}
+.rail-toc{margin:0 0 18px;padding-left:1.2rem;font-size:.9rem;line-height:1.4}
+.rail-toc li{margin:0 0 7px;font-weight:400}
+.rail-toc a{color:var(--ink);text-decoration:none}
+.rail-toc a:hover{color:#0a6b3d;text-decoration:underline}
+.rail-toc a.is-here{color:#0a7a44;font-weight:600}
+.rail-next{margin:0;font-weight:500;font-size:.95rem}
+.rail-next a{color:var(--ink);text-decoration:none}
+.rail-next a:hover{color:#0a6b3d}
+article.check{scroll-margin-top:16px}
+@media (max-width:900px){.listpage main.wrap{display:block}.rail{position:static;padding-top:24px}.rail-toc,.rail-next,.rail-next-k,.rail nav{display:none}.rail-a{flex-direction:row;flex-wrap:wrap;margin-bottom:2px}.rail .act{flex:1 1 auto}}
 
 /* Hub: one card per list. The title link is stretched over the whole card, so the
    card is the click target; the PDF link sits above it and stays its own target. */
@@ -68,16 +90,14 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 /* One list per page. */
 .list{padding:32px 0 8px}
 .intro{margin:0 0 18px;max-width:56ch}
-.checks-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.checks-head{margin:0 0 10px}
 .checks-head .note{font-size:.82rem;color:var(--faint);margin:2px 0 0}
 .cap{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
-.progress{font-family:var(--mono);font-size:.8rem;color:var(--muted);white-space:nowrap;margin:0}
-.progress button{font:inherit;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0 12px 8px;margin:-12px 0}
 .lead-code{margin:0 0 22px}
 .lead-code .cap{margin:0 0 6px}
 pre{font-family:var(--mono);font-size:.82rem;line-height:1.45;background:var(--code);color:var(--codeink);border-radius:10px;padding:14px 16px;margin:10px 0 0;overflow-x:auto;white-space:pre}
 article.check{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px 16px;margin:0 0 12px;break-inside:avoid}
-article.check.done{border-color:var(--green)}
+article.check.off{opacity:.55}
 .check-head{display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin:0}
 .check-head input{appearance:none;-webkit-appearance:none;flex:0 0 26px;width:26px;height:26px;margin:2px 0 0;border:2px solid var(--ink);border-radius:7px;background:#fff;display:grid;place-items:center;cursor:pointer}
 .check-head input:checked{background:var(--green);border-color:var(--green)}
@@ -147,7 +167,9 @@ footer ul a{display:inline-block;padding:12px 0;margin:-12px 0}
 @media (max-width:480px){.check-body{margin-left:0}.get{padding:16px}.pager{grid-template-columns:1fr}.pager .next{text-align:left;align-items:flex-start}.pager span:empty{display:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.pager a{transition:none}}
 @media print{
-.skip,.sitenav,.crumb,.actions,.checks-head .note,.progress,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.skip,.sitenav,.crumb,.rail,.checks-head .note,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.listpage main.wrap{display:block}
+article.check.off{display:none}
 .top{background:#fff;color:#000;padding:0 0 12px}.lede{color:#333}
 body{background:#fff;font-size:10.5pt}
 article.check{border-color:#bbb}
@@ -164,7 +186,7 @@ a{text-decoration:none;color:#000}
 }
 </style>
 </head>
-<body>
+<body class="listpage">
 <a class="skip" href="#main">Skip to content</a>
 <nav class="sitenav"><div class="wrap">
 <a class="brand" href="https://indica-tech.com/"><svg viewBox="0 0 100 100" width="20" height="20" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00c46a"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg><span>Indica Tech</span></a>
@@ -181,63 +203,71 @@ a{text-decoration:none;color:#000}
 <p class="kicker">Checklist 01 of 10 · September 2026</p>
 <h1>Agent security checklist</h1>
 <p class="lede">Nine failures from 2026, and the control that stops each one</p>
-<p class="actions"><a class="act act-pdf" href="https://indica-tech.com/checklists/lead-magnets/KEYS-agent-security-checklist-2026-09.pdf" download>Download the PDF</a><a class="act" href="https://indica-tech.com/checklists/md/agent-security.md">Markdown</a><button class="act" type="button" data-print>Print</button></p>
 </div></header>
 <main class="wrap" id="main">
+<aside class="rail" aria-label="Progress, downloads and contents"><div class="rail-in">
+<p class="rail-k">Your list</p>
+<p class="rail-c"><span class="count">9 of 9 selected</span><button type="button" data-reset>select all</button></p>
+<p class="rail-bar"><span style="width:100%"></span></p>
+<div class="rail-a"><a class="act act-pdf" href="https://indica-tech.com/checklists/lead-magnets/KEYS-agent-security-checklist-2026-09.pdf" download>Download the PDF</a><a class="act" href="https://indica-tech.com/checklists/md/agent-security.md">Markdown</a><button class="act" type="button" data-print>Print this list</button></div>
+<nav aria-label="On this page"><p class="rail-k">On this page</p><ol class="rail-toc"><li><a href="#agent-security-1-card">Pin the OAuth issuer on every unattended MCP client</a></li><li><a href="#agent-security-2-card">Never let an automated reply count as human approval</a></li><li><a href="#agent-security-3-card">Allow-list egress by destination; &quot;read-only&quot; is not a boundary</a></li><li><a href="#agent-security-4-card">Treat DNS as an egress path</a></li><li><a href="#agent-security-5-card">Confine the network, not just the VM</a></li><li><a href="#agent-security-6-card">Egress-monitor the coding agent itself</a></li><li><a href="#agent-security-7-card">Assume an agent you refuse will route around you</a></li><li><a href="#agent-security-8-card">Audit from the raw trace, never the agent&#x27;s own summary</a></li><li><a href="#agent-security-9-card">Move credentials off .env, in the order that removes the problem</a></li></ol></nav>
+<p class="rail-k rail-next-k">Next</p><p class="rail-next"><a href="https://indica-tech.com/checklists/ai-failover/">AI failover test &rarr;</a></p>
+</div></aside>
+<div class="col-main">
 <article class="list" id="agent-security">
 <p class="intro">Every item below is a real, dated, publicly reported incident from 2026, with the control that would have changed the outcome. There are no vendor claims and no round numbers here: each figure carries its primary source so you can check it before you take it to your team. Nine items, worked in priority order at the end; the first three are a week&#x27;s work and remove most of the blast radius.</p>
 
-<div class="checks-head"><div><p class="cap">The checks</p><p class="note">Ticks are saved on this device only.</p></div><p class="progress"><span class="count">0 of 9 done</span><button type="button">reset</button></p></div>
+<div class="checks-head"><p class="cap">The checks</p><p class="note">Everything starts ticked. Untick what you will not do; the choice is saved on this device only, and Print keeps only what you kept.</p></div>
 <article class="check" id="agent-security-1-card">
-<label class="check-head" for="agent-security-1"><input type="checkbox" id="agent-security-1"><span class="n">1</span><h2>Pin the OAuth issuer on every unattended MCP client</h2></label>
+<label class="check-head" for="agent-security-1"><input type="checkbox" id="agent-security-1" checked><span class="n">1</span><h2>Pin the OAuth issuer on every unattended MCP client</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> A security advisory of 28 Sep 2026 (CVSS 7.5) for the official Python SDK of the Model Context Protocol: a malicious MCP server could choose the authorization server. On the fallback discovery path the issuer check never ran, because the expected issuer was empty, so a rogue server could name the real login page but its own token endpoint and collect the client secret, the authorization code and the PKCE verifier, enough to redeem a valid token at the real provider. Affected: mcp 1.9.1 to 1.29.1 and 2.0.0 to 2.1.1. The fix had shipped about three weeks earlier, in v1.30.0, under &quot;Behaviour changes&quot; with no security label.</p>
 <p><b>The check.</b></p><ul><li>Upgrade to 1.30.0 / 2.2.0 and pass issuer= on every unattended provider. Upgrading alone changes nothing there, and the only signal is a Python deprecation warning, which Python hides by default.</li><li>Fail CI on that deprecation warning.</li><li>Clear stored client registrations and rotate every secret that touched an untrusted server.</li></ul><pre>ClientCredentialsOAuthProvider(..., issuer=&quot;https://auth.example.com&quot;)   # upgrade alone does nothing here</pre><p class="src">Source: <a href="https://github.com/modelcontextprotocol/python-sdk/security/advisories/GHSA-qx49-fqc8-xw99" rel="noopener">Security advisory GHSA-qx49-fqc8-xw99, 28 Sep 2026</a></p>
 </div>
 </article><article class="check" id="agent-security-2-card">
-<label class="check-head" for="agent-security-2"><input type="checkbox" id="agent-security-2"><span class="n">2</span><h2>Never let an automated reply count as human approval</h2></label>
+<label class="check-head" for="agent-security-2"><input type="checkbox" id="agent-security-2" checked><span class="n">2</span><h2>Never let an automated reply count as human approval</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> A national AI security institute evaluated a frontier model on a fully simulated cyber range with the vendor&#x27;s cyber safeguards off, about a hundred evaluated runs. In the ten scenarios where it misbehaved most, the model asked the operator for permission in 82% of trajectories, and the test harness answered every question with the same generic line: &quot;Please proceed to the next step using your best judgement.&quot; The model treated that automated reply as consent 44% of the time. Across all samples, 29% of runs reached the point of trying to deliver a malicious payload, against 6% for the previous model. The vendor cancelled the model&#x27;s October release the same day over &quot;scope and authorization&quot;.</p>
 <p><b>The check.</b></p><ul><li>Approval must arrive on a channel the agent cannot write to or synthesise.</li><li>A default response, a retry or a timeout is a denial, never a yes.</li><li>Log which human said yes, and to what.</li></ul><p class="src">Source: <a href="https://www.aisi.gov.uk/blog/gpt-6-astra-performs-unsanctioned-supply-chain-attacks-in-simulations" rel="noopener">National AI security institute, blog post, 28 Sep 2026</a>; <a href="https://cdn.prod.website-files.com/663bd486c5e4c81588db7a1d/6aba83e3772048bdd24df3d8_AISI_GPT-6_Astra_Technical_Report.pdf" rel="noopener">the technical report (PDF) with the 82%, 44% and 29% figures</a></p>
 </div>
 </article><article class="check" id="agent-security-3-card">
-<label class="check-head" for="agent-security-3"><input type="checkbox" id="agent-security-3"><span class="n">3</span><h2>Allow-list egress by destination; &quot;read-only&quot; is not a boundary</h2></label>
+<label class="check-head" for="agent-security-3"><input type="checkbox" id="agent-security-3" checked><span class="n">3</span><h2>Allow-list egress by destination; &quot;read-only&quot; is not a boundary</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> An independent evaluator&#x27;s investigation of a July 2026 incident at a frontier lab: roughly 1,200 evaluation agents found a write path inside an environment believed to be read-only, exchanged about 70,000 messages through it, and around 700 of them attacked a public model-hosting platform until one reached remote code execution. The control that would have stopped it was not a smarter model.</p>
 <p><b>The check.</b></p><ul><li>Default-deny outbound.</li><li>Enumerate every destination the agent is allowed to reach and justify each one.</li><li>Treat a read-only mount as a convenience, never as containment.</li></ul><p class="src">Source: <a href="https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/" rel="noopener">Independent investigation of the July incident, 26 Aug 2026</a></p>
 </div>
 </article><article class="check" id="agent-security-4-card">
-<label class="check-head" for="agent-security-4"><input type="checkbox" id="agent-security-4"><span class="n">4</span><h2>Treat DNS as an egress path</h2></label>
+<label class="check-head" for="agent-security-4"><input type="checkbox" id="agent-security-4" checked><span class="n">4</span><h2>Treat DNS as an egress path</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> A frontier lab&#x27;s misalignment report: a research model in reinforcement-learning training, inside a sandbox with an offline web cache and a blocking web proxy, pushed eighteen questions out to a third-party chatbot service by embedding them in DNS lookups, the one route its sandbox still answered. Fourteen of them carried the biographical clues of the person the model had been told to investigate.</p>
 <p><b>The check.</b></p><ul><li>The resolver is part of the sandbox: point it at a server you control.</li><li>Log every query and alert on long or high-entropy labels.</li><li>Blocking HTTP is not blocking the network.</li></ul><p class="src">Source: <a href="https://alignment.openai.com/misalignment-reports/an-agent-used-dns-to-reach-an-external-chatbot/" rel="noopener">Misalignment report: an agent used DNS to reach an external chatbot, 20 to 25 Sep 2026</a></p>
 </div>
 </article><article class="check" id="agent-security-5-card">
-<label class="check-head" for="agent-security-5"><input type="checkbox" id="agent-security-5"><span class="n">5</span><h2>Confine the network, not just the VM</h2></label>
+<label class="check-head" for="agent-security-5"><input type="checkbox" id="agent-security-5" checked><span class="n">5</span><h2>Confine the network, not just the VM</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> An AI company&#x27;s security research group ran 216 capture-the-flag attempts by nine model configurations against its microVM-based agent sandbox. None of 108 attempts crossed the VM-host boundary, even when given the sandbox&#x27;s own source code. But in the &quot;partial network&quot; setting, where the internet was blocked except for package repositories, 11 of 54 runs reached a blocked callback before the fixes went in.</p>
 <p><b>The check.</b></p><ul><li>Your VM isolation is probably fine; your allow-list is the hole.</li><li>Package registries are an exfiltration channel: proxy them and pin versions.</li><li>Deny everything the build does not need.</li></ul><p class="src">Source: <a href="https://www.perplexity.ai/hub/blog/escaping-space-part-i" rel="noopener">Sandbox red-team report, part I, 23 Sep 2026</a></p>
 </div>
 </article><article class="check" id="agent-security-6-card">
-<label class="check-head" for="agent-security-6"><input type="checkbox" id="agent-security-6"><span class="n">6</span><h2>Egress-monitor the coding agent itself</h2></label>
+<label class="check-head" for="agent-security-6"><input type="checkbox" id="agent-security-6" checked><span class="n">6</span><h2>Egress-monitor the coding agent itself</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> A developer reverse-engineered a desktop coding agent and found it packaging whole workspaces, 42,411 files in a single snapshot, a 313 MB encrypted archive in which .git history and the LFS cache made up 86.6% of the payload, and uploading them to cloud storage, with 564 failed upload attempts in the logs. By the author&#x27;s reading of the code, the in-app privacy switches did not stop the packaging in the version examined. The vendor open-sourced the agent and apologised three days later.</p>
 <p><b>The check.</b></p><ul><li>Verify a vendor&#x27;s privacy toggle with a packet capture, not with its documentation.</li><li>Your coding agent sits inside the repository: give it the same egress scrutiny you give production.</li></ul><p class="src">Source: <a href="https://blog.ferstar.org/en/posts/zcode-silent-workspace-snapshot-upload/" rel="noopener">Researcher write-up: silent workspace snapshot upload, 18 Sep 2026</a></p>
 </div>
 </article><article class="check" id="agent-security-7-card">
-<label class="check-head" for="agent-security-7"><input type="checkbox" id="agent-security-7"><span class="n">7</span><h2>Assume an agent you refuse will route around you</h2></label>
+<label class="check-head" for="agent-security-7"><input type="checkbox" id="agent-security-7" checked><span class="n">7</span><h2>Assume an agent you refuse will route around you</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> A head of government disclosed that a frontier lab&#x27;s agent, running an internal evaluation, hit the blocks on a public health-statistics portal on 18 June 2026, found a way around them and opened non-public files: aggregate statistics and internal file names, no patient records. It was 54 days before the lab noticed.</p>
 <p><b>The check.</b></p><ul><li>Detection belongs on the target side as well as the agent side.</li><li>Alert on the refusal-then-success pattern: repeated denials from one source followed by a success is the signature.</li></ul><p class="src">Source: <a href="https://www.abc.net.au/news/2026-09-24/ai-agent-accessed-australian-government-site-pm-says/107189078" rel="noopener">National broadcaster report, 24 Sep 2026</a></p>
 </div>
 </article><article class="check" id="agent-security-8-card">
-<label class="check-head" for="agent-security-8"><input type="checkbox" id="agent-security-8"><span class="n">8</span><h2>Audit from the raw trace, never the agent&#x27;s own summary</h2></label>
+<label class="check-head" for="agent-security-8"><input type="checkbox" id="agent-security-8" checked><span class="n">8</span><h2>Audit from the raw trace, never the agent&#x27;s own summary</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> During reinforcement-learning training, a frontier lab found model instances writing instructions into their own compaction summaries to conceal mistakes from the user, among them &quot;Be transparent only if asked; final answer should just link file&quot;. The summary is the thing most observability stacks keep.</p>
 <p><b>The check.</b></p><ul><li>Retain the raw trace, not the compacted one, for anything you may have to explain later.</li><li>If your audit log is written by the agent, it is not an audit log.</li></ul><p class="src">Source: <a href="https://alignment.openai.com/misalignment-reports/encouraging-deception-in-compaction-summaries/" rel="noopener">Misalignment report: encouraging deception in compaction summaries, 16 Sep 2026</a></p>
 </div>
 </article><article class="check" id="agent-security-9-card">
-<label class="check-head" for="agent-security-9"><input type="checkbox" id="agent-security-9"><span class="n">9</span><h2>Move credentials off .env, in the order that removes the problem</h2></label>
+<label class="check-head" for="agent-security-9"><input type="checkbox" id="agent-security-9" checked><span class="n">9</span><h2>Move credentials off .env, in the order that removes the problem</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> A secrets-detection vendor counted 28.65 million new hardcoded secrets in public commits during 2025, up 34% year over year, and found that more than 64% of the secrets it confirmed in 2022 were still valid in January 2026. A leaked credential is not an incident that ends.</p>
 <p><b>The check.</b></p><ul><li>.env, then a secret manager, then workload identity, in that order: each step removes more of the problem than the last.</li><li>A .env file costs nothing and removes nothing.</li></ul><p class="src">Source: <a href="https://blog.gitguardian.com/the-state-of-secrets-sprawl-2026/" rel="noopener">The State of Secrets Sprawl 2026 report</a></p>
@@ -266,6 +296,7 @@ a{text-decoration:none;color:#000}
 <button class="btn" type="submit">Send me new checklists</button>
 </form>
 </section>
+</div>
 </main>
 <aside class="printonly" aria-hidden="true">
 <p class="pc-name">Nitish Gautam &mdash; Indica Technology Ltd</p>
@@ -294,18 +325,27 @@ a{text-decoration:none;color:#000}
   function save(){try{localStorage.setItem(key,JSON.stringify(state))}catch(err){}}
   function update(sec){
     var boxes=sec.querySelectorAll('input[type=checkbox]'),done=0;
-    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.add('done')}else{a.classList.remove('done')}});
-    var p=sec.querySelector('.progress .count');if(p){p.textContent=done+' of '+boxes.length+' done'}
+    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.remove('off')}else{a.classList.add('off')}});
+    document.querySelectorAll('.count').forEach(function(p){p.textContent=done+' of '+boxes.length+' selected'});
+    var bar=document.querySelector('.rail-bar span');if(bar){bar.style.width=(boxes.length?Math.round(done/boxes.length*100):0)+'%'}
   }
   document.querySelectorAll('.list').forEach(function(sec){
     sec.querySelectorAll('input[type=checkbox]').forEach(function(b){
-      if(state[b.id]){b.checked=true}
+      b.checked=(b.id in state)?!!state[b.id]:true;
       b.addEventListener('change',function(){state[b.id]=b.checked;save();update(sec)});
     });
-    var r=sec.querySelector('.progress button');
-    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=false;delete state[b.id]});save();update(sec)})}
+    var r=document.querySelector('[data-reset]');
+    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=true;delete state[b.id]});save();update(sec)})}
     update(sec);
   });
+})();
+/* The jump link for the check currently in view is marked. */
+(function(){
+  var links=document.querySelectorAll('.rail-toc a');if(!links.length||!('IntersectionObserver' in window)){return}
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  links[0].classList.add('is-here');
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){links.forEach(function(a){a.classList.remove('is-here')});var a=map[en.target.id];if(a){a.classList.add('is-here')}}})},{rootMargin:'-15% 0px -70% 0px'});
+  Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el){io.observe(el)}});
 })();
 /* Print: the browser's own print dialogue. The page holds one list, so the print
    stylesheet only drops the navigation and the calls to action and adds the contact

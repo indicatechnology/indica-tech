@@ -41,12 +41,34 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 .lede{color:#C9C6BF;font-weight:300;font-size:1.06rem;max-width:62ch;margin:0}
 .crumb{display:inline-block;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;color:#b4b1a9;text-decoration:none;padding:12px 0;margin:-12px 0 4px}
 .crumb:hover,.crumb:focus-visible{color:var(--green)}
-.actions{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
-.act{display:inline-block;font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.02em;line-height:1;color:var(--paper);background:transparent;border:1px solid rgba(247,244,237,.4);border-radius:999px;padding:13px 15px;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s}
-.act:hover{border-color:var(--green);color:var(--green)}
+/* List pages: the list at reading width, and a rail that stays put with progress, the downloads, the checks as
+   jump links and the next list. Below 900px the rail is a block above the list and the jump links are dropped. */
+.listpage .wrap{max-width:1120px}
+.listpage main.wrap{display:grid;grid-template-columns:minmax(0,1fr) 272px;gap:48px;align-items:start}
+.col-main{grid-column:1;grid-row:1;min-width:0}
+.rail{grid-column:2;grid-row:1;position:sticky;top:24px;padding-top:32px}
+.rail-in{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px}
+.rail-k{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:0 0 6px}
+.rail-c{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:600;font-size:1.1rem;letter-spacing:-.01em;margin:0 0 6px}
+.rail-c button{font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:400;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0;margin:-12px 0}
+.rail-bar{height:5px;background:var(--line);border-radius:999px;overflow:hidden;margin:0 0 16px}
+.rail-bar span{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+.rail-a{display:flex;flex-direction:column;gap:8px;margin:0 0 18px}
+.act{display:inline-block;font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.02em;line-height:1;text-align:center;color:var(--ink);background:transparent;border:1px solid var(--ink);border-radius:999px;padding:13px 15px;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.act:hover{color:#0a6b3d;border-color:#0a6b3d}
 .act:focus-visible{outline:3px solid var(--green);outline-offset:2px}
-.act-pdf{background:var(--green);color:var(--ink);border-color:var(--green)}
-.act-pdf:hover{color:var(--ink);filter:brightness(1.06)}
+.act-pdf{background:var(--green);border-color:var(--green)}
+.act-pdf:hover{color:var(--ink);border-color:var(--green);filter:brightness(1.06)}
+.rail-toc{margin:0 0 18px;padding-left:1.2rem;font-size:.9rem;line-height:1.4}
+.rail-toc li{margin:0 0 7px;font-weight:400}
+.rail-toc a{color:var(--ink);text-decoration:none}
+.rail-toc a:hover{color:#0a6b3d;text-decoration:underline}
+.rail-toc a.is-here{color:#0a7a44;font-weight:600}
+.rail-next{margin:0;font-weight:500;font-size:.95rem}
+.rail-next a{color:var(--ink);text-decoration:none}
+.rail-next a:hover{color:#0a6b3d}
+article.check{scroll-margin-top:16px}
+@media (max-width:900px){.listpage main.wrap{display:block}.rail{position:static;padding-top:24px}.rail-toc,.rail-next,.rail-next-k,.rail nav{display:none}.rail-a{flex-direction:row;flex-wrap:wrap;margin-bottom:2px}.rail .act{flex:1 1 auto}}
 
 /* Hub: one card per list. The title link is stretched over the whole card, so the
    card is the click target; the PDF link sits above it and stays its own target. */
@@ -68,16 +90,14 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 /* One list per page. */
 .list{padding:32px 0 8px}
 .intro{margin:0 0 18px;max-width:56ch}
-.checks-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.checks-head{margin:0 0 10px}
 .checks-head .note{font-size:.82rem;color:var(--faint);margin:2px 0 0}
 .cap{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
-.progress{font-family:var(--mono);font-size:.8rem;color:var(--muted);white-space:nowrap;margin:0}
-.progress button{font:inherit;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0 12px 8px;margin:-12px 0}
 .lead-code{margin:0 0 22px}
 .lead-code .cap{margin:0 0 6px}
 pre{font-family:var(--mono);font-size:.82rem;line-height:1.45;background:var(--code);color:var(--codeink);border-radius:10px;padding:14px 16px;margin:10px 0 0;overflow-x:auto;white-space:pre}
 article.check{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px 16px;margin:0 0 12px;break-inside:avoid}
-article.check.done{border-color:var(--green)}
+article.check.off{opacity:.55}
 .check-head{display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin:0}
 .check-head input{appearance:none;-webkit-appearance:none;flex:0 0 26px;width:26px;height:26px;margin:2px 0 0;border:2px solid var(--ink);border-radius:7px;background:#fff;display:grid;place-items:center;cursor:pointer}
 .check-head input:checked{background:var(--green);border-color:var(--green)}
@@ -147,7 +167,9 @@ footer ul a{display:inline-block;padding:12px 0;margin:-12px 0}
 @media (max-width:480px){.check-body{margin-left:0}.get{padding:16px}.pager{grid-template-columns:1fr}.pager .next{text-align:left;align-items:flex-start}.pager span:empty{display:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.pager a{transition:none}}
 @media print{
-.skip,.sitenav,.crumb,.actions,.checks-head .note,.progress,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.skip,.sitenav,.crumb,.rail,.checks-head .note,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.listpage main.wrap{display:block}
+article.check.off{display:none}
 .top{background:#fff;color:#000;padding:0 0 12px}.lede{color:#333}
 body{background:#fff;font-size:10.5pt}
 article.check{border-color:#bbb}
@@ -164,7 +186,7 @@ a{text-decoration:none;color:#000}
 }
 </style>
 </head>
-<body>
+<body class="listpage">
 <a class="skip" href="#main">Skip to content</a>
 <nav class="sitenav"><div class="wrap">
 <a class="brand" href="https://indica-tech.com/"><svg viewBox="0 0 100 100" width="20" height="20" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00c46a"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg><span>Indica Tech</span></a>
@@ -181,40 +203,48 @@ a{text-decoration:none;color:#000}
 <p class="kicker">Checklist 08 of 10 · October 2026</p>
 <h1>Disputed-answer checklist</h1>
 <p class="lede">Five records to keep so a chatbot&#x27;s answer can be defended, from the tribunal case that cost an airline C$812</p>
-<p class="actions"><a class="act act-pdf" href="https://indica-tech.com/checklists/lead-magnets/CHECKLIST-disputed-ai-answer-2026-10.pdf" download>Download the PDF</a><a class="act" href="https://indica-tech.com/checklists/md/disputed-ai-answer.md">Markdown</a><button class="act" type="button" data-print>Print</button></p>
 </div></header>
 <main class="wrap" id="main">
+<aside class="rail" aria-label="Progress, downloads and contents"><div class="rail-in">
+<p class="rail-k">Your list</p>
+<p class="rail-c"><span class="count">5 of 5 selected</span><button type="button" data-reset>select all</button></p>
+<p class="rail-bar"><span style="width:100%"></span></p>
+<div class="rail-a"><a class="act act-pdf" href="https://indica-tech.com/checklists/lead-magnets/CHECKLIST-disputed-ai-answer-2026-10.pdf" download>Download the PDF</a><a class="act" href="https://indica-tech.com/checklists/md/disputed-ai-answer.md">Markdown</a><button class="act" type="button" data-print>Print this list</button></div>
+<nav aria-label="On this page"><p class="rail-k">On this page</p><ol class="rail-toc"><li><a href="#disputed-ai-answer-1-card">Log every answer as evidence</a></li><li><a href="#disputed-ai-answer-2-card">Cite or decline</a></li><li><a href="#disputed-ai-answer-3-card">One source of truth, stated in writing</a></li><li><a href="#disputed-ai-answer-4-card">A named owner and a deadline</a></li><li><a href="#disputed-ai-answer-5-card">Rehearse the dispute</a></li></ol></nav>
+<p class="rail-k rail-next-k">Next</p><p class="rail-next"><a href="https://indica-tech.com/checklists/runaway-agent/">Runaway-agent checklist &rarr;</a></p>
+</div></aside>
+<div class="col-main">
 <article class="list" id="disputed-ai-answer">
 <p class="intro">An airline&#x27;s website chatbot invented a ninety-day refund window. The policy page said the opposite. In February 2024 a tribunal awarded the customer C$812.02, called the &quot;separate legal entity&quot; defence remarkable, and found no reason a customer should know which part of a website to trust. The side that lost was the side with no evidence. Five checks.</p>
 
-<div class="checks-head"><div><p class="cap">The checks</p><p class="note">Ticks are saved on this device only.</p></div><p class="progress"><span class="count">0 of 5 done</span><button type="button">reset</button></p></div>
+<div class="checks-head"><p class="cap">The checks</p><p class="note">Everything starts ticked. Untick what you will not do; the choice is saved on this device only, and Print keeps only what you kept.</p></div>
 <article class="check" id="disputed-ai-answer-1-card">
-<label class="check-head" for="disputed-ai-answer-1"><input type="checkbox" id="disputed-ai-answer-1"><span class="n">1</span><h2>Log every answer as evidence</h2></label>
+<label class="check-head" for="disputed-ai-answer-1"><input type="checkbox" id="disputed-ai-answer-1" checked><span class="n">1</span><h2>Log every answer as evidence</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> The company could not show what its bot had been told or why its page should outrank the bot. A dispute is won by whoever can replay the conversation.</p>
 <p><b>The check.</b></p><ul><li>Store, per answer: an id, the timestamp, the exact text shown, the sources used (with their version), the prompt version, the model id and the retrieval set.</li><li>Keep it for the whole dispute window of your market, hashed as it is written, where the bot cannot change it.</li><li>Replay from the log, never from memory, when a customer disputes an answer.</li></ul><pre>{&quot;answer&quot;:&quot;a81f&quot;,&quot;ts&quot;:&quot;2026-10-16T09:12Z&quot;,&quot;shown&quot;:&quot;...&quot;,&quot;sources&quot;:[&quot;policy/bereavement#v12&quot;],
  &quot;prompt_v&quot;:&quot;14&quot;,&quot;model&quot;:&quot;pinned-2026-09&quot;,&quot;retrieved&quot;:[&quot;doc-2231&quot;,&quot;doc-0917&quot;]}</pre><p class="src">Source: <a href="https://www.law360.ca/ca/articles/1804075" rel="noopener">legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024</a></p>
 </div>
 </article><article class="check" id="disputed-ai-answer-2-card">
-<label class="check-head" for="disputed-ai-answer-2"><input type="checkbox" id="disputed-ai-answer-2"><span class="n">2</span><h2>Cite or decline</h2></label>
+<label class="check-head" for="disputed-ai-answer-2"><input type="checkbox" id="disputed-ai-answer-2" checked><span class="n">2</span><h2>Cite or decline</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> The ninety-day window came from nowhere. A figure, a date or a rule that the bot cannot point to is a promise nobody authorised.</p>
 <p><b>The check.</b></p><ul><li>Every answer that carries a number, a date or a policy rule quotes the page it came from, with a link.</li><li>No source found means the bot says so and hands over; it never fills the gap from training data.</li><li>Count answers with an empty sources list every day; the target is zero.</li></ul><pre>grep -c &#x27;&quot;sources&quot;: \[\]&#x27; answers.jsonl    # answers with no citation: want 0</pre><p class="src">Source: <a href="https://www.law360.ca/ca/articles/1804075" rel="noopener">legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024</a></p>
 </div>
 </article><article class="check" id="disputed-ai-answer-3-card">
-<label class="check-head" for="disputed-ai-answer-3"><input type="checkbox" id="disputed-ai-answer-3"><span class="n">3</span><h2>One source of truth, stated in writing</h2></label>
+<label class="check-head" for="disputed-ai-answer-3"><input type="checkbox" id="disputed-ai-answer-3" checked><span class="n">3</span><h2>One source of truth, stated in writing</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> The tribunal found no reason a customer should know that one section of the website is accurate and another is not. Precedence has to be yours, written down, before a dispute tests it.</p>
 <p><b>The check.</b></p><ul><li>The policy page is canonical; the bot&#x27;s answer is derived from it and says so in its footer.</li><li>When they disagree, the page wins and the bot is corrected inside a set time; log every correction.</li><li>Put the precedence statement in the terms the customer accepts, and in the bot&#x27;s own first message.</li></ul><p class="src">Source: <a href="https://www.law360.ca/ca/articles/1804075" rel="noopener">legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024</a></p>
 </div>
 </article><article class="check" id="disputed-ai-answer-4-card">
-<label class="check-head" for="disputed-ai-answer-4"><input type="checkbox" id="disputed-ai-answer-4"><span class="n">4</span><h2>A named owner and a deadline</h2></label>
+<label class="check-head" for="disputed-ai-answer-4"><input type="checkbox" id="disputed-ai-answer-4" checked><span class="n">4</span><h2>A named owner and a deadline</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> Disputed answers that sit in a queue become claims. A person, a replay and a reply inside a fixed number of days turn them back into tickets.</p>
 <p><b>The check.</b></p><ul><li>Route every disputed answer to a named owner with the replay attached; the deadline is in days, not &#x27;soon&#x27;.</li><li>Track the count and the time to reply as a release metric, alongside accuracy.</li></ul><p class="src">Source: <a href="https://incidentdatabase.ai/cite/639/" rel="noopener">AI Incident Database, incident 639 (the chatbot&#x27;s answer, Nov 2022)</a></p>
 </div>
 </article><article class="check" id="disputed-ai-answer-5-card">
-<label class="check-head" for="disputed-ai-answer-5"><input type="checkbox" id="disputed-ai-answer-5"><span class="n">5</span><h2>Rehearse the dispute</h2></label>
+<label class="check-head" for="disputed-ai-answer-5"><input type="checkbox" id="disputed-ai-answer-5" checked><span class="n">5</span><h2>Rehearse the dispute</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> A process that has never been run is a process that does not exist. The airline found out in front of a tribunal.</p>
 <p><b>The check.</b></p><ul><li>Take one real wrong answer from last month, run the replay, the source check and the reply, and time it end to end.</li><li>If any step needs a person to search a chat channel for a screenshot, fix the log first.</li></ul><p class="src">Source: <a href="https://www.law360.ca/ca/articles/1804075" rel="noopener">legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024</a></p>
@@ -243,6 +273,7 @@ a{text-decoration:none;color:#000}
 <button class="btn" type="submit">Send me new checklists</button>
 </form>
 </section>
+</div>
 </main>
 <aside class="printonly" aria-hidden="true">
 <p class="pc-name">Nitish Gautam &mdash; Indica Technology Ltd</p>
@@ -271,18 +302,27 @@ a{text-decoration:none;color:#000}
   function save(){try{localStorage.setItem(key,JSON.stringify(state))}catch(err){}}
   function update(sec){
     var boxes=sec.querySelectorAll('input[type=checkbox]'),done=0;
-    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.add('done')}else{a.classList.remove('done')}});
-    var p=sec.querySelector('.progress .count');if(p){p.textContent=done+' of '+boxes.length+' done'}
+    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.remove('off')}else{a.classList.add('off')}});
+    document.querySelectorAll('.count').forEach(function(p){p.textContent=done+' of '+boxes.length+' selected'});
+    var bar=document.querySelector('.rail-bar span');if(bar){bar.style.width=(boxes.length?Math.round(done/boxes.length*100):0)+'%'}
   }
   document.querySelectorAll('.list').forEach(function(sec){
     sec.querySelectorAll('input[type=checkbox]').forEach(function(b){
-      if(state[b.id]){b.checked=true}
+      b.checked=(b.id in state)?!!state[b.id]:true;
       b.addEventListener('change',function(){state[b.id]=b.checked;save();update(sec)});
     });
-    var r=sec.querySelector('.progress button');
-    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=false;delete state[b.id]});save();update(sec)})}
+    var r=document.querySelector('[data-reset]');
+    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=true;delete state[b.id]});save();update(sec)})}
     update(sec);
   });
+})();
+/* The jump link for the check currently in view is marked. */
+(function(){
+  var links=document.querySelectorAll('.rail-toc a');if(!links.length||!('IntersectionObserver' in window)){return}
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  links[0].classList.add('is-here');
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){links.forEach(function(a){a.classList.remove('is-here')});var a=map[en.target.id];if(a){a.classList.add('is-here')}}})},{rootMargin:'-15% 0px -70% 0px'});
+  Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el){io.observe(el)}});
 })();
 /* Print: the browser's own print dialogue. The page holds one list, so the print
    stylesheet only drops the navigation and the calls to action and adds the contact
