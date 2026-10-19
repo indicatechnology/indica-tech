@@ -102,7 +102,12 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 .lede{color:#C9C6BF;font-weight:300;font-size:1.06rem;max-width:62ch;margin:0}
 .crumb{display:inline-block;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;color:#b4b1a9;text-decoration:none;padding:12px 0;margin:-12px 0 4px}
 .crumb:hover,.crumb:focus-visible{color:var(--green)}
-.how{font-size:.9rem;color:#C9C6BF;margin:18px 0 0;border-left:3px solid var(--green);padding-left:12px;max-width:62ch}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
+.act{display:inline-block;font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.02em;line-height:1;color:var(--paper);background:transparent;border:1px solid rgba(247,244,237,.4);border-radius:999px;padding:13px 15px;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s}
+.act:hover{border-color:var(--green);color:var(--green)}
+.act:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.act-pdf{background:var(--green);color:var(--ink);border-color:var(--green)}
+.act-pdf:hover{color:var(--ink);filter:brightness(1.06)}
 
 /* Hub: one card per list. The title link is stretched over the whole card, so the
    card is the click target; the PDF link sits above it and stays its own target. */
@@ -123,8 +128,9 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 
 /* One list per page. */
 .list{padding:32px 0 8px}
-.intro{margin:0 0 18px;max-width:70ch}
-.checks-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.intro{margin:0 0 18px;max-width:56ch}
+.checks-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.checks-head .note{font-size:.82rem;color:var(--faint);margin:2px 0 0}
 .cap{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
 .progress{font-family:var(--mono);font-size:.8rem;color:var(--muted);white-space:nowrap;margin:0}
 .progress button{font:inherit;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0 12px 8px;margin:-12px 0}
@@ -142,6 +148,7 @@ article.check.done{border-color:var(--green)}
 .check-head h2{font-family:var(--sans);font-size:1.05rem;line-height:1.32;margin:2px 0 0;font-weight:600;letter-spacing:-.008em}
 .check-body{margin:10px 0 0 38px}
 .check-body p{margin:0 0 8px}
+.check-body p,.check-body ul,.notes{max-width:56ch}
 .check-body b{font-weight:600}
 .check-body ul{margin:0 0 8px;padding-left:1.1rem}
 .check-body li{margin:0 0 5px;font-weight:400}
@@ -201,7 +208,7 @@ footer ul a{display:inline-block;padding:12px 0;margin:-12px 0}
 @media (max-width:480px){.check-body{margin-left:0}.get{padding:16px}.pager{grid-template-columns:1fr}.pager .next{text-align:left;align-items:flex-start}.pager span:empty{display:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.pager a{transition:none}}
 @media print{
-.skip,.sitenav,.crumb,.how,.progress,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.skip,.sitenav,.crumb,.actions,.checks-head .note,.progress,.get,.ask,.pager,.sub-block,footer ul{display:none}
 .top{background:#fff;color:#000;padding:0 0 12px}.lede{color:#333}
 body{background:#fff;font-size:10.5pt}
 article.check{border-color:#bbb}
@@ -304,7 +311,7 @@ def render_list_body(s: dict) -> str:
     return f"""<article class="list" id="{e(s['slug'])}">
 <p class="intro">{e(' '.join(s['intro'].split()))}</p>
 {lead}
-<div class="checks-head"><p class="cap">The checks</p><p class="progress"><span class="count">0 of {n} done</span><button type="button">reset</button></p></div>
+<div class="checks-head"><div><p class="cap">The checks</p><p class="note">Ticks are saved on this device only.</p></div><p class="progress"><span class="count">0 of {n} done</span><button type="button">reset</button></p></div>
 {checks}
 {order}
 {notes}
@@ -453,14 +460,17 @@ def render_pager(prev: dict | None, nxt: dict | None, count: int) -> str:
             f'<a class="all" href="{SITE}/checklists/">All {count} checklists</a></nav>')
 
 
-def render_list_page(s: dict, prev: dict | None, nxt: dict | None, count: int) -> str:
+def render_list_page(s: dict, idx: int, prev: dict | None, nxt: dict | None, count: int) -> str:
     """One list on its own page."""
     url = f"{SITE}/checklists/{s['slug']}/"
     has_pdf = bool(s.get("pdf")) and (LEAD_MAGNETS / s["pdf"]).is_file()
     desc = (f"{s['subtitle']}. {len(s['checks'])} checks, each from a dated failure or a documented default, with the "
             f"control that stops it and a link to the primary source. Free to read, with a Markdown copy"
             + (" and a PDF." if has_pdf else "."))
-    take = "The PDF and the Markdown copy are at the end" if has_pdf else "The Markdown copy is at the end"
+    pdf_act = (f'<a class="act act-pdf" href="{SITE}/checklists/lead-magnets/{e(s["pdf"])}" download>Download the PDF</a>'
+               if has_pdf else "")
+    actions = (f'<p class="actions">{pdf_act}<a class="act" href="{SITE}/checklists/md/{e(s["slug"])}.md">Markdown</a>'
+               f'<button class="act" type="button" data-print>Print</button></p>')
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -470,10 +480,10 @@ def render_list_page(s: dict, prev: dict | None, nxt: dict | None, count: int) -
 {render_sitenav("true")}
 <header class="top"><div class="wrap">
 <a class="crumb" href="{SITE}/checklists/">&larr; All checklists</a>
-<p class="kicker">{e(s['kicker'])} · {e(s['date'])}</p>
+<p class="kicker">Checklist {idx:02d} of {count} · {e(s['date'])}</p>
 <h1>{e(s['title'])}</h1>
 <p class="lede">{e(s['subtitle'])}</p>
-<p class="how">Tick the boxes as you work through the list; this page remembers them on your device only. {take}, and nothing is behind a form.</p>
+{actions}
 </div></header>
 <main class="wrap" id="main">
 {render_list_body(s)}
@@ -578,7 +588,7 @@ def write_pages(specs: list[dict]) -> None:
         nxt = specs[i + 1] if i + 1 < len(specs) else None
         page_dir = HERE / s["slug"]
         page_dir.mkdir(exist_ok=True)
-        (page_dir / "index.html").write_text(render_list_page(s, prev, nxt, len(specs)), encoding="utf-8")
+        (page_dir / "index.html").write_text(render_list_page(s, i + 1, prev, nxt, len(specs)), encoding="utf-8")
 
 
 def main() -> int:
