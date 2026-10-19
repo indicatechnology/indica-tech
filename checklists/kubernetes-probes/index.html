@@ -41,7 +41,34 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 .lede{color:#C9C6BF;font-weight:300;font-size:1.06rem;max-width:62ch;margin:0}
 .crumb{display:inline-block;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;color:#b4b1a9;text-decoration:none;padding:12px 0;margin:-12px 0 4px}
 .crumb:hover,.crumb:focus-visible{color:var(--green)}
-.how{font-size:.9rem;color:#C9C6BF;margin:18px 0 0;border-left:3px solid var(--green);padding-left:12px;max-width:62ch}
+/* List pages: the list at reading width, and a rail that stays put with progress, the downloads, the checks as
+   jump links and the next list. Below 900px the rail is a block above the list and the jump links are dropped. */
+.listpage .wrap{max-width:1120px}
+.listpage main.wrap{display:grid;grid-template-columns:minmax(0,1fr) 272px;gap:48px;align-items:start}
+.col-main{grid-column:1;grid-row:1;min-width:0}
+.rail{grid-column:2;grid-row:1;position:sticky;top:24px;padding-top:32px}
+.rail-in{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px}
+.rail-k{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:0 0 6px}
+.rail-c{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:600;font-size:1.1rem;letter-spacing:-.01em;margin:0 0 6px}
+.rail-c button{font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:400;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0;margin:-12px 0}
+.rail-bar{height:5px;background:var(--line);border-radius:999px;overflow:hidden;margin:0 0 16px}
+.rail-bar span{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+.rail-a{display:flex;flex-direction:column;gap:8px;margin:0 0 18px}
+.act{display:inline-block;font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.02em;line-height:1;text-align:center;color:var(--ink);background:transparent;border:1px solid var(--ink);border-radius:999px;padding:13px 15px;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.act:hover{color:#0a6b3d;border-color:#0a6b3d}
+.act:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.act-pdf{background:var(--green);border-color:var(--green)}
+.act-pdf:hover{color:var(--ink);border-color:var(--green);filter:brightness(1.06)}
+.rail-toc{margin:0 0 18px;padding-left:1.2rem;font-size:.9rem;line-height:1.4}
+.rail-toc li{margin:0 0 7px;font-weight:400}
+.rail-toc a{color:var(--ink);text-decoration:none}
+.rail-toc a:hover{color:#0a6b3d;text-decoration:underline}
+.rail-toc a.is-here{color:#0a7a44;font-weight:600}
+.rail-next{margin:0;font-weight:500;font-size:.95rem}
+.rail-next a{color:var(--ink);text-decoration:none}
+.rail-next a:hover{color:#0a6b3d}
+article.check{scroll-margin-top:16px}
+@media (max-width:900px){.listpage main.wrap{display:block}.rail{position:static;padding-top:24px}.rail-toc,.rail-next,.rail-next-k,.rail nav{display:none}.rail-a{flex-direction:row;flex-wrap:wrap;margin-bottom:2px}.rail .act{flex:1 1 auto}}
 
 /* Hub: one card per list. The title link is stretched over the whole card, so the
    card is the click target; the PDF link sits above it and stays its own target. */
@@ -62,16 +89,15 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 
 /* One list per page. */
 .list{padding:32px 0 8px}
-.intro{margin:0 0 18px;max-width:70ch}
-.checks-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.intro{margin:0 0 18px;max-width:56ch}
+.checks-head{margin:0 0 10px}
+.checks-head .note{font-size:.82rem;color:var(--faint);margin:2px 0 0}
 .cap{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
-.progress{font-family:var(--mono);font-size:.8rem;color:var(--muted);white-space:nowrap;margin:0}
-.progress button{font:inherit;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0 12px 8px;margin:-12px 0}
 .lead-code{margin:0 0 22px}
 .lead-code .cap{margin:0 0 6px}
 pre{font-family:var(--mono);font-size:.82rem;line-height:1.45;background:var(--code);color:var(--codeink);border-radius:10px;padding:14px 16px;margin:10px 0 0;overflow-x:auto;white-space:pre}
 article.check{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px 16px;margin:0 0 12px;break-inside:avoid}
-article.check.done{border-color:var(--green)}
+article.check.off{opacity:.55}
 .check-head{display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin:0}
 .check-head input{appearance:none;-webkit-appearance:none;flex:0 0 26px;width:26px;height:26px;margin:2px 0 0;border:2px solid var(--ink);border-radius:7px;background:#fff;display:grid;place-items:center;cursor:pointer}
 .check-head input:checked{background:var(--green);border-color:var(--green)}
@@ -81,6 +107,7 @@ article.check.done{border-color:var(--green)}
 .check-head h2{font-family:var(--sans);font-size:1.05rem;line-height:1.32;margin:2px 0 0;font-weight:600;letter-spacing:-.008em}
 .check-body{margin:10px 0 0 38px}
 .check-body p{margin:0 0 8px}
+.check-body p,.check-body ul,.notes{max-width:56ch}
 .check-body b{font-weight:600}
 .check-body ul{margin:0 0 8px;padding-left:1.1rem}
 .check-body li{margin:0 0 5px;font-weight:400}
@@ -140,7 +167,9 @@ footer ul a{display:inline-block;padding:12px 0;margin:-12px 0}
 @media (max-width:480px){.check-body{margin-left:0}.get{padding:16px}.pager{grid-template-columns:1fr}.pager .next{text-align:left;align-items:flex-start}.pager span:empty{display:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.pager a{transition:none}}
 @media print{
-.skip,.sitenav,.crumb,.how,.progress,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.skip,.sitenav,.crumb,.rail,.checks-head .note,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.listpage main.wrap{display:block}
+article.check.off{display:none}
 .top{background:#fff;color:#000;padding:0 0 12px}.lede{color:#333}
 body{background:#fff;font-size:10.5pt}
 article.check{border-color:#bbb}
@@ -157,7 +186,7 @@ a{text-decoration:none;color:#000}
 }
 </style>
 </head>
-<body>
+<body class="listpage">
 <a class="skip" href="#main">Skip to content</a>
 <nav class="sitenav"><div class="wrap">
 <a class="brand" href="https://indica-tech.com/"><svg viewBox="0 0 100 100" width="20" height="20" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00c46a"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg><span>Indica Tech</span></a>
@@ -171,44 +200,52 @@ a{text-decoration:none;color:#000}
 </div></nav>
 <header class="top"><div class="wrap">
 <a class="crumb" href="https://indica-tech.com/checklists/">&larr; All checklists</a>
-<p class="kicker">@demotoprod · CHECKLIST · September 2026</p>
+<p class="kicker">Checklist 03 of 10 · September 2026</p>
 <h1>Kubernetes probe checklist for AI services</h1>
 <p class="lede">Keep a slow dependency from restarting every pod</p>
-<p class="how">Tick the boxes as you work through the list; this page remembers them on your device only. The PDF and the Markdown copy are at the end, and nothing is behind a form.</p>
 </div></header>
 <main class="wrap" id="main">
+<aside class="rail" aria-label="Progress, downloads and contents"><div class="rail-in">
+<p class="rail-k">Your list</p>
+<p class="rail-c"><span class="count">5 of 5 selected</span><button type="button" data-reset>select all</button></p>
+<p class="rail-bar"><span style="width:100%"></span></p>
+<div class="rail-a"><a class="act act-pdf" href="https://indica-tech.com/checklists/lead-magnets/CHECKLIST-kubernetes-probes-2026-09.pdf" download>Download the PDF</a><a class="act" href="https://indica-tech.com/checklists/md/kubernetes-probes.md">Markdown</a><button class="act" type="button" data-print>Print this list</button></div>
+<nav aria-label="On this page"><p class="rail-k">On this page</p><ol class="rail-toc"><li><a href="#kubernetes-probes-1-card">Liveness checks only the process</a></li><li><a href="#kubernetes-probes-2-card">Dependency checks live in readiness</a></li><li><a href="#kubernetes-probes-3-card">Slow-loading models get a startup probe</a></li><li><a href="#kubernetes-probes-4-card">Probe handlers are fast and in-process</a></li><li><a href="#kubernetes-probes-5-card">A restart storm pages someone</a></li></ol></nav>
+<p class="rail-k rail-next-k">Next</p><p class="rail-next"><a href="https://indica-tech.com/checklists/ai-email-assistant/">Three gates for an AI email assistant &rarr;</a></p>
+</div></aside>
+<div class="col-main">
 <article class="list" id="kubernetes-probes">
 <p class="intro">A liveness probe that checks a dependency turns a slow database into a restart storm: every replica fails the same probe in the same window, and the kubelet restarts them all together. The demo never shows it, because the demo ran one pod. Every default and behaviour below is from the Kubernetes documentation; nothing here is a vendor claim. Five checks; the first two are an afternoon&#x27;s work.</p>
 <div class="lead-code"><p class="cap">Prove it in two commands</p><pre>kubectl get pods                 # RESTARTS rises on every replica in the same minute
 kubectl describe pod &lt;pod&gt;       # Events: &quot;Liveness probe failed: ...&quot; - then open the probe&#x27;s handler</pre></div>
-<div class="checks-head"><p class="cap">The checks</p><p class="progress"><span class="count">0 of 5 done</span><button type="button">reset</button></p></div>
+<div class="checks-head"><p class="cap">The checks</p><p class="note">Everything starts ticked. Untick what you will not do; the choice is saved on this device only, and Print keeps only what you kept.</p></div>
 <article class="check" id="kubernetes-probes-1-card">
-<label class="check-head" for="kubernetes-probes-1"><input type="checkbox" id="kubernetes-probes-1"><span class="n">1</span><h2>Liveness checks only the process</h2></label>
+<label class="check-head" for="kubernetes-probes-1"><input type="checkbox" id="kubernetes-probes-1" checked><span class="n">1</span><h2>Liveness checks only the process</h2></label>
 <div class="check-body">
 <p><b>Why.</b> The kubelet restarts a container when its liveness probe fails three times in a row, probing every ten seconds with a one-second timeout by default. Point that probe at an endpoint that calls your database, vector store or model server, and one thirty-second stall fails it on every replica at once, so every replica restarts together. Capacity goes to zero while the dependency was only slow.</p>
 <p><b>The check.</b></p><ul><li>Open every livenessProbe. If its handler touches anything over the network, move that check out.</li><li>Liveness answers one question: can this process respond at all?</li></ul><p class="src">Source: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/" rel="noopener">Kubernetes documentation, Configure Liveness, Readiness and Startup Probes</a></p>
 </div>
 </article><article class="check" id="kubernetes-probes-2-card">
-<label class="check-head" for="kubernetes-probes-2"><input type="checkbox" id="kubernetes-probes-2"><span class="n">2</span><h2>Dependency checks live in readiness</h2></label>
+<label class="check-head" for="kubernetes-probes-2"><input type="checkbox" id="kubernetes-probes-2" checked><span class="n">2</span><h2>Dependency checks live in readiness</h2></label>
 <div class="check-body">
 <p><b>Why.</b> A failing readiness probe marks the pod unready and takes it out of Service traffic; it does not restart the container. For an AI service that holds a model in memory, that is the difference between a pause and a cold start.</p>
 <p><b>The check.</b></p><ul><li>Give the pod two endpoints: /livez (process only) and /readyz (database, vector store, model loaded).</li><li>The pod leaves traffic while a dependency is down and returns the moment it is back, model still loaded.</li></ul><pre>livenessProbe:  { httpGet: { path: /livez,  port: 8080 } }   # process only, no I/O
 readinessProbe: { httpGet: { path: /readyz, port: 8080 } }   # database, vector store, model loaded</pre><p class="src">Source: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/" rel="noopener">Kubernetes documentation, Configure Liveness, Readiness and Startup Probes</a></p>
 </div>
 </article><article class="check" id="kubernetes-probes-3-card">
-<label class="check-head" for="kubernetes-probes-3"><input type="checkbox" id="kubernetes-probes-3"><span class="n">3</span><h2>Slow-loading models get a startup probe</h2></label>
+<label class="check-head" for="kubernetes-probes-3"><input type="checkbox" id="kubernetes-probes-3" checked><span class="n">3</span><h2>Slow-loading models get a startup probe</h2></label>
 <div class="check-body">
 <p><b>Why.</b> Liveness and readiness checks do not start until the startup probe has succeeded. The documentation&#x27;s rule: set failureThreshold x periodSeconds long enough to cover the worst-case startup time (its example allows 30 x 10 = 300 seconds).</p>
 <p><b>The check.</b></p><ul><li>Time your worst cold start, weights downloaded, loaded and warmed, and size the startup probe to cover it.</li><li>Do not stretch the liveness probe&#x27;s initial delay instead.</li></ul><p class="src">Source: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/" rel="noopener">Kubernetes documentation, Configure Liveness, Readiness and Startup Probes</a></p>
 </div>
 </article><article class="check" id="kubernetes-probes-4-card">
-<label class="check-head" for="kubernetes-probes-4"><input type="checkbox" id="kubernetes-probes-4"><span class="n">4</span><h2>Probe handlers are fast and in-process</h2></label>
+<label class="check-head" for="kubernetes-probes-4"><input type="checkbox" id="kubernetes-probes-4" checked><span class="n">4</span><h2>Probe handlers are fast and in-process</h2></label>
 <div class="check-body">
 <p><b>Why.</b> An HTTP probe that answers after its timeout counts as a failure, whatever it would have returned. The default timeout is one second.</p>
 <p><b>The check.</b></p><ul><li>Keep the liveness handler constant-time and free of I/O.</li><li>If it cannot answer inside the timeout under peak load, fix the handler before you raise the timeout.</li></ul><p class="src">Source: <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/" rel="noopener">Kubernetes documentation, Configure Liveness, Readiness and Startup Probes</a></p>
 </div>
 </article><article class="check" id="kubernetes-probes-5-card">
-<label class="check-head" for="kubernetes-probes-5"><input type="checkbox" id="kubernetes-probes-5"><span class="n">5</span><h2>A restart storm pages someone</h2></label>
+<label class="check-head" for="kubernetes-probes-5"><input type="checkbox" id="kubernetes-probes-5" checked><span class="n">5</span><h2>A restart storm pages someone</h2></label>
 <div class="check-body">
 <p><b>Why.</b> One restart is noise; every replica restarting inside the same minute usually means something they all share, and the events say whether it was the liveness probe. kube-state-metrics exposes restarts per container as kube_pod_container_status_restarts_total.</p>
 <p><b>The check.</b></p><ul><li>Alert when restarts rise on several replicas of one Deployment within the same window.</li><li>Link the alert to the two commands on this page.</li></ul><p class="src">Source: <a href="https://github.com/kubernetes/kube-state-metrics" rel="noopener">kube-state-metrics (pod metrics documentation in the repository)</a></p>
@@ -237,6 +274,7 @@ readinessProbe: { httpGet: { path: /readyz, port: 8080 } }   # database, vector 
 <button class="btn" type="submit">Send me new checklists</button>
 </form>
 </section>
+</div>
 </main>
 <aside class="printonly" aria-hidden="true">
 <p class="pc-name">Nitish Gautam &mdash; Indica Technology Ltd</p>
@@ -265,18 +303,27 @@ readinessProbe: { httpGet: { path: /readyz, port: 8080 } }   # database, vector 
   function save(){try{localStorage.setItem(key,JSON.stringify(state))}catch(err){}}
   function update(sec){
     var boxes=sec.querySelectorAll('input[type=checkbox]'),done=0;
-    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.add('done')}else{a.classList.remove('done')}});
-    var p=sec.querySelector('.progress .count');if(p){p.textContent=done+' of '+boxes.length+' done'}
+    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.remove('off')}else{a.classList.add('off')}});
+    document.querySelectorAll('.count').forEach(function(p){p.textContent=done+' of '+boxes.length+' selected'});
+    var bar=document.querySelector('.rail-bar span');if(bar){bar.style.width=(boxes.length?Math.round(done/boxes.length*100):0)+'%'}
   }
   document.querySelectorAll('.list').forEach(function(sec){
     sec.querySelectorAll('input[type=checkbox]').forEach(function(b){
-      if(state[b.id]){b.checked=true}
+      b.checked=(b.id in state)?!!state[b.id]:true;
       b.addEventListener('change',function(){state[b.id]=b.checked;save();update(sec)});
     });
-    var r=sec.querySelector('.progress button');
-    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=false;delete state[b.id]});save();update(sec)})}
+    var r=document.querySelector('[data-reset]');
+    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=true;delete state[b.id]});save();update(sec)})}
     update(sec);
   });
+})();
+/* The jump link for the check currently in view is marked. */
+(function(){
+  var links=document.querySelectorAll('.rail-toc a');if(!links.length||!('IntersectionObserver' in window)){return}
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  links[0].classList.add('is-here');
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){links.forEach(function(a){a.classList.remove('is-here')});var a=map[en.target.id];if(a){a.classList.add('is-here')}}})},{rootMargin:'-15% 0px -70% 0px'});
+  Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el){io.observe(el)}});
 })();
 /* Print: the browser's own print dialogue. The page holds one list, so the print
    stylesheet only drops the navigation and the calls to action and adds the contact

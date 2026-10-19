@@ -41,7 +41,34 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 .lede{color:#C9C6BF;font-weight:300;font-size:1.06rem;max-width:62ch;margin:0}
 .crumb{display:inline-block;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;color:#b4b1a9;text-decoration:none;padding:12px 0;margin:-12px 0 4px}
 .crumb:hover,.crumb:focus-visible{color:var(--green)}
-.how{font-size:.9rem;color:#C9C6BF;margin:18px 0 0;border-left:3px solid var(--green);padding-left:12px;max-width:62ch}
+/* List pages: the list at reading width, and a rail that stays put with progress, the downloads, the checks as
+   jump links and the next list. Below 900px the rail is a block above the list and the jump links are dropped. */
+.listpage .wrap{max-width:1120px}
+.listpage main.wrap{display:grid;grid-template-columns:minmax(0,1fr) 272px;gap:48px;align-items:start}
+.col-main{grid-column:1;grid-row:1;min-width:0}
+.rail{grid-column:2;grid-row:1;position:sticky;top:24px;padding-top:32px}
+.rail-in{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px}
+.rail-k{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:0 0 6px}
+.rail-c{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:600;font-size:1.1rem;letter-spacing:-.01em;margin:0 0 6px}
+.rail-c button{font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:400;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0;margin:-12px 0}
+.rail-bar{height:5px;background:var(--line);border-radius:999px;overflow:hidden;margin:0 0 16px}
+.rail-bar span{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+.rail-a{display:flex;flex-direction:column;gap:8px;margin:0 0 18px}
+.act{display:inline-block;font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.02em;line-height:1;text-align:center;color:var(--ink);background:transparent;border:1px solid var(--ink);border-radius:999px;padding:13px 15px;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.act:hover{color:#0a6b3d;border-color:#0a6b3d}
+.act:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.act-pdf{background:var(--green);border-color:var(--green)}
+.act-pdf:hover{color:var(--ink);border-color:var(--green);filter:brightness(1.06)}
+.rail-toc{margin:0 0 18px;padding-left:1.2rem;font-size:.9rem;line-height:1.4}
+.rail-toc li{margin:0 0 7px;font-weight:400}
+.rail-toc a{color:var(--ink);text-decoration:none}
+.rail-toc a:hover{color:#0a6b3d;text-decoration:underline}
+.rail-toc a.is-here{color:#0a7a44;font-weight:600}
+.rail-next{margin:0;font-weight:500;font-size:.95rem}
+.rail-next a{color:var(--ink);text-decoration:none}
+.rail-next a:hover{color:#0a6b3d}
+article.check{scroll-margin-top:16px}
+@media (max-width:900px){.listpage main.wrap{display:block}.rail{position:static;padding-top:24px}.rail-toc,.rail-next,.rail-next-k,.rail nav{display:none}.rail-a{flex-direction:row;flex-wrap:wrap;margin-bottom:2px}.rail .act{flex:1 1 auto}}
 
 /* Hub: one card per list. The title link is stretched over the whole card, so the
    card is the click target; the PDF link sits above it and stays its own target. */
@@ -62,16 +89,15 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 
 /* One list per page. */
 .list{padding:32px 0 8px}
-.intro{margin:0 0 18px;max-width:70ch}
-.checks-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.intro{margin:0 0 18px;max-width:56ch}
+.checks-head{margin:0 0 10px}
+.checks-head .note{font-size:.82rem;color:var(--faint);margin:2px 0 0}
 .cap{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
-.progress{font-family:var(--mono);font-size:.8rem;color:var(--muted);white-space:nowrap;margin:0}
-.progress button{font:inherit;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0 12px 8px;margin:-12px 0}
 .lead-code{margin:0 0 22px}
 .lead-code .cap{margin:0 0 6px}
 pre{font-family:var(--mono);font-size:.82rem;line-height:1.45;background:var(--code);color:var(--codeink);border-radius:10px;padding:14px 16px;margin:10px 0 0;overflow-x:auto;white-space:pre}
 article.check{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px 16px;margin:0 0 12px;break-inside:avoid}
-article.check.done{border-color:var(--green)}
+article.check.off{opacity:.55}
 .check-head{display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin:0}
 .check-head input{appearance:none;-webkit-appearance:none;flex:0 0 26px;width:26px;height:26px;margin:2px 0 0;border:2px solid var(--ink);border-radius:7px;background:#fff;display:grid;place-items:center;cursor:pointer}
 .check-head input:checked{background:var(--green);border-color:var(--green)}
@@ -81,6 +107,7 @@ article.check.done{border-color:var(--green)}
 .check-head h2{font-family:var(--sans);font-size:1.05rem;line-height:1.32;margin:2px 0 0;font-weight:600;letter-spacing:-.008em}
 .check-body{margin:10px 0 0 38px}
 .check-body p{margin:0 0 8px}
+.check-body p,.check-body ul,.notes{max-width:56ch}
 .check-body b{font-weight:600}
 .check-body ul{margin:0 0 8px;padding-left:1.1rem}
 .check-body li{margin:0 0 5px;font-weight:400}
@@ -140,7 +167,9 @@ footer ul a{display:inline-block;padding:12px 0;margin:-12px 0}
 @media (max-width:480px){.check-body{margin-left:0}.get{padding:16px}.pager{grid-template-columns:1fr}.pager .next{text-align:left;align-items:flex-start}.pager span:empty{display:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.pager a{transition:none}}
 @media print{
-.skip,.sitenav,.crumb,.how,.progress,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.skip,.sitenav,.crumb,.rail,.checks-head .note,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.listpage main.wrap{display:block}
+article.check.off{display:none}
 .top{background:#fff;color:#000;padding:0 0 12px}.lede{color:#333}
 body{background:#fff;font-size:10.5pt}
 article.check{border-color:#bbb}
@@ -157,7 +186,7 @@ a{text-decoration:none;color:#000}
 }
 </style>
 </head>
-<body>
+<body class="listpage">
 <a class="skip" href="#main">Skip to content</a>
 <nav class="sitenav"><div class="wrap">
 <a class="brand" href="https://indica-tech.com/"><svg viewBox="0 0 100 100" width="20" height="20" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00c46a"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg><span>Indica Tech</span></a>
@@ -171,43 +200,51 @@ a{text-decoration:none;color:#000}
 </div></nav>
 <header class="top"><div class="wrap">
 <a class="crumb" href="https://indica-tech.com/checklists/">&larr; All checklists</a>
-<p class="kicker">@demotoprod · BUDGET · October 2026</p>
+<p class="kicker">Checklist 09 of 10 · October 2026</p>
 <h1>Runaway-agent checklist</h1>
 <p class="lede">One null value, over 15,000 reasoning calls in under an hour, a $50,000 bill; five controls that stop the loop</p>
-<p class="how">Tick the boxes as you work through the list; this page remembers them on your device only. The PDF and the Markdown copy are at the end, and nothing is behind a form.</p>
 </div></header>
 <main class="wrap" id="main">
+<aside class="rail" aria-label="Progress, downloads and contents"><div class="rail-in">
+<p class="rail-k">Your list</p>
+<p class="rail-c"><span class="count">5 of 5 selected</span><button type="button" data-reset>select all</button></p>
+<p class="rail-bar"><span style="width:100%"></span></p>
+<div class="rail-a"><a class="act act-pdf" href="https://indica-tech.com/checklists/lead-magnets/BUDGET-runaway-agent-checklist-2026-10.pdf" download>Download the PDF</a><a class="act" href="https://indica-tech.com/checklists/md/runaway-agent.md">Markdown</a><button class="act" type="button" data-print>Print this list</button></div>
+<nav aria-label="On this page"><p class="rail-k">On this page</p><ol class="rail-toc"><li><a href="#runaway-agent-1-card">A daily budget per agent identity</a></li><li><a href="#runaway-agent-2-card">A circuit breaker on consecutive failures</a></li><li><a href="#runaway-agent-3-card">A step limit and a depth limit per task</a></li><li><a href="#runaway-agent-4-card">Stop re-billing the history</a></li><li><a href="#runaway-agent-5-card">Watch the cost curve, not the total</a></li></ol></nav>
+<p class="rail-k rail-next-k">Next</p><p class="rail-next"><a href="https://indica-tech.com/checklists/agent-budget/">Agent budget checklist &rarr;</a></p>
+</div></aside>
+<div class="col-main">
 <article class="list" id="runaway-agent">
 <p class="intro">One corrupted null value broke a ledger agent&#x27;s formatting tool. It tried to brute-force a fix: more than 15,000 reasoning calls in under an hour, about $50,000 of cloud spend, and database locks that halted live transactions. Nothing capped the calls, the cost or the failures, and every retry re-sent the whole history as billable input. Five controls.</p>
 
-<div class="checks-head"><p class="cap">The checks</p><p class="progress"><span class="count">0 of 5 done</span><button type="button">reset</button></p></div>
+<div class="checks-head"><p class="cap">The checks</p><p class="note">Everything starts ticked. Untick what you will not do; the choice is saved on this device only, and Print keeps only what you kept.</p></div>
 <article class="check" id="runaway-agent-1-card">
-<label class="check-head" for="runaway-agent-1"><input type="checkbox" id="runaway-agent-1"><span class="n">1</span><h2>A daily budget per agent identity</h2></label>
+<label class="check-head" for="runaway-agent-1"><input type="checkbox" id="runaway-agent-1" checked><span class="n">1</span><h2>A daily budget per agent identity</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> The incident report&#x27;s first control: cost-cap thresholds at the service-ID and project level. One key per agent, one budget per key; when it trips the agent stops, not the finance team.</p>
 <p><b>The check.</b></p><ul><li>Give every agent its own API key or service identity; never a shared team key.</li><li>Set a hard daily spend per identity at the provider or gateway, and a soft alert at half.</li><li>A tripped budget stops the agent and pages a person; it never raises itself.</li></ul><pre>agent: ledger-reconcile   identity: svc-ledger-agent   # its own key, nobody else&#x27;s
 daily_budget_usd: 50      # hard stop at the gateway; soft alert at 25</pre><p class="src">Source: <a href="https://cloud.google.com/security/resources/ai-risk-and-resilience-2026" rel="noopener">threat-intelligence special report, AI risk and resilience in 2026, case study 6 (Sep 2026)</a></p>
 </div>
 </article><article class="check" id="runaway-agent-2-card">
-<label class="check-head" for="runaway-agent-2"><input type="checkbox" id="runaway-agent-2"><span class="n">2</span><h2>A circuit breaker on consecutive failures</h2></label>
+<label class="check-head" for="runaway-agent-2"><input type="checkbox" id="runaway-agent-2" checked><span class="n">2</span><h2>A circuit breaker on consecutive failures</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> The loop was the agent retrying its own fix. The report asks for automated financial circuit breakers that halt an agent after a set number of consecutive task failures.</p>
 <p><b>The check.</b></p><ul><li>Count failures per task, not per session; three in a row ends the run and files the task for a human.</li><li>Treat a tool error, a schema failure and an empty result as failures; a retry is not progress.</li><li>Log the last failing input with the task so the fix starts from evidence.</li></ul><pre>max_consecutive_failures: 3   on_trip: halt_task + notify_owner</pre><p class="src">Source: <a href="https://cloud.google.com/security/resources/ai-risk-and-resilience-2026" rel="noopener">threat-intelligence special report, AI risk and resilience in 2026, case study 6 (Sep 2026)</a></p>
 </div>
 </article><article class="check" id="runaway-agent-3-card">
-<label class="check-head" for="runaway-agent-3"><input type="checkbox" id="runaway-agent-3"><span class="n">3</span><h2>A step limit and a depth limit per task</h2></label>
+<label class="check-head" for="runaway-agent-3"><input type="checkbox" id="runaway-agent-3" checked><span class="n">3</span><h2>A step limit and a depth limit per task</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> Bounded recursion is the third control in the report. A task that needs more than the limit needs a person, and the limit is what turns a runaway loop into a ticket.</p>
 <p><b>The check.</b></p><ul><li>Cap tool calls per task (25 is a sane default for a reconciliation step) and sub-task depth (2).</li><li>Make hitting the limit a normal, logged outcome, never an exception that triggers a retry.</li></ul><pre>max_steps: 25   max_depth: 2</pre><p class="src">Source: <a href="https://cloud.google.com/security/resources/ai-risk-and-resilience-2026" rel="noopener">threat-intelligence special report, AI risk and resilience in 2026, case study 6 (Sep 2026)</a></p>
 </div>
 </article><article class="check" id="runaway-agent-4-card">
-<label class="check-head" for="runaway-agent-4"><input type="checkbox" id="runaway-agent-4"><span class="n">4</span><h2>Stop re-billing the history</h2></label>
+<label class="check-head" for="runaway-agent-4"><input type="checkbox" id="runaway-agent-4" checked><span class="n">4</span><h2>Stop re-billing the history</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> Tool output re-entering the context is billed again on every call. A September 2026 study measured a session&#x27;s cumulative input at 14,293 times its first call; raw history adds 21 to 36 percent to its cost.</p>
 <p><b>The check.</b></p><ul><li>Summarise tool output before it re-enters the context; keep the raw result in a store read by reference.</li><li>Put a ceiling on context growth per task and on prompt size per call; measure input tokens per call, not only per session.</li></ul><p class="src">Source: <a href="https://arxiv.org/abs/2609.28585" rel="noopener">Persistent Billable State: Denial-of-Wallet Attacks and Defenses in Tool-Calling LLM Agents, arXiv 2609.28585 (23 Sep 2026)</a></p>
 </div>
 </article><article class="check" id="runaway-agent-5-card">
-<label class="check-head" for="runaway-agent-5"><input type="checkbox" id="runaway-agent-5"><span class="n">5</span><h2>Watch the cost curve, not the total</h2></label>
+<label class="check-head" for="runaway-agent-5"><input type="checkbox" id="runaway-agent-5" checked><span class="n">5</span><h2>Watch the cost curve, not the total</h2></label>
 <div class="check-body">
 <p><b>What happened.</b> A loop shows up as calls per minute and input tokens per call climbing together, long before the invoice; the report&#x27;s observability control would have caught this in minutes.</p>
 <p><b>The check.</b></p><ul><li>Alert when calls per minute per identity and input tokens per call rise together for a few calls.</li><li>Rate-limit each identity at the gateway so a loop degrades instead of spiking.</li><li>Rehearse it: break a tool in staging and confirm the breaker, the budget and the alert fire.</li></ul><p class="src">Source: <a href="https://cloud.google.com/security/resources/ai-risk-and-resilience-2026" rel="noopener">threat-intelligence special report, AI risk and resilience in 2026, case study 6 (Sep 2026)</a></p>
@@ -236,6 +273,7 @@ daily_budget_usd: 50      # hard stop at the gateway; soft alert at 25</pre><p c
 <button class="btn" type="submit">Send me new checklists</button>
 </form>
 </section>
+</div>
 </main>
 <aside class="printonly" aria-hidden="true">
 <p class="pc-name">Nitish Gautam &mdash; Indica Technology Ltd</p>
@@ -264,18 +302,27 @@ daily_budget_usd: 50      # hard stop at the gateway; soft alert at 25</pre><p c
   function save(){try{localStorage.setItem(key,JSON.stringify(state))}catch(err){}}
   function update(sec){
     var boxes=sec.querySelectorAll('input[type=checkbox]'),done=0;
-    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.add('done')}else{a.classList.remove('done')}});
-    var p=sec.querySelector('.progress .count');if(p){p.textContent=done+' of '+boxes.length+' done'}
+    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.remove('off')}else{a.classList.add('off')}});
+    document.querySelectorAll('.count').forEach(function(p){p.textContent=done+' of '+boxes.length+' selected'});
+    var bar=document.querySelector('.rail-bar span');if(bar){bar.style.width=(boxes.length?Math.round(done/boxes.length*100):0)+'%'}
   }
   document.querySelectorAll('.list').forEach(function(sec){
     sec.querySelectorAll('input[type=checkbox]').forEach(function(b){
-      if(state[b.id]){b.checked=true}
+      b.checked=(b.id in state)?!!state[b.id]:true;
       b.addEventListener('change',function(){state[b.id]=b.checked;save();update(sec)});
     });
-    var r=sec.querySelector('.progress button');
-    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=false;delete state[b.id]});save();update(sec)})}
+    var r=document.querySelector('[data-reset]');
+    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=true;delete state[b.id]});save();update(sec)})}
     update(sec);
   });
+})();
+/* The jump link for the check currently in view is marked. */
+(function(){
+  var links=document.querySelectorAll('.rail-toc a');if(!links.length||!('IntersectionObserver' in window)){return}
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  links[0].classList.add('is-here');
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){links.forEach(function(a){a.classList.remove('is-here')});var a=map[en.target.id];if(a){a.classList.add('is-here')}}})},{rootMargin:'-15% 0px -70% 0px'});
+  Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el){io.observe(el)}});
 })();
 /* Print: the browser's own print dialogue. The page holds one list, so the print
    stylesheet only drops the navigation and the calls to action and adds the contact

@@ -41,7 +41,34 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 .lede{color:#C9C6BF;font-weight:300;font-size:1.06rem;max-width:62ch;margin:0}
 .crumb{display:inline-block;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;color:#b4b1a9;text-decoration:none;padding:12px 0;margin:-12px 0 4px}
 .crumb:hover,.crumb:focus-visible{color:var(--green)}
-.how{font-size:.9rem;color:#C9C6BF;margin:18px 0 0;border-left:3px solid var(--green);padding-left:12px;max-width:62ch}
+/* List pages: the list at reading width, and a rail that stays put with progress, the downloads, the checks as
+   jump links and the next list. Below 900px the rail is a block above the list and the jump links are dropped. */
+.listpage .wrap{max-width:1120px}
+.listpage main.wrap{display:grid;grid-template-columns:minmax(0,1fr) 272px;gap:48px;align-items:start}
+.col-main{grid-column:1;grid-row:1;min-width:0}
+.rail{grid-column:2;grid-row:1;position:sticky;top:24px;padding-top:32px}
+.rail-in{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px}
+.rail-k{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin:0 0 6px}
+.rail-c{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:600;font-size:1.1rem;letter-spacing:-.01em;margin:0 0 6px}
+.rail-c button{font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:400;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0;margin:-12px 0}
+.rail-bar{height:5px;background:var(--line);border-radius:999px;overflow:hidden;margin:0 0 16px}
+.rail-bar span{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+.rail-a{display:flex;flex-direction:column;gap:8px;margin:0 0 18px}
+.act{display:inline-block;font:inherit;font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.02em;line-height:1;text-align:center;color:var(--ink);background:transparent;border:1px solid var(--ink);border-radius:999px;padding:13px 15px;text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.act:hover{color:#0a6b3d;border-color:#0a6b3d}
+.act:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.act-pdf{background:var(--green);border-color:var(--green)}
+.act-pdf:hover{color:var(--ink);border-color:var(--green);filter:brightness(1.06)}
+.rail-toc{margin:0 0 18px;padding-left:1.2rem;font-size:.9rem;line-height:1.4}
+.rail-toc li{margin:0 0 7px;font-weight:400}
+.rail-toc a{color:var(--ink);text-decoration:none}
+.rail-toc a:hover{color:#0a6b3d;text-decoration:underline}
+.rail-toc a.is-here{color:#0a7a44;font-weight:600}
+.rail-next{margin:0;font-weight:500;font-size:.95rem}
+.rail-next a{color:var(--ink);text-decoration:none}
+.rail-next a:hover{color:#0a6b3d}
+article.check{scroll-margin-top:16px}
+@media (max-width:900px){.listpage main.wrap{display:block}.rail{position:static;padding-top:24px}.rail-toc,.rail-next,.rail-next-k,.rail nav{display:none}.rail-a{flex-direction:row;flex-wrap:wrap;margin-bottom:2px}.rail .act{flex:1 1 auto}}
 
 /* Hub: one card per list. The title link is stretched over the whole card, so the
    card is the click target; the PDF link sits above it and stays its own target. */
@@ -62,16 +89,15 @@ h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clam
 
 /* One list per page. */
 .list{padding:32px 0 8px}
-.intro{margin:0 0 18px;max-width:70ch}
-.checks-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.intro{margin:0 0 18px;max-width:56ch}
+.checks-head{margin:0 0 10px}
+.checks-head .note{font-size:.82rem;color:var(--faint);margin:2px 0 0}
 .cap{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
-.progress{font-family:var(--mono);font-size:.8rem;color:var(--muted);white-space:nowrap;margin:0}
-.progress button{font:inherit;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0 12px 8px;margin:-12px 0}
 .lead-code{margin:0 0 22px}
 .lead-code .cap{margin:0 0 6px}
 pre{font-family:var(--mono);font-size:.82rem;line-height:1.45;background:var(--code);color:var(--codeink);border-radius:10px;padding:14px 16px;margin:10px 0 0;overflow-x:auto;white-space:pre}
 article.check{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px 16px;margin:0 0 12px;break-inside:avoid}
-article.check.done{border-color:var(--green)}
+article.check.off{opacity:.55}
 .check-head{display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin:0}
 .check-head input{appearance:none;-webkit-appearance:none;flex:0 0 26px;width:26px;height:26px;margin:2px 0 0;border:2px solid var(--ink);border-radius:7px;background:#fff;display:grid;place-items:center;cursor:pointer}
 .check-head input:checked{background:var(--green);border-color:var(--green)}
@@ -81,6 +107,7 @@ article.check.done{border-color:var(--green)}
 .check-head h2{font-family:var(--sans);font-size:1.05rem;line-height:1.32;margin:2px 0 0;font-weight:600;letter-spacing:-.008em}
 .check-body{margin:10px 0 0 38px}
 .check-body p{margin:0 0 8px}
+.check-body p,.check-body ul,.notes{max-width:56ch}
 .check-body b{font-weight:600}
 .check-body ul{margin:0 0 8px;padding-left:1.1rem}
 .check-body li{margin:0 0 5px;font-weight:400}
@@ -140,7 +167,9 @@ footer ul a{display:inline-block;padding:12px 0;margin:-12px 0}
 @media (max-width:480px){.check-body{margin-left:0}.get{padding:16px}.pager{grid-template-columns:1fr}.pager .next{text-align:left;align-items:flex-start}.pager span:empty{display:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.pager a{transition:none}}
 @media print{
-.skip,.sitenav,.crumb,.how,.progress,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.skip,.sitenav,.crumb,.rail,.checks-head .note,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.listpage main.wrap{display:block}
+article.check.off{display:none}
 .top{background:#fff;color:#000;padding:0 0 12px}.lede{color:#333}
 body{background:#fff;font-size:10.5pt}
 article.check{border-color:#bbb}
@@ -157,7 +186,7 @@ a{text-decoration:none;color:#000}
 }
 </style>
 </head>
-<body>
+<body class="listpage">
 <a class="skip" href="#main">Skip to content</a>
 <nav class="sitenav"><div class="wrap">
 <a class="brand" href="https://indica-tech.com/"><svg viewBox="0 0 100 100" width="20" height="20" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00c46a"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg><span>Indica Tech</span></a>
@@ -171,43 +200,51 @@ a{text-decoration:none;color:#000}
 </div></nav>
 <header class="top"><div class="wrap">
 <a class="crumb" href="https://indica-tech.com/checklists/">&larr; All checklists</a>
-<p class="kicker">@demotoprod · BUDGET · October 2026</p>
+<p class="kicker">Checklist 10 of 10 · October 2026</p>
 <h1>Agent budget checklist</h1>
 <p class="lede">A launch price that doubles on 1 December 2026, and the five numbers to set before it does</p>
-<p class="how">Tick the boxes as you work through the list; this page remembers them on your device only. The PDF and the Markdown copy are at the end, and nothing is behind a form.</p>
 </div></header>
 <main class="wrap" id="main">
+<aside class="rail" aria-label="Progress, downloads and contents"><div class="rail-in">
+<p class="rail-k">Your list</p>
+<p class="rail-c"><span class="count">5 of 5 selected</span><button type="button" data-reset>select all</button></p>
+<p class="rail-bar"><span style="width:100%"></span></p>
+<div class="rail-a"><a class="act act-pdf" href="https://indica-tech.com/checklists/lead-magnets/BUDGET-model-price-cliff-2026-10.pdf" download>Download the PDF</a><a class="act" href="https://indica-tech.com/checklists/md/agent-budget.md">Markdown</a><button class="act" type="button" data-print>Print this list</button></div>
+<nav aria-label="On this page"><p class="rail-k">On this page</p><ol class="rail-toc"><li><a href="#agent-budget-1-card">Budget at the list price</a></li><li><a href="#agent-budget-2-card">An output ceiling per route</a></li><li><a href="#agent-budget-3-card">Cache hit rate on the dashboard</a></li><li><a href="#agent-budget-4-card">Thinking tokens are output</a></li><li><a href="#agent-budget-5-card">Rehearse 1 December</a></li></ol></nav>
+<p class="rail-k rail-next-k">Next</p><p class="rail-next"><a href="https://indica-tech.com/checklists/">All checklists &rarr;</a></p>
+</div></aside>
+<div class="col-main">
 <article class="list" id="agent-budget">
 <p class="intro">A frontier model went on sale on 13 October 2026 at two dollars per million input tokens and ten per million output, for seven weeks. From 1 December the same tokens cost four and twenty. Output is five times input and includes the reasoning nobody reads. A pilot priced on the launch rate meets a December invoice at twice the price. Five checks.</p>
 
-<div class="checks-head"><p class="cap">The checks</p><p class="progress"><span class="count">0 of 5 done</span><button type="button">reset</button></p></div>
+<div class="checks-head"><p class="cap">The checks</p><p class="note">Everything starts ticked. Untick what you will not do; the choice is saved on this device only, and Print keeps only what you kept.</p></div>
 <article class="check" id="agent-budget-1-card">
-<label class="check-head" for="agent-budget-1"><input type="checkbox" id="agent-budget-1"><span class="n">1</span><h2>Budget at the list price</h2></label>
+<label class="check-head" for="agent-budget-1"><input type="checkbox" id="agent-budget-1" checked><span class="n">1</span><h2>Budget at the list price</h2></label>
 <div class="check-body">
 <p><b>Why.</b> The discount has an end date; the budget line does not. A cost model built on the launch rate is wrong by a factor of two from the first of December.</p>
 <p><b>The check.</b></p><ul><li>Put the list price in the cost model today, with the discount&#x27;s end date on the ticket that owns the line.</li><li>Set the spend alert at the list price now, so the alarm is tested while the bill is still small.</li></ul><pre>price_per_million: {input: 4.00, output: 20.00, cached: 0.20}   # list price
 alert_usd_per_day: 120   # list-price projection, from today</pre><p class="src">Source: <a href="https://venturebeat.com/technology/google-makes-gemini-4-argon-broadly-available-with-limited-time-low-api-pricing-of-2-10-per-1m-token" rel="noopener">trade-press report of the launch pricing, 13 Oct 2026</a></p>
 </div>
 </article><article class="check" id="agent-budget-2-card">
-<label class="check-head" for="agent-budget-2"><input type="checkbox" id="agent-budget-2"><span class="n">2</span><h2>An output ceiling per route</h2></label>
+<label class="check-head" for="agent-budget-2"><input type="checkbox" id="agent-budget-2" checked><span class="n">2</span><h2>An output ceiling per route</h2></label>
 <div class="check-body">
 <p><b>Why.</b> Agents are output machines, and output costs five times input. A request cap written when the ceiling was sixty-four thousand tokens does nothing against a million-token task.</p>
 <p><b>The check.</b></p><ul><li>Size max output tokens to the job, per route, and log every request that hits the ceiling.</li><li>A million-token task is a batch job with its own approval, at half the standard rate.</li><li>Count ceiling hits every day; a rising count is a prompt problem before it is a budget problem.</li></ul><pre>routes: {support-answer: {max_output_tokens: 4000}, code-migration: {max_output_tokens: 64000, tier: batch}}</pre><p class="src">Source: <a href="https://venturebeat.com/technology/google-makes-gemini-4-argon-broadly-available-with-limited-time-low-api-pricing-of-2-10-per-1m-token" rel="noopener">trade-press report of the launch pricing, 13 Oct 2026 (the 64,000-token ceiling raised to a million)</a>; <a href="https://dev.to/paullovelace/gemini-4-argons-210-api-pricing-doubles-december-1-full-price-table-2k02" rel="noopener">the full price table, 14 Oct 2026 (batch at half the standard rate)</a></p>
 </div>
 </article><article class="check" id="agent-budget-3-card">
-<label class="check-head" for="agent-budget-3"><input type="checkbox" id="agent-budget-3"><span class="n">3</span><h2>Cache hit rate on the dashboard</h2></label>
+<label class="check-head" for="agent-budget-3"><input type="checkbox" id="agent-budget-3" checked><span class="n">3</span><h2>Cache hit rate on the dashboard</h2></label>
 <div class="check-body">
 <p><b>Why.</b> Cached input is ninety-five percent off: at the list price, twenty cents per million against four dollars. The order of the prompt decides the bill more than the model does.</p>
 <p><b>The check.</b></p><ul><li>Stable content first: system prompt, tool schemas, reference documents; the user&#x27;s turn last.</li><li>Put the cache hit rate per route next to latency and error rate; a falling rate pages someone before the invoice does.</li><li>Treat a prompt change that breaks the cache as a cost regression in review.</li></ul><pre>cache_hit_rate{route=&quot;support-answer&quot;} &lt; 0.8 for 30m   # page: prefix changed</pre><p class="src">Source: <a href="https://dev.to/paullovelace/gemini-4-argons-210-api-pricing-doubles-december-1-full-price-table-2k02" rel="noopener">the full price table, 14 Oct 2026 (cached input $0.10 now, $0.20 from 1 December)</a></p>
 </div>
 </article><article class="check" id="agent-budget-4-card">
-<label class="check-head" for="agent-budget-4"><input type="checkbox" id="agent-budget-4"><span class="n">4</span><h2>Thinking tokens are output</h2></label>
+<label class="check-head" for="agent-budget-4"><input type="checkbox" id="agent-budget-4" checked><span class="n">4</span><h2>Thinking tokens are output</h2></label>
 <div class="check-body">
 <p><b>Why.</b> The output rate includes the model&#x27;s reasoning; the published price table says so in as many words. The answer on screen is a fraction of what was billed.</p>
 <p><b>The check.</b></p><ul><li>Log output tokens per task, split into visible answer and reasoning, and watch the ratio per route.</li><li>Set the reasoning effort per route; the cheapest setting that passes the eval is the default.</li></ul><p class="src">Source: <a href="https://dev.to/paullovelace/gemini-4-argons-210-api-pricing-doubles-december-1-full-price-table-2k02" rel="noopener">the full price table, 14 Oct 2026 (output prices include thinking tokens)</a></p>
 </div>
 </article><article class="check" id="agent-budget-5-card">
-<label class="check-head" for="agent-budget-5"><input type="checkbox" id="agent-budget-5"><span class="n">5</span><h2>Rehearse 1 December</h2></label>
+<label class="check-head" for="agent-budget-5"><input type="checkbox" id="agent-budget-5" checked><span class="n">5</span><h2>Rehearse 1 December</h2></label>
 <div class="check-body">
 <p><b>Why.</b> A price step with a known date is the easiest incident to prepare for. The launch rate runs to 30 November 2026 and the list rate applies from 1 December; both dates were published on launch day.</p>
 <p><b>The check.</b></p><ul><li>Run one day of traffic through the cost model at the list price, compare it with the alert thresholds, and name who approves the line after the step.</li></ul><p class="src">Source: <a href="https://venturebeat.com/technology/google-makes-gemini-4-argon-broadly-available-with-limited-time-low-api-pricing-of-2-10-per-1m-token" rel="noopener">trade-press report of the launch pricing, 13 Oct 2026</a>; <a href="https://blog.google/innovation-and-ai/technology/developers-tools/build-with-gemini-4-argon/" rel="noopener">the vendor&#x27;s launch post, 13 Oct 2026</a></p>
@@ -236,6 +273,7 @@ alert_usd_per_day: 120   # list-price projection, from today</pre><p class="src"
 <button class="btn" type="submit">Send me new checklists</button>
 </form>
 </section>
+</div>
 </main>
 <aside class="printonly" aria-hidden="true">
 <p class="pc-name">Nitish Gautam &mdash; Indica Technology Ltd</p>
@@ -264,18 +302,27 @@ alert_usd_per_day: 120   # list-price projection, from today</pre><p class="src"
   function save(){try{localStorage.setItem(key,JSON.stringify(state))}catch(err){}}
   function update(sec){
     var boxes=sec.querySelectorAll('input[type=checkbox]'),done=0;
-    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.add('done')}else{a.classList.remove('done')}});
-    var p=sec.querySelector('.progress .count');if(p){p.textContent=done+' of '+boxes.length+' done'}
+    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.remove('off')}else{a.classList.add('off')}});
+    document.querySelectorAll('.count').forEach(function(p){p.textContent=done+' of '+boxes.length+' selected'});
+    var bar=document.querySelector('.rail-bar span');if(bar){bar.style.width=(boxes.length?Math.round(done/boxes.length*100):0)+'%'}
   }
   document.querySelectorAll('.list').forEach(function(sec){
     sec.querySelectorAll('input[type=checkbox]').forEach(function(b){
-      if(state[b.id]){b.checked=true}
+      b.checked=(b.id in state)?!!state[b.id]:true;
       b.addEventListener('change',function(){state[b.id]=b.checked;save();update(sec)});
     });
-    var r=sec.querySelector('.progress button');
-    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=false;delete state[b.id]});save();update(sec)})}
+    var r=document.querySelector('[data-reset]');
+    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=true;delete state[b.id]});save();update(sec)})}
     update(sec);
   });
+})();
+/* The jump link for the check currently in view is marked. */
+(function(){
+  var links=document.querySelectorAll('.rail-toc a');if(!links.length||!('IntersectionObserver' in window)){return}
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  links[0].classList.add('is-here');
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){links.forEach(function(a){a.classList.remove('is-here')});var a=map[en.target.id];if(a){a.classList.add('is-here')}}})},{rootMargin:'-15% 0px -70% 0px'});
+  Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el){io.observe(el)}});
 })();
 /* Print: the browser's own print dialogue. The page holds one list, so the print
    stylesheet only drops the navigation and the calls to action and adds the contact
