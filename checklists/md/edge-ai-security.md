@@ -63,7 +63,7 @@ On 17 Sep 2026 a group reported unbolting one licence-plate-reader camera and fi
 
 The incident figures are the reporting group's counts as carried by the news report; the standards quoted are the consumer IoT baseline and the NIST core baseline, which industrial and commercial devices usually exceed, not replace.
 
-The live version of this list, with every source link, is at https://indica-tech.com/checklists/#edge-ai-security. The PDF is at https://indica-tech.com/checklists/lead-magnets/EDGE-edge-ai-security-checklist-2026-10.pdf.
+The live version of this list, with every source link, is at https://indica-tech.com/checklists/edge-ai-security/. The PDF is at https://indica-tech.com/checklists/lead-magnets/EDGE-edge-ai-security-checklist-2026-10.pdf.
 
 ---
 

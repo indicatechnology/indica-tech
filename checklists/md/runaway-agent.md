@@ -73,7 +73,7 @@ One corrupted null value broke a ledger agent's formatting tool. It tried to bru
 
 The report gives the incident's figures ("over 15,000" calls, "~$50,000", "in under an hour") and names the controls (cost caps and bounded recursion at service-ID and project level, financial circuit breakers on consecutive failures, observability); it sets no threshold values. The numbers in the code blocks are starting points, not the report's.
 
-The live version of this list, with every source link, is at https://indica-tech.com/checklists/#runaway-agent. The PDF is at https://indica-tech.com/checklists/lead-magnets/BUDGET-runaway-agent-checklist-2026-10.pdf.
+The live version of this list, with every source link, is at https://indica-tech.com/checklists/runaway-agent/. The PDF is at https://indica-tech.com/checklists/lead-magnets/BUDGET-runaway-agent-checklist-2026-10.pdf.
 
 ---
 

@@ -57,7 +57,7 @@ client: { timeout: 8s, retries: 3 }                  # one pool for both provide
 
 The outage count and the suspension length are the report's figures; the incident shape in check 2 is from the provider's own write-up. Nothing here is a vendor claim.
 
-The live version of this list, with every source link, is at https://indica-tech.com/checklists/#ai-failover. The PDF is at https://indica-tech.com/checklists/lead-magnets/CHECKLIST-ai-failover-2026-10.pdf.
+The live version of this list, with every source link, is at https://indica-tech.com/checklists/ai-failover/. The PDF is at https://indica-tech.com/checklists/lead-magnets/CHECKLIST-ai-failover-2026-10.pdf.
 
 ---
 

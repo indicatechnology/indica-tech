@@ -49,7 +49,7 @@ export DO_NOT_TRACK=1 LANGCHAIN_TRACING_V2=false # the rest; then stage the enco
 
 Our lab, 8 Oct 2026: a clean sandbox, every DNS lookup and outside connection intercepted and refused, no model server running, nothing left the machine. The numbers are what one tutorial stack did at the versions recorded in the run log, not a claim about every framework. The staging step could not be demonstrated in the sandbox, whose own proxy refused the downloads.
 
-The live version of this list, with every source link, is at https://indica-tech.com/checklists/#air-gapped-ai. The PDF is at https://indica-tech.com/checklists/lead-magnets/CHECKLIST-air-gapped-ai-2026-10.pdf.
+The live version of this list, with every source link, is at https://indica-tech.com/checklists/air-gapped-ai/. The PDF is at https://indica-tech.com/checklists/lead-magnets/CHECKLIST-air-gapped-ai-2026-10.pdf.
 
 ---
 
