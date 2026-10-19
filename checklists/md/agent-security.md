@@ -122,7 +122,7 @@ Every item below is a real, dated, publicly reported incident from 2026, with th
 
 Effort figures are planning estimates for a team that already has CI and a secret manager, not measurements. Everything else on this page is sourced.
 
-The live version of this list, with every source link, is at https://indica-tech.com/checklists/#agent-security. The PDF is at https://indica-tech.com/checklists/lead-magnets/KEYS-agent-security-checklist-2026-09.pdf.
+The live version of this list, with every source link, is at https://indica-tech.com/checklists/agent-security/. The PDF is at https://indica-tech.com/checklists/lead-magnets/KEYS-agent-security-checklist-2026-09.pdf.
 
 ---
 

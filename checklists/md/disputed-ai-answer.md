@@ -69,7 +69,7 @@ An airline's website chatbot invented a ninety-day refund window. The policy pag
 
 The decision is Moffatt v. the airline, 2024 BCCRT 149 (British Columbia Civil Resolution Tribunal, 14 February 2024): damages C$650.88, C$812.02 with interest and tribunal fees. The tribunal's site does not admit automated readers, so the link above is a legal-news report that quotes the decision; search the neutral citation to read the full text.
 
-The live version of this list, with every source link, is at https://indica-tech.com/checklists/#disputed-ai-answer. The PDF is at https://indica-tech.com/checklists/lead-magnets/CHECKLIST-disputed-ai-answer-2026-10.pdf.
+The live version of this list, with every source link, is at https://indica-tech.com/checklists/disputed-ai-answer/. The PDF is at https://indica-tech.com/checklists/lead-magnets/CHECKLIST-disputed-ai-answer-2026-10.pdf.
 
 ---
 

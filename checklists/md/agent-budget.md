@@ -75,7 +75,7 @@ A frontier model went on sale on 13 October 2026 at two dollars per million inpu
 
 Prices are the vendor's published standard tier: $2 input / $10 output per million tokens to 30 November 2026, $4 / $20 from 1 December, cached input at 95 percent off, batch at half the standard rate. The thresholds in the code blocks are illustrative; set yours from your own traffic.
 
-The live version of this list, with every source link, is at https://indica-tech.com/checklists/#agent-budget. The PDF is at https://indica-tech.com/checklists/lead-magnets/BUDGET-model-price-cliff-2026-10.pdf.
+The live version of this list, with every source link, is at https://indica-tech.com/checklists/agent-budget/. The PDF is at https://indica-tech.com/checklists/lead-magnets/BUDGET-model-price-cliff-2026-10.pdf.
 
 ---
 

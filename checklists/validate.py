@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""validate.py - the mechanical checks on index.html: well-formed HTML, no company names in visible text, every YAML parses,
+"""validate.py - the mechanical checks on the hub and every list page: well-formed HTML, no company names in visible text, every YAML parses,
 word counts inside the prompt's limits, and (optional, --links) that every source URL answers 200."""
 import html.parser, re, sys, glob, yaml, urllib.request
 NAMES = ['OpenAI','Anthropic','GitHub','METR','Perplexity','Hugging Face','Z.ai','ZCode','GitGuardian','Cycode','Microsoft','Google',
          'Amazon','AWS','Meridian','AISI','Inspect','Medicare','Services Australia','GPT','Claude','Gemini','Fastly','PyPI','Firecracker',
          'Vercel','Salesforce','Zscaler','Alibaba','Tencent']
-src = open('index.html', encoding='utf-8').read()
 class P(html.parser.HTMLParser):
     def __init__(s): super().__init__(); s.stack=[]; s.errs=[]
     def handle_starttag(s,t,a):
@@ -13,11 +12,13 @@ class P(html.parser.HTMLParser):
     def handle_endtag(s,t):
         if not s.stack or s.stack[-1]!=t: s.errs.append((t,s.getpos()))
         else: s.stack.pop()
-p=P(); p.feed(src); ok = not p.stack and not p.errs
-print(("OK  " if ok else "FAIL") + " html well-formed", p.errs[:3])
-text = re.sub(r'<(script|style).*?</\1>', '', src, flags=re.S); text = re.sub(r'href="[^"]*"', '', text); text = re.sub(r'<[^>]+>', ' ', text)
-hits = {n: len(re.findall(r'\b'+re.escape(n)+r'\b', text)) for n in NAMES}; hits = {k:v for k,v in hits.items() if v}
-print(("OK  " if not hits else "FAIL") + " no company names in visible text", hits)
+for page in ['index.html'] + sorted(glob.glob('*/index.html')):
+    src = open(page, encoding='utf-8').read()
+    p=P(); p.feed(src); ok = not p.stack and not p.errs
+    print(("OK  " if ok else "FAIL") + f" {page}: html well-formed", p.errs[:3])
+    text = re.sub(r'<(script|style).*?</\1>', '', src, flags=re.S); text = re.sub(r'href="[^"]*"', '', text); text = re.sub(r'<[^>]+>', ' ', text)
+    hits = {n: len(re.findall(r'\b'+re.escape(n)+r'\b', text)) for n in NAMES}; hits = {k:v for k,v in hits.items() if v}
+    print(("OK  " if not hits else "FAIL") + f" {page}: no company names in visible text", hits)
 urls = []
 for f in sorted(glob.glob('specs/*.yaml')):
     s = yaml.safe_load(open(f, encoding='utf-8'))

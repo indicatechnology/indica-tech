@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edge AI security checklist · Indica Tech</title>
+<meta name="description" content="Five checks before your model ships to hardware you do not physically guard. 5 checks, each from a dated failure or a documented default, with the control that stops it and a link to the primary source. Free to read, with a Markdown copy and a PDF.">
+<link rel="canonical" href="https://indica-tech.com/checklists/edge-ai-security/">
+<meta property="og:title" content="Edge AI security checklist · Indica Tech">
+<meta property="og:description" content="Five checks before your model ships to hardware you do not physically guard. 5 checks, each from a dated failure or a documented default, with the control that stops it and a link to the primary source. Free to read, with a Markdown copy and a PDF.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://indica-tech.com/checklists/edge-ai-security/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Palette and type are the site's own tokens from styles.css, so this page and the
+   rest of indica-tech.com are one design system, not two. */
+:root{--ink:#0B0B0A;--ink-2:#18181A;--paper:#F7F4ED;--paper-2:#EFEAE0;--card:#FFFDF8;--green:#00C46A;--muted:#4A4741;--faint:#6E6A62;--line:#D0C9B9;--code:#16181C;--codeink:#E8E6E1;
+--sans:"IBM Plex Sans",ui-sans-serif,-apple-system,"Segoe UI",sans-serif;--mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink-2);font-family:var(--sans);font-weight:300;font-size:17px;line-height:1.62;overflow-wrap:break-word}
+a{color:inherit}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px}
+.skip{position:absolute;left:-999px;top:10px;z-index:50;background:var(--green);color:var(--ink);font-family:var(--mono);font-size:.8rem;font-weight:600;padding:10px 14px;border-radius:999px;text-decoration:none}
+.skip:focus{left:12px}
+.sitenav{background:var(--ink);border-bottom:1px solid rgba(245,242,236,.14);font-family:var(--mono);font-size:.76rem;letter-spacing:.04em}
+.sitenav .wrap{display:flex;align-items:center;gap:14px 18px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}
+.sitenav .brand{display:flex;align-items:center;gap:8px;color:var(--paper);text-decoration:none;font-weight:600}
+.sitenav ul{display:flex;flex-wrap:wrap;gap:16px;list-style:none;margin:0;padding:0;flex:1 1 auto}
+.sitenav a{color:#b4b1a9;text-decoration:none}
+.sitenav ul a{display:inline-block;padding:12px 0;margin:-12px 0}
+.sitenav a:hover{color:var(--green)}
+.sitenav [aria-current]{color:var(--green)}
+.sitenav .navcta{border:1px solid rgba(245,242,236,.35);border-radius:999px;padding:6px 12px;color:var(--paper);white-space:nowrap}
+.sitenav .navcta:hover{border-color:var(--green);color:var(--green)}
+.top{background:var(--ink);color:var(--paper);padding:30px 0 28px}
+.kicker{font-family:var(--mono);color:var(--green);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.08;margin:.4rem 0 .8rem}
+.lede{color:#C9C6BF;font-weight:300;font-size:1.06rem;max-width:62ch;margin:0}
+.crumb{display:inline-block;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;color:#b4b1a9;text-decoration:none;padding:12px 0;margin:-12px 0 4px}
+.crumb:hover,.crumb:focus-visible{color:var(--green)}
+.how{font-size:.9rem;color:#C9C6BF;margin:18px 0 0;border-left:3px solid var(--green);padding-left:12px;max-width:62ch}
+
+/* Hub: one card per list. The title link is stretched over the whole card, so the
+   card is the click target; the PDF link sits above it and stays its own target. */
+.grid{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{position:relative;display:flex;flex-direction:column;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px 14px;transition:border-color .2s}
+.card:hover{border-color:var(--ink)}
+.card .num{display:flex;justify-content:space-between;gap:10px;margin:0;padding-bottom:9px;border-bottom:1px dashed var(--line);font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.card .num b{color:#0a7a44;font-weight:600}
+.card h2{font-family:var(--sans);font-weight:600;font-size:1.18rem;line-height:1.25;letter-spacing:-.012em;margin:2px 0 0}
+.card h2 a{color:var(--ink);text-decoration:none}
+.card h2 a::after{content:"";position:absolute;inset:0;border-radius:14px;cursor:pointer}
+.card h2 a:focus-visible{outline:3px solid var(--green);outline-offset:3px}
+.card .sub{margin:0;font-size:.94rem;flex:1 1 auto}
+.card .meta{display:flex;gap:16px;align-items:center;margin:4px 0 0;font-family:var(--mono);font-size:.76rem;color:var(--faint)}
+.card .meta a{position:relative;z-index:1;color:#0a6b3d;text-decoration-color:rgba(10,107,61,.4);padding:12px 0;margin:-12px 0}
+.card .meta a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.sub{font-weight:400;color:var(--muted);margin:0 0 12px}
+
+/* One list per page. */
+.list{padding:32px 0 8px}
+.intro{margin:0 0 18px;max-width:70ch}
+.checks-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.cap{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
+.progress{font-family:var(--mono);font-size:.8rem;color:var(--muted);white-space:nowrap;margin:0}
+.progress button{font:inherit;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0 12px 8px;margin:-12px 0}
+.lead-code{margin:0 0 22px}
+.lead-code .cap{margin:0 0 6px}
+pre{font-family:var(--mono);font-size:.82rem;line-height:1.45;background:var(--code);color:var(--codeink);border-radius:10px;padding:14px 16px;margin:10px 0 0;overflow-x:auto;white-space:pre}
+article.check{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px 16px;margin:0 0 12px;break-inside:avoid}
+article.check.done{border-color:var(--green)}
+.check-head{display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin:0}
+.check-head input{appearance:none;-webkit-appearance:none;flex:0 0 26px;width:26px;height:26px;margin:2px 0 0;border:2px solid var(--ink);border-radius:7px;background:#fff;display:grid;place-items:center;cursor:pointer}
+.check-head input:checked{background:var(--green);border-color:var(--green)}
+.check-head input:checked::after{content:"";width:7px;height:13px;border:solid var(--ink);border-width:0 3px 3px 0;transform:translateY(-2px) rotate(45deg)}
+.check-head input:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.n{font-family:var(--mono);font-weight:600;color:#0a7a44;font-size:.95rem;flex:0 0 auto;padding-top:5px}
+.check-head h2{font-family:var(--sans);font-size:1.05rem;line-height:1.32;margin:2px 0 0;font-weight:600;letter-spacing:-.008em}
+.check-body{margin:10px 0 0 38px}
+.check-body p{margin:0 0 8px}
+.check-body b{font-weight:600}
+.check-body ul{margin:0 0 8px;padding-left:1.1rem}
+.check-body li{margin:0 0 5px;font-weight:400}
+.src{font-size:.85rem;color:var(--muted);margin:8px 0 0!important}
+.src a{color:#0a6b3d;text-decoration-color:rgba(10,107,61,.4);word-break:break-word}
+.order{margin:22px 0 0}
+.order h2{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:.92rem;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--mono);font-weight:600;color:#0a7a44;width:2.2rem}
+.notes{font-size:.86rem;color:var(--muted);margin:12px 0 0}
+.get{margin:22px 0 0;background:var(--ink);color:var(--paper);border-radius:14px;padding:18px 20px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.get p{margin:0;font-weight:400;max-width:52ch}
+.get small{display:block;color:#C9C6BF;font-weight:300;margin-top:5px;font-size:.88rem}
+.btn{display:inline-block;background:var(--green);color:var(--ink);font-family:var(--mono);font-size:.82rem;font-weight:600;letter-spacing:.02em;text-decoration:none;border-radius:999px;padding:11px 18px;white-space:nowrap;border:1px solid var(--green);cursor:pointer}
+.btn:hover{filter:brightness(1.06)}
+.btn-ghost{background:transparent;color:var(--paper);border-color:rgba(247,244,237,.4)}
+.btn-ghost:hover{border-color:var(--green);color:var(--green);filter:none}
+.get-btns{display:flex;gap:10px;flex-wrap:wrap}
+.ask{margin:14px 0 0;font-size:.95rem;color:var(--muted);border-left:3px solid var(--green);padding-left:12px}
+.ask b{font-weight:600;color:var(--ink)}
+.ask a{color:#0a6b3d}
+
+/* Previous and next list, so moving on never needs the hub. */
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:26px 0 0}
+.pager a{display:flex;flex-direction:column;gap:3px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;color:var(--ink);text-decoration:none;transition:border-color .2s}
+.pager a:hover{border-color:var(--ink)}
+.pager a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.pager .next{text-align:right;align-items:flex-end}
+.pager small{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.pager .t{font-weight:500;line-height:1.3}
+.pager .all{grid-column:1/-1;justify-self:center;background:none;border:0;padding:12px;font-family:var(--mono);font-size:.8rem;color:#0a6b3d}
+
+/* Subscribe — an offer, never a gate. Nothing on this page is behind it. */
+.sub-block{border-top:1px solid var(--line);margin-top:44px;padding:40px 0 8px}
+.sub-block h2{font-family:var(--sans);font-weight:600;letter-spacing:-.022em;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.12;margin:.3rem 0 .4rem}
+.sub-block>p{max-width:62ch;color:var(--muted);margin:0 0 20px}
+.sub-form{background:var(--paper-2);border:1px solid var(--line);border-radius:14px;padding:20px;max-width:560px}
+.sub-row{display:flex;gap:14px;flex-wrap:wrap}
+.sub-row .f{display:flex;flex-direction:column;gap:5px;flex:1 1 200px}
+.sub-form label{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.sub-form input[type=text],.sub-form input[type=email]{font:inherit;font-size:.95rem;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink-2);width:100%}
+.sub-form input[type=text]:focus,.sub-form input[type=email]:focus{outline:2px solid var(--green);outline-offset:-1px;border-color:var(--green)}
+.consent{display:flex;gap:10px;align-items:flex-start;margin:16px 0 18px;font-family:var(--sans)!important;font-size:.88rem!important;letter-spacing:0!important;text-transform:none!important;color:var(--muted)!important;line-height:1.5}
+.consent input{flex:0 0 auto;width:18px;height:18px;margin-top:2px;accent-color:var(--green)}
+.consent a{color:#0a6b3d}
+
+/* Print: the page becomes the one-page PDF, and the contact block is the back page. */
+.printonly{display:none}
+footer{border-top:1px solid var(--line);margin-top:48px;padding:32px 0 48px;font-size:.92rem;color:var(--muted)}
+footer p{margin:0 0 12px;max-width:72ch}
+footer ul{list-style:none;padding:0;margin:0 0 12px;display:flex;flex-wrap:wrap;gap:8px 18px}
+footer a{color:#0a6b3d}
+footer ul a{display:inline-block;padding:12px 0;margin:-12px 0}
+@media (max-width:480px){.check-body{margin-left:0}.get{padding:16px}.pager{grid-template-columns:1fr}.pager .next{text-align:left;align-items:flex-start}.pager span:empty{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.pager a{transition:none}}
+@media print{
+.skip,.sitenav,.crumb,.how,.progress,.get,.ask,.pager,.sub-block,footer ul{display:none}
+.top{background:#fff;color:#000;padding:0 0 12px}.lede{color:#333}
+body{background:#fff;font-size:10.5pt}
+article.check{border-color:#bbb}
+pre{white-space:pre-wrap}
+a{text-decoration:none;color:#000}
+.src a::after{content:" (" attr(href) ")";font-size:.75rem;color:#555}
+.printonly{display:block;break-before:page;border-top:2px solid #000;margin-top:14pt;padding-top:10pt}
+.pc-name{font-family:var(--sans);font-weight:600;font-size:13pt;margin:0 0 2pt}
+.pc-line{color:#444;margin:0 0 10pt;font-size:9.5pt}
+.pc-links{list-style:none;margin:0;padding:0;columns:2;font-size:9.5pt}
+.pc-links li{margin:0 0 4pt;break-inside:avoid}
+.pc-links b{font-family:var(--mono);font-size:7.5pt;letter-spacing:.08em;text-transform:uppercase;color:#666;display:block}
+.pc-foot{margin:10pt 0 0;font-size:8.5pt;color:#666;border-top:1px solid #ccc;padding-top:6pt}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="sitenav"><div class="wrap">
+<a class="brand" href="https://indica-tech.com/"><svg viewBox="0 0 100 100" width="20" height="20" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00c46a"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg><span>Indica Tech</span></a>
+<ul>
+<li><a href="https://indica-tech.com/#offers">Engagements</a></li>
+<li><a href="https://indica-tech.com/blog/">Blog</a></li>
+<li><a href="https://indica-tech.com/checklists/" aria-current="true">Checklists</a></li>
+<li><a href="https://indica-tech.com/#faq">FAQ</a></li>
+</ul>
+<a class="navcta" href="https://indica-tech.com/#contact">Book a call</a>
+</div></nav>
+<header class="top"><div class="wrap">
+<a class="crumb" href="https://indica-tech.com/checklists/">&larr; All checklists</a>
+<p class="kicker">@demotoprod · EDGE · October 2026</p>
+<h1>Edge AI security checklist</h1>
+<p class="lede">Five checks before your model ships to hardware you do not physically guard</p>
+<p class="how">Tick the boxes as you work through the list; this page remembers them on your device only. The PDF and the Markdown copy are at the end, and nothing is behind a form.</p>
+</div></header>
+<main class="wrap" id="main">
+<article class="list" id="edge-ai-security">
+<p class="intro">On 17 Sep 2026 a group reported unbolting one licence-plate-reader camera and finding the encryption key next to the recorded media: about 1.6 million images and 27,321 clips from roughly 21 days, from a device whose vendor had said footage is only briefly stored. A device that scores frames locally must decrypt them locally, so &quot;encrypted at rest&quot; protects a dead disk, not a working device.</p>
+
+<div class="checks-head"><p class="cap">The checks</p><p class="progress"><span class="count">0 of 5 done</span><button type="button">reset</button></p></div>
+<article class="check" id="edge-ai-security-1-card">
+<label class="check-head" for="edge-ai-security-1"><input type="checkbox" id="edge-ai-security-1"><span class="n">1</span><h2>Pull one unit off the wall and count what is on it</h2></label>
+<div class="check-body">
+<p><b>What happened.</b> The claim was &quot;briefly stored&quot;; the device held about 21 days of media, and nobody knew because nobody had taken a unit down and counted. Retention on the edge is a claim until someone counts, and the count is what a thief gets.</p>
+<p><b>The check.</b></p><ul><li>Once a quarter, image one deployed device per hardware revision and list every file with its age.</li><li>Put the counted retention in the questionnaire; set the on-device window in minutes and alert past it.</li></ul><p class="src">Source: <a href="https://www.tomshardware.com/tech-industry/cyber-security/hackers-find-encryption-key-stored-on-flock-camera-group-extracts-more-than-27-000-clips-1-6-million-images-captured-in-a-span-of-21-days-from-device" rel="noopener">News report with the extracted counts, 17 Sep 2026</a></p>
+</div>
+</article><article class="check" id="edge-ai-security-2-card">
+<label class="check-head" for="edge-ai-security-2"><input type="checkbox" id="edge-ai-security-2"><span class="n">2</span><h2>Keep keys in a secure element the board cannot read as a file</h2></label>
+<div class="check-body">
+<p><b>What happened.</b> The stolen camera&#x27;s media partition carried the key that unlocked the media, so on-device encryption changed nothing for whoever held it. The consumer IoT baseline standard says sensitive security parameters shall be stored securely and a per-device identity shall resist physical, electrical and software tampering.</p>
+<p><b>The check.</b></p><ul><li>Per-device keys in a secure element or TEE, generated on the device, never on flash; no shared fleet key.</li><li>The cloud accepts a device only after attestation; &quot;encrypted at rest&quot; is true only when the device is off.</li></ul><p class="src">Source: <a href="https://www.etsi.org/deliver/etsi_en/303600_303699/303645/02.01.01_60/en_303645v020101p.pdf" rel="noopener">ETSI EN 303 645 V2.1.1, provisions 5.4-1 and 5.4-2, June 2020</a>; <a href="https://www.tomshardware.com/tech-industry/cyber-security/hackers-find-encryption-key-stored-on-flock-camera-group-extracts-more-than-27-000-clips-1-6-million-images-captured-in-a-span-of-21-days-from-device" rel="noopener">News report with the partition layout, 17 Sep 2026</a></p>
+</div>
+</article><article class="check" id="edge-ai-security-3-card">
+<label class="check-head" for="edge-ai-security-3"><input type="checkbox" id="edge-ai-security-3"><span class="n">3</span><h2>Store the result, not the frame</h2></label>
+<div class="check-body">
+<p><b>What happened.</b> The model needed each frame for milliseconds; the device kept it for weeks. About 50,200 vehicles and 11 people were in the extracted media because raw frames stayed after the inference that used them. The NIST core baseline makes data protection a capability of the device itself.</p>
+<p><b>The check.</b></p><ul><li>Write the inference output (class, count, score) and at most a thumbnail; drop the frame after scoring.</li><li>Anything waiting for upload is encrypted with a key the device does not hold; delete on acknowledgement.</li></ul><p class="src">Source: <a href="https://nvlpubs.nist.gov/nistpubs/ir/2020/NIST.IR.8259A.pdf" rel="noopener">NISTIR 8259A, IoT Device Cybersecurity Capability Core Baseline, May 2020</a></p>
+</div>
+</article><article class="check" id="edge-ai-security-4-card">
+<label class="check-head" for="edge-ai-security-4"><input type="checkbox" id="edge-ai-security-4"><span class="n">4</span><h2>Sign the model and the firmware, and refuse anything unsigned</h2></label>
+<div class="check-body">
+<p><b>What happened.</b> A device nobody guards can be opened, re-flashed and put back, so the model and the firmware must prove where they came from. The baseline standard asks for secure boot and updatable software; UK law for consumer connectable products (in force 29 April 2024) requires a published minimum security-update period.</p>
+<p><b>The check.</b></p><ul><li>Secure boot with anti-rollback; the model is signed with a key that never lives on the device, and an unsigned model does not load.</li><li>Signed over-the-air updates with a tested rollback; publish the support period per hardware revision.</li></ul><p class="src">Source: <a href="https://www.etsi.org/deliver/etsi_en/303600_303699/303645/02.01.01_60/en_303645v020101p.pdf" rel="noopener">ETSI EN 303 645 V2.1.1, provisions 5.3 and 5.7-1, June 2020</a>; <a href="https://www.gov.uk/government/publications/the-uk-product-security-and-telecommunications-infrastructure-product-security-regime" rel="noopener">UK product security regime for connectable products, in force 29 April 2024</a></p>
+</div>
+</article><article class="check" id="edge-ai-security-5-card">
+<label class="check-head" for="edge-ai-security-5"><input type="checkbox" id="edge-ai-security-5"><span class="n">5</span><h2>Rehearse losing the box</h2></label>
+<div class="check-body">
+<p><b>What happened.</b> One unit gave up 21 days of media; with a shared key it would have been the fleet. The NIST baseline asks that each device be uniquely identifiable and report its own state, which helps only if revoking one has been rehearsed.</p>
+<p><b>The check.</b></p><ul><li>Per-device identity and certificate, and a &quot;reported stolen&quot; runbook that revokes it within minutes.</li><li>Remote wipe on next contact; rehearse the runbook on a real unit twice a year.</li></ul><p class="src">Source: <a href="https://nvlpubs.nist.gov/nistpubs/ir/2020/NIST.IR.8259A.pdf" rel="noopener">NISTIR 8259A, Device Identification and Cybersecurity State Awareness, May 2020</a>; <a href="https://www.gov.uk/government/publications/the-uk-product-security-and-telecommunications-infrastructure-product-security-regime" rel="noopener">UK product security regime for connectable products, in force 29 April 2024</a></p>
+</div>
+</article>
+
+<p class="notes">The incident figures are the reporting group&#x27;s counts as carried by the news report; the standards quoted are the consumer IoT baseline and the NIST core baseline, which industrial and commercial devices usually exceed, not replace.</p>
+<div class="get"><p>Take this list with you<small>The PDF is the handout: this list on one or two pages. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to. Print gives you this list only, without the navigation.</small></p><div class="get-btns"><a class="btn" href="https://indica-tech.com/checklists/lead-magnets/EDGE-edge-ai-security-checklist-2026-10.pdf" download>Download the PDF</a><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/edge-ai-security.md">Markdown</a><button class="btn btn-ghost" type="button" data-print>Print this list</button></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> <a href="https://indica-tech.com/#contact">Tell me what broke</a>.</p>
+</article>
+<nav class="pager" aria-label="More checklists"><a class="prev" rel="prev" href="https://indica-tech.com/checklists/air-gapped-ai/"><small>Previous</small><span class="t">Air-gapped AI deployment checklist</span></a><a class="next" rel="next" href="https://indica-tech.com/checklists/disputed-ai-answer/"><small>Next</small><span class="t">Disputed-answer checklist</span></a><a class="all" href="https://indica-tech.com/checklists/">All 10 checklists</a></nav>
+<section class="sub-block" id="more">
+<h2>New checklists, as they are published</h2>
+<p>One list at a time, each built the same way: a dated failure, the control that stops it, and the primary source so you can check it. Nothing else goes to this address, no digest and no newsletter.</p>
+<form class="sub-form" action="https://formsubmit.co/hello@indica-tech.com" method="POST">
+<input type="hidden" name="_subject" value="New checklist subscriber">
+<input type="hidden" name="_captcha" value="true">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_next" value="https://indica-tech.com/thank-you.html">
+<input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
+<div class="sub-row">
+<span class="f"><label for="sub-name">Name</label><input id="sub-name" name="name" type="text" autocomplete="name" required></span>
+<span class="f"><label for="sub-email">Work email</label><input id="sub-email" name="email" type="email" autocomplete="email" required></span>
+</div>
+<label class="consent"><input id="sub-consent" name="consent" type="checkbox" value="I agree to receive new checklists by email" required>
+<span>Email me new checklists as they are published. I can stop this any time by replying &ldquo;no&rdquo;. See the <a href="https://indica-tech.com/privacy.html">privacy policy</a>.</span></label>
+<button class="btn" type="submit">Send me new checklists</button>
+</form>
+</section>
+</main>
+<aside class="printonly" aria-hidden="true">
+<p class="pc-name">Nitish Gautam &mdash; Indica Technology Ltd</p>
+<p class="pc-line">Founder-led AI engineering. Demo to production, in regulated industries, on fixed scope.</p>
+<ul class="pc-links">
+<li><b>Website</b> indica-tech.com</li>
+<li><b>Book a call</b> indica-tech.com/#contact</li>
+<li><b>Email</b> hello@indica-tech.com</li>
+<li><b>YouTube</b> youtube.com/@demotoprod</li>
+<li><b>LinkedIn</b> linkedin.com/company/indica-technology</li>
+<li><b>Instagram / TikTok</b> @demotoprod</li>
+</ul>
+<p class="pc-foot">This list is free to share. The live version, with every source link, is at indica-tech.com/checklists/</p>
+</aside>
+<footer><div class="wrap">
+<p>Written by Nitish Gautam, Indica Tech. Ten-plus years taking products from zero to one across seven sectors, including defence, fintech, medical and telecom, with AI shipped into regulated and air-gapped environments. The @demotoprod channel takes one production AI failure apart each day.</p>
+<p>The body text names no company; every incident is linked to its primary source so you can check the numbers before you take them to your team. Effort figures are planning estimates, not measurements.</p>
+<ul><li><a href="https://indica-tech.com/services/audit.html">Production Readiness Audit</a></li><li><a href="https://indica-tech.com/services/fractional.html">Fractional AI Lead</a></li><li><a href="https://indica-tech.com/services/build-sprint.html">AI Build Sprint</a></li><li><a href="https://indica-tech.com/services/governance.html">Governance and Compliance</a></li></ul>
+<ul><li><a href="https://www.youtube.com/@demotoprod/shorts" rel="noopener">YouTube</a></li><li><a href="https://www.tiktok.com/@demotoprod" rel="noopener">TikTok</a></li><li><a href="https://instagram.com/demotoprod" rel="noopener">Instagram</a></li><li><a href="https://www.linkedin.com/company/indica-technology/" rel="noopener">LinkedIn</a></li></ul>
+<p>Something broke in your production AI that is not on these lists? <a href="https://indica-tech.com/#contact">Tell me about it</a>.</p>
+</div></footer>
+<script>
+(function(){
+  var key='indica-checklists-v1', state={};
+  try{state=JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(err){state={}}
+  function save(){try{localStorage.setItem(key,JSON.stringify(state))}catch(err){}}
+  function update(sec){
+    var boxes=sec.querySelectorAll('input[type=checkbox]'),done=0;
+    boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.add('done')}else{a.classList.remove('done')}});
+    var p=sec.querySelector('.progress .count');if(p){p.textContent=done+' of '+boxes.length+' done'}
+  }
+  document.querySelectorAll('.list').forEach(function(sec){
+    sec.querySelectorAll('input[type=checkbox]').forEach(function(b){
+      if(state[b.id]){b.checked=true}
+      b.addEventListener('change',function(){state[b.id]=b.checked;save();update(sec)});
+    });
+    var r=sec.querySelector('.progress button');
+    if(r){r.addEventListener('click',function(){sec.querySelectorAll('input[type=checkbox]').forEach(function(b){b.checked=false;delete state[b.id]});save();update(sec)})}
+    update(sec);
+  });
+})();
+/* Print: the browser's own print dialogue. The page holds one list, so the print
+   stylesheet only drops the navigation and the calls to action and adds the contact
+   page. No library, nothing generated server-side. */
+document.querySelectorAll('[data-print]').forEach(function(b){
+  b.addEventListener('click', function(){window.print()});
+});
+</script>
+</body>
+</html>

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""build_checklists.py - one static page (index.html), one Markdown file per checklist, and index.json, from specs/*.yaml.
+"""build_checklists.py - a hub page (index.html), one page per checklist (<slug>/index.html), one Markdown file per
+checklist, and index.json, from specs/*.yaml.
 
-    python3 build_checklists.py            # writes index.html, md/<slug>.md and index.json next to this file
+    python3 build_checklists.py            # writes index.html, <slug>/index.html, md/<slug>.md and index.json next to this file
 
 index.json is the machine-readable form of the same specs - every checklist, every check, every source - so anything that
 reads the checklists programmatically never drifts from the page. It is a static file; GitHub Pages serves it as JSON.
@@ -83,34 +84,52 @@ html{scroll-behavior:smooth}
 body{margin:0;background:var(--paper);color:var(--ink-2);font-family:var(--sans);font-weight:300;font-size:17px;line-height:1.62;overflow-wrap:break-word}
 a{color:inherit}
 .wrap{max-width:820px;margin:0 auto;padding:0 16px}
+.skip{position:absolute;left:-999px;top:10px;z-index:50;background:var(--green);color:var(--ink);font-family:var(--mono);font-size:.8rem;font-weight:600;padding:10px 14px;border-radius:999px;text-decoration:none}
+.skip:focus{left:12px}
 .sitenav{background:var(--ink);border-bottom:1px solid rgba(245,242,236,.14);font-family:var(--mono);font-size:.76rem;letter-spacing:.04em}
 .sitenav .wrap{display:flex;align-items:center;gap:14px 18px;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}
 .sitenav .brand{display:flex;align-items:center;gap:8px;color:var(--paper);text-decoration:none;font-weight:600}
 .sitenav ul{display:flex;flex-wrap:wrap;gap:16px;list-style:none;margin:0;padding:0;flex:1 1 auto}
 .sitenav a{color:#b4b1a9;text-decoration:none}
+.sitenav ul a{display:inline-block;padding:12px 0;margin:-12px 0}
 .sitenav a:hover{color:var(--green)}
-.sitenav [aria-current=page]{color:var(--green)}
+.sitenav [aria-current]{color:var(--green)}
 .sitenav .navcta{border:1px solid rgba(245,242,236,.35);border-radius:999px;padding:6px 12px;color:var(--paper);white-space:nowrap}
 .sitenav .navcta:hover{border-color:var(--green);color:var(--green)}
 .top{background:var(--ink);color:var(--paper);padding:30px 0 28px}
 .kicker{font-family:var(--mono);color:var(--green);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
 h1{font-family:var(--sans);font-weight:600;letter-spacing:-.028em;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.08;margin:.4rem 0 .8rem}
 .lede{color:#C9C6BF;font-weight:300;font-size:1.06rem;max-width:62ch;margin:0}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding:0;list-style:none}
-.chips a{display:inline-block;border:1px solid rgba(247,244,237,.32);border-radius:999px;padding:7px 13px;font-size:.84rem;font-weight:400;text-decoration:none;color:var(--paper)}
-.chips a:hover{border-color:var(--green);color:var(--green)}
-.how{font-size:.9rem;color:var(--muted);margin:22px 0 0;border-left:3px solid var(--green);padding-left:12px}
-section.list{padding:44px 0 8px;border-top:1px solid var(--line)}
-section.list:first-of-type{border-top:0}
-.list-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
-.list-head .kicker{color:#0a8f4f}
-h2{font-family:var(--sans);font-weight:600;letter-spacing:-.022em;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.12;margin:.3rem 0 .2rem}
+.crumb{display:inline-block;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;color:#b4b1a9;text-decoration:none;padding:12px 0;margin:-12px 0 4px}
+.crumb:hover,.crumb:focus-visible{color:var(--green)}
+.how{font-size:.9rem;color:#C9C6BF;margin:18px 0 0;border-left:3px solid var(--green);padding-left:12px;max-width:62ch}
+
+/* Hub: one card per list. The title link is stretched over the whole card, so the
+   card is the click target; the PDF link sits above it and stays its own target. */
+.grid{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{position:relative;display:flex;flex-direction:column;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px 14px;transition:border-color .2s}
+.card:hover{border-color:var(--ink)}
+.card .num{display:flex;justify-content:space-between;gap:10px;margin:0;padding-bottom:9px;border-bottom:1px dashed var(--line);font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.card .num b{color:#0a7a44;font-weight:600}
+.card h2{font-family:var(--sans);font-weight:600;font-size:1.18rem;line-height:1.25;letter-spacing:-.012em;margin:2px 0 0}
+.card h2 a{color:var(--ink);text-decoration:none}
+.card h2 a::after{content:"";position:absolute;inset:0;border-radius:14px;cursor:pointer}
+.card h2 a:focus-visible{outline:3px solid var(--green);outline-offset:3px}
+.card .sub{margin:0;font-size:.94rem;flex:1 1 auto}
+.card .meta{display:flex;gap:16px;align-items:center;margin:4px 0 0;font-family:var(--mono);font-size:.76rem;color:var(--faint)}
+.card .meta a{position:relative;z-index:1;color:#0a6b3d;text-decoration-color:rgba(10,107,61,.4);padding:12px 0;margin:-12px 0}
+.card .meta a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
 .sub{font-weight:400;color:var(--muted);margin:0 0 12px}
+
+/* One list per page. */
+.list{padding:32px 0 8px}
 .intro{margin:0 0 18px;max-width:70ch}
-.progress{font-family:var(--mono);font-size:.8rem;color:var(--muted);white-space:nowrap}
-.progress button{font:inherit;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:0 0 0 8px}
+.checks-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.cap{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
+.progress{font-family:var(--mono);font-size:.8rem;color:var(--muted);white-space:nowrap;margin:0}
+.progress button{font:inherit;color:var(--muted);background:none;border:0;text-decoration:underline;cursor:pointer;padding:12px 0 12px 8px;margin:-12px 0}
 .lead-code{margin:0 0 22px}
-.lead-code .cap{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.lead-code .cap{margin:0 0 6px}
 pre{font-family:var(--mono);font-size:.82rem;line-height:1.45;background:var(--code);color:var(--codeink);border-radius:10px;padding:14px 16px;margin:10px 0 0;overflow-x:auto;white-space:pre}
 article.check{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px 16px;margin:0 0 12px;break-inside:avoid}
 article.check.done{border-color:var(--green)}
@@ -120,7 +139,7 @@ article.check.done{border-color:var(--green)}
 .check-head input:checked::after{content:"";width:7px;height:13px;border:solid var(--ink);border-width:0 3px 3px 0;transform:translateY(-2px) rotate(45deg)}
 .check-head input:focus-visible{outline:3px solid var(--green);outline-offset:2px}
 .n{font-family:var(--mono);font-weight:600;color:#0a7a44;font-size:.95rem;flex:0 0 auto;padding-top:5px}
-h3{font-family:var(--sans);font-size:1.05rem;line-height:1.32;margin:2px 0 0;font-weight:600;letter-spacing:-.008em}
+.check-head h2{font-family:var(--sans);font-size:1.05rem;line-height:1.32;margin:2px 0 0;font-weight:600;letter-spacing:-.008em}
 .check-body{margin:10px 0 0 38px}
 .check-body p{margin:0 0 8px}
 .check-body b{font-weight:600}
@@ -129,7 +148,7 @@ h3{font-family:var(--sans);font-size:1.05rem;line-height:1.32;margin:2px 0 0;fon
 .src{font-size:.85rem;color:var(--muted);margin:8px 0 0!important}
 .src a{color:#0a6b3d;text-decoration-color:rgba(10,107,61,.4);word-break:break-word}
 .order{margin:22px 0 0}
-.order h4{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.order h2{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:600}
 table{width:100%;border-collapse:collapse;font-size:.92rem;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
@@ -148,9 +167,19 @@ td.num{font-family:var(--mono);font-weight:600;color:#0a7a44;width:2.2rem}
 .ask b{font-weight:600;color:var(--ink)}
 .ask a{color:#0a6b3d}
 
+/* Previous and next list, so moving on never needs the hub. */
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:26px 0 0}
+.pager a{display:flex;flex-direction:column;gap:3px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;color:var(--ink);text-decoration:none;transition:border-color .2s}
+.pager a:hover{border-color:var(--ink)}
+.pager a:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.pager .next{text-align:right;align-items:flex-end}
+.pager small{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.pager .t{font-weight:500;line-height:1.3}
+.pager .all{grid-column:1/-1;justify-self:center;background:none;border:0;padding:12px;font-family:var(--mono);font-size:.8rem;color:#0a6b3d}
+
 /* Subscribe — an offer, never a gate. Nothing on this page is behind it. */
 .sub-block{border-top:1px solid var(--line);margin-top:44px;padding:40px 0 8px}
-.sub-block h2{margin-bottom:.4rem}
+.sub-block h2{font-family:var(--sans);font-weight:600;letter-spacing:-.022em;font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.12;margin:.3rem 0 .4rem}
 .sub-block>p{max-width:62ch;color:var(--muted);margin:0 0 20px}
 .sub-form{background:var(--paper-2);border:1px solid var(--line);border-radius:14px;padding:20px;max-width:560px}
 .sub-row{display:flex;gap:14px;flex-wrap:wrap}
@@ -168,18 +197,17 @@ footer{border-top:1px solid var(--line);margin-top:48px;padding:32px 0 48px;font
 footer p{margin:0 0 12px;max-width:72ch}
 footer ul{list-style:none;padding:0;margin:0 0 12px;display:flex;flex-wrap:wrap;gap:8px 18px}
 footer a{color:#0a6b3d}
-@media (max-width:480px){.check-body{margin-left:0}.get{padding:16px}}
+footer ul a{display:inline-block;padding:12px 0;margin:-12px 0}
+@media (max-width:480px){.check-body{margin-left:0}.get{padding:16px}.pager{grid-template-columns:1fr}.pager .next{text-align:left;align-items:flex-start}.pager span:empty{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card,.pager a{transition:none}}
 @media print{
-body.print-one section.list:not(.print-target),body.print-one .top .chips,body.print-one .top .lede{display:none}
+.skip,.sitenav,.crumb,.how,.progress,.get,.ask,.pager,.sub-block,footer ul{display:none}
 .top{background:#fff;color:#000;padding:0 0 12px}.lede{color:#333}
-.chips,.how,.get,.progress,.ask,.sitenav,.sub-block,footer ul{display:none}
 body{background:#fff;font-size:10.5pt}
 article.check{border-color:#bbb}
 pre{white-space:pre-wrap}
 a{text-decoration:none;color:#000}
 .src a::after{content:" (" attr(href) ")";font-size:.75rem;color:#555}
-section.list{break-after:page}
-section.list:last-of-type{break-after:auto}
 .printonly{display:block;break-before:page;border-top:2px solid #000;margin-top:14pt;padding-top:10pt}
 .pc-name{font-family:var(--sans);font-weight:600;font-size:13pt;margin:0 0 2pt}
 .pc-line{color:#444;margin:0 0 10pt;font-size:9.5pt}
@@ -200,7 +228,7 @@ JS = """
     boxes.forEach(function(b){var a=b.closest('article');if(b.checked){done++;a.classList.add('done')}else{a.classList.remove('done')}});
     var p=sec.querySelector('.progress .count');if(p){p.textContent=done+' of '+boxes.length+' done'}
   }
-  document.querySelectorAll('section.list').forEach(function(sec){
+  document.querySelectorAll('.list').forEach(function(sec){
     sec.querySelectorAll('input[type=checkbox]').forEach(function(b){
       if(state[b.id]){b.checked=true}
       b.addEventListener('change',function(){state[b.id]=b.checked;save();update(sec)});
@@ -210,18 +238,11 @@ JS = """
     update(sec);
   });
 })();
-/* Print: the browser's own print dialogue, limited to the list whose button was
-   pressed. The print stylesheet hides the other lists, the navigation and the calls
-   to action, and adds the contact page. No library, nothing generated server-side. */
+/* Print: the browser's own print dialogue. The page holds one list, so the print
+   stylesheet only drops the navigation and the calls to action and adds the contact
+   page. No library, nothing generated server-side. */
 document.querySelectorAll('[data-print]').forEach(function(b){
-  b.addEventListener('click', function(){
-    var sec=b.closest('section.list');
-    document.body.classList.add('print-one'); if(sec){sec.classList.add('print-target')}
-    var done=function(){document.body.classList.remove('print-one'); if(sec){sec.classList.remove('print-target')}; window.removeEventListener('afterprint',done)};
-    window.addEventListener('afterprint',done);
-    window.print();
-    setTimeout(done,2000);
-  });
+  b.addEventListener('click', function(){window.print()});
 });
 """
 
@@ -237,7 +258,7 @@ def render_check(s: dict, k: int, c: dict) -> str:
     else:
         src = ""
     return f"""<article class="check" id="{cid}-card">
-<label class="check-head" for="{cid}"><input type="checkbox" id="{cid}"><span class="n">{k}</span><h3>{e(c['title'])}</h3></label>
+<label class="check-head" for="{cid}"><input type="checkbox" id="{cid}"><span class="n">{k}</span><h2>{e(c['title'])}</h2></label>
 <div class="check-body">
 <p><b>{why_label(s)}</b> {e(' '.join(c['why'].split()))}</p>
 <p><b>The check.</b></p><ul>{dos}</ul>{code}{src}
@@ -245,7 +266,28 @@ def render_check(s: dict, k: int, c: dict) -> str:
 </article>"""
 
 
-def render_section(s: dict) -> str:
+def render_get(s: dict) -> str:
+    """The take-away block and the ask after it. Nothing is gated: the list is readable on the page and as Markdown,
+    the PDF is a plain download, and the print view is the same list with the contact block. The ask that follows is
+    the one worth making — a live problem, not a file request."""
+    pdf = s.get("pdf") if s.get("pdf") and (LEAD_MAGNETS / s["pdf"]).is_file() else None
+    md = f'<a class="btn btn-ghost" href="{SITE}/checklists/md/{e(s["slug"])}.md">Markdown</a>'
+    if pdf:
+        btns = (f'<a class="btn" href="{SITE}/checklists/lead-magnets/{e(pdf)}" download>Download the PDF</a>{md}'
+                f'<button class="btn btn-ghost" type="button" data-print>Print this list</button>')
+        small = ("The PDF is the handout: this list on one or two pages. The Markdown is for your own "
+                 "docs, your wiki, or an assistant you want to hand the list to. Print gives you this list only, without the navigation.")
+    else:
+        btns = f'<button class="btn" type="button" data-print>Print this list</button>{md}'
+        small = ("Print gives you this list only, without the navigation. The Markdown is for your own docs, your wiki, "
+                 "or an assistant you want to hand the list to.")
+    return (f'<div class="get"><p>Take this list with you<small>{small}</small></p><div class="get-btns">{btns}</div></div>'
+            f'<p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> '
+            f'<a href="{SITE}/#contact">Tell me what broke</a>.</p>')
+
+
+def render_list_body(s: dict) -> str:
+    """One list: intro, lead code, the checks with their progress line, the order table, notes, and the take-away."""
     checks = "".join(render_check(s, k, c) for k, c in enumerate(s["checks"], 1))
     lead = ""
     if s.get("lead_code"):
@@ -255,90 +297,60 @@ def render_section(s: dict) -> str:
     if s.get("order"):
         rows = "".join(f'<tr><td class="num">{i}</td><td>{e(r[0])}</td><td>{e(r[1])}</td><td>{e(r[2])}</td></tr>'
                        for i, r in enumerate(s["order"], 1))
-        order = (f'<div class="order"><h4>Work it in this order</h4><table><thead><tr><th>#</th><th>Control</th>'
+        order = (f'<div class="order"><h2>Work it in this order</h2><table><thead><tr><th>#</th><th>Control</th>'
                  f'<th>Effort</th><th>Impact</th></tr></thead><tbody>{rows}</tbody></table></div>')
     notes = f'<p class="notes">{e(" ".join(str(s["notes"]).split()))}</p>' if s.get("notes") else ""
-    # Nothing is gated: the list is readable here and as Markdown, and the print view
-    # is a clean one-page PDF with the contact block. The ask that follows is the one
-    # worth making — a live problem, not a file request.
-    pdf = s.get("pdf") if s.get("pdf") and (LEAD_MAGNETS / s["pdf"]).is_file() else None
-    if pdf:
-        btns = (f'<a class="btn" href="{SITE}/checklists/lead-magnets/{e(pdf)}" download>Download the PDF</a>'
-                f'<a class="btn btn-ghost" href="{SITE}/checklists/md/{e(s["slug"])}.md">Markdown</a>'
-                f'<button class="btn btn-ghost" type="button" data-print>Print this list</button>')
-        small = ("The PDF is the handout: this list on one or two pages. The Markdown is for your own "
-                 "docs, your wiki, or an assistant you want to hand the list to. Print gives you this list only, without the navigation.")
-    else:
-        btns = (f'<button class="btn" type="button" data-print>Print this list</button>'
-                f'<a class="btn btn-ghost" href="{SITE}/checklists/md/{e(s["slug"])}.md">Markdown</a>')
-        small = ("Print gives you this list only, without the navigation. The Markdown is for your own docs, your wiki, "
-                 "or an assistant you want to hand the list to.")
-    get = (f'<div class="get">'
-           f'<p>Take this list with you<small>{small}</small></p>'
-           f'<div class="get-btns">{btns}</div></div>'
-           f'<p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> '
-           f'<a href="{SITE}/#contact">Tell me what broke</a>.</p>')
     n = len(s["checks"])
-    return f"""<section class="list" id="{e(s['slug'])}">
-<div class="list-head"><div><p class="kicker">{e(s['kicker'])} · {e(s['date'])}</p><h2>{e(s['title'])}</h2><p class="sub">{e(s['subtitle'])}</p></div>
-<p class="progress"><span class="count">0 of {n} done</span><button type="button">reset</button></p></div>
+    return f"""<article class="list" id="{e(s['slug'])}">
 <p class="intro">{e(' '.join(s['intro'].split()))}</p>
 {lead}
+<div class="checks-head"><p class="cap">The checks</p><p class="progress"><span class="count">0 of {n} done</span><button type="button">reset</button></p></div>
 {checks}
 {order}
 {notes}
-{get}
-</section>"""
+{render_get(s)}
+</article>"""
 
 
-def render_page(specs: list[dict]) -> str:
-    chips = "".join(f'<li><a href="#{e(s["slug"])}">{e(s["title"])}</a></li>' for s in specs)
-    sections = "\n".join(render_section(s) for s in specs)
-    eng = "".join(f'<li><a href="{e(u)}">{e(t)}</a></li>' for t, u in ENGAGEMENTS)
-    chan = "".join(f'<li><a href="{e(u)}" rel="noopener">{e(t)}</a></li>' for t, u in CHANNEL.items())
-    total = sum(len(s["checks"]) for s in specs)
-    desc = ("Production AI checklists from Indica Tech: " + ", ".join(s["title"].lower() for s in specs) +
-            ". Every item from a dated, sourced failure or a documented default, with the control that stops it.")
-    return f"""<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
+# Page chrome shared by the hub and every list page.
+BRAND_SVG = ('<svg viewBox="0 0 100 100" width="20" height="20" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00c46a"/>'
+             '<rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg>')
+
+
+def render_head(title: str, desc: str, url: str, og_type: str, first: str = "") -> str:
+    """Everything inside <head>. `first` goes before the stylesheet, for a script that has to run before paint."""
+    return f"""<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Production AI checklists · Indica Tech</title>
+<title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
-<link rel="canonical" href="{SITE}/checklists/">
-<meta property="og:title" content="Production AI checklists · Indica Tech">
+<link rel="canonical" href="{url}">
+<meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
-<meta property="og:type" content="website">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<meta property="og:type" content="{og_type}">
+<meta property="og:url" content="{url}">
+{first}<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>{CSS}</style>
-</head>
-<body>
+<style>{CSS}</style>"""
+
+
+def render_sitenav(current: str) -> str:
+    """`current` is "page" on the hub and "true" on a list page; the Checklists entry is lit either way."""
+    return f"""<a class="skip" href="#main">Skip to content</a>
 <nav class="sitenav"><div class="wrap">
-<a class="brand" href="{SITE}/">
-<svg viewBox="0 0 100 100" width="20" height="20" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00c46a"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg>
-<span>Indica Tech</span></a>
+<a class="brand" href="{SITE}/">{BRAND_SVG}<span>Indica Tech</span></a>
 <ul>
 <li><a href="{SITE}/#offers">Engagements</a></li>
 <li><a href="{SITE}/blog/">Blog</a></li>
-<li><a href="{SITE}/checklists/" aria-current="page">Checklists</a></li>
+<li><a href="{SITE}/checklists/" aria-current="{current}">Checklists</a></li>
 <li><a href="{SITE}/#faq">FAQ</a></li>
 </ul>
 <a class="navcta" href="{SITE}/#contact">Book a call</a>
-</div></nav>
-<header class="top"><div class="wrap">
-<p class="kicker">Indica Tech · @demotoprod</p>
-<h1>Production AI checklists</h1>
-<p class="lede">{total} checks across {len(specs)} lists. Every item is a dated failure or a documented default, with the control that stops it and a link to the primary source. There are no vendor claims and no round numbers.</p>
-<ul class="chips">{chips}</ul>
-<p class="how" style="color:#c9c6bf;border-color:var(--green)">Tick the boxes as you work through a list; this page remembers them on your device only. Each list has a PDF to download and a Markdown copy, and nothing is behind a form.</p>
-</div></header>
-<main class="wrap">
-{sections}
+</div></nav>"""
 
-<section class="sub-block" id="more">
+
+def render_subscribe() -> str:
+    return f"""<section class="sub-block" id="more">
 <h2>New checklists, as they are published</h2>
 <p>One list at a time, each built the same way: a dated failure, the control that stops it, and the primary source so you can check it. Nothing else goes to this address, no digest and no newsletter.</p>
 <form class="sub-form" action="https://formsubmit.co/{MAIL}" method="POST">
@@ -355,10 +367,11 @@ def render_page(specs: list[dict]) -> str:
 <span>Email me new checklists as they are published. I can stop this any time by replying &ldquo;no&rdquo;. See the <a href="{SITE}/privacy.html">privacy policy</a>.</span></label>
 <button class="btn" type="submit">Send me new checklists</button>
 </form>
-</section>
-</main>
+</section>"""
 
-<aside class="printonly" aria-hidden="true">
+
+def render_print_contact() -> str:
+    return f"""<aside class="printonly" aria-hidden="true">
 <p class="pc-name">Nitish Gautam &mdash; Indica Technology Ltd</p>
 <p class="pc-line">Founder-led AI engineering. Demo to production, in regulated industries, on fixed scope.</p>
 <ul class="pc-links">
@@ -370,14 +383,105 @@ def render_page(specs: list[dict]) -> str:
 <li><b>Instagram / TikTok</b> @demotoprod</li>
 </ul>
 <p class="pc-foot">This list is free to share. The live version, with every source link, is at indica-tech.com/checklists/</p>
-</aside>
-<footer><div class="wrap">
+</aside>"""
+
+
+def render_footer() -> str:
+    eng = "".join(f'<li><a href="{e(u)}">{e(t)}</a></li>' for t, u in ENGAGEMENTS)
+    chan = "".join(f'<li><a href="{e(u)}" rel="noopener">{e(t)}</a></li>' for t, u in CHANNEL.items())
+    return f"""<footer><div class="wrap">
 <p>{e(ABOUT)}</p>
 <p>The body text names no company; every incident is linked to its primary source so you can check the numbers before you take them to your team. Effort figures are planning estimates, not measurements.</p>
 <ul>{eng}</ul>
 <ul>{chan}</ul>
 <p>Something broke in your production AI that is not on these lists? <a href="{SITE}/#contact">Tell me about it</a>.</p>
-</div></footer>
+</div></footer>"""
+
+
+def render_card(i: int, s: dict) -> str:
+    pdf = s.get("pdf") if s.get("pdf") and (LEAD_MAGNETS / s["pdf"]).is_file() else None
+    quick = f'<a href="{SITE}/checklists/lead-magnets/{e(pdf)}" download>PDF</a>' if pdf else ""
+    return (f'<li class="card" id="{e(s["slug"])}">'
+            f'<p class="num"><b>{i:02d}</b><span>{e(s["date"])}</span></p>'
+            f'<h2><a href="{SITE}/checklists/{e(s["slug"])}/">{e(s["title"])}</a></h2>'
+            f'<p class="sub">{e(s["subtitle"])}</p>'
+            f'<p class="meta"><span>{len(s["checks"])} checks</span>{quick}</p></li>')
+
+
+def render_hub(specs: list[dict]) -> str:
+    """The hub: one card per list. Links shared before 19 Oct 2026 point at #slug anchors on this page, so a matching
+    anchor is turned into that list's own address before paint; without JavaScript it still lands on the list's card."""
+    cards = "\n".join(render_card(i, s) for i, s in enumerate(specs, 1))
+    total = sum(len(s["checks"]) for s in specs)
+    desc = ("Production AI checklists from Indica Tech: " + ", ".join(s["title"].lower() for s in specs) +
+            ". Every item from a dated, sourced failure or a documented default, with the control that stops it.")
+    slugs = json.dumps([s["slug"] for s in specs])
+    redirect = (f'<script>(function(){{var s={slugs},h=location.hash.replace(/^#/,"");'
+                f'if(s.indexOf(h)>-1){{location.replace("{SITE}/checklists/"+h+"/")}}}})();</script>\n')
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+{render_head("Production AI checklists · Indica Tech", desc, f"{SITE}/checklists/", "website", redirect)}
+</head>
+<body>
+{render_sitenav("page")}
+<header class="top"><div class="wrap">
+<p class="kicker">Indica Tech · @demotoprod</p>
+<h1>Production AI checklists</h1>
+<p class="lede">{total} checks across {len(specs)} lists. Every item is a dated failure or a documented default, with the control that stops it and a link to the primary source. Each list is its own page with a PDF and a Markdown copy, and nothing is behind a form.</p>
+</div></header>
+<main class="wrap" id="main">
+<ul class="grid">
+{cards}
+</ul>
+{render_subscribe()}
+</main>
+{render_footer()}
+</body>
+</html>
+"""
+
+
+def render_pager(prev: dict | None, nxt: dict | None, count: int) -> str:
+    """Previous and next list, so moving on never needs the hub. An empty span keeps "next" on the right."""
+    def link(s: dict | None, rel: str, label: str) -> str:
+        if not s:
+            return "<span></span>"
+        return (f'<a class="{rel}" rel="{rel}" href="{SITE}/checklists/{e(s["slug"])}/"><small>{label}</small>'
+                f'<span class="t">{e(s["title"])}</span></a>')
+    return (f'<nav class="pager" aria-label="More checklists">{link(prev, "prev", "Previous")}{link(nxt, "next", "Next")}'
+            f'<a class="all" href="{SITE}/checklists/">All {count} checklists</a></nav>')
+
+
+def render_list_page(s: dict, prev: dict | None, nxt: dict | None, count: int) -> str:
+    """One list on its own page."""
+    url = f"{SITE}/checklists/{s['slug']}/"
+    has_pdf = bool(s.get("pdf")) and (LEAD_MAGNETS / s["pdf"]).is_file()
+    desc = (f"{s['subtitle']}. {len(s['checks'])} checks, each from a dated failure or a documented default, with the "
+            f"control that stops it and a link to the primary source. Free to read, with a Markdown copy"
+            + (" and a PDF." if has_pdf else "."))
+    take = "The PDF and the Markdown copy are at the end" if has_pdf else "The Markdown copy is at the end"
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+{render_head(f"{s['title']} · Indica Tech", desc, url, "article")}
+</head>
+<body>
+{render_sitenav("true")}
+<header class="top"><div class="wrap">
+<a class="crumb" href="{SITE}/checklists/">&larr; All checklists</a>
+<p class="kicker">{e(s['kicker'])} · {e(s['date'])}</p>
+<h1>{e(s['title'])}</h1>
+<p class="lede">{e(s['subtitle'])}</p>
+<p class="how">Tick the boxes as you work through the list; this page remembers them on your device only. {take}, and nothing is behind a form.</p>
+</div></header>
+<main class="wrap" id="main">
+{render_list_body(s)}
+{render_pager(prev, nxt, count)}
+{render_subscribe()}
+</main>
+{render_print_contact()}
+{render_footer()}
 <script>{JS}</script>
 </body>
 </html>
@@ -406,7 +510,7 @@ def render_md(s: dict) -> str:
     if s.get("notes"):
         out += [" ".join(str(s["notes"]).split()), ""]
     pdf_line = f" The PDF is at {SITE}/checklists/lead-magnets/{s['pdf']}." if s.get("pdf") and (LEAD_MAGNETS / s["pdf"]).is_file() else ""
-    out += [f"The live version of this list, with every source link, is at {SITE}/checklists/#{s['slug']}.{pdf_line}",
+    out += [f"The live version of this list, with every source link, is at {SITE}/checklists/{s['slug']}/.{pdf_line}",
             "", "---", "",
             "**Nitish Gautam — Indica Technology Ltd.** Founder-led AI engineering: demo to production, in regulated industries, on fixed scope.",
             "", f"Website {SITE} · Book a call {SITE}/#contact · {MAIL}",
@@ -432,7 +536,7 @@ def render_json(specs: list[dict]) -> str:
             "subtitle": s.get("subtitle"),
             "date": s.get("date"),
             "cta_word": s.get("cta_word"),
-            "url": f"{SITE}/checklists/#{s['slug']}",
+            "url": f"{SITE}/checklists/{s['slug']}/",
             "markdown_url": f"{SITE}/checklists/md/{s['slug']}.md",
             "pdf_url": f"{SITE}/checklists/lead-magnets/{pdf}" if has_pdf else None,
             "intro": " ".join(s["intro"].split()),
@@ -464,16 +568,33 @@ def render_json(specs: list[dict]) -> str:
     return json.dumps(doc, indent=2, ensure_ascii=False) + "\n"
 
 
+RESERVED = {"md", "specs", "lead-magnets"}  # directories beside the list pages; a slug may not shadow one
+
+
+def write_pages(specs: list[dict]) -> None:
+    OUT_HTML.write_text(render_hub(specs), encoding="utf-8")
+    for i, s in enumerate(specs):
+        prev = specs[i - 1] if i else None
+        nxt = specs[i + 1] if i + 1 < len(specs) else None
+        page_dir = HERE / s["slug"]
+        page_dir.mkdir(exist_ok=True)
+        (page_dir / "index.html").write_text(render_list_page(s, prev, nxt, len(specs)), encoding="utf-8")
+
+
 def main() -> int:
     specs = load()
-    OUT_HTML.write_text(render_page(specs), encoding="utf-8")
+    clash = [s["slug"] for s in specs if s["slug"] in RESERVED]
+    if clash:
+        print(f"error: slug(s) {clash} would overwrite a directory next to the list pages")
+        return 1
+    write_pages(specs)
     OUT_MD.mkdir(exist_ok=True)
     for s in specs:
         (OUT_MD / f"{s['slug']}.md").write_text(render_md(s), encoding="utf-8")
     OUT_JSON.write_text(render_json(specs), encoding="utf-8")
     missing = [s["pdf"] for s in specs if s.get("pdf") and not (LEAD_MAGNETS / s["pdf"]).is_file()]
-    print(f"wrote {OUT_HTML.name} ({OUT_HTML.stat().st_size:,} bytes), {len(specs)} markdown files in md/, "
-          f"and {OUT_JSON.name} ({OUT_JSON.stat().st_size:,} bytes)")
+    print(f"wrote {OUT_HTML.name} ({OUT_HTML.stat().st_size:,} bytes), {len(specs)} list pages (<slug>/index.html), "
+          f"{len(specs)} markdown files in md/, and {OUT_JSON.name} ({OUT_JSON.stat().st_size:,} bytes)")
     if missing:
         print(f"note: {len(missing)} PDF(s) named in specs but not in lead-magnets/ — pdf_url is null for these:")
         for m in missing:
