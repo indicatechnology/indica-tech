@@ -1,0 +1,73 @@
+# Page spec for comment keyword CHECKLIST on 342 (the disputed-answer case study). Checklist text written 2026-10-16 as the
+# lead magnet reference/lead-magnets/CHECKLIST-disputed-ai-answer-2026-10.yaml; sources added and re-checked 2026-10-19.
+# Body names no company (NG's rule, 30 Sep 2026). The decision is Moffatt v. the airline, 2024 BCCRT 149, released 14 Feb 2024;
+# the tribunal's own site and CanLII refuse automated readers, so the linked legal-news report carries the quotes.
+id: disputed-ai-answer
+slug: disputed-ai-answer
+cta_word: CHECKLIST
+title: Disputed-answer checklist
+subtitle: Five records to keep so a chatbot's answer can be defended, from the tribunal case that cost an airline C$812
+kicker: "@demotoprod · CHECKLIST"
+date: October 2026
+why_label: "What happened."
+compact: true
+pdf: CHECKLIST-disputed-ai-answer-2026-10.pdf
+out: reference/lead-magnets/CHECKLIST-disputed-ai-answer-2026-10.pdf
+intro: >
+  An airline's website chatbot invented a ninety-day refund window. The policy page said the opposite. In February 2024 a
+  tribunal awarded the customer C$812.02, called the "separate legal entity" defence remarkable, and found no reason a
+  customer should know which part of a website to trust. The side that lost was the side with no evidence. Five checks.
+checks:
+  - title: Log every answer as evidence
+    why: "The company could not show what its bot had been told or why its page should outrank the bot. A dispute is won by whoever can replay the conversation."
+    do:
+      - "Store, per answer: an id, the timestamp, the exact text shown, the sources used (with their version), the prompt version, the model id and the retrieval set."
+      - Keep it for the whole dispute window of your market, hashed as it is written, where the bot cannot change it.
+      - Replay from the log, never from memory, when a customer disputes an answer.
+    code: |
+      {"answer":"a81f","ts":"2026-10-16T09:12Z","shown":"...","sources":["policy/bereavement#v12"],
+       "prompt_v":"14","model":"pinned-2026-09","retrieved":["doc-2231","doc-0917"]}
+    sources:
+      - label: "legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024"
+        url: https://www.law360.ca/ca/articles/1804075
+  - title: Cite or decline
+    why: "The ninety-day window came from nowhere. A figure, a date or a rule that the bot cannot point to is a promise nobody authorised."
+    do:
+      - Every answer that carries a number, a date or a policy rule quotes the page it came from, with a link.
+      - No source found means the bot says so and hands over; it never fills the gap from training data.
+      - Count answers with an empty sources list every day; the target is zero.
+    code: |
+      grep -c '"sources": \[\]' answers.jsonl    # answers with no citation: want 0
+    sources:
+      - label: "legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024"
+        url: https://www.law360.ca/ca/articles/1804075
+  - title: One source of truth, stated in writing
+    why: "The tribunal found no reason a customer should know that one section of the website is accurate and another is not. Precedence has to be yours, written down, before a dispute tests it."
+    do:
+      - The policy page is canonical; the bot's answer is derived from it and says so in its footer.
+      - When they disagree, the page wins and the bot is corrected inside a set time; log every correction.
+      - Put the precedence statement in the terms the customer accepts, and in the bot's own first message.
+    sources:
+      - label: "legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024"
+        url: https://www.law360.ca/ca/articles/1804075
+  - title: A named owner and a deadline
+    why: "Disputed answers that sit in a queue become claims. A person, a replay and a reply inside a fixed number of days turn them back into tickets."
+    do:
+      - Route every disputed answer to a named owner with the replay attached; the deadline is in days, not 'soon'.
+      - Track the count and the time to reply as a release metric, alongside accuracy.
+    sources:
+      - label: "AI Incident Database, incident 639 (the chatbot's answer, Nov 2022)"
+        url: https://incidentdatabase.ai/cite/639/
+  - title: Rehearse the dispute
+    why: "A process that has never been run is a process that does not exist. The airline found out in front of a tribunal."
+    do:
+      - Take one real wrong answer from last month, run the replay, the source check and the reply, and time it end to end.
+      - If any step needs a person to search a chat channel for a screenshot, fix the log first.
+    sources:
+      - label: "legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024"
+        url: https://www.law360.ca/ca/articles/1804075
+notes: >
+  The decision is Moffatt v. the airline, 2024 BCCRT 149 (British Columbia Civil Resolution Tribunal, 14 February 2024):
+  damages C$650.88, C$812.02 with interest and tribunal fees. The tribunal's site does not admit automated readers, so the
+  link above is a legal-news report that quotes the decision; search the neutral citation to read the full text.
+footer: "Source: a Canadian civil resolution tribunal decision of February 2024 on an airline chatbot's bereavement-fare answer (2024 BCCRT 149; damages C$650.88, C$812.02 with interest and fees). Illustrative values; set yours from your own dispute window. @demotoprod"

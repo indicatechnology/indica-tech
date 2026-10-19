@@ -64,6 +64,9 @@ def mailto(s: dict) -> str:
 
 
 def why_label(s: dict) -> str:
+    """The label before each check's reason. A spec may set why_label ("Why." or "What happened."); the id rule is the fallback."""
+    if s.get("why_label"):
+        return str(s["why_label"]).strip()
     return "Why." if s["id"].startswith("gates") or s["id"] == "kubernetes-probes" or s["id"] == "ai-failover" else "What happened."
 
 
@@ -167,6 +170,7 @@ footer ul{list-style:none;padding:0;margin:0 0 12px;display:flex;flex-wrap:wrap;
 footer a{color:#0a6b3d}
 @media (max-width:480px){.check-body{margin-left:0}.get{padding:16px}}
 @media print{
+body.print-one section.list:not(.print-target),body.print-one .top .chips,body.print-one .top .lede{display:none}
 .top{background:#fff;color:#000;padding:0 0 12px}.lede{color:#333}
 .chips,.how,.get,.progress,.ask,.sitenav,.sub-block,footer ul{display:none}
 body{background:#fff;font-size:10.5pt}
@@ -206,11 +210,18 @@ JS = """
     update(sec);
   });
 })();
-/* Save as PDF: the browser's own print dialogue. The print stylesheet drops the
-   navigation and the calls to action and adds the contact page, so what comes out
-   is the one-page handout. No library, nothing to generate server-side. */
+/* Print: the browser's own print dialogue, limited to the list whose button was
+   pressed. The print stylesheet hides the other lists, the navigation and the calls
+   to action, and adds the contact page. No library, nothing generated server-side. */
 document.querySelectorAll('[data-print]').forEach(function(b){
-  b.addEventListener('click', function(){ window.print(); });
+  b.addEventListener('click', function(){
+    var sec=b.closest('section.list');
+    document.body.classList.add('print-one'); if(sec){sec.classList.add('print-target')}
+    var done=function(){document.body.classList.remove('print-one'); if(sec){sec.classList.remove('print-target')}; window.removeEventListener('afterprint',done)};
+    window.addEventListener('afterprint',done);
+    window.print();
+    setTimeout(done,2000);
+  });
 });
 """
 
@@ -250,16 +261,23 @@ def render_section(s: dict) -> str:
     # Nothing is gated: the list is readable here and as Markdown, and the print view
     # is a clean one-page PDF with the contact block. The ask that follows is the one
     # worth making — a live problem, not a file request.
+    pdf = s.get("pdf") if s.get("pdf") and (LEAD_MAGNETS / s["pdf"]).is_file() else None
+    if pdf:
+        btns = (f'<a class="btn" href="{SITE}/checklists/lead-magnets/{e(pdf)}" download>Download the PDF</a>'
+                f'<a class="btn btn-ghost" href="{SITE}/checklists/md/{e(s["slug"])}.md">Markdown</a>'
+                f'<button class="btn btn-ghost" type="button" data-print>Print this list</button>')
+        small = ("The PDF is the handout: this list on one or two pages. The Markdown is for your own "
+                 "docs, your wiki, or an assistant you want to hand the list to. Print gives you this list only, without the navigation.")
+    else:
+        btns = (f'<button class="btn" type="button" data-print>Print this list</button>'
+                f'<a class="btn btn-ghost" href="{SITE}/checklists/md/{e(s["slug"])}.md">Markdown</a>')
+        small = ("Print gives you this list only, without the navigation. The Markdown is for your own docs, your wiki, "
+                 "or an assistant you want to hand the list to.")
     get = (f'<div class="get">'
-           f'<p>Take this list with you'
-           f'<small>Print gives you a clean one-page PDF with no navigation. The Markdown is for your own docs, '
-           f'your wiki, or an assistant you want to hand the list to.</small></p>'
-           f'<div class="get-btns">'
-           f'<button class="btn" type="button" data-print>Save as PDF</button>'
-           f'<a class="btn btn-ghost" href="{SITE}/checklists/md/{e(s["slug"])}.md">Markdown</a>'
-           f'</div></div>'
+           f'<p>Take this list with you<small>{small}</small></p>'
+           f'<div class="get-btns">{btns}</div></div>'
            f'<p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> '
-           f'That is the conversation worth having &mdash; <a href="{SITE}/#contact">tell me what broke</a>.</p>')
+           f'<a href="{SITE}/#contact">Tell me what broke</a>.</p>')
     n = len(s["checks"])
     return f"""<section class="list" id="{e(s['slug'])}">
 <div class="list-head"><div><p class="kicker">{e(s['kicker'])} · {e(s['date'])}</p><h2>{e(s['title'])}</h2><p class="sub">{e(s['subtitle'])}</p></div>
@@ -313,16 +331,16 @@ def render_page(specs: list[dict]) -> str:
 <header class="top"><div class="wrap">
 <p class="kicker">Indica Tech · @demotoprod</p>
 <h1>Production AI checklists</h1>
-<p class="lede">{total} checks across {len(specs)} lists. Every item is a real, dated failure or a documented default, with the control that stops it and its primary source. No vendor claims, no round numbers.</p>
+<p class="lede">{total} checks across {len(specs)} lists. Every item is a dated failure or a documented default, with the control that stops it and a link to the primary source. There are no vendor claims and no round numbers.</p>
 <ul class="chips">{chips}</ul>
-<p class="how" style="color:#c9c6bf;border-color:var(--green)">Tick the boxes as you work through a list; this page remembers them on your device only. Nothing here is gated: every list prints to a clean one-page PDF, and the same text is available as Markdown.</p>
+<p class="how" style="color:#c9c6bf;border-color:var(--green)">Tick the boxes as you work through a list; this page remembers them on your device only. Each list has a PDF to download and a Markdown copy, and nothing is behind a form.</p>
 </div></header>
 <main class="wrap">
 {sections}
 
 <section class="sub-block" id="more">
 <h2>New checklists, as they are published</h2>
-<p>One list per cycle, each built the same way: a dated failure, the control that stops it, and the primary source so you can check it. No digest, no newsletter, nothing else sent to this address.</p>
+<p>One list at a time, each built the same way: a dated failure, the control that stops it, and the primary source so you can check it. Nothing else goes to this address, no digest and no newsletter.</p>
 <form class="sub-form" action="https://formsubmit.co/{MAIL}" method="POST">
 <input type="hidden" name="_subject" value="New checklist subscriber">
 <input type="hidden" name="_captcha" value="true">
@@ -387,7 +405,8 @@ def render_md(s: dict) -> str:
         out += [""]
     if s.get("notes"):
         out += [" ".join(str(s["notes"]).split()), ""]
-    out += [f"The live version of this list, with every source link, is at {SITE}/checklists/#{s['slug']} — it prints to a one-page PDF.",
+    pdf_line = f" The PDF is at {SITE}/checklists/lead-magnets/{s['pdf']}." if s.get("pdf") and (LEAD_MAGNETS / s["pdf"]).is_file() else ""
+    out += [f"The live version of this list, with every source link, is at {SITE}/checklists/#{s['slug']}.{pdf_line}",
             "", "---", "",
             "**Nitish Gautam — Indica Technology Ltd.** Founder-led AI engineering: demo to production, in regulated industries, on fixed scope.",
             "", f"Website {SITE} · Book a call {SITE}/#contact · {MAIL}",

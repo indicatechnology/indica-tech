@@ -3,3 +3,25 @@ venv/
 .DS_Store
 docs/
 _drafts/
+
+# Working files that live on the machine, not in the published repo.
+# This repo is public and GitHub Pages serves what is committed, so anything
+# here is kept out of both. _config.yml separately excludes a few already
+# tracked files from the published site.
+
+# Planning and internal notes
+90-day-focus-plan.md
+MANUAL-COMMANDS.md
+_notes/
+
+# Social and brand working files
+demotoprod-social-bios.md
+demotoprod-social-kit.html
+indica-tech-logo.svg
+indica-tech-logo-lockup.svg
+
+# Local deploy helper
+deploy.sh
+
+# Unpublished blog drafts
+blog/13/

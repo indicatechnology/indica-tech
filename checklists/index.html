@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Production AI checklists · Indica Tech</title>
-<meta name="description" content="Production AI checklists from Indica Tech: agent security checklist, ai failover test, kubernetes probe checklist for ai services, three gates for an ai email assistant, agent observability checklist. Every item from a dated, sourced failure or a documented default, with the control that stops it.">
+<meta name="description" content="Production AI checklists from Indica Tech: agent security checklist, ai failover test, kubernetes probe checklist for ai services, three gates for an ai email assistant, agent observability checklist, air-gapped ai deployment checklist, edge ai security checklist, disputed-answer checklist, runaway-agent checklist, agent budget checklist. Every item from a dated, sourced failure or a documented default, with the control that stops it.">
 <link rel="canonical" href="https://indica-tech.com/checklists/">
 <meta property="og:title" content="Production AI checklists · Indica Tech">
-<meta property="og:description" content="Production AI checklists from Indica Tech: agent security checklist, ai failover test, kubernetes probe checklist for ai services, three gates for an ai email assistant, agent observability checklist. Every item from a dated, sourced failure or a documented default, with the control that stops it.">
+<meta property="og:description" content="Production AI checklists from Indica Tech: agent security checklist, ai failover test, kubernetes probe checklist for ai services, three gates for an ai email assistant, agent observability checklist, air-gapped ai deployment checklist, edge ai security checklist, disputed-answer checklist, runaway-agent checklist, agent budget checklist. Every item from a dated, sourced failure or a documented default, with the control that stops it.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -109,6 +109,7 @@ footer ul{list-style:none;padding:0;margin:0 0 12px;display:flex;flex-wrap:wrap;
 footer a{color:#0a6b3d}
 @media (max-width:480px){.check-body{margin-left:0}.get{padding:16px}}
 @media print{
+body.print-one section.list:not(.print-target),body.print-one .top .chips,body.print-one .top .lede{display:none}
 .top{background:#fff;color:#000;padding:0 0 12px}.lede{color:#333}
 .chips,.how,.get,.progress,.ask,.sitenav,.sub-block,footer ul{display:none}
 body{background:#fff;font-size:10.5pt}
@@ -144,15 +145,15 @@ section.list:last-of-type{break-after:auto}
 <header class="top"><div class="wrap">
 <p class="kicker">Indica Tech · @demotoprod</p>
 <h1>Production AI checklists</h1>
-<p class="lede">24 checks across 5 lists. Every item is a real, dated failure or a documented default, with the control that stops it and its primary source. No vendor claims, no round numbers.</p>
-<ul class="chips"><li><a href="#agent-security">Agent security checklist</a></li><li><a href="#ai-failover">AI failover test</a></li><li><a href="#kubernetes-probes">Kubernetes probe checklist for AI services</a></li><li><a href="#ai-email-assistant">Three gates for an AI email assistant</a></li><li><a href="#agent-observability">Agent observability checklist</a></li></ul>
-<p class="how" style="color:#c9c6bf;border-color:var(--green)">Tick the boxes as you work through a list; this page remembers them on your device only. Nothing here is gated: every list prints to a clean one-page PDF, and the same text is available as Markdown.</p>
+<p class="lede">47 checks across 10 lists. Every item is a dated failure or a documented default, with the control that stops it and a link to the primary source. There are no vendor claims and no round numbers.</p>
+<ul class="chips"><li><a href="#agent-security">Agent security checklist</a></li><li><a href="#ai-failover">AI failover test</a></li><li><a href="#kubernetes-probes">Kubernetes probe checklist for AI services</a></li><li><a href="#ai-email-assistant">Three gates for an AI email assistant</a></li><li><a href="#agent-observability">Agent observability checklist</a></li><li><a href="#air-gapped-ai">Air-gapped AI deployment checklist</a></li><li><a href="#edge-ai-security">Edge AI security checklist</a></li><li><a href="#disputed-ai-answer">Disputed-answer checklist</a></li><li><a href="#runaway-agent">Runaway-agent checklist</a></li><li><a href="#agent-budget">Agent budget checklist</a></li></ul>
+<p class="how" style="color:#c9c6bf;border-color:var(--green)">Tick the boxes as you work through a list; this page remembers them on your device only. Each list has a PDF to download and a Markdown copy, and nothing is behind a form.</p>
 </div></header>
 <main class="wrap">
 <section class="list" id="agent-security">
-<div class="list-head"><div><p class="kicker">@demotoprod · KEYS · September 2026</p><h2>Agent security checklist</h2><p class="sub">Nine failures that actually happened, and the control that stops each one</p></div>
+<div class="list-head"><div><p class="kicker">@demotoprod · KEYS · September 2026</p><h2>Agent security checklist</h2><p class="sub">Nine failures from 2026, and the control that stops each one</p></div>
 <p class="progress"><span class="count">0 of 9 done</span><button type="button">reset</button></p></div>
-<p class="intro">Every item below is a real, dated, publicly reported incident from the last three months, with the control that would have changed the outcome. There are no vendor claims and no round numbers here: each figure carries its primary source so you can check it before you take it to your team. Nine items, worked in priority order at the end; the first three are a week&#x27;s work and remove most of the blast radius.</p>
+<p class="intro">Every item below is a real, dated, publicly reported incident from 2026, with the control that would have changed the outcome. There are no vendor claims and no round numbers here: each figure carries its primary source so you can check it before you take it to your team. Nine items, worked in priority order at the end; the first three are a week&#x27;s work and remove most of the blast radius.</p>
 
 <article class="check" id="agent-security-1-card">
 <label class="check-head" for="agent-security-1"><input type="checkbox" id="agent-security-1"><span class="n">1</span><h3>Pin the OAuth issuer on every unattended MCP client</h3></label>
@@ -203,7 +204,7 @@ section.list:last-of-type{break-after:auto}
 <p><b>The check.</b></p><ul><li>Retain the raw trace, not the compacted one, for anything you may have to explain later.</li><li>If your audit log is written by the agent, it is not an audit log.</li></ul><p class="src">Source: <a href="https://alignment.openai.com/misalignment-reports/encouraging-deception-in-compaction-summaries/" rel="noopener">Misalignment report: encouraging deception in compaction summaries, 16 Sep 2026</a></p>
 </div>
 </article><article class="check" id="agent-security-9-card">
-<label class="check-head" for="agent-security-9"><input type="checkbox" id="agent-security-9"><span class="n">9</span><h3>Move credentials off .env, in the order that actually removes the problem</h3></label>
+<label class="check-head" for="agent-security-9"><input type="checkbox" id="agent-security-9"><span class="n">9</span><h3>Move credentials off .env, in the order that removes the problem</h3></label>
 <div class="check-body">
 <p><b>What happened.</b> A secrets-detection vendor counted 28.65 million new hardcoded secrets in public commits during 2025, up 34% year over year, and found that more than 64% of the secrets it confirmed in 2022 were still valid in January 2026. A leaked credential is not an incident that ends.</p>
 <p><b>The check.</b></p><ul><li>.env, then a secret manager, then workload identity, in that order: each step removes more of the problem than the last.</li><li>A .env file costs nothing and removes nothing.</li></ul><p class="src">Source: <a href="https://blog.gitguardian.com/the-state-of-secrets-sprawl-2026/" rel="noopener">The State of Secrets Sprawl 2026 report</a></p>
@@ -211,7 +212,7 @@ section.list:last-of-type{break-after:auto}
 </article>
 <div class="order"><h4>Work it in this order</h4><table><thead><tr><th>#</th><th>Control</th><th>Effort</th><th>Impact</th></tr></thead><tbody><tr><td class="num">1</td><td>Approval loop cannot be auto-answered</td><td>1-2 days</td><td>Critical</td></tr><tr><td class="num">2</td><td>Default-deny egress, DNS included</td><td>2-4 days</td><td>Critical</td></tr><tr><td class="num">3</td><td>Pin the OAuth issuer; fail CI on deprecations</td><td>2-4 hours</td><td>Critical</td></tr><tr><td class="num">4</td><td>Rotate secrets that touched untrusted servers</td><td>1 day</td><td>High</td></tr><tr><td class="num">5</td><td>Proxy and pin package registries</td><td>1-2 days</td><td>High</td></tr><tr><td class="num">6</td><td>Raw-trace retention for audit</td><td>2-3 days</td><td>High</td></tr><tr><td class="num">7</td><td>Egress-monitor the coding agent</td><td>1 day</td><td>Medium</td></tr><tr><td class="num">8</td><td>Refusal-then-success alerting on your own APIs</td><td>2-3 days</td><td>Medium</td></tr><tr><td class="num">9</td><td>Secret manager, then workload identity</td><td>1-2 weeks</td><td>Medium</td></tr></tbody></table></div>
 <p class="notes">Effort figures are planning estimates for a team that already has CI and a secret manager, not measurements. Everything else on this page is sourced.</p>
-<div class="get"><p>Take this list with you<small>Print gives you a clean one-page PDF with no navigation. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to.</small></p><div class="get-btns"><button class="btn" type="button" data-print>Save as PDF</button><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/agent-security.md">Markdown</a></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> That is the conversation worth having &mdash; <a href="https://indica-tech.com/#contact">tell me what broke</a>.</p>
+<div class="get"><p>Take this list with you<small>The PDF is the handout: this list on one or two pages. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to. Print gives you this list only, without the navigation.</small></p><div class="get-btns"><a class="btn" href="https://indica-tech.com/checklists/lead-magnets/KEYS-agent-security-checklist-2026-09.pdf" download>Download the PDF</a><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/agent-security.md">Markdown</a><button class="btn btn-ghost" type="button" data-print>Print this list</button></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> <a href="https://indica-tech.com/#contact">Tell me what broke</a>.</p>
 </section>
 <section class="list" id="ai-failover">
 <div class="list-head"><div><p class="kicker">@demotoprod · CHECKLIST · October 2026</p><h2>AI failover test</h2><p class="sub">One page to prove your backup provider is not in the same blast radius</p></div>
@@ -240,7 +241,7 @@ client: { timeout: 8s, retries: 3 }                  # one pool for both provide
 <label class="check-head" for="ai-failover-3"><input type="checkbox" id="ai-failover-3"><span class="n">3</span><h3>Test it in production config, five minutes a week</h3></label>
 <div class="check-body">
 <p><b>Why.</b> Staging proves the code path, not the dependency graph: staging has different keys, different quotas, different regions and no real traffic. Most failovers that fail in an incident were last exercised in a test environment, if at all.</p>
-<p><b>The check.</b></p><ul><li>Put a five-minute window in the calendar.</li><li>Flip the primary off in production configuration, watch error rate, p95 and cost, then flip it back.</li><li>Write down what the backup&#x27;s latency and spend actually were. That number is your real failover budget.</li></ul>
+<p><b>The check.</b></p><ul><li>Put a five-minute window in the calendar.</li><li>Flip the primary off in production configuration, watch error rate, p95 and cost, then flip it back.</li><li>Write down what the backup&#x27;s latency and spend were. That number is your failover budget.</li></ul>
 </div>
 </article><article class="check" id="ai-failover-4-card">
 <label class="check-head" for="ai-failover-4"><input type="checkbox" id="ai-failover-4"><span class="n">4</span><h3>Decide what &quot;degraded&quot; means before you need it</h3></label>
@@ -251,7 +252,7 @@ client: { timeout: 8s, retries: 3 }                  # one pool for both provide
 </article>
 
 <p class="notes">The outage count and the suspension length are the report&#x27;s figures; the incident shape in check 2 is from the provider&#x27;s own write-up. Nothing here is a vendor claim.</p>
-<div class="get"><p>Take this list with you<small>Print gives you a clean one-page PDF with no navigation. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to.</small></p><div class="get-btns"><button class="btn" type="button" data-print>Save as PDF</button><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/ai-failover.md">Markdown</a></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> That is the conversation worth having &mdash; <a href="https://indica-tech.com/#contact">tell me what broke</a>.</p>
+<div class="get"><p>Take this list with you<small>The PDF is the handout: this list on one or two pages. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to. Print gives you this list only, without the navigation.</small></p><div class="get-btns"><a class="btn" href="https://indica-tech.com/checklists/lead-magnets/CHECKLIST-ai-failover-2026-10.pdf" download>Download the PDF</a><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/ai-failover.md">Markdown</a><button class="btn btn-ghost" type="button" data-print>Print this list</button></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> <a href="https://indica-tech.com/#contact">Tell me what broke</a>.</p>
 </section>
 <section class="list" id="kubernetes-probes">
 <div class="list-head"><div><p class="kicker">@demotoprod · CHECKLIST · September 2026</p><h2>Kubernetes probe checklist for AI services</h2><p class="sub">Keep a slow dependency from restarting every pod</p></div>
@@ -293,7 +294,7 @@ readinessProbe: { httpGet: { path: /readyz, port: 8080 } }   # database, vector 
 </article>
 <div class="order"><h4>Work it in this order</h4><table><thead><tr><th>#</th><th>Control</th><th>Effort</th><th>Impact</th></tr></thead><tbody><tr><td class="num">1</td><td>Move dependency checks out of every liveness probe</td><td>1-2 hours</td><td>Critical</td></tr><tr><td class="num">2</td><td>Add a readiness endpoint that checks the dependencies</td><td>2-4 hours</td><td>Critical</td></tr><tr><td class="num">3</td><td>Size a startup probe to the worst cold start</td><td>2-4 hours</td><td>High</td></tr><tr><td class="num">4</td><td>Alert on restarts across replicas</td><td>half a day</td><td>High</td></tr><tr><td class="num">5</td><td>Time the probe handlers under peak load</td><td>half a day</td><td>Medium</td></tr></tbody></table></div>
 <p class="notes">Effort figures are planning estimates for a team that already runs Kubernetes, not measurements. Everything else on this page is from the Kubernetes documentation.</p>
-<div class="get"><p>Take this list with you<small>Print gives you a clean one-page PDF with no navigation. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to.</small></p><div class="get-btns"><button class="btn" type="button" data-print>Save as PDF</button><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/kubernetes-probes.md">Markdown</a></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> That is the conversation worth having &mdash; <a href="https://indica-tech.com/#contact">tell me what broke</a>.</p>
+<div class="get"><p>Take this list with you<small>The PDF is the handout: this list on one or two pages. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to. Print gives you this list only, without the navigation.</small></p><div class="get-btns"><a class="btn" href="https://indica-tech.com/checklists/lead-magnets/CHECKLIST-kubernetes-probes-2026-09.pdf" download>Download the PDF</a><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/kubernetes-probes.md">Markdown</a><button class="btn btn-ghost" type="button" data-print>Print this list</button></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> <a href="https://indica-tech.com/#contact">Tell me what broke</a>.</p>
 </section>
 <section class="list" id="ai-email-assistant">
 <div class="list-head"><div><p class="kicker">@demotoprod · THE LAB · EPISODE 1 · GATES · October 2026</p><h2>Three gates for an AI email assistant</h2><p class="sub">What held in 180 logged runs when the prompt did not</p></div>
@@ -330,7 +331,7 @@ readinessProbe: { httpGet: { path: /readyz, port: 8080 } }   # database, vector 
 </article>
 
 <p class="notes">The lab: one local open-weights model, invented people on .example addresses, send tools that only write to a log, 180 logged runs on 7 Oct 2026. These numbers show what can happen, not what every model will do.</p>
-<div class="get"><p>Take this list with you<small>Print gives you a clean one-page PDF with no navigation. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to.</small></p><div class="get-btns"><button class="btn" type="button" data-print>Save as PDF</button><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/ai-email-assistant.md">Markdown</a></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> That is the conversation worth having &mdash; <a href="https://indica-tech.com/#contact">tell me what broke</a>.</p>
+<div class="get"><p>Take this list with you<small>The PDF is the handout: this list on one or two pages. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to. Print gives you this list only, without the navigation.</small></p><div class="get-btns"><a class="btn" href="https://indica-tech.com/checklists/lead-magnets/GATES-ai-email-assistant-2026-10.pdf" download>Download the PDF</a><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/ai-email-assistant.md">Markdown</a><button class="btn btn-ghost" type="button" data-print>Print this list</button></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> <a href="https://indica-tech.com/#contact">Tell me what broke</a>.</p>
 </section>
 <section class="list" id="agent-observability">
 <div class="list-head"><div><p class="kicker">@demotoprod · KEYS · October 2026</p><h2>Agent observability checklist</h2><p class="sub">The transcript your reviewer trusts is a page the agent can write to</p></div>
@@ -358,12 +359,206 @@ readinessProbe: { httpGet: { path: /readyz, port: 8080 } }   # database, vector 
 </article>
 
 <p class="notes">Proof of concept, not an observed exploit: the lab has not seen an agent use this in its evaluations. The mechanism is general, since most trace viewers render markdown, HTML or math from agent output.</p>
-<div class="get"><p>Take this list with you<small>Print gives you a clean one-page PDF with no navigation. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to.</small></p><div class="get-btns"><button class="btn" type="button" data-print>Save as PDF</button><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/agent-observability.md">Markdown</a></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> That is the conversation worth having &mdash; <a href="https://indica-tech.com/#contact">tell me what broke</a>.</p>
+<div class="get"><p>Take this list with you<small>The PDF is the handout: this list on one or two pages. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to. Print gives you this list only, without the navigation.</small></p><div class="get-btns"><a class="btn" href="https://indica-tech.com/checklists/lead-magnets/KEYS-agent-observability-checklist-2026-10.pdf" download>Download the PDF</a><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/agent-observability.md">Markdown</a><button class="btn btn-ghost" type="button" data-print>Print this list</button></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> <a href="https://indica-tech.com/#contact">Tell me what broke</a>.</p>
+</section>
+<section class="list" id="air-gapped-ai">
+<div class="list-head"><div><p class="kicker">@demotoprod · REGULATED AI · CHECKLIST · October 2026</p><h2>Air-gapped AI deployment checklist</h2><p class="sub">What a tutorial agent stack tried to reach with the cable out, and the three checks that stop it</p></div>
+<p class="progress"><span class="count">0 of 3 done</span><button type="button">reset</button></p></div>
+<p class="intro">We ran a tutorial agent stack (a multi-agent framework, a graph framework, a chat-model client, an embedding model, a tokenizer) with every outside connection refused, the way a deny-all network behaves. Before any task ran it made 37 connection attempts to three outside hosts: 12 to a telemetry server, 24 to a model hub with 70 seconds of retries, one for an encoding file. With the offline switches set, the same code made one attempt. Three checks before you ship behind a fence.</p>
+<div class="lead-code"><p class="cap">The switches that took 37 attempts to 1</p><pre>export OTEL_SDK_DISABLED=true          # the telemetry SDK: a no-op for every signal
+export CREWAI_DISABLE_TELEMETRY=true   # the framework&#x27;s own flag (on by default)
+export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1   # the hub: cache only, no HTTP, fail fast
+export DO_NOT_TRACK=1 LANGCHAIN_TRACING_V2=false # the rest; then stage the encoding file (no switch)</pre></div>
+<article class="check" id="air-gapped-ai-1-card">
+<label class="check-head" for="air-gapped-ai-1"><input type="checkbox" id="air-gapped-ai-1"><span class="n">1</span><h3>Pull the cable in staging before the fence does</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> Frameworks fetch what they need at the first call, not at install. A demo on a connected laptop never runs the path that fails on day one inside the fence. In our run the embedding load retried the hub five times with backoff and took 69.5 seconds to give up; the telemetry thread tried 12 times in the background.</p>
+<p><b>The check.</b></p><ul><li>Run the whole demo in staging with all egress denied (a deny-all rule, or a resolver that answers nothing).</li><li>Keep the list of every host it tried and every step that failed. That list is the migration plan.</li><li>Repeat it on every dependency upgrade; a new version can add a new call.</li></ul>
+</div>
+</article><article class="check" id="air-gapped-ai-2-card">
+<label class="check-head" for="air-gapped-ai-2"><input type="checkbox" id="air-gapped-ai-2"><span class="n">2</span><h3>Stage every file behind the fence with a manifest and hashes</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> Model weights, tokenizers, encoding files, Python wheels and container images are all fetched lazily by default. One of the three hosts in our run was a tokenizer fetching its encoding file on first use; it has no offline switch, so the only fix is to carry the file in.</p>
+<p><b>The check.</b></p><ul><li>List every artefact the demo downloaded (the failure list from check one tells you).</li><li>Transfer them with a manifest and a hash per file; verify the hashes on the inside.</li><li>Point the libraries at the local cache (the hub&#x27;s cache directory, the tokenizer&#x27;s cache directory, a local wheel index).</li></ul><p class="src">Source: <a href="https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables" rel="noopener">Hub client documentation, environment variables (offline mode and cache location)</a></p>
+</div>
+</article><article class="check" id="air-gapped-ai-3-card">
+<label class="check-head" for="air-gapped-ai-3"><input type="checkbox" id="air-gapped-ai-3"><span class="n">3</span><h3>Switch off every phone-home in config, not only at the firewall</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> A firewall rule makes a call fail; a config switch makes it never happen. The difference is retries, timeouts and threads that block the task. With the telemetry SDK disabled, the framework&#x27;s telemetry flag set and the hub in offline mode, the same code made one attempt instead of 37 and failed fast where it had to.</p>
+<p><b>The check.</b></p><ul><li>Disable the telemetry SDK for every signal (OTEL_SDK_DISABLED=true) and the framework&#x27;s own telemetry flag.</li><li>Put the model hub and the model library in offline mode so a cache miss is an error in milliseconds, not a 70-second retry.</li><li>Turn off tracing, auto-update and licence checks in config; keep the firewall as the second line.</li></ul><p class="src">Source: <a href="https://docs.crewai.com/telemetry" rel="noopener">Multi-agent framework documentation, telemetry (collected by default; how to disable)</a>; <a href="https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/" rel="noopener">OpenTelemetry specification, SDK environment variables (OTEL_SDK_DISABLED)</a></p>
+</div>
+</article>
+
+<p class="notes">Our lab, 8 Oct 2026: a clean sandbox, every DNS lookup and outside connection intercepted and refused, no model server running, nothing left the machine. The numbers are what one tutorial stack did at the versions recorded in the run log, not a claim about every framework. The staging step could not be demonstrated in the sandbox, whose own proxy refused the downloads.</p>
+<div class="get"><p>Take this list with you<small>The PDF is the handout: this list on one or two pages. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to. Print gives you this list only, without the navigation.</small></p><div class="get-btns"><a class="btn" href="https://indica-tech.com/checklists/lead-magnets/CHECKLIST-air-gapped-ai-2026-10.pdf" download>Download the PDF</a><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/air-gapped-ai.md">Markdown</a><button class="btn btn-ghost" type="button" data-print>Print this list</button></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> <a href="https://indica-tech.com/#contact">Tell me what broke</a>.</p>
+</section>
+<section class="list" id="edge-ai-security">
+<div class="list-head"><div><p class="kicker">@demotoprod · EDGE · October 2026</p><h2>Edge AI security checklist</h2><p class="sub">Five checks before your model ships to hardware you do not physically guard</p></div>
+<p class="progress"><span class="count">0 of 5 done</span><button type="button">reset</button></p></div>
+<p class="intro">On 17 Sep 2026 a group reported unbolting one licence-plate-reader camera and finding the encryption key next to the recorded media: about 1.6 million images and 27,321 clips from roughly 21 days, from a device whose vendor had said footage is only briefly stored. A device that scores frames locally must decrypt them locally, so &quot;encrypted at rest&quot; protects a dead disk, not a working device.</p>
+
+<article class="check" id="edge-ai-security-1-card">
+<label class="check-head" for="edge-ai-security-1"><input type="checkbox" id="edge-ai-security-1"><span class="n">1</span><h3>Pull one unit off the wall and count what is on it</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> The claim was &quot;briefly stored&quot;; the device held about 21 days of media, and nobody knew because nobody had taken a unit down and counted. Retention on the edge is a claim until someone counts, and the count is what a thief gets.</p>
+<p><b>The check.</b></p><ul><li>Once a quarter, image one deployed device per hardware revision and list every file with its age.</li><li>Put the counted retention in the questionnaire; set the on-device window in minutes and alert past it.</li></ul><p class="src">Source: <a href="https://www.tomshardware.com/tech-industry/cyber-security/hackers-find-encryption-key-stored-on-flock-camera-group-extracts-more-than-27-000-clips-1-6-million-images-captured-in-a-span-of-21-days-from-device" rel="noopener">News report with the extracted counts, 17 Sep 2026</a></p>
+</div>
+</article><article class="check" id="edge-ai-security-2-card">
+<label class="check-head" for="edge-ai-security-2"><input type="checkbox" id="edge-ai-security-2"><span class="n">2</span><h3>Keep keys in a secure element the board cannot read as a file</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> The stolen camera&#x27;s media partition carried the key that unlocked the media, so on-device encryption changed nothing for whoever held it. The consumer IoT baseline standard says sensitive security parameters shall be stored securely and a per-device identity shall resist physical, electrical and software tampering.</p>
+<p><b>The check.</b></p><ul><li>Per-device keys in a secure element or TEE, generated on the device, never on flash; no shared fleet key.</li><li>The cloud accepts a device only after attestation; &quot;encrypted at rest&quot; is true only when the device is off.</li></ul><p class="src">Source: <a href="https://www.etsi.org/deliver/etsi_en/303600_303699/303645/02.01.01_60/en_303645v020101p.pdf" rel="noopener">ETSI EN 303 645 V2.1.1, provisions 5.4-1 and 5.4-2, June 2020</a>; <a href="https://www.tomshardware.com/tech-industry/cyber-security/hackers-find-encryption-key-stored-on-flock-camera-group-extracts-more-than-27-000-clips-1-6-million-images-captured-in-a-span-of-21-days-from-device" rel="noopener">News report with the partition layout, 17 Sep 2026</a></p>
+</div>
+</article><article class="check" id="edge-ai-security-3-card">
+<label class="check-head" for="edge-ai-security-3"><input type="checkbox" id="edge-ai-security-3"><span class="n">3</span><h3>Store the result, not the frame</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> The model needed each frame for milliseconds; the device kept it for weeks. About 50,200 vehicles and 11 people were in the extracted media because raw frames stayed after the inference that used them. The NIST core baseline makes data protection a capability of the device itself.</p>
+<p><b>The check.</b></p><ul><li>Write the inference output (class, count, score) and at most a thumbnail; drop the frame after scoring.</li><li>Anything waiting for upload is encrypted with a key the device does not hold; delete on acknowledgement.</li></ul><p class="src">Source: <a href="https://nvlpubs.nist.gov/nistpubs/ir/2020/NIST.IR.8259A.pdf" rel="noopener">NISTIR 8259A, IoT Device Cybersecurity Capability Core Baseline, May 2020</a></p>
+</div>
+</article><article class="check" id="edge-ai-security-4-card">
+<label class="check-head" for="edge-ai-security-4"><input type="checkbox" id="edge-ai-security-4"><span class="n">4</span><h3>Sign the model and the firmware, and refuse anything unsigned</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> A device nobody guards can be opened, re-flashed and put back, so the model and the firmware must prove where they came from. The baseline standard asks for secure boot and updatable software; UK law for consumer connectable products (in force 29 April 2024) requires a published minimum security-update period.</p>
+<p><b>The check.</b></p><ul><li>Secure boot with anti-rollback; the model is signed with a key that never lives on the device, and an unsigned model does not load.</li><li>Signed over-the-air updates with a tested rollback; publish the support period per hardware revision.</li></ul><p class="src">Source: <a href="https://www.etsi.org/deliver/etsi_en/303600_303699/303645/02.01.01_60/en_303645v020101p.pdf" rel="noopener">ETSI EN 303 645 V2.1.1, provisions 5.3 and 5.7-1, June 2020</a>; <a href="https://www.gov.uk/government/publications/the-uk-product-security-and-telecommunications-infrastructure-product-security-regime" rel="noopener">UK product security regime for connectable products, in force 29 April 2024</a></p>
+</div>
+</article><article class="check" id="edge-ai-security-5-card">
+<label class="check-head" for="edge-ai-security-5"><input type="checkbox" id="edge-ai-security-5"><span class="n">5</span><h3>Rehearse losing the box</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> One unit gave up 21 days of media; with a shared key it would have been the fleet. The NIST baseline asks that each device be uniquely identifiable and report its own state, which helps only if revoking one has been rehearsed.</p>
+<p><b>The check.</b></p><ul><li>Per-device identity and certificate, and a &quot;reported stolen&quot; runbook that revokes it within minutes.</li><li>Remote wipe on next contact; rehearse the runbook on a real unit twice a year.</li></ul><p class="src">Source: <a href="https://nvlpubs.nist.gov/nistpubs/ir/2020/NIST.IR.8259A.pdf" rel="noopener">NISTIR 8259A, Device Identification and Cybersecurity State Awareness, May 2020</a>; <a href="https://www.gov.uk/government/publications/the-uk-product-security-and-telecommunications-infrastructure-product-security-regime" rel="noopener">UK product security regime for connectable products, in force 29 April 2024</a></p>
+</div>
+</article>
+
+<p class="notes">The incident figures are the reporting group&#x27;s counts as carried by the news report; the standards quoted are the consumer IoT baseline and the NIST core baseline, which industrial and commercial devices usually exceed, not replace.</p>
+<div class="get"><p>Take this list with you<small>The PDF is the handout: this list on one or two pages. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to. Print gives you this list only, without the navigation.</small></p><div class="get-btns"><a class="btn" href="https://indica-tech.com/checklists/lead-magnets/EDGE-edge-ai-security-checklist-2026-10.pdf" download>Download the PDF</a><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/edge-ai-security.md">Markdown</a><button class="btn btn-ghost" type="button" data-print>Print this list</button></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> <a href="https://indica-tech.com/#contact">Tell me what broke</a>.</p>
+</section>
+<section class="list" id="disputed-ai-answer">
+<div class="list-head"><div><p class="kicker">@demotoprod · CHECKLIST · October 2026</p><h2>Disputed-answer checklist</h2><p class="sub">Five records to keep so a chatbot&#x27;s answer can be defended, from the tribunal case that cost an airline C$812</p></div>
+<p class="progress"><span class="count">0 of 5 done</span><button type="button">reset</button></p></div>
+<p class="intro">An airline&#x27;s website chatbot invented a ninety-day refund window. The policy page said the opposite. In February 2024 a tribunal awarded the customer C$812.02, called the &quot;separate legal entity&quot; defence remarkable, and found no reason a customer should know which part of a website to trust. The side that lost was the side with no evidence. Five checks.</p>
+
+<article class="check" id="disputed-ai-answer-1-card">
+<label class="check-head" for="disputed-ai-answer-1"><input type="checkbox" id="disputed-ai-answer-1"><span class="n">1</span><h3>Log every answer as evidence</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> The company could not show what its bot had been told or why its page should outrank the bot. A dispute is won by whoever can replay the conversation.</p>
+<p><b>The check.</b></p><ul><li>Store, per answer: an id, the timestamp, the exact text shown, the sources used (with their version), the prompt version, the model id and the retrieval set.</li><li>Keep it for the whole dispute window of your market, hashed as it is written, where the bot cannot change it.</li><li>Replay from the log, never from memory, when a customer disputes an answer.</li></ul><pre>{&quot;answer&quot;:&quot;a81f&quot;,&quot;ts&quot;:&quot;2026-10-16T09:12Z&quot;,&quot;shown&quot;:&quot;...&quot;,&quot;sources&quot;:[&quot;policy/bereavement#v12&quot;],
+ &quot;prompt_v&quot;:&quot;14&quot;,&quot;model&quot;:&quot;pinned-2026-09&quot;,&quot;retrieved&quot;:[&quot;doc-2231&quot;,&quot;doc-0917&quot;]}</pre><p class="src">Source: <a href="https://www.law360.ca/ca/articles/1804075" rel="noopener">legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024</a></p>
+</div>
+</article><article class="check" id="disputed-ai-answer-2-card">
+<label class="check-head" for="disputed-ai-answer-2"><input type="checkbox" id="disputed-ai-answer-2"><span class="n">2</span><h3>Cite or decline</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> The ninety-day window came from nowhere. A figure, a date or a rule that the bot cannot point to is a promise nobody authorised.</p>
+<p><b>The check.</b></p><ul><li>Every answer that carries a number, a date or a policy rule quotes the page it came from, with a link.</li><li>No source found means the bot says so and hands over; it never fills the gap from training data.</li><li>Count answers with an empty sources list every day; the target is zero.</li></ul><pre>grep -c &#x27;&quot;sources&quot;: \[\]&#x27; answers.jsonl    # answers with no citation: want 0</pre><p class="src">Source: <a href="https://www.law360.ca/ca/articles/1804075" rel="noopener">legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024</a></p>
+</div>
+</article><article class="check" id="disputed-ai-answer-3-card">
+<label class="check-head" for="disputed-ai-answer-3"><input type="checkbox" id="disputed-ai-answer-3"><span class="n">3</span><h3>One source of truth, stated in writing</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> The tribunal found no reason a customer should know that one section of the website is accurate and another is not. Precedence has to be yours, written down, before a dispute tests it.</p>
+<p><b>The check.</b></p><ul><li>The policy page is canonical; the bot&#x27;s answer is derived from it and says so in its footer.</li><li>When they disagree, the page wins and the bot is corrected inside a set time; log every correction.</li><li>Put the precedence statement in the terms the customer accepts, and in the bot&#x27;s own first message.</li></ul><p class="src">Source: <a href="https://www.law360.ca/ca/articles/1804075" rel="noopener">legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024</a></p>
+</div>
+</article><article class="check" id="disputed-ai-answer-4-card">
+<label class="check-head" for="disputed-ai-answer-4"><input type="checkbox" id="disputed-ai-answer-4"><span class="n">4</span><h3>A named owner and a deadline</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> Disputed answers that sit in a queue become claims. A person, a replay and a reply inside a fixed number of days turn them back into tickets.</p>
+<p><b>The check.</b></p><ul><li>Route every disputed answer to a named owner with the replay attached; the deadline is in days, not &#x27;soon&#x27;.</li><li>Track the count and the time to reply as a release metric, alongside accuracy.</li></ul><p class="src">Source: <a href="https://incidentdatabase.ai/cite/639/" rel="noopener">AI Incident Database, incident 639 (the chatbot&#x27;s answer, Nov 2022)</a></p>
+</div>
+</article><article class="check" id="disputed-ai-answer-5-card">
+<label class="check-head" for="disputed-ai-answer-5"><input type="checkbox" id="disputed-ai-answer-5"><span class="n">5</span><h3>Rehearse the dispute</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> A process that has never been run is a process that does not exist. The airline found out in front of a tribunal.</p>
+<p><b>The check.</b></p><ul><li>Take one real wrong answer from last month, run the replay, the source check and the reply, and time it end to end.</li><li>If any step needs a person to search a chat channel for a screenshot, fix the log first.</li></ul><p class="src">Source: <a href="https://www.law360.ca/ca/articles/1804075" rel="noopener">legal-news report of the decision, 2024 BCCRT 149, 16 Feb 2024</a></p>
+</div>
+</article>
+
+<p class="notes">The decision is Moffatt v. the airline, 2024 BCCRT 149 (British Columbia Civil Resolution Tribunal, 14 February 2024): damages C$650.88, C$812.02 with interest and tribunal fees. The tribunal&#x27;s site does not admit automated readers, so the link above is a legal-news report that quotes the decision; search the neutral citation to read the full text.</p>
+<div class="get"><p>Take this list with you<small>The PDF is the handout: this list on one or two pages. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to. Print gives you this list only, without the navigation.</small></p><div class="get-btns"><a class="btn" href="https://indica-tech.com/checklists/lead-magnets/CHECKLIST-disputed-ai-answer-2026-10.pdf" download>Download the PDF</a><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/disputed-ai-answer.md">Markdown</a><button class="btn btn-ghost" type="button" data-print>Print this list</button></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> <a href="https://indica-tech.com/#contact">Tell me what broke</a>.</p>
+</section>
+<section class="list" id="runaway-agent">
+<div class="list-head"><div><p class="kicker">@demotoprod · BUDGET · October 2026</p><h2>Runaway-agent checklist</h2><p class="sub">One null value, over 15,000 reasoning calls in under an hour, a $50,000 bill; five controls that stop the loop</p></div>
+<p class="progress"><span class="count">0 of 5 done</span><button type="button">reset</button></p></div>
+<p class="intro">One corrupted null value broke a ledger agent&#x27;s formatting tool. It tried to brute-force a fix: more than 15,000 reasoning calls in under an hour, about $50,000 of cloud spend, and database locks that halted live transactions. Nothing capped the calls, the cost or the failures, and every retry re-sent the whole history as billable input. Five controls.</p>
+
+<article class="check" id="runaway-agent-1-card">
+<label class="check-head" for="runaway-agent-1"><input type="checkbox" id="runaway-agent-1"><span class="n">1</span><h3>A daily budget per agent identity</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> The incident report&#x27;s first control: cost-cap thresholds at the service-ID and project level. One key per agent, one budget per key; when it trips the agent stops, not the finance team.</p>
+<p><b>The check.</b></p><ul><li>Give every agent its own API key or service identity; never a shared team key.</li><li>Set a hard daily spend per identity at the provider or gateway, and a soft alert at half.</li><li>A tripped budget stops the agent and pages a person; it never raises itself.</li></ul><pre>agent: ledger-reconcile   identity: svc-ledger-agent   # its own key, nobody else&#x27;s
+daily_budget_usd: 50      # hard stop at the gateway; soft alert at 25</pre><p class="src">Source: <a href="https://cloud.google.com/security/resources/ai-risk-and-resilience-2026" rel="noopener">threat-intelligence special report, AI risk and resilience in 2026, case study 6 (Sep 2026)</a></p>
+</div>
+</article><article class="check" id="runaway-agent-2-card">
+<label class="check-head" for="runaway-agent-2"><input type="checkbox" id="runaway-agent-2"><span class="n">2</span><h3>A circuit breaker on consecutive failures</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> The loop was the agent retrying its own fix. The report asks for automated financial circuit breakers that halt an agent after a set number of consecutive task failures.</p>
+<p><b>The check.</b></p><ul><li>Count failures per task, not per session; three in a row ends the run and files the task for a human.</li><li>Treat a tool error, a schema failure and an empty result as failures; a retry is not progress.</li><li>Log the last failing input with the task so the fix starts from evidence.</li></ul><pre>max_consecutive_failures: 3   on_trip: halt_task + notify_owner</pre><p class="src">Source: <a href="https://cloud.google.com/security/resources/ai-risk-and-resilience-2026" rel="noopener">threat-intelligence special report, AI risk and resilience in 2026, case study 6 (Sep 2026)</a></p>
+</div>
+</article><article class="check" id="runaway-agent-3-card">
+<label class="check-head" for="runaway-agent-3"><input type="checkbox" id="runaway-agent-3"><span class="n">3</span><h3>A step limit and a depth limit per task</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> Bounded recursion is the third control in the report. A task that needs more than the limit needs a person, and the limit is what turns a runaway loop into a ticket.</p>
+<p><b>The check.</b></p><ul><li>Cap tool calls per task (25 is a sane default for a reconciliation step) and sub-task depth (2).</li><li>Make hitting the limit a normal, logged outcome, never an exception that triggers a retry.</li></ul><pre>max_steps: 25   max_depth: 2</pre><p class="src">Source: <a href="https://cloud.google.com/security/resources/ai-risk-and-resilience-2026" rel="noopener">threat-intelligence special report, AI risk and resilience in 2026, case study 6 (Sep 2026)</a></p>
+</div>
+</article><article class="check" id="runaway-agent-4-card">
+<label class="check-head" for="runaway-agent-4"><input type="checkbox" id="runaway-agent-4"><span class="n">4</span><h3>Stop re-billing the history</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> Tool output re-entering the context is billed again on every call. A September 2026 study measured a session&#x27;s cumulative input at 14,293 times its first call; raw history adds 21 to 36 percent to its cost.</p>
+<p><b>The check.</b></p><ul><li>Summarise tool output before it re-enters the context; keep the raw result in a store read by reference.</li><li>Put a ceiling on context growth per task and on prompt size per call; measure input tokens per call, not only per session.</li></ul><p class="src">Source: <a href="https://arxiv.org/abs/2609.28585" rel="noopener">Persistent Billable State: Denial-of-Wallet Attacks and Defenses in Tool-Calling LLM Agents, arXiv 2609.28585 (23 Sep 2026)</a></p>
+</div>
+</article><article class="check" id="runaway-agent-5-card">
+<label class="check-head" for="runaway-agent-5"><input type="checkbox" id="runaway-agent-5"><span class="n">5</span><h3>Watch the cost curve, not the total</h3></label>
+<div class="check-body">
+<p><b>What happened.</b> A loop shows up as calls per minute and input tokens per call climbing together, long before the invoice; the report&#x27;s observability control would have caught this in minutes.</p>
+<p><b>The check.</b></p><ul><li>Alert when calls per minute per identity and input tokens per call rise together for a few calls.</li><li>Rate-limit each identity at the gateway so a loop degrades instead of spiking.</li><li>Rehearse it: break a tool in staging and confirm the breaker, the budget and the alert fire.</li></ul><p class="src">Source: <a href="https://cloud.google.com/security/resources/ai-risk-and-resilience-2026" rel="noopener">threat-intelligence special report, AI risk and resilience in 2026, case study 6 (Sep 2026)</a></p>
+</div>
+</article>
+
+<p class="notes">The report gives the incident&#x27;s figures (&quot;over 15,000&quot; calls, &quot;~$50,000&quot;, &quot;in under an hour&quot;) and names the controls (cost caps and bounded recursion at service-ID and project level, financial circuit breakers on consecutive failures, observability); it sets no threshold values. The numbers in the code blocks are starting points, not the report&#x27;s.</p>
+<div class="get"><p>Take this list with you<small>The PDF is the handout: this list on one or two pages. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to. Print gives you this list only, without the navigation.</small></p><div class="get-btns"><a class="btn" href="https://indica-tech.com/checklists/lead-magnets/BUDGET-runaway-agent-checklist-2026-10.pdf" download>Download the PDF</a><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/runaway-agent.md">Markdown</a><button class="btn btn-ghost" type="button" data-print>Print this list</button></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> <a href="https://indica-tech.com/#contact">Tell me what broke</a>.</p>
+</section>
+<section class="list" id="agent-budget">
+<div class="list-head"><div><p class="kicker">@demotoprod · BUDGET · October 2026</p><h2>Agent budget checklist</h2><p class="sub">A launch price that doubles on 1 December 2026, and the five numbers to set before it does</p></div>
+<p class="progress"><span class="count">0 of 5 done</span><button type="button">reset</button></p></div>
+<p class="intro">A frontier model went on sale on 13 October 2026 at two dollars per million input tokens and ten per million output, for seven weeks. From 1 December the same tokens cost four and twenty. Output is five times input and includes the reasoning nobody reads. A pilot priced on the launch rate meets a December invoice at twice the price. Five checks.</p>
+
+<article class="check" id="agent-budget-1-card">
+<label class="check-head" for="agent-budget-1"><input type="checkbox" id="agent-budget-1"><span class="n">1</span><h3>Budget at the list price</h3></label>
+<div class="check-body">
+<p><b>Why.</b> The discount has an end date; the budget line does not. A cost model built on the launch rate is wrong by a factor of two from the first of December.</p>
+<p><b>The check.</b></p><ul><li>Put the list price in the cost model today, with the discount&#x27;s end date on the ticket that owns the line.</li><li>Set the spend alert at the list price now, so the alarm is tested while the bill is still small.</li></ul><pre>price_per_million: {input: 4.00, output: 20.00, cached: 0.20}   # list price
+alert_usd_per_day: 120   # list-price projection, from today</pre><p class="src">Source: <a href="https://venturebeat.com/technology/google-makes-gemini-4-argon-broadly-available-with-limited-time-low-api-pricing-of-2-10-per-1m-token" rel="noopener">trade-press report of the launch pricing, 13 Oct 2026</a></p>
+</div>
+</article><article class="check" id="agent-budget-2-card">
+<label class="check-head" for="agent-budget-2"><input type="checkbox" id="agent-budget-2"><span class="n">2</span><h3>An output ceiling per route</h3></label>
+<div class="check-body">
+<p><b>Why.</b> Agents are output machines, and output costs five times input. A request cap written when the ceiling was sixty-four thousand tokens does nothing against a million-token task.</p>
+<p><b>The check.</b></p><ul><li>Size max output tokens to the job, per route, and log every request that hits the ceiling.</li><li>A million-token task is a batch job with its own approval, at half the standard rate.</li><li>Count ceiling hits every day; a rising count is a prompt problem before it is a budget problem.</li></ul><pre>routes: {support-answer: {max_output_tokens: 4000}, code-migration: {max_output_tokens: 64000, tier: batch}}</pre><p class="src">Source: <a href="https://venturebeat.com/technology/google-makes-gemini-4-argon-broadly-available-with-limited-time-low-api-pricing-of-2-10-per-1m-token" rel="noopener">trade-press report of the launch pricing, 13 Oct 2026 (the 64,000-token ceiling raised to a million)</a>; <a href="https://dev.to/paullovelace/gemini-4-argons-210-api-pricing-doubles-december-1-full-price-table-2k02" rel="noopener">the full price table, 14 Oct 2026 (batch at half the standard rate)</a></p>
+</div>
+</article><article class="check" id="agent-budget-3-card">
+<label class="check-head" for="agent-budget-3"><input type="checkbox" id="agent-budget-3"><span class="n">3</span><h3>Cache hit rate on the dashboard</h3></label>
+<div class="check-body">
+<p><b>Why.</b> Cached input is ninety-five percent off: at the list price, twenty cents per million against four dollars. The order of the prompt decides the bill more than the model does.</p>
+<p><b>The check.</b></p><ul><li>Stable content first: system prompt, tool schemas, reference documents; the user&#x27;s turn last.</li><li>Put the cache hit rate per route next to latency and error rate; a falling rate pages someone before the invoice does.</li><li>Treat a prompt change that breaks the cache as a cost regression in review.</li></ul><pre>cache_hit_rate{route=&quot;support-answer&quot;} &lt; 0.8 for 30m   # page: prefix changed</pre><p class="src">Source: <a href="https://dev.to/paullovelace/gemini-4-argons-210-api-pricing-doubles-december-1-full-price-table-2k02" rel="noopener">the full price table, 14 Oct 2026 (cached input $0.10 now, $0.20 from 1 December)</a></p>
+</div>
+</article><article class="check" id="agent-budget-4-card">
+<label class="check-head" for="agent-budget-4"><input type="checkbox" id="agent-budget-4"><span class="n">4</span><h3>Thinking tokens are output</h3></label>
+<div class="check-body">
+<p><b>Why.</b> The output rate includes the model&#x27;s reasoning; the published price table says so in as many words. The answer on screen is a fraction of what was billed.</p>
+<p><b>The check.</b></p><ul><li>Log output tokens per task, split into visible answer and reasoning, and watch the ratio per route.</li><li>Set the reasoning effort per route; the cheapest setting that passes the eval is the default.</li></ul><p class="src">Source: <a href="https://dev.to/paullovelace/gemini-4-argons-210-api-pricing-doubles-december-1-full-price-table-2k02" rel="noopener">the full price table, 14 Oct 2026 (output prices include thinking tokens)</a></p>
+</div>
+</article><article class="check" id="agent-budget-5-card">
+<label class="check-head" for="agent-budget-5"><input type="checkbox" id="agent-budget-5"><span class="n">5</span><h3>Rehearse 1 December</h3></label>
+<div class="check-body">
+<p><b>Why.</b> A price step with a known date is the easiest incident to prepare for. The launch rate runs to 30 November 2026 and the list rate applies from 1 December; both dates were published on launch day.</p>
+<p><b>The check.</b></p><ul><li>Run one day of traffic through the cost model at the list price, compare it with the alert thresholds, and name who approves the line after the step.</li></ul><p class="src">Source: <a href="https://venturebeat.com/technology/google-makes-gemini-4-argon-broadly-available-with-limited-time-low-api-pricing-of-2-10-per-1m-token" rel="noopener">trade-press report of the launch pricing, 13 Oct 2026</a>; <a href="https://blog.google/innovation-and-ai/technology/developers-tools/build-with-gemini-4-argon/" rel="noopener">the vendor&#x27;s launch post, 13 Oct 2026</a></p>
+</div>
+</article>
+
+<p class="notes">Prices are the vendor&#x27;s published standard tier: $2 input / $10 output per million tokens to 30 November 2026, $4 / $20 from 1 December, cached input at 95 percent off, batch at half the standard rate. The thresholds in the code blocks are illustrative; set yours from your own traffic.</p>
+<div class="get"><p>Take this list with you<small>The PDF is the handout: this list on one or two pages. The Markdown is for your own docs, your wiki, or an assistant you want to hand the list to. Print gives you this list only, without the navigation.</small></p><div class="get-btns"><a class="btn" href="https://indica-tech.com/checklists/lead-magnets/BUDGET-model-price-cliff-2026-10.pdf" download>Download the PDF</a><a class="btn btn-ghost" href="https://indica-tech.com/checklists/md/agent-budget.md">Markdown</a><button class="btn btn-ghost" type="button" data-print>Print this list</button></div></div><p class="ask"><b>Something in your production AI broke in a way that is not on this list?</b> <a href="https://indica-tech.com/#contact">Tell me what broke</a>.</p>
 </section>
 
 <section class="sub-block" id="more">
 <h2>New checklists, as they are published</h2>
-<p>One list per cycle, each built the same way: a dated failure, the control that stops it, and the primary source so you can check it. No digest, no newsletter, nothing else sent to this address.</p>
+<p>One list at a time, each built the same way: a dated failure, the control that stops it, and the primary source so you can check it. Nothing else goes to this address, no digest and no newsletter.</p>
 <form class="sub-form" action="https://formsubmit.co/hello@indica-tech.com" method="POST">
 <input type="hidden" name="_subject" value="New checklist subscriber">
 <input type="hidden" name="_captcha" value="true">
@@ -421,11 +616,18 @@ readinessProbe: { httpGet: { path: /readyz, port: 8080 } }   # database, vector 
     update(sec);
   });
 })();
-/* Save as PDF: the browser's own print dialogue. The print stylesheet drops the
-   navigation and the calls to action and adds the contact page, so what comes out
-   is the one-page handout. No library, nothing to generate server-side. */
+/* Print: the browser's own print dialogue, limited to the list whose button was
+   pressed. The print stylesheet hides the other lists, the navigation and the calls
+   to action, and adds the contact page. No library, nothing generated server-side. */
 document.querySelectorAll('[data-print]').forEach(function(b){
-  b.addEventListener('click', function(){ window.print(); });
+  b.addEventListener('click', function(){
+    var sec=b.closest('section.list');
+    document.body.classList.add('print-one'); if(sec){sec.classList.add('print-target')}
+    var done=function(){document.body.classList.remove('print-one'); if(sec){sec.classList.remove('print-target')}; window.removeEventListener('afterprint',done)};
+    window.addEventListener('afterprint',done);
+    window.print();
+    setTimeout(done,2000);
+  });
 });
 </script>
 </body>

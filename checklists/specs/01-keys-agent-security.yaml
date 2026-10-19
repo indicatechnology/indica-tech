@@ -5,13 +5,14 @@ id: keys-agent-security
 slug: agent-security
 cta_word: KEYS
 title: Agent security checklist
-subtitle: Nine failures that actually happened, and the control that stops each one
+subtitle: Nine failures from 2026, and the control that stops each one
 kicker: "@demotoprod · KEYS"
 date: September 2026
+compact: true
 pdf: KEYS-agent-security-checklist-2026-09.pdf
 out: reference/lead-magnets/KEYS-agent-security-checklist-2026-09.pdf
 intro: >
-  Every item below is a real, dated, publicly reported incident from the last three months, with the control that would have
+  Every item below is a real, dated, publicly reported incident from 2026, with the control that would have
   changed the outcome. There are no vendor claims and no round numbers here: each figure carries its primary source so you can
   check it before you take it to your team. Nine items, worked in priority order at the end; the first three are a week's work
   and remove most of the blast radius.
@@ -123,7 +124,7 @@ checks:
     sources:
       - label: "Misalignment report: encouraging deception in compaction summaries, 16 Sep 2026"
         url: https://alignment.openai.com/misalignment-reports/encouraging-deception-in-compaction-summaries/
-  - title: Move credentials off .env, in the order that actually removes the problem
+  - title: Move credentials off .env, in the order that removes the problem
     why: >
       A secrets-detection vendor counted 28.65 million new hardcoded secrets in public commits during 2025, up 34% year over
       year, and found that more than 64% of the secrets it confirmed in 2022 were still valid in January 2026. A leaked credential is not

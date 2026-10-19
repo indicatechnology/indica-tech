@@ -1,0 +1,79 @@
+# Web + PDF spec for one checklist (see 01-keys-agent-security.yaml for the keys). Body text names no company
+# (NG's rule, 30 Sep 2026); the source links carry the attribution. Written 2026-10-12 for the EDGE reply on 266.
+id: edge-ai-security
+slug: edge-ai-security
+cta_word: EDGE
+title: Edge AI security checklist
+subtitle: Five checks before your model ships to hardware you do not physically guard
+kicker: "@demotoprod · EDGE"
+date: October 2026
+compact: true
+pdf: EDGE-edge-ai-security-checklist-2026-10.pdf
+out: reference/lead-magnets/EDGE-edge-ai-security-checklist-2026-10.pdf
+intro: >
+  On 17 Sep 2026 a group reported unbolting one licence-plate-reader camera and finding the encryption key next to the recorded
+  media: about 1.6 million images and 27,321 clips from roughly 21 days, from a device whose vendor had said footage is only
+  briefly stored. A device that scores frames locally must decrypt them locally, so "encrypted at rest" protects a dead disk,
+  not a working device.
+checks:
+  - title: Pull one unit off the wall and count what is on it
+    why: >
+      The claim was "briefly stored"; the device held about 21 days of media, and nobody knew because nobody had taken a unit
+      down and counted. Retention on the edge is a claim until someone counts, and the count is what a thief gets.
+    do:
+      - Once a quarter, image one deployed device per hardware revision and list every file with its age.
+      - Put the counted retention in the questionnaire; set the on-device window in minutes and alert past it.
+    sources:
+      - label: News report with the extracted counts, 17 Sep 2026
+        url: https://www.tomshardware.com/tech-industry/cyber-security/hackers-find-encryption-key-stored-on-flock-camera-group-extracts-more-than-27-000-clips-1-6-million-images-captured-in-a-span-of-21-days-from-device
+  - title: Keep keys in a secure element the board cannot read as a file
+    why: >
+      The stolen camera's media partition carried the key that unlocked the media, so on-device encryption changed nothing for
+      whoever held it. The consumer IoT baseline standard says sensitive security parameters shall be stored securely and a
+      per-device identity shall resist physical, electrical and software tampering.
+    do:
+      - Per-device keys in a secure element or TEE, generated on the device, never on flash; no shared fleet key.
+      - The cloud accepts a device only after attestation; "encrypted at rest" is true only when the device is off.
+    sources:
+      - label: ETSI EN 303 645 V2.1.1, provisions 5.4-1 and 5.4-2, June 2020
+        url: https://www.etsi.org/deliver/etsi_en/303600_303699/303645/02.01.01_60/en_303645v020101p.pdf
+      - label: News report with the partition layout, 17 Sep 2026
+        url: https://www.tomshardware.com/tech-industry/cyber-security/hackers-find-encryption-key-stored-on-flock-camera-group-extracts-more-than-27-000-clips-1-6-million-images-captured-in-a-span-of-21-days-from-device
+  - title: Store the result, not the frame
+    why: >
+      The model needed each frame for milliseconds; the device kept it for weeks. About 50,200 vehicles and 11 people were in
+      the extracted media because raw frames stayed after the inference that used them. The NIST core baseline makes data
+      protection a capability of the device itself.
+    do:
+      - Write the inference output (class, count, score) and at most a thumbnail; drop the frame after scoring.
+      - Anything waiting for upload is encrypted with a key the device does not hold; delete on acknowledgement.
+    sources:
+      - label: NISTIR 8259A, IoT Device Cybersecurity Capability Core Baseline, May 2020
+        url: https://nvlpubs.nist.gov/nistpubs/ir/2020/NIST.IR.8259A.pdf
+  - title: Sign the model and the firmware, and refuse anything unsigned
+    why: >
+      A device nobody guards can be opened, re-flashed and put back, so the model and the firmware must prove where they came
+      from. The baseline standard asks for secure boot and updatable software; UK law for consumer connectable products (in
+      force 29 April 2024) requires a published minimum security-update period.
+    do:
+      - Secure boot with anti-rollback; the model is signed with a key that never lives on the device, and an unsigned model does not load.
+      - Signed over-the-air updates with a tested rollback; publish the support period per hardware revision.
+    sources:
+      - label: ETSI EN 303 645 V2.1.1, provisions 5.3 and 5.7-1, June 2020
+        url: https://www.etsi.org/deliver/etsi_en/303600_303699/303645/02.01.01_60/en_303645v020101p.pdf
+      - label: UK product security regime for connectable products, in force 29 April 2024
+        url: https://www.gov.uk/government/publications/the-uk-product-security-and-telecommunications-infrastructure-product-security-regime
+  - title: Rehearse losing the box
+    why: >
+      One unit gave up 21 days of media; with a shared key it would have been the fleet. The NIST baseline asks that each device
+      be uniquely identifiable and report its own state, which helps only if revoking one has been rehearsed.
+    do:
+      - Per-device identity and certificate, and a "reported stolen" runbook that revokes it within minutes.
+      - Remote wipe on next contact; rehearse the runbook on a real unit twice a year.
+    sources:
+      - label: NISTIR 8259A, Device Identification and Cybersecurity State Awareness, May 2020
+        url: https://nvlpubs.nist.gov/nistpubs/ir/2020/NIST.IR.8259A.pdf
+      - label: UK product security regime for connectable products, in force 29 April 2024
+        url: https://www.gov.uk/government/publications/the-uk-product-security-and-telecommunications-infrastructure-product-security-regime
+notes: The incident figures are the reporting group's counts as carried by the news report; the standards quoted are the consumer IoT baseline and the NIST core baseline, which industrial and commercial devices usually exceed, not replace.
+footer: "Edge AI security checklist · October 2026 · @demotoprod"
