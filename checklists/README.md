@@ -18,8 +18,11 @@ system fonts). Ticked boxes are remembered in the reader's own browser only.
 1. Write a new `specs/NN-slug.yaml` (use `CHECKLIST-PROMPT.md` to have an LLM draft it from your research notes), or edit
    an existing one.
 2. `python3 build_checklists.py` → rewrites `index.html` and `md/<slug>.md` (the Markdown is for the blog or LinkedIn).
-3. The same YAML makes the one-page PDF with the pipeline's tool, from `automation/`:
-   `py tools/lead_magnet.py ../website/checklists/specs/NN-slug.yaml` → `reference/lead-magnets/<pdf>`.
+3. The same YAML makes the PDF with the pipeline's tool (`~/Nitish/demotoprod/automation/tools/lead_magnet.py`):
+   `automation/venv/bin/python3 automation/tools/lead_magnet.py <path to specs/NN-slug.yaml>` → `reference/lead-magnets/<pdf>`.
+   The list is page one (a long list runs to two sheets) and the contact page is always last: name, the four
+   engagements as the situations they fit, and every link, so the file says who to call wherever it ends up.
+   Copy the PDF into `lead-magnets/` here; the file name is the spec's `pdf:` field.
 4. Before publishing: open every source link, compare every number with the page it links to, search the text for
    company names, and view the page at phone width. (`validate.py` does the mechanical half.)
 
