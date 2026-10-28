@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Region detection. Runs before first paint so the correct currency is
+     the first thing painted — never a flash of the wrong price. Order:
+     ?region= → saved choice → browser timezone → language → GBP. -->
+<script>
+(function () {
+  var OK = ['uk', 'us', 'eu'], r, p, tz, l;
+  try {
+    p = new URLSearchParams(location.search).get('region');
+    if (p && OK.indexOf(p) > -1) { r = p; try { localStorage.setItem('indica_region', r); } catch (e) {} }
+    if (!r) { try { r = localStorage.getItem('indica_region'); } catch (e) {} }
+    if (!r) {
+      tz = (Intl.DateTimeFormat().resolvedOptions().timeZone) || '';
+      if (/^America\//.test(tz)) r = 'us';
+      else if (tz === 'Europe/London') r = 'uk';
+      else if (/^Europe\//.test(tz)) r = 'eu';
+    }
+    if (!r) {
+      l = (navigator.language || '').toLowerCase();
+      if (l === 'en-us') r = 'us';
+      else if (/^(de|fr|nl|es|it|pt|pl|sv|da|fi|cs|el|ro|hu)/.test(l)) r = 'eu';
+    }
+  } catch (e) {}
+  document.documentElement.setAttribute('data-region', OK.indexOf(r) > -1 ? r : 'uk');
+})();
+</script>
+<meta name="description" content="Evidence Plane, an Indica Technology product: recorded calls in, cited and graded evidence out, on your own machine. See the journey and the value, then try the guided sample.">
+<meta name="robots" content="index, follow">
+<title>Evidence Plane — cited, graded evidence from your calls — Indica Tech</title>
+<link rel="canonical" href="https://indica-tech.com/work/evidence-plane/">
+<link rel="stylesheet" href="/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230B0B0A'/%3E%3Ccircle cx='32' cy='30' r='9' fill='%2300C46A'/%3E%3Crect x='25' y='42' width='14' height='40' fill='%23F5F2EC'/%3E%3Cpath d='M58 82 L78 18 L71 18 L51 82 Z' fill='%23F5F2EC'/%3E%3C/svg%3E">
+<meta property="og:title" content="Evidence Plane — cited, graded evidence from your calls">
+<meta property="og:description" content="Recorded calls in. Learnings out, each cited to its sentence and graded E0 to E5 for how solid it is. On your own machine.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://indica-tech.com/work/evidence-plane/">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Evidence Plane",
+  "applicationCategory": "BusinessApplication",
+  "description": "Recorded calls in; learnings out, each cited to the sentence it came from and graded E0 to E5. Runs on your own machine, with consent built in.",
+  "creator": {"@type": "Organization", "name": "Indica Technology Ltd", "url": "https://indica-tech.com"},
+  "url": "https://indica-tech.com/work/evidence-plane/"
+}
+</script>
+<style>
+/* Evidence Plane project page: the site's tokens, plus the few pieces this page needs. */
+.ep-hero { padding: clamp(56px, 8vw, 112px) 0 clamp(64px, 8vw, 120px); border-bottom: 1px solid var(--rule); }
+.ep-hero-grid { display: grid; grid-template-columns: 7fr 5fr; gap: 56px; align-items: center; }
+.ep-hero .kicker { margin-bottom: 20px; }
+.ep-hero h1 { font-size: clamp(2.4rem, 4.8vw, 4.3rem); margin-bottom: 22px; max-width: 16ch; }
+.ep-hero .lead { font-size: clamp(1.05rem, 1.3vw, 1.22rem); max-width: 52ch; }
+.ep-meta { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 22px; font-family: var(--mono); font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); }
+.ep-meta span::before { content: "/ "; color: var(--rule-2); }
+.ep-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+/* The picture: a call, its transcript, the learning it became. Drawn in HTML and SVG, no image files. */
+.ep-art { position: relative; margin: 0; min-height: 440px; }
+.ep-card { position: absolute; background: var(--paper); border: 1px solid var(--ink); padding: 16px 18px; box-shadow: 8px 8px 0 var(--paper-3); }
+.ep-call { top: 0; left: 0; width: 80%; }
+.ep-lines { top: 33%; left: 8%; width: 90%; }
+.ep-learn { top: 67%; left: 24%; width: 76%; background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.ep-row { display: flex; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: .72rem; color: var(--ink-faint); margin: 0; }
+.ep-learn .ep-row { color: #A9A49A; }
+.ep-wave { display: block; width: 100%; height: 52px; margin: 12px 0; }
+.ep-wave rect { fill: var(--ink); transform-box: fill-box; transform-origin: 50% 50%; }
+.ep-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--signal); margin-right: 8px; }
+.ep-lines p { font-size: .92rem; line-height: 1.45; color: var(--ink-2); margin: 0; padding: 6px 8px; }
+.ep-lines p + p { border-top: 1px dashed var(--rule); }
+.ep-lines .hl { background: var(--signal-soft); box-shadow: inset 3px 0 0 var(--signal); }
+.ep-tag { display: block; font-family: var(--mono); font-size: .68rem; color: var(--ink-faint); }
+.ep-chips { display: flex; gap: 10px; align-items: center; margin: 0; }
+.ep-chip { font-family: var(--mono); font-size: .72rem; background: var(--signal); color: var(--signal-ink); padding: 3px 10px; border-radius: 999px; }
+.ep-kind { font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--paper); }
+.ep-say { font-size: 1.2rem; line-height: 1.3; color: var(--paper); margin: 10px 0 8px; font-weight: 500; }
+@media (prefers-reduced-motion: no-preference) {
+  .ep-wave rect { animation: ep-breathe 2.4s ease-in-out infinite; animation-delay: calc(var(--k) * -90ms); }
+}
+@keyframes ep-breathe { 50% { transform: scaleY(.55); } }
+
+/* Input, output, value. */
+.ep-iov { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
+.ep-iov .diag-cell { position: relative; }
+.ep-iov .diag-cell:not(:last-child)::after { content: "→"; position: absolute; right: -14px; top: 34px; z-index: 2; width: 28px; height: 28px; display: grid; place-items: center; background: var(--paper); border: 1px solid var(--ink); border-radius: 50%; font-size: .9rem; color: var(--ink); }
+.ep-iov .label.in::before { background: var(--ink-faint); }
+.ep-iov .label.out::before { background: var(--ink); }
+.ep-iov ul { list-style: none; margin: 0; padding: 0; }
+.ep-iov li { padding: 10px 0; border-top: 1px solid var(--rule); color: var(--ink-mute); font-size: .98rem; line-height: 1.5; }
+.ep-iov .good { background: var(--paper-2); }
+.ep-after { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 40px; }
+.ep-after p { font-size: .95rem; margin: 0; }
+
+/* The grades, drawn as a ladder. */
+.ep-ladder { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, 1fr); align-items: end; border-bottom: 1px solid var(--ink); }
+.ep-ladder li { display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; padding: 0 14px 18px 0; }
+.ep-ladder .bar { height: calc(28px + var(--h) * 34px); background: var(--paper-3); border-top: 2px solid var(--ink); margin-bottom: 8px; }
+.ep-ladder li:last-child .bar { background: var(--signal-soft); border-top-color: var(--signal); }
+.ep-ladder .g { font-family: var(--mono); font-size: 1.5rem; font-weight: 600; color: var(--ink); letter-spacing: -.02em; }
+.ep-ladder .nm { font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
+.ep-ladder .ds { font-size: .92rem; line-height: 1.45; color: var(--ink-mute); margin: 0; min-height: 4.4em; }
+
+/* How it is built. */
+.ep-build { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; border-top: 1px solid var(--ink); padding-top: 32px; }
+.ep-build h3 { font-size: 1.15rem; margin: 12px 0 8px; line-height: 1.25; }
+.ep-build p { font-size: .96rem; }
+
+/* Closing call to action. */
+.ep-cta { padding: var(--section-y) 0; background: var(--paper-2); border-bottom: 1px solid var(--rule); }
+.ep-cta-grid { display: grid; grid-template-columns: 7fr 5fr; gap: 48px; align-items: end; }
+.ep-cta h2 { margin: 18px 0 14px; }
+.ep-cta .ep-ctas { justify-content: flex-end; margin: 0; }
+
+@media (max-width: 960px) {
+  .ep-hero-grid, .ep-cta-grid { grid-template-columns: 1fr; }
+  .ep-art { max-width: 560px; }
+  .ep-iov { grid-template-columns: 1fr; }
+  .ep-iov .diag-cell:not(:last-child)::after { content: "↓"; right: auto; left: 28px; top: auto; bottom: -14px; }
+  .ep-ladder { grid-template-columns: repeat(3, 1fr); row-gap: 28px; }
+  .ep-build { grid-template-columns: 1fr 1fr; }
+  .ep-cta .ep-ctas { justify-content: flex-start; }
+}
+@media (max-width: 640px) {
+  .ep-art { min-height: 0; display: grid; gap: 12px; }
+  .ep-card { position: static; width: auto !important; }
+  .ep-ladder { grid-template-columns: repeat(2, 1fr); }
+  .ep-build { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+        <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+        <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+        <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+      </svg>
+      <span>Indica Tech <em>/ demo → prod</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#problem">The gap</a></li>
+      <li><a href="/#offers">Engagements</a></li>
+      <li><a href="/#proof">Proof</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+    </ul>
+    <div class="region-switch" role="group" aria-label="Show prices in">
+      <button type="button" data-region-set="uk" aria-pressed="false">GBP</button>
+      <button type="button" data-region-set="us" aria-pressed="false">USD</button>
+      <button type="button" data-region-set="eu" aria-pressed="false">EUR</button>
+    </div>
+    <a href="/#contact" class="nav-cta">Book a call <span class="arrow">→</span></a>
+    <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<header class="ep-hero">
+  <div class="container">
+    <div class="ep-hero-grid">
+      <div>
+        <div class="kicker">Selected work / 06 · In-house product</div>
+        <h1>The memory of what was said, and how solid it is.</h1>
+        <p class="lead">Recorded calls go in. Cited, graded evidence comes out: every claim linked to the sentence that made it, and graded by what it cost the speaker to say it. All on your own machine.</p>
+        <div class="ep-meta"><span>Local-first</span><span>Consent built in</span><span>Every claim cited</span></div>
+        <div class="ep-ctas">
+          <a href="sample/" class="btn btn-primary">Try the guided sample <span class="arrow">→</span></a>
+          <a href="/#contact" class="btn btn-ghost">Talk about it <span class="arrow">→</span></a>
+        </div>
+      </div>
+      <figure class="ep-art" aria-label="A recorded call becomes a cited, graded learning">
+        <div class="ep-card ep-call"><p class="ep-row"><span>acme-intro.wav</span><span>1:04 · two speakers</span></p><svg class="ep-wave" viewBox="0 0 240 56" preserveAspectRatio="none" aria-hidden="true"><rect x="0.00" y="23.0" width="3" height="10.0" style="--k:0"/><rect x="5.45" y="9.5" width="3" height="37.0" style="--k:1"/><rect x="10.90" y="14.8" width="3" height="26.4" style="--k:2"/><rect x="16.35" y="18.7" width="3" height="18.7" style="--k:3"/><rect x="21.80" y="10.0" width="3" height="35.9" style="--k:4"/><rect x="27.25" y="12.6" width="3" height="30.8" style="--k:5"/><rect x="32.70" y="15.9" width="3" height="24.2" style="--k:6"/><rect x="38.15" y="10.9" width="3" height="34.2" style="--k:7"/><rect x="43.60" y="18.7" width="3" height="18.6" style="--k:8"/><rect x="49.05" y="14.9" width="3" height="26.1" style="--k:9"/><rect x="54.50" y="7.7" width="3" height="40.7" style="--k:10"/><rect x="59.95" y="19.2" width="3" height="17.5" style="--k:11"/><rect x="65.40" y="11.9" width="3" height="32.3" style="--k:12"/><rect x="70.85" y="15.1" width="3" height="25.7" style="--k:13"/><rect x="76.30" y="19.1" width="3" height="17.8" style="--k:14"/><rect x="81.75" y="9.8" width="3" height="36.5" style="--k:15"/><rect x="87.20" y="9.6" width="3" height="36.7" style="--k:16"/><rect x="92.65" y="19.4" width="3" height="17.2" style="--k:17"/><rect x="98.10" y="12.2" width="3" height="31.5" style="--k:18"/><rect x="103.55" y="19.1" width="3" height="17.7" style="--k:19"/><rect x="109.00" y="15.6" width="3" height="24.8" style="--k:20"/><rect x="114.45" y="6.4" width="3" height="43.2" style="--k:21"/><rect x="119.90" y="15.6" width="3" height="24.7" style="--k:22"/><rect x="125.35" y="14.6" width="3" height="26.9" style="--k:23"/><rect x="130.80" y="15.9" width="3" height="24.1" style="--k:24"/><rect x="136.25" y="20.0" width="3" height="16.0" style="--k:25"/><rect x="141.70" y="10.1" width="3" height="35.8" style="--k:26"/><rect x="147.15" y="7.2" width="3" height="41.5" style="--k:27"/><rect x="152.60" y="23.0" width="3" height="10.1" style="--k:28"/><rect x="158.05" y="14.0" width="3" height="28.0" style="--k:29"/><rect x="163.50" y="20.0" width="3" height="16.0" style="--k:30"/><rect x="168.95" y="16.8" width="3" height="22.3" style="--k:31"/><rect x="174.40" y="5.8" width="3" height="44.4" style="--k:32"/><rect x="179.85" y="12.4" width="3" height="31.3" style="--k:33"/><rect x="185.30" y="17.5" width="3" height="21.0" style="--k:34"/><rect x="190.75" y="17.1" width="3" height="21.8" style="--k:35"/><rect x="196.20" y="21.3" width="3" height="13.4" style="--k:36"/><rect x="201.65" y="11.1" width="3" height="33.8" style="--k:37"/><rect x="207.10" y="5.4" width="3" height="45.1" style="--k:38"/><rect x="212.55" y="19.6" width="3" height="16.9" style="--k:39"/><rect x="218.00" y="16.1" width="3" height="23.9" style="--k:40"/><rect x="223.45" y="21.2" width="3" height="13.7" style="--k:41"/><rect x="228.90" y="18.5" width="3" height="18.9" style="--k:42"/><rect x="234.35" y="6.0" width="3" height="44.1" style="--k:43"/></svg><p class="ep-row"><span><i class="ep-dot" aria-hidden="true"></i>Consent recorded</span><span>sha256 b6759921…</span></p></div>
+        <div class="ep-card ep-lines">
+          <p><span class="ep-tag">[3] SPEAKER_00 · 0:17</span>What takes most of her time at the moment?</p>
+          <p class="hl"><span class="ep-tag">[4] SPEAKER_01 · 0:20</span>Sarah spends two days every month matching invoices to payments by hand.</p>
+          <p><span class="ep-tag">[5] SPEAKER_00 · 0:27</span>Have you tried anything to fix that?</p>
+        </div>
+        <div class="ep-card ep-learn"><p class="ep-chips"><span class="ep-chip">E3 · impact</span><span class="ep-kind">Pain</span></p><p class="ep-say">Matching invoices by hand costs two days a month.</p><p class="ep-row"><span>Cites line 4</span><span>Acme Analytics</span></p></div>
+      </figure>
+    </div>
+  </div>
+</header>
+
+<section class="diag" id="value">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">Value / 01</div>
+      <h2>Calls in. Cited evidence out. Decisions you can defend.</h2>
+    </div>
+    <div class="ep-iov reveal">
+      <div class="diag-cell">
+        <div class="label in">Input</div>
+        <h3>What you give it</h3>
+        <ul>
+          <li>Recorded calls and meetings, audio or video</li>
+          <li>A consent record for each call: who was told, and when</li>
+          <li>Your calendar, so each call knows its meeting</li>
+        </ul>
+      </div>
+      <div class="diag-cell">
+        <div class="label out">Output</div>
+        <h3>What comes back</h3>
+        <ul>
+          <li>Learnings: pains, requests, budgets, objections, decisions</li>
+          <li>Each one cited to the sentence, the speaker and the minute</li>
+          <li>A grade from E0 to E5 for how solid it is</li>
+          <li>Signals, a thread per company, and the decisions waiting for you</li>
+        </ul>
+      </div>
+      <div class="diag-cell good">
+        <div class="label">Value</div>
+        <h3>What it is worth</h3>
+        <ul>
+          <li>Check any claim in one click, instead of trusting a summary</li>
+          <li>See what is solid, what is noise and what is fading</li>
+          <li>Decide on evidence, not on the loudest voice in the room</li>
+          <li>Keep it all: your machine, your data, your proof of consent</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="journey">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">The journey / 02</div>
+      <h2>From a recording to a decision, in four steps.</h2>
+    </div>
+    <div class="steps reveal">
+      <div class="step"><div class="n">01</div><h3>Consent first</h3><p>A call waits at the gate until you record that the people on it were told, or agreed. Revoke it, and its evidence leaves every page.</p><div class="when">The gate</div></div>
+      <div class="step"><div class="n">02</div><h3>Transcribe</h3><p>Speech becomes timestamped lines, and each line gets its speaker. It happens on your machine.</p><div class="when">Offline</div></div>
+      <div class="step"><div class="n">03</div><h3>Read and cite</h3><p>A local model writes learnings from the lines. Each one must cite the sentences it came from, or it is refused.</p><div class="when">Every claim cited</div></div>
+      <div class="step"><div class="n">04</div><h3>Grade and decide</h3><p>Each learning gets a grade from E0 to E5. Signals rise and fade by rules, never on the model's say-so, and open decisions wait for your answer.</p><div class="when">E0 – E5</div></div>
+    </div>
+    <div class="ep-after reveal">
+      <a href="sample/" class="btn btn-ghost">Walk through it in the guided sample <span class="arrow">→</span></a>
+      <p>It runs in your browser with made-up calls. Nothing to install, nothing saved.</p>
+    </div>
+  </div>
+</section>
+
+<section class="diag" id="grades">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">The grades / 03</div>
+      <h2>Graded by what it cost to say it.</h2>
+    </div>
+    <ol class="ep-ladder reveal">
+      <li style="--h:0"><div class="bar" aria-hidden="true"></div><span class="g">E0</span><span class="nm">Inferred</span><p class="ds">The lines do not say it; it is an inference.</p></li>
+      <li style="--h:1"><div class="bar" aria-hidden="true"></div><span class="g">E1</span><span class="nm">Vague</span><p class="ds">Said, but without specifics.</p></li>
+      <li style="--h:2"><div class="bar" aria-hidden="true"></div><span class="g">E2</span><span class="nm">Specific</span><p class="ds">Said with a number, a date or a name.</p></li>
+      <li style="--h:3"><div class="bar" aria-hidden="true"></div><span class="g">E3</span><span class="nm">Impact</span><p class="ds">It states an effect: “this costs us two days a week”.</p></li>
+      <li style="--h:4"><div class="bar" aria-hidden="true"></div><span class="g">E4</span><span class="nm">Behaviour</span><p class="ds">An action already taken: “we switched vendors in March”.</p></li>
+      <li style="--h:5"><div class="bar" aria-hidden="true"></div><span class="g">E5</span><span class="nm">Committed</span><p class="ds">A binding commitment, such as a signed order.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="proof" id="bar">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">The bar / 04</div>
+      <h2>Measured, not claimed.</h2>
+    </div>
+    <div class="proof-grid reveal">
+      <div class="proof-cell"><div class="num">100<span class="unit">%</span></div><div class="lbl">of citations must resolve to a real sentence</div></div>
+      <div class="proof-cell"><div class="num">99<span class="unit">%+</span></div><div class="lbl">the same grade when a learning is graded twice</div></div>
+      <div class="proof-cell"><div class="num">0</div><div class="lbl">bytes leave the machine: the core runs with the network blocked</div></div>
+      <div class="proof-cell"><div class="num">E0<span class="unit">–</span>E5</div><div class="lbl">one frozen rubric for every learning</div></div>
+    </div>
+    <div class="proof-body reveal">
+      <h3>How it is held</h3>
+      <div class="proof-text">
+        <p>Each line above is <strong>a test that fails the build</strong>, not a sentence in a deck. Results are kept by version, misses beside passes, so a slip shows up as a finding instead of being smoothed over.</p>
+        <p>The grader is frozen, so a grade means the same thing next month as it does today. A new grader adds its grades beside the old ones; none is rewritten.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="diag" id="built">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">Built / 05</div>
+      <h2>Slice by slice, with a person at every gate.</h2>
+    </div>
+    <div class="ep-build reveal">
+      <div><span class="mono">01 · Slices</span><h3>Small, finished pieces</h3><p>Each slice ends in something you can open and run, and the whole test suite must pass before the next one starts.</p></div>
+      <div><span class="mono">02 · Gates</span><h3>A person signs off</h3><p>Four gates, each needing a human sign-off before the build moves on. Nothing promotes itself.</p></div>
+      <div><span class="mono">03 · Decisions</span><h3>Written down first</h3><p>Every judgement call with lasting effect is logged, with its reason, before the code is written.</p></div>
+      <div><span class="mono">04 · The road</span><h3>Local first, cloud later</h3><p>It proves itself on one machine first. The cloud gets the same promise, unchanged, once it has earned it.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="ep-cta">
+  <div class="container ep-cta-grid">
+    <div class="reveal">
+      <div class="kicker">See it / 06</div>
+      <h2>See it read a call.</h2>
+      <p>The guided sample takes one call from the consent gate to a decision, with made-up companies and people. It runs in your browser.</p>
+    </div>
+    <div class="ep-ctas reveal">
+      <a href="sample/" class="btn btn-primary">Open the guided sample <span class="arrow">→</span></a>
+      <a href="/#contact" class="btn btn-ghost">Book a call <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="brand">
+          <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+            <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+            <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+            <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+          </svg>
+          <span>Indica Tech</span>
+        </a>
+        <p>Founder-led AI engineering. Demo to production, under NDA, in regulated industries, on fixed scope.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Engagements</h4>
+        <ul>
+          <li><a href="/services/audit.html">Production Audit</a></li>
+          <li><a href="/services/fractional.html">Fractional AI Lead</a></li>
+          <li><a href="/services/build-sprint.html">Build Sprint</a></li>
+          <li><a href="/services/governance.html">Governance</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/checklists/">Checklists</a></li>
+          <li><a href="/#cases">Case studies</a></li>
+          <li><a href="/about.html">About Nitish</a></li>
+          <li><a href="/#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/company/indica-technology/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://instagram.com/demotoprod" target="_blank" rel="noopener">@demotoprod</a></li>
+          <li><a href="mailto:hello@indica-tech.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span class="year">2026</span> Indica Technology Ltd · Registered in England · VAT No. GB 517 173 008</span>
+      <span class="footer-legal">
+        <a href="/privacy.html">Privacy</a> ·
+        <a href="/terms.html">Terms</a> ·
+        <a href="/cookies.html">Cookies</a>
+      </span>
+      <span class="status">Taking new projects · Q2 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/script.js"></script>
+</body>
+</html>

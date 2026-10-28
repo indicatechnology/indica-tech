@@ -563,6 +563,12 @@ p { color: var(--ink-mute); font-size: 1.0625rem; line-height: 1.65; }
   font-size: 1rem;
 }
 .outcome .desc { color: var(--ink-mute); text-transform: none; font-family: var(--sans); font-size: 0.95rem; }
+/* A case with its own page: the title and the "see the project" line read as links. */
+.case h3 a { border-bottom: 1px solid var(--rule-2); transition: border-color .15s; }
+.case h3 a:hover { border-color: var(--ink); }
+.case-link { margin-top: 14px; font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.case-link a { color: var(--ink); border-bottom: 1px solid var(--ink); }
+.case-link a:hover { color: var(--signal-ink); border-color: var(--signal); }
 
 /* =========================================================
    Process / how it works

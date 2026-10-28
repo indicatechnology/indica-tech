@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sample workspace · Evidence Plane</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<!-- Evidence Plane: a guided sample workspace by Indica Technology. Every company, person and call is made up;
+     nothing is saved. Logo and pictures are original SVG; the fonts are SIL OFL 1.1 (licences beside the font files). -->
+<style>
+@font-face { font-family: "Instrument Serif"; font-style: normal; font-weight: 400; font-display: swap; src: url("fonts/instrument-serif-normal-latin.woff2") format("woff2"); }
+@font-face { font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: swap; src: url("fonts/instrument-serif-italic-latin.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("fonts/inter-normal-latin.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("fonts/jetbrains-mono-normal-latin.woff2") format("woff2"); }
+:root {
+  --page: #f4f1ea; --band: #ebe7dc; --surface: #fdfcf8; --tile: #f4f1ea; --track: #e9e5da;
+  --ink: #0d0d0e; --ink-text: #fafafa; --text: #0d0d0e; --muted: #5e5b54; --line: #ddd7ca; --edge: #8c877b;
+  --accent: #0d0d0e; --accent-soft: #eefbb8; --lime: #d2ff00; --red: #b42318; --red-text: #a3241e; --red-soft: #f6dfdb;
+  --ok-text: #2e5e2e; --ok-soft: #e4efdc; --warn-text: #7a4e00; --warn-soft: #f6ead2; --bad-text: #a3241e; --bad-soft: #f6dfdb;
+  --radius: 16px; --radius-sm: 12px;
+  --shadow: 0 1px 2px rgba(10, 10, 10, .04), 0 6px 24px rgba(10, 10, 10, .05);
+  --shadow-md: 0 12px 40px rgba(10, 10, 10, .12);
+  --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { background: var(--page); }
+body { margin: 0; background: var(--page); color: var(--text); font: 15px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); }
+h1, .display { font-family: var(--display); font-weight: 400; letter-spacing: -.015em; }
+h1 { font-size: 2.9rem; line-height: 1.02; margin: 0 0 .5rem; }
+h2 { font-family: var(--sans); font-size: 1.02rem; line-height: 1.25; font-weight: 600; margin: 0; letter-spacing: -.005em; }
+h3 { font-size: .74rem; margin: 1.1rem 0 .45rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-family: var(--sans); font-weight: 600; }
+p { margin: 0 0 .6rem; }
+.muted { color: var(--muted); }
+.mono { font-family: var(--mono); font-size: .86em; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: -999px; top: 0; background: var(--ink); color: var(--ink-text); padding: .5rem .9rem; z-index: 60; border-radius: 999px; }
+.skip:focus { left: 16px; top: 8px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+
+.head { position: sticky; top: 0; z-index: 40; background: var(--surface); border-bottom: 1px solid var(--line); }
+.head-inner { max-width: 1440px; margin: 0 auto; display: flex; align-items: center; gap: 1.5rem; padding: 0 24px; min-height: 64px; }
+.logo { display: flex; align-items: center; gap: .55rem; font-family: var(--display); font-weight: 400; font-size: 1.45rem; letter-spacing: -.01em; color: var(--text); text-decoration: none; white-space: nowrap; }
+.logo svg { width: 28px; height: 28px; flex: none; }
+.logo em { font-style: italic; }
+.nav { display: flex; align-items: center; gap: .15rem; flex: 1; justify-content: center; }
+.nav a { color: var(--text); text-decoration: none; font-size: .93rem; padding: .45rem .7rem; border-radius: 999px; min-height: 40px; display: inline-flex; align-items: center; }
+.nav a:hover { background: var(--page); }
+.nav a[aria-current="page"] { background: var(--ink); color: var(--ink-text); font-weight: 600; }
+.head-right { display: flex; align-items: center; gap: .35rem; }
+.head-right a.plain { color: var(--text); text-decoration: none; font-size: .9rem; padding: .45rem .65rem; border-radius: 999px; min-height: 40px; display: inline-flex; align-items: center; }
+.head-right a.plain:hover { background: var(--page); }
+.head-right a.plain[aria-current="page"] { background: var(--ink); color: var(--ink-text); }
+.needs-pill { display: inline-flex; align-items: center; gap: .45rem; font-weight: 650; font-size: .9rem; color: var(--text); text-decoration: none; padding: .35rem .45rem .35rem .85rem; border: 1px solid var(--ink); border-radius: 999px; min-height: 40px; }
+.count { min-width: 1.5rem; height: 1.5rem; display: inline-grid; place-items: center; font-size: .76rem; font-weight: 700; padding: 0 .4rem; border-radius: 999px; background: var(--lime); color: var(--ink); }
+.count.zero { background: var(--ok-soft); color: var(--ok-text); }
+.head-right .menu-btn { display: none; }
+
+.shell { display: grid; grid-template-columns: minmax(0, 1fr) 340px; align-items: start; max-width: 1440px; margin: 0 auto; }
+.shell.no-tour { grid-template-columns: minmax(0, 1fr); }
+.shell.no-tour .tour { display: none; }
+main { padding: 2.2rem 32px 5rem; min-width: 0; }
+main:focus { outline: none; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+.route[hidden] { display: none; }
+.intro { margin-bottom: 1.6rem; max-width: 60rem; }
+.intro p { font-size: 1.02rem; }
+.crumb { font-size: .86rem; margin-bottom: .35rem; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; align-items: start; }
+.stack { display: grid; gap: 1.1rem; }
+.card { background: var(--surface); border-radius: var(--radius); padding: 1.35rem 1.4rem; box-shadow: var(--shadow); min-width: 0; }
+.card-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem 1rem; margin-bottom: .9rem; }
+.empty { background: var(--tile); border-radius: var(--radius-sm); padding: .85rem 1rem; color: var(--muted); font-size: .93rem; margin: 0; }
+
+.btn { font: inherit; font-weight: 600; font-size: .92rem; border-radius: 999px; padding: .5rem 1.25rem; min-height: 42px; cursor: pointer; border: 1px solid transparent; display: inline-flex; align-items: center; justify-content: center; gap: .4rem; text-decoration: none; transition: background-color .15s, color .15s; }
+.btn.primary { background: var(--ink); color: var(--ink-text); }
+.btn.primary:hover { background: var(--lime); color: var(--ink); }
+.btn.ghost { background: var(--surface); color: var(--ink); border-color: var(--ink); }
+.btn.ghost:hover { background: var(--page); }
+.btn.danger { background: var(--red); color: #fff; }
+.btn.danger:hover { background: #8f1c13; }
+.btn.small { min-height: 34px; padding: .25rem .95rem; font-size: .86rem; }
+.btn.wide { width: 100%; }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+.actions { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .75rem; }
+.textlink { font: inherit; font-size: .86rem; color: var(--accent); background: none; border: 0; padding: .1rem 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; min-height: 28px; }
+
+.pill { display: inline-flex; align-items: center; font-size: .76rem; font-weight: 600; padding: .16rem .62rem; border-radius: 999px; white-space: nowrap; }
+.pill.grade { background: var(--ink); color: var(--ink-text); font-family: var(--mono); font-weight: 500; }
+.pill.kind { background: var(--track); color: #3d3a34; }
+.pill.open, .pill.emerging, .pill.running, .pill.info { background: var(--accent-soft); color: var(--accent); }
+.pill.ok, .pill.ready, .pill.validated, .pill.backed, .pill.won, .pill.disclosed, .pill.consented, .pill.pass { background: var(--ok-soft); color: var(--ok-text); }
+.pill.warn, .pill.pending, .pill.candidate, .pill.guess, .pill.dormant, .pill.waived { background: var(--warn-soft); color: var(--warn-text); }
+.pill.needs_you { background: var(--red-soft); color: var(--red-text); }
+.pill.bad, .pill.quarantined, .pill.revoked, .pill.fading, .pill.lost, .pill.failed { background: var(--bad-soft); color: var(--bad-text); }
+.pill.todo { background: var(--track); color: var(--muted); }
+
+/* The strength control: the reference's black-on-grey series toggle. */
+.seg { display: inline-flex; background: var(--track); border-radius: 999px; padding: 3px; margin: 0; gap: 2px; border: 0; }
+.seg legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.seg label { position: relative; }
+.seg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; margin: 0; }
+.seg span { display: block; padding: .32rem .85rem; min-height: 32px; border-radius: 999px; font-size: .86rem; font-weight: 600; cursor: pointer; color: #3d3a34; }
+.seg input:checked + span { background: var(--ink); color: var(--ink-text); }
+.seg input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.lrns { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
+.lrn { display: grid; grid-template-columns: auto 1fr; gap: .3rem .75rem; padding: .75rem .85rem; border-radius: var(--radius-sm); background: var(--tile); }
+.lrn .chips { display: flex; flex-direction: column; gap: .3rem; align-items: flex-start; }
+.lrn p { margin: 0; }
+.lrn .meta { font-size: .84rem; color: var(--muted); margin-top: .25rem; }
+blockquote.quote { grid-column: 2; margin: .4rem 0 0; padding: .55rem .8rem; border-left: 3px solid var(--ink); background: var(--surface); border-radius: 0 10px 10px 0; font-size: .92rem; }
+blockquote.quote .mono { color: var(--muted); }
+
+.stages { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; }
+.stage { display: flex; align-items: center; gap: .4rem; padding: .32rem .75rem; border-radius: 999px; background: var(--track); font-size: .84rem; font-weight: 600; color: var(--muted); }
+.stage::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%; background: #a8a294; }
+.stage.done { background: var(--ok-soft); color: var(--ok-text); }
+.stage.done::before { background: var(--ok-text); }
+.stage.now { background: var(--ink); color: var(--ink-text); }
+.stage.now::before { background: #fff; animation: pulse 1s ease-in-out infinite; }
+.stage.stopped { background: var(--red-soft); color: var(--red-text); }
+.stage.stopped::before { background: var(--red); }
+.stage-note { margin: .8rem 0 0; font-size: .93rem; }
+@keyframes pulse { 50% { opacity: .25; } }
+
+.lines { list-style: none; margin: 0; padding: 0; font-size: .92rem; }
+.lines li { display: grid; grid-template-columns: 2.2rem 6.8rem 1fr; gap: .5rem; padding: .4rem .5rem; border-radius: 10px; }
+.lines li.hl { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+.lines .n, .lines .who { color: var(--muted); font-family: var(--mono); font-size: .8rem; padding-top: .15rem; }
+
+.form { display: grid; gap: .7rem; }
+.form label { display: grid; gap: .25rem; font-size: .88rem; font-weight: 600; }
+.form input, .form select, .form textarea, .ask input { font: inherit; font-weight: 400; color: var(--text); background: var(--surface); border: 1px solid #8c877b; border-radius: 999px; padding: .5rem 1rem; min-height: 44px; width: 100%; }
+.form textarea { border-radius: 16px; }
+.form input:focus, .form select:focus, .form textarea:focus, .ask input:focus { border-color: var(--ink); outline: 2px solid var(--accent); outline-offset: 1px; }
+.form .hint { font-weight: 400; color: var(--muted); font-size: .82rem; }
+.form .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+.msg { padding: .65rem .9rem; border-radius: var(--radius-sm); font-size: .92rem; margin: .5rem 0 0; }
+.msg.warn { background: var(--warn-soft); color: var(--warn-text); }
+.msg.bad { background: var(--red-soft); color: var(--red-text); }
+.msg.ok { background: var(--ok-soft); color: var(--ok-text); }
+.msg.info { background: var(--accent-soft); color: var(--accent); }
+
+.needs-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
+.needs-list li { background: var(--tile); border-radius: var(--radius-sm); padding: .8rem .95rem; }
+.needs-list .what { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: .25rem; }
+
+.board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .9rem; }
+.col { background: var(--track); border-radius: var(--radius); padding: .8rem; min-width: 0; }
+.col h2 { display: flex; justify-content: space-between; align-items: center; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: #3d3a34; margin: .1rem .2rem .75rem; font-family: var(--sans); }
+.col h2 span { background: var(--surface); border-radius: 999px; padding: .05rem .55rem; letter-spacing: 0; }
+.col .empty { background: transparent; border: 1px dashed #8c877b; }
+.tcard { background: var(--surface); border-radius: var(--radius-sm); padding: .9rem; margin-bottom: .6rem; box-shadow: var(--shadow); }
+.tcard h3 { margin: 0 0 .2rem; font-size: 1.45rem; text-transform: none; letter-spacing: -.01em; color: var(--text); font-family: var(--display); font-weight: 400; }
+.tcard p { font-size: .87rem; margin: .35rem 0 0; }
+
+table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+th, td { text-align: left; padding: .65rem .5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 650; }
+tr:last-child td { border-bottom: 0; }
+.table-wrap { overflow-x: auto; }
+
+/* Welcome: a centred hero, product-style cards, then bands. */
+.hero { text-align: center; padding: 2.2rem 0 1.2rem; }
+.hero h1 { font-size: clamp(2.6rem, 5.6vw, 4.6rem); line-height: 1.02; font-weight: 400; letter-spacing: -.02em; margin: 0 auto .7rem; max-width: 24ch; text-wrap: balance; }
+.hero p { font-size: 1.12rem; color: var(--muted); max-width: 40rem; margin: 0 auto; }
+.paths { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; margin: 2rem 0 0; }
+.path { display: grid; gap: .5rem; align-content: start; padding: 0; overflow: hidden; }
+.path .media { background: var(--tile); min-height: 210px; display: grid; place-items: center; padding: 1.4rem; }
+.path .body { padding: .4rem 1.5rem 1.5rem; }
+.path h2 { font-family: var(--display); font-weight: 400; font-size: 2rem; letter-spacing: -.01em; }
+.path .tag { display: flex; gap: .4rem; flex-wrap: wrap; margin: .2rem 0 .4rem; }
+.band { margin: 3rem 0 0; padding: 3.2rem 2rem; background: var(--band); border-radius: 28px; }
+.band-head { text-align: center; margin-bottom: 1.8rem; }
+.band-head h2 { font-family: var(--display); font-size: clamp(2.1rem, 4vw, 3.2rem); font-weight: 400; letter-spacing: -.015em; }
+.band-head p { color: var(--muted); max-width: 42rem; margin: .5rem auto 0; }
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.tile { background: var(--surface); border-radius: var(--radius); padding: 1.2rem 1.3rem; box-shadow: var(--shadow); display: grid; gap: .25rem; align-content: start; }
+.tile .big { font-family: var(--display); font-size: 2.9rem; font-weight: 400; letter-spacing: -.02em; line-height: 1; }
+.tile .label { font-weight: 650; }
+.tile .target { font-size: .86rem; color: var(--muted); }
+.tile .src { font-size: .78rem; color: var(--muted); font-family: var(--mono); }
+
+.bars { display: grid; gap: .55rem; }
+.barrow { display: grid; grid-template-columns: 11rem 1fr 3.6rem; gap: .7rem; align-items: center; font-size: .88rem; }
+.barrow .track { position: relative; height: 12px; background: var(--track); border-radius: 999px; overflow: hidden; }
+.barrow .fill { position: absolute; inset: 0 auto 0 0; background: var(--ink); border-radius: 999px; }
+.barrow .goal { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--red); }
+.barrow .val { font-family: var(--mono); text-align: right; }
+
+.ask { display: flex; gap: .55rem; }
+.ask input { flex: 1; }
+.chiprow { display: flex; flex-wrap: wrap; gap: .45rem; margin: .8rem 0 0; align-items: center; }
+
+.checklist { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+.checklist li { display: grid; grid-template-columns: 2.2rem 1fr auto; gap: .2rem .8rem; padding: .85rem 0; border-bottom: 1px solid var(--line); }
+.checklist li:last-child { border-bottom: 0; }
+.checklist li::before { counter-increment: step; content: counter(step); display: grid; place-items: center; width: 1.9rem; height: 1.9rem; border-radius: 50%; background: var(--track); font-size: .8rem; font-weight: 700; }
+.checklist li.is-ok::before { background: var(--ink); color: var(--ink-text); }
+.checklist .done-when { grid-column: 2; font-size: .84rem; color: var(--muted); }
+dl.settings { display: grid; grid-template-columns: 12rem 1fr; gap: .55rem 1rem; margin: 0; font-size: .93rem; align-items: center; }
+dl.settings dt { color: var(--muted); }
+dl.settings dd { margin: 0; }
+dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 999px; padding: .35rem .9rem; min-height: 38px; background: var(--surface); }
+
+.tour { position: sticky; top: 80px; margin: 2.2rem 24px 2rem 0; max-height: calc(100vh - 100px); overflow: auto; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 1.2rem; }
+.tour-head { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
+.tour h2 { font-size: 1.2rem; }
+.tour ol { list-style: none; margin: .9rem 0; padding: 0; display: grid; gap: .25rem; }
+.tour li button { width: 100%; text-align: left; font: inherit; font-size: .92rem; display: flex; gap: .6rem; align-items: center; padding: .4rem .55rem; min-height: 38px; border-radius: 999px; border: 0; background: none; color: var(--text); cursor: pointer; }
+.tour li button:hover { background: var(--page); }
+.tour li button[aria-current="step"] { background: var(--ink); color: var(--ink-text); font-weight: 600; }
+.tick { width: 1.35rem; height: 1.35rem; border-radius: 50%; background: var(--track); color: #3d3a34; display: grid; place-items: center; font-size: .72rem; font-weight: 700; flex: none; }
+.tick.on { background: var(--ok-text); color: #fff; }
+.tour li button[aria-current="step"] .tick:not(.on) { background: #fff; color: var(--ink); }
+.tour .step-text { background: var(--tile); border-radius: var(--radius-sm); padding: .85rem .95rem; font-size: .93rem; }
+.spot { outline: 3px solid var(--accent) !important; outline-offset: 5px; border-radius: 14px; animation: spot 1.4s ease-in-out 2; }
+@keyframes spot { 50% { outline-color: transparent; } }
+.reopen-tour { position: fixed; right: 16px; bottom: 16px; z-index: 30; box-shadow: var(--shadow-md); }
+.reopen-tour[hidden] { display: none; }
+.toast { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 50; background: var(--ink); color: var(--ink-text); padding: .6rem .7rem .6rem 1.1rem; border-radius: 999px; display: flex; gap: .9rem; align-items: center; max-width: calc(100vw - 32px); box-shadow: var(--shadow-md); font-size: .92rem; }
+.toast[hidden] { display: none; }
+.toast button { font: inherit; font-weight: 600; color: var(--ink); background: #fff; border: 0; border-radius: 999px; padding: .2rem .8rem; cursor: pointer; min-height: 30px; }
+.byline { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .7rem; margin-top: .8rem; font-size: .86rem; color: var(--muted); }
+.byline a { color: var(--ink); text-underline-offset: 2px; }
+.byline .indica { display: inline-flex; align-items: center; gap: .4rem; font-weight: 600; text-decoration: none; }
+.foot { margin-top: 2.5rem; font-size: .82rem; color: var(--muted); max-width: 62rem; }
+.intro .mono { overflow-wrap: anywhere; }
+
+@media (max-width: 1240px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .tour { position: fixed; right: 16px; bottom: 16px; top: auto; margin: 0; z-index: 30; width: min(340px, calc(100vw - 32px)); max-height: 62vh; }
+}
+@media (max-width: 1100px) {
+  .head-right .menu-btn { display: inline-flex; }
+  .nav { display: none; position: absolute; left: 0; right: 0; top: 100%; background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: var(--shadow-md); flex-direction: column; align-items: stretch; padding: .6rem 16px 1rem; gap: .2rem; }
+  .nav.open { display: flex; }
+  .head-inner { justify-content: space-between; position: relative; }
+  .head-right a.plain { display: none; }
+  .nav .only-menu { display: inline-flex; }
+}
+.nav .only-menu { display: none; }
+@media (max-width: 900px) { .grid, .paths { grid-template-columns: 1fr; } .board { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tiles { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) {
+  .head-inner { padding: 0 16px; gap: .6rem; }
+  .needs-pill .label { display: none; }
+  .needs-pill { padding: .35rem .45rem; }
+  main { padding: 1.4rem 16px 6rem; }
+  .band { margin: 2.4rem 0 0; padding: 2.2rem 1rem; border-radius: 20px; }
+  .board, .tiles { grid-template-columns: 1fr; }
+  .form .row2, dl.settings { grid-template-columns: 1fr; }
+  .lines li { grid-template-columns: 2rem 1fr; }
+  .lines .who, .lines .tx { grid-column: 2; }
+  .barrow { grid-template-columns: 1fr 3.4rem; }
+  .barrow .name { grid-column: 1 / -1; }
+  .tour { left: 16px; right: 16px; width: auto; max-height: 46vh; }
+  h1 { font-size: 1.9rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="head">
+  <div class="head-inner">
+    <a class="logo" href="#welcome"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0d0d0e"/><rect x="7.5" y="9" width="17" height="2.6" rx="1.3" fill="#f4f1ea"/><rect x="7.5" y="14.7" width="11.5" height="2.6" rx="1.3" fill="#d2ff00"/><circle cx="22.6" cy="16" r="1.7" fill="#d2ff00"/><rect x="7.5" y="20.4" width="14" height="2.6" rx="1.3" fill="#f4f1ea"/></svg><span>Evidence <em>Plane</em></span></a>
+    <nav class="nav" id="nav" aria-label="Pages">
+      <a href="#today" data-route="today">Today</a>
+      <a href="#inbox" data-route="inbox">Inbox</a>
+      <a href="#ask" data-route="ask">Ask</a>
+      <a href="#threads" data-route="threads">Threads</a>
+      <a href="#signals" data-route="signals">Signals</a>
+      <a href="#positions" data-route="positions">Positions</a>
+      <a href="#people" data-route="people">People</a>
+      <a href="#benchmarks" data-route="benchmarks">Benchmarks</a>
+      <a href="#setup" data-route="setup" class="only-menu">Setup</a>
+      <a href="#system" data-route="system" class="only-menu">System</a>
+    </nav>
+    <div class="head-right">
+      <a class="needs-pill" href="#today"><span class="label">Needs you</span><span class="count" id="needs-count" aria-label="items">0</span></a>
+      <a class="plain" href="#setup" data-route="setup">Setup</a>
+      <a class="plain" href="#system" data-route="system">System</a>
+      <button type="button" class="btn ghost small menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
+    </div>
+  </div>
+</header>
+
+<div class="shell" id="shell">
+  <main id="main" tabindex="-1"><div class="wrap">
+    <section class="route" data-route="welcome" aria-labelledby="h-welcome">
+      <div class="hero">
+        <h1 id="h-welcome">Every claim. Traced to the sentence it came from.</h1>
+        <p>Drop in a consented call. It is transcribed, read and graded on this machine, and every learning links back to the line someone said.</p>
+      </div>
+      <div class="paths">
+        <article class="card path">
+          <div class="media" aria-hidden="true">
+            <svg width="300" height="150" viewBox="0 0 300 150" fill="none">
+              <rect x="10" y="18" width="190" height="34" rx="17" fill="#0d0d0e"/><text x="28" y="40" fill="#fff" font-family="JetBrains Mono, ui-monospace, monospace" font-size="13">E4 · behaviour</text>
+              <rect x="10" y="62" width="280" height="12" rx="6" fill="#ddd7ca"/><rect x="10" y="82" width="230" height="12" rx="6" fill="#ddd7ca"/>
+              <rect x="10" y="108" width="120" height="28" rx="14" fill="#fff" stroke="#0d0d0e"/><text x="30" y="127" fill="#0d0d0e" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">cite line 28</text>
+            </svg>
+          </div>
+          <div class="body">
+            <div class="tag"><span class="pill info">About 20 minutes</span><span class="pill kind">Synthetic calls</span></div>
+            <h2>Explore the sample company</h2>
+            <p class="muted">A short tour shows each part, and you try each one yourself: add a call, clear the gate, check a claim, join, answer, revoke.</p>
+            <div class="actions"><a class="btn primary wide" href="#today" data-start-tour>Start the tour</a></div>
+          </div>
+        </article>
+        <article class="card path">
+          <div class="media" aria-hidden="true">
+            <svg width="300" height="150" viewBox="0 0 300 150" fill="none">
+              <circle cx="24" cy="30" r="12" fill="#0d0d0e"/><path d="M18 30l4 4 8-8" stroke="#fff" stroke-width="2.5" fill="none"/><rect x="48" y="24" width="200" height="12" rx="6" fill="#ddd7ca"/>
+              <circle cx="24" cy="74" r="12" fill="#0d0d0e"/><path d="M18 74l4 4 8-8" stroke="#fff" stroke-width="2.5" fill="none"/><rect x="48" y="68" width="160" height="12" rx="6" fill="#ddd7ca"/>
+              <circle cx="24" cy="118" r="11" fill="#fff" stroke="#8c877b" stroke-width="2"/><rect x="48" y="112" width="220" height="12" rx="6" fill="#e9e5da"/>
+            </svg>
+          </div>
+          <div class="body">
+            <div class="tag"><span class="pill info">Nine steps</span><span class="pill kind">Each ticks itself</span></div>
+            <h2>Set up your company</h2>
+            <p class="muted">From install to your first Monday digest, on your own machine. Nothing is shared with anyone else's install.</p>
+            <div class="actions"><a class="btn ghost wide" href="#setup">Open the checklist</a></div>
+          </div>
+        </article>
+      </div>
+      <section class="band" aria-labelledby="h-measured">
+        <div class="band-head"><h2 id="h-measured">Measured, not claimed.</h2><p>Figures from a development run, on made-up calls. The misses sit beside the passes.</p></div>
+        <div class="tiles">
+          <div class="tile"><span class="big">100%</span><span class="label">Citations resolve</span><span class="target">Target 100%</span><span><span class="pill pass">Pass</span></span></div>
+          <div class="tile"><span class="big">163/163</span><span class="label">Grader repeats itself</span><span class="target">Target 99%</span><span><span class="pill pass">Pass</span></span></div>
+          <div class="tile"><span class="big">72.4%</span><span class="label">Learnings found</span><span class="target">Target 95%</span><span><span class="pill waived">Below target</span></span></div>
+        </div>
+        <div class="actions" style="justify-content:center;margin-top:1.4rem"><a class="btn ghost" href="#benchmarks">See every benchmark</a></div>
+      </section>
+    </section>
+
+    <section class="route" data-route="today" aria-labelledby="h-today" hidden>
+      <div class="intro"><h1 id="h-today">Today</h1><p class="muted"><span data-today></span>. What needs you, what is being read, and what you are walking into next.</p></div>
+      <div class="grid">
+        <div class="stack">
+          <section class="card" id="needs" aria-labelledby="h-needs"><div class="card-head"><h2 id="h-needs">Needs you</h2></div><ul class="needs-list" id="needs-list"></ul></section>
+          <section class="card" aria-labelledby="h-reading"><div class="card-head"><h2 id="h-reading">Reading now</h2></div><div id="reading-now"></div></section>
+        </div>
+        <div class="stack">
+          <section class="card" aria-labelledby="h-next"><div class="card-head"><h2 id="h-next">Next up</h2><span class="muted" style="font-size:.84rem">from your calendar folder</span></div><div id="next-up"></div></section>
+          <section class="card" aria-labelledby="h-strong"><div class="card-head"><h2 id="h-strong">Strongest new evidence</h2><span data-seg></span></div><div id="strong-list"></div></section>
+          <section class="card" aria-labelledby="h-week"><div class="card-head"><h2 id="h-week">This week</h2></div><div id="week"></div></section>
+        </div>
+      </div>
+    </section>
+
+    <section class="route" data-route="inbox" aria-labelledby="h-inbox" hidden>
+      <div class="intro"><h1 id="h-inbox">Inbox</h1><p class="muted">Every file that arrived, by upload or in a watched folder, with its consent state. Nothing is read until consent clears it.</p></div>
+      <section class="card" aria-labelledby="h-upload">
+        <div class="card-head"><h2 id="h-upload">Add a call or document</h2></div>
+        <div class="form">
+          <label>Choose a file <span class="hint">Audio, video or a document. The prototype does not read files; use the sample call below.</span><input type="file" id="file-input"></label>
+        </div>
+        <div class="actions"><button type="button" class="btn primary" id="add-sample">Add a new sample call (1:04)</button></div>
+        <div id="add-msg" aria-live="polite"></div>
+      </section>
+      <section class="card" style="margin-top:1.1rem" aria-labelledby="h-arrived"><div class="card-head"><h2 id="h-arrived">Arrived</h2></div><div class="table-wrap"><table><thead><tr><th scope="col">File</th><th scope="col">Company</th><th scope="col">Consent</th><th scope="col">Status</th></tr></thead><tbody id="inbox-rows"></tbody></table></div></section>
+    </section>
+
+    <section class="route" data-route="call" aria-labelledby="h-call" hidden>
+      <div class="intro"><p class="crumb muted"><a href="#inbox">Inbox</a> / call</p><h1 id="h-call">acme-intro.wav</h1><p class="muted mono">sha256 b6759921411e4bc20a35a0027c3473a15b2e6e1168b9d3b5f350eacb4b8173b9 · 1:04 · two speakers</p></div>
+      <section class="card" id="reading-card" aria-labelledby="h-stages"><div class="card-head"><h2 id="h-stages">Reading</h2><span id="call-status"></span></div><ol class="stages" id="stages"></ol><p class="stage-note" id="stage-note" aria-live="polite"></p></section>
+      <div class="grid" style="margin-top:1.1rem">
+        <div class="stack">
+          <section class="card" id="consent-card" aria-labelledby="h-consent"><div class="card-head"><h2 id="h-consent">Consent</h2><span id="consent-pill"></span></div><div id="consent-body"></div></section>
+          <section class="card" id="company-card" aria-labelledby="h-company"><div class="card-head"><h2 id="h-company">Company</h2></div><div id="company-body"></div></section>
+        </div>
+        <div class="stack">
+          <section class="card" aria-labelledby="h-call-lrn"><div class="card-head"><h2 id="h-call-lrn">Learnings</h2><span data-seg></span></div><div id="call-learnings"></div></section>
+          <section class="card" aria-labelledby="h-transcript"><div class="card-head"><h2 id="h-transcript">Transcript</h2></div><div id="transcript"></div></section>
+        </div>
+      </div>
+    </section>
+
+    <section class="route" data-route="threads" aria-labelledby="h-threads" hidden>
+      <div class="intro"><h1 id="h-threads">Threads</h1><p class="muted">One thread per company. Dormant is computed: an open thread with no call for 90 days. Won and lost are yours to mark; nothing moves a thread for you.</p></div>
+      <div class="board" id="board"></div>
+    </section>
+
+    <section class="route" data-route="signals" aria-labelledby="h-signals" hidden>
+      <div class="intro"><h1 id="h-signals">Signals</h1><p class="muted">A signal is one thing several calls say. Its stage comes from rules over grades, calls and dates, never from the model: 3 learnings at E2 or above from 2 calls in 90 days make it Emerging; 2 at E4 or above from 2 calls in 180 days make it Validated.</p></div>
+      <div class="card-head"><span></span><span data-seg></span></div>
+      <div class="stack" id="signal-list"></div>
+    </section>
+
+    <section class="route" data-route="positions" aria-labelledby="h-positions" hidden>
+      <div class="intro"><h1 id="h-positions">Positions</h1><p class="muted">Open decisions drafted from your calls. You give each option a probability and argue against yourself; the label says whether the evidence backs it.</p></div>
+      <div class="stack" id="position-list"></div>
+    </section>
+
+    <section class="route" data-route="people" aria-labelledby="h-people" hidden>
+      <div class="intro"><h1 id="h-people">People &amp; companies</h1><p class="muted">Names said in calls. Two names become one only when you merge them, and a merge can be undone.</p></div>
+      <div class="grid"><section class="card" aria-labelledby="h-merge"><div class="card-head"><h2 id="h-merge">To review</h2></div><div id="merge-queue"></div></section>
+      <section class="card" aria-labelledby="h-names"><div class="card-head"><h2 id="h-names">Names</h2></div><div class="table-wrap"><table><thead><tr><th scope="col">Name</th><th scope="col">Kind</th><th scope="col">Calls</th></tr></thead><tbody id="names-rows"></tbody></table></div></section></div>
+    </section>
+
+    <section class="route" data-route="ask" aria-labelledby="h-ask" hidden>
+      <div class="intro"><h1 id="h-ask">Ask</h1><p class="muted">Ask finds the lines that answer you and cites each one. It does not write answers. For a written answer, ask your own Claude or Cursor through MCP: it reads the same cited lines.</p></div>
+      <section class="card" aria-labelledby="h-askbox">
+        <h2 id="h-askbox" class="sr-only">Search the calls</h2>
+        <form class="ask" id="ask-form" role="search"><label class="sr-only" for="ask-input">Search the calls</label><input id="ask-input" type="search" placeholder="What did buyers say about budget?" autocomplete="off"><button class="btn primary" type="submit">Find</button></form>
+        <div class="chiprow"><span class="muted" style="font-size:.86rem">Try</span><button type="button" class="btn ghost small" data-q="budget">budget</button><button type="button" class="btn ghost small" data-q="trial own data">trial own data</button><button type="button" class="btn ghost small" data-q="by hand">by hand</button><button type="button" class="btn ghost small" data-q="sign">sign</button></div>
+      </section>
+      <section class="card" style="margin-top:1.1rem" aria-labelledby="h-results"><div class="card-head"><h2 id="h-results">Lines</h2><span data-seg></span></div><div id="ask-results" aria-live="polite"><p class="empty">Ask a question, or pick one of the examples. Results are the lines themselves, strongest first.</p></div></section>
+      <p class="foot">You can ask from your own Claude or Cursor as well: it reads the same cited lines, and it can only read.</p>
+    </section>
+
+    <section class="route" data-route="benchmarks" aria-labelledby="h-bench" hidden>
+      <div class="intro"><h1 id="h-bench">Benchmarks</h1><p class="muted">Every check the product runs, with its bar. A miss shows as a miss, beside the passes. These figures are from a development run on made-up calls.</p></div>
+      <div class="tiles">
+        <div class="tile"><span class="big">0–5.5%</span><span class="label">Word error, clean audio</span><span class="target">Target ≤ 12% on clean audio; very poor audio is reported, not gated</span><span><span class="pill pass">Pass</span></span></div>
+        <div class="tile"><span class="big">3.9%</span><span class="label">Speaker error</span><span class="target">Target ≤ 20% · every call between 3.0% and 4.4%</span><span><span class="pill pass">Pass</span></span></div>
+        <div class="tile"><span class="big">100%</span><span class="label">Citations resolve</span><span class="target">Target 100%: a learning that cites nothing is refused</span><span><span class="pill pass">Pass</span></span></div>
+        <div class="tile"><span class="big">163/163</span><span class="label">Grader repeats itself</span><span class="target">Target ≥ 99% · the same learnings, graded twice</span><span><span class="pill pass">Pass</span></span></div>
+        <div class="tile"><span class="big">72.4%</span><span class="label">Learnings found</span><span class="target">Target 95% · 118 of 163 hand-written learnings found</span><span><span class="pill waived">Below target</span></span></div>
+        <div class="tile"><span class="big">70.7 min</span><span class="label">A 60-minute call to graded learnings</span><span class="target">Target ≤ 60 min, on an ordinary processor</span><span><span class="pill waived">Below target</span></span></div>
+      </div>
+      <div class="grid" style="margin-top:1.1rem">
+        <section class="card" aria-labelledby="h-xv"><div class="card-head"><h2 id="h-xv">Learnings found, as the reading improved</h2><span class="muted" style="font-size:.84rem">red line: the 95% target</span></div>
+          <div class="bars">
+            <div class="barrow"><span class="name">Reading, version 2</span><span class="track"><span class="fill" style="width:72.4%"></span><span class="goal" style="left:95%"></span></span><span class="val">72.4%</span></div>
+            <div class="barrow"><span class="name">Reading, version 1</span><span class="track"><span class="fill" style="width:38.7%"></span><span class="goal" style="left:95%"></span></span><span class="val">38.7%</span></div>
+            <div class="barrow"><span class="name">Broken on purpose</span><span class="track"><span class="fill" style="width:34.4%"></span><span class="goal" style="left:95%"></span></span><span class="val">34.4%</span></div>
+          </div>
+          <p class="muted" style="font-size:.86rem;margin-top:.8rem">The control swaps four definitions on purpose. The scorer has to rate it low, and does.</p>
+        </section>
+        <section class="card" aria-labelledby="h-hand"><div class="card-head"><h2 id="h-hand">Grader against hand grades</h2><span class="pill todo">Not gated</span></div>
+          <div class="bars">
+            <div class="barrow"><span class="name">Same grade</span><span class="track"><span class="fill" style="width:59.5%"></span></span><span class="val">59.5%</span></div>
+            <div class="barrow"><span class="name">Within one level</span><span class="track"><span class="fill" style="width:72.4%"></span></span><span class="val">72.4%</span></div>
+          </div>
+          <p class="muted" style="font-size:.86rem;margin-top:.8rem">163 hand-graded learnings. The grader rates plans higher than a person does; that gap is reported, not hidden.</p>
+        </section>
+      </div>
+    </section>
+
+    <section class="route" data-route="setup" aria-labelledby="h-setup" hidden>
+      <div class="intro"><h1 id="h-setup">Setup</h1><p class="muted">Running this at your company. Each step ticks itself when what it describes exists; there is nothing to tick by hand.</p></div>
+      <section class="card" aria-labelledby="h-checklist"><div class="card-head"><h2 id="h-checklist">Checklist</h2><span id="setup-progress" class="pill info"></span></div><ol class="checklist" id="checklist"></ol></section>
+      <section class="card" style="margin-top:1.1rem" aria-labelledby="h-settings"><div class="card-head"><h2 id="h-settings">Settings</h2></div>
+        <dl class="settings">
+          <dt><label for="set-jur">Default jurisdiction</label></dt><dd><select id="set-jur"><option value="one_party">One-party consent</option><option value="two_party">Two-party consent</option><option value="gdpr">GDPR</option></select> <span class="muted" style="font-size:.84rem">pre-fills every consent form</span></dd>
+          <dt>Local time zone</dt><dd class="mono">Europe/London</dd>
+          <dt>Watch folders</dt><dd class="mono">~/Evidence/inbox · ~/Evidence/documents</dd>
+          <dt>Calendar folder</dt><dd class="mono">~/Evidence/calendar</dd>
+          <dt>Monday digest</dt><dd>Mondays 07:00</dd>
+          <dt>Grader</dt><dd>Frozen and versioned. A new grader adds its grades beside the old ones; none is rewritten.</dd>
+          <dt>Language model</dt><dd>Runs on this machine. Nothing is sent out.</dd>
+        </dl>
+      </section>
+    </section>
+
+    <section class="route" data-route="system" aria-labelledby="h-system" hidden>
+      <div class="intro"><h1 id="h-system">System</h1><p class="muted">The machine's health, kept out of your way: what is running, what is waiting, and anything that failed, with a plain note on what to do about it.</p></div>
+      <section class="card" aria-labelledby="h-health"><div class="card-head"><h2 id="h-health">Health</h2><span class="pill ready">All ready</span></div>
+        <dl class="settings">
+          <dt>Recordings inbox</dt><dd><span class="pill ready">Watching</span></dd>
+          <dt>Speech to text</dt><dd><span class="pill ready">Ready</span></dd>
+          <dt>Speakers</dt><dd><span class="pill ready">Ready</span></dd>
+          <dt>Reading and grading</dt><dd><span class="pill ready">Ready</span></dd>
+          <dt>Waiting jobs</dt><dd>None</dd>
+          <dt>Failed jobs</dt><dd>None. A failure would show here with its reason and what to do next.</dd>
+        </dl>
+      </section>
+    </section>
+
+    <p class="foot">Every company, person and call in this sample is made up. Grades on the newest call are illustrative.</p>
+    <p class="byline">A project by <a class="indica" href="https://indica-tech.com/" target="_blank" rel="noopener"><svg viewBox="0 0 100 100" width="20" height="20" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00C46A"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg><span>Indica Technology</span></a><span aria-hidden="true">·</span><a href="https://indica-tech.com/" target="_blank" rel="noopener">indica-tech.com</a><span aria-hidden="true">·</span><a href="https://www.linkedin.com/company/indica-technology/" target="_blank" rel="noopener">LinkedIn</a><span aria-hidden="true">·</span><a href="../">About the project</a><span aria-hidden="true">·</span><button type="button" id="reset-btn" class="textlink">Start the sample again</button></p>
+  </div></main>
+
+  <aside class="tour" id="tour" aria-labelledby="h-tour">
+    <div class="tour-head"><h2 id="h-tour">Tour <span class="muted" id="tour-progress" style="font-weight:500;font-size:.9rem;letter-spacing:0"></span></h2><button type="button" class="btn ghost small" id="tour-close">Close</button></div>
+    <p class="muted" style="font-size:.84rem;margin:.45rem 0 0">A stop ticks when the thing has happened, not when you click Next.</p>
+    <ol id="tour-steps"></ol>
+    <div class="step-text" id="tour-text"></div>
+    <div class="actions"><button type="button" class="btn ghost small" id="tour-back">Back</button><button type="button" class="btn primary small" id="tour-next">Next</button></div>
+  </aside>
+</div>
+<button type="button" class="btn primary reopen-tour" id="tour-open" hidden>Open the tour</button>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden><span id="toast-text"></span><button type="button" id="toast-undo">Undo</button></div>
+
+<script>
+"use strict";
+const RUBRIC = { 0: "inferred", 1: "vague", 2: "specific", 3: "impact", 4: "behaviour", 5: "committed" };
+const RUBRIC_LONG = {
+  0: "the cited lines do not state it; it is an inference", 1: "stated, but without specifics",
+  2: "stated with a concrete detail, such as a number, a date or a name", 3: "it states an effect",
+  4: "an action already taken", 5: "a binding commitment, such as a signed order or a paid invoice" };
+const CALLS = {
+  mp: { company: "Marsh and Pike", file: "marsh-and-pike.wav", ago: 19, dur: "2:36" },
+  ng: { company: "Northgate", file: "northgate-clinic.wav", ago: 14, dur: "2:58" },
+  bw: { company: "Brightwater", file: "brightwater.wav", ago: 7, dur: "3:05" },
+  ac: { company: null, file: "acme-intro.wav", ago: 1, dur: "1:04" } };
+// Every date counts back from the visitor's today, so the sample reads the same on any day.
+const daysAgo = n => { const d = new Date(); d.setDate(d.getDate() - n); return d; };
+Object.values(CALLS).forEach(c => { c.date = daysAgo(c.ago).toLocaleDateString("en-GB", { day: "numeric", month: "short" }); });
+const JURISDICTION = { one_party: "One-party", two_party: "Two-party", gdpr: "GDPR" };
+const L = (c, n, sp, t, kind, g, text, q, sig) => ({ id: c + n, c, n, sp, t, kind, g, text, q, sig });
+const GOLDEN = [
+  L("mp", 8, "SPEAKER_01", "0:32", "pain", 3, "Month-end close takes three full days because every bank line is matched by hand.", "Bank reconciliation, by a mile. Month-end close takes us three full days because we match every bank line by hand.", "s1"),
+  L("mp", 14, "SPEAKER_01", "1:07", "pain", 3, "They lost a client last quarter because the client's accounts were two weeks late.", "It is. Last quarter we lost a client because their accounts were two weeks late."),
+  L("mp", 18, "SPEAKER_01", "1:32", "objection", 2, "Aisha, the senior bookkeeper, will not trust anything she cannot check line by line.", "Not straight away. Aisha, our senior bookkeeper, will not trust anything she cannot check line by line."),
+  L("mp", 21, "SPEAKER_01", "1:46", "budget", 2, "Anything over 30 pounds a seat each month needs both partners to sign it off.", "We budget per seat, and anything over 30 pounds a seat each month needs both partners to sign it off."),
+  L("mp", 25, "SPEAKER_01", "2:03", "request", 2, "Whatever they use must keep their clients' data in the UK, as their engagement letters require.", "One more thing. Whatever we use has to keep our clients' data in the UK, because that is written into our engagement letters."),
+  L("mp", 28, "SPEAKER_01", "2:18", "decision", 4, "They will try it on five clients during the November close.", "Let us try it on five clients during the November close and see how much time it saves.", "s2"),
+  L("ng", 11, "SPEAKER_01", "0:45", "pain", 3, "Insurers pay in bulk, and splitting each payment across patients takes about six hours a week.", "Insurance, easily. The insurers pay in bulk, and splitting each payment across patients takes me about six hours a week.", "s1"),
+  L("ng", 21, "SPEAKER_00", "1:30", "request", 2, "They want insurance payments split automatically and matched to each patient.", "Honestly, I want the insurance payments split automatically and matched to each patient."),
+  L("ng", 26, "SPEAKER_00", "1:51", "budget", 2, "Each practice has a software budget of about 1,200 pounds a year, about 4,800 for the group.", "Each practice has a software budget of about 1,200 pounds a year, so about 4,800 for the group."),
+  L("ng", 31, "SPEAKER_01", "2:11", "objection", 2, "Their self-employed dentists will not want their earnings visible to the other practices.", "Our dentists are self-employed, and they will not want their earnings visible to the other practices."),
+  L("ng", 38, "SPEAKER_01", "2:43", "request", 2, "Ben wants an example of the insurance split using made-up patients.", "Could you bring an example of the insurance split, using made-up patients?", "s3"),
+  L("bw", 12, "SPEAKER_01", "0:48", "pain", 3, "Staff log hours in TimeTrack, and two of the team spend the first week of every month copying them into invoices.", "That is the problem. Staff log their hours in TimeTrack, and then two of my team spend the first week of every month copying them into invoices.", "s1"),
+  L("bw", 14, "SPEAKER_01", "1:01", "pain", 3, "Last month they under-billed one client by about 4,000 pounds and only noticed when the client paid.", "All the time. Last month we under-billed one client by about 4,000 pounds and only noticed when they paid."),
+  L("bw", 20, "SPEAKER_02", "1:27", "request", 4, "They need single sign-on through their Keyway accounts before anything else.", "Good. We will also need single sign-on through our Keyway accounts."),
+  L("bw", 24, "SPEAKER_01", "1:42", "budget", 2, "They have 15,000 pounds set aside for finance software this year.", "On cost, we have 15,000 pounds set aside for finance software this year."),
+  L("bw", 26, "SPEAKER_01", "1:51", "budget", 2, "The board approved the 15,000 pounds in July.", "Yes, the board approved the 15,000 pounds in July."),
+  L("bw", 36, "SPEAKER_01", "2:31", "request", 2, "They want to see it working with their own data before deciding.", "Before we decide, can we see it working with our own data?", "s2"),
+  L("bw", 37, "SPEAKER_00", "2:36", "decision", 4, "A trial will be set up using a copy of last month's timesheets.", "Yes. We can set up a trial using a copy of last month's timesheets.") ];
+const LIVE_LINES = [
+  ["SPEAKER_00", "0:00", "Thanks for joining. Before we start, could you tell me about your team?"],
+  ["SPEAKER_01", "0:06", "Of course. I run operations at Acme Analytics. Sarah Chen leads our finance team, and she will join us next week."],
+  ["SPEAKER_00", "0:17", "What takes most of her time at the moment?"],
+  ["SPEAKER_01", "0:20", "Sarah spends two days every month matching invoices to payments by hand."],
+  ["SPEAKER_00", "0:27", "Have you tried anything to fix that?"],
+  ["SPEAKER_01", "0:30", "Last spring we tried Ledgerline, but we cancelled it after three months because it could not read our invoices."],
+  ["SPEAKER_00", "0:39", "How big is the business now?"],
+  ["SPEAKER_01", "0:42", "Acme now has forty clients, and the spreadsheet cannot keep up with them."],
+  ["SPEAKER_00", "0:49", "Is there a budget for a new tool?"],
+  ["SPEAKER_01", "0:52", "We have set aside five hundred pounds a month, and Sarah Chen will approve the purchase."],
+  ["SPEAKER_00", "0:59", "Thank you. I will send Sarah a proposal by Friday."] ];
+const live = (n, kind, g, text, sig) => { const [sp, t, q] = LIVE_LINES[n - 1]; return L("ac", n, sp, t, kind, g, text, q, sig); };
+const LIVE = [
+  live(4, "pain", 3, "Sarah spends two days every month matching invoices to payments by hand.", "s1"),
+  live(6, "other", 4, "They tried Ledgerline last spring and cancelled it after three months because it could not read their invoices."),
+  live(8, "pain", 3, "Acme has forty clients and the spreadsheet cannot keep up with them."),
+  live(10, "budget", 2, "They have set aside five hundred pounds a month."),
+  live(10, "budget", 2, "Sarah Chen will approve the purchase."),
+  live(11, "decision", 2, "A proposal goes to Sarah by Friday.") ];
+LIVE[4].id = "ac10b";
+const SIGNALS = {
+  s1: "Matching payments to records by hand costs days every month",
+  s2: "Buyers want to see it working on their own data before deciding",
+  s3: "Buyers want a worked example before they commit" };
+const STAGES = [
+  ["Registered", "The file is hashed and stored; nothing is read yet."],
+  ["Consent", "Waiting at the gate for a disclosure or consent."],
+  ["Transcribing", "Speech becomes timestamped lines, on this machine."],
+  ["Speakers", "Each line gets its speaker."],
+  ["Reading", "A local language model reads the numbered lines and writes learnings, each citing the lines it came from."],
+  ["Grading", "The frozen grader gives each learning a grade from E0 to E5."],
+  ["Signals", "Each learning gets a short statement; the same statement joins the same signal."],
+  ["Positions", "Open decisions are drafted from what was said."],
+  ["Ready", "Every learning is cited and graded. This call now counts everywhere."] ];
+const TOUR = [
+  { route: "today", target: "#needs", title: "Today", done: () => S.seen.today,
+    text: "This is the sample company after a few weeks of calls. Needs you collects everything waiting for a decision; Next up briefs you for your next meeting." },
+  { route: "inbox", target: "#add-sample", title: "Add a call", done: () => S.live.added,
+    text: "Add the held-back sample call. It is hashed and stored, then stops at the consent gate: nothing is read until its participants were told." },
+  { route: "call", target: "#consent-card", title: "Clear the gate", done: () => S.live.epoch > 0,
+    text: "Record a disclosure, then watch the call being read. Try two-party consent first: there a disclosure is not enough, and the gate says why." },
+  { route: "signals", target: ".textlink[data-cite]", title: "Check a claim", done: () => S.citeOpened,
+    text: "While the call is read, open any cite. You get the exact line, who said it and when. Every claim on every page works this way." },
+  { route: "signals", target: "[data-seg] .seg", title: "Strongest only", done: () => S.strength > 0,
+    text: "Switch to E3+. A grade is what it cost someone to say it: E3 states an effect, E4 an action already taken." },
+  { route: "today", target: "#needs", title: "Join or merge", done: () => S.joined || S.merged,
+    text: "Join the two suggested signals and watch the second one turn Emerging, or merge Acme into Acme Analytics. Nothing joins or merges by itself, and both can be undone." },
+  { route: "positions", target: "#position-list .card", title: "Answer a position", done: () => S.answered,
+    text: "Give each option a probability and argue against yourself. Its label reads Backed only while a signal behind it is Emerging or Validated." },
+  { route: "call", target: "#revoke-btn", title: "Revoke", done: () => S.revokedOnce,
+    text: "Revoke consent on the call. Its evidence leaves every page at once, while the record that you had consent stays. Release reopens consent as pending." } ];
+
+let S;
+function fresh() {
+  return { seen: {}, strength: readStrength(), citeOpened: false, joined: false, merged: false, answered: false, revokedOnce: false,
+    apartDone: false, lastQ: "", placed: null, answer: null, tourOpen: false, tourStep: 0,
+    live: { added: false, consent: "none", jur: "one_party", stage: 0, epoch: 0, note: "" } };
+}
+function readStrength() { try { return Number(localStorage.getItem("ep-proto-strength")) || 0; } catch (e) { return 0; } }
+function saveStrength() { try { localStorage.setItem("ep-proto-strength", String(S.strength)); } catch (e) { /* storage blocked: the filter still works for this visit */ } }
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+const esc = s => String(s).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+
+const liveReady = () => S.live.stage >= STAGES.length - 1 && S.live.consent !== "revoked" && S.live.consent !== "pending";
+function learnings() { return liveReady() ? GOLDEN.concat(LIVE) : GOLDEN.slice(); }
+const strongEnough = l => l.g >= [0, 2, 3, 4][S.strength];
+function signalOf(l) { return l.sig === "s3" && S.joined ? "s2" : l.sig; }
+function maturity(sid) {
+  const ls = learnings().filter(l => signalOf(l) === sid);
+  const calls = min => new Set(ls.filter(l => l.g >= min).map(l => l.c)).size;
+  const count = min => ls.filter(l => l.g >= min).length;
+  if (count(4) >= 2 && calls(4) >= 2) return "validated";
+  if (count(2) >= 3 && calls(2) >= 2) return "emerging";
+  return count(2) >= 1 ? "candidate" : "fading";
+}
+function companyOf(c) { return c === "ac" ? S.placed : CALLS[c].company; }
+
+function chip(l) { return `<span class="pill grade" title="E${l.g} ${RUBRIC[l.g]}: ${RUBRIC_LONG[l.g]}">E${l.g} · ${RUBRIC[l.g]}</span>`; }
+function learningItem(l) {
+  return `<li class="lrn"><div class="chips">${chip(l)}<span class="pill kind">${l.kind}</span></div>
+    <div><p>${esc(l.text)}</p><p class="meta">${esc(companyOf(l.c) || "Not placed")} · ${CALLS[l.c].date} · <button type="button" class="textlink" aria-expanded="false" data-cite="${l.id}">cite line ${l.n}</button></p></div>
+    <blockquote class="quote" data-quote hidden><span class="mono">[${l.n}] ${l.sp} (${l.t})</span> ${esc(l.q)}</blockquote></li>`;
+}
+function learningList(ls, empty, limit = 99) {
+  const shown = ls.filter(strongEnough).sort((a, b) => b.g - a.g).slice(0, limit);
+  if (!shown.length) return `<p class="empty">${empty} <button type="button" class="textlink" data-strength="0">Show all grades</button></p>`;
+  return `<ul class="lrns">${shown.map(learningItem).join("")}</ul>`;
+}
+function seg(id) {
+  const opts = ["All", "E2+", "E3+", "E4+"];
+  return `<fieldset class="seg"><legend>Evidence strength</legend>${opts.map((o, i) =>
+    `<label><input type="radio" name="strength-${id}" value="${i}"${S.strength === i ? " checked" : ""}><span>${o}</span></label>`).join("")}</fieldset>`;
+}
+
+function needsItems() {
+  const items = [];
+  if (S.live.added && (S.live.consent === "none" || S.live.consent === "pending" || (S.live.consent === "disclosed" && S.live.jur === "two_party")))
+    items.push(`<li><p class="what">Consent</p><p>acme-intro.wav is waiting at the gate.</p><a class="btn primary small" href="#call">Record disclosure or consent</a></li>`);
+  if (!S.joined)
+    items.push(`<li><p class="what">Suggested join</p><p>“${esc(SIGNALS.s3)}” may be the same signal as “${esc(SIGNALS.s2)}”.</p>
+      <div class="actions"><button type="button" class="btn primary small" data-act="join">Join them</button><a class="btn ghost small" href="#signals">Compare first</a></div></li>`);
+  if (liveReady() && !S.merged && !S.apartDone)
+    items.push(`<li><p class="what">Names</p><p>“Acme” and “Acme Analytics” may be the same company (one is part of the other).</p>
+      <div class="actions"><button type="button" class="btn primary small" data-act="merge">Merge into Acme Analytics</button><button type="button" class="btn ghost small" data-act="apart">Keep apart</button></div></li>`);
+  if (!S.answered)
+    items.push(`<li><p class="what">Position</p><p>How should trials run before price is agreed?</p><a class="btn ghost small" href="#positions">Answer it</a></li>`);
+  return items;
+}
+function renderNeeds() {
+  const items = needsItems();
+  $("#needs-count").textContent = items.length;
+  $("#needs-count").setAttribute("aria-label", `${items.length} items need you`);
+  $("#needs-count").classList.toggle("zero", !items.length);
+  $("#needs-list").innerHTML = items.join("") || `<li class="empty">Nothing needs you. New calls, suggested joins and positions will appear here.</li>`;
+}
+function renderToday() {
+  $("#reading-now").innerHTML = !S.live.added
+    ? `<p class="empty">Nothing is being read. Add a call in the <a href="#inbox">Inbox</a>, or drop one into your watch folder.</p>`
+    : `<p><a href="#call">acme-intro.wav</a> · ${statusPill()}</p><p class="muted" style="font-size:.9rem">${esc(stageNote())}</p>`;
+  const bw = GOLDEN.filter(l => l.c === "bw");
+  $("#next-up").innerHTML = `<p class="display" style="font-size:1.6rem;line-height:1.1">Tomorrow, 10:00–10:30 · Brightwater trial review</p>
+    <p class="muted" style="font-size:.9rem">Last call ${CALLS.bw.date}. Before you go in, what they said that counts most:</p>${learningList(bw, "No Brightwater evidence at this strength.", 3)}
+    <div class="actions"><a class="btn ghost small" href="#threads">Open the thread</a></div>`;
+  $("#strong-list").innerHTML = learningList(learnings().filter(l => l.g >= 3).slice(-6), "Nothing this strong yet.");
+  const ls = learnings();
+  const kinds = ["pain", "request", "budget", "objection", "decision", "other"].map(k => `${ls.filter(l => l.kind === k).length} ${k}`).join(" · ");
+  $("#week").innerHTML = `<p class="display" style="font-size:2.2rem;line-height:1.05;margin:0">${liveReady() ? 4 : 3} calls · ${ls.length} learnings</p><p class="muted" style="font-size:.9rem;margin:.2rem 0 0">${kinds}</p>`;
+  renderNeeds();
+}
+
+function statusPill() {
+  const c = S.live.consent;
+  if (c === "revoked") return `<span class="pill quarantined">Quarantined</span>`;
+  if (liveReady()) return `<span class="pill ready">Ready</span>`;
+  if (S.live.stage >= 2) return `<span class="pill running">Processing</span>`;
+  return `<span class="pill pending">Needs consent</span>`;
+}
+function stageNote() {
+  if (S.live.consent === "revoked") return "Consent revoked. This call's evidence is excluded from every page; the consent history is kept.";
+  if (S.live.consent === "pending") return "Released: consent is pending again. The next disclosure reads the call again, under a new consent epoch.";
+  if (S.live.consent === "disclosed" && S.live.jur === "two_party") return "Two-party calls need consent, not just disclosure. Record consent to clear the gate.";
+  return STAGES[Math.max(S.live.stage, 1)][1] + (S.live.stage >= 2 && !liveReady() ? " The prototype runs each stage in seconds; on the CPU a call takes minutes." : "");
+}
+function renderStages() {
+  const stopped = S.live.consent === "revoked";
+  $("#stages").innerHTML = STAGES.map(([name], i) => {
+    const cls = stopped ? (i === 0 ? "done" : i === 1 ? "stopped" : "")
+      : i < S.live.stage || (i === STAGES.length - 1 && liveReady()) ? "done" : i === S.live.stage ? "now" : "";
+    const label = stopped && i === 1 ? "Consent revoked" : name;
+    return `<li class="stage ${cls}">${label}${cls === "done" ? '<span class="sr-only"> done</span>' : cls === "now" ? '<span class="sr-only"> in progress</span>' : ""}</li>`;
+  }).join("");
+  $("#stage-note").textContent = stageNote();
+  $("#call-status").innerHTML = statusPill();
+}
+function consentForm() {
+  return `<form class="form" id="consent-form">
+    <label>Jurisdiction <span class="hint">Pre-filled from Setup. Two-party calls need consent; one-party and GDPR calls clear on disclosure.</span>
+      <select name="jur">${Object.entries(JURISDICTION).map(([v, label]) => `<option value="${v}"${v === S.live.jur ? " selected" : ""}>${label}</option>`).join("")}</select></label>
+    <div class="row2"><label>Participants <input name="who" required value="Operations lead, Acme Analytics"></label>
+    <label>When they were told <input name="when" type="datetime-local" required value="${daysAgo(1).toLocaleDateString("en-CA")}T09:58"></label></div>
+    <label>Note <textarea name="note" required rows="2">Said at the start of the call: “This call is recorded for our notes.”</textarea></label>
+    <div class="actions"><button class="btn primary" name="act" value="disclosed">Record disclosure</button><button class="btn ghost" name="act" value="consented">Record consent</button></div>
+  </form>`;
+}
+function renderCall() {
+  const c = S.live.consent;
+  if (!S.live.added) {
+    $("#stages").innerHTML = ""; $("#call-status").innerHTML = ""; $("#consent-pill").innerHTML = "";
+    $("#stage-note").innerHTML = `This call has not arrived yet. <a href="#inbox">Add it in the Inbox</a>.`;
+    $("#consent-body").innerHTML = `<p class="empty">Nothing to consent to yet.</p>`;
+    $("#company-body").innerHTML = $("#call-learnings").innerHTML = $("#transcript").innerHTML = `<p class="empty">Appears once the call has arrived and been read.</p>`;
+    return;
+  }
+  renderStages();
+  $("#consent-pill").innerHTML = `<span class="pill ${c === "none" ? "pending" : c}">${c === "none" ? "PENDING" : c.toUpperCase()}</span>`;
+  let body;
+  if (c === "none" || c === "pending" || (c === "disclosed" && S.live.jur === "two_party")) {
+    body = (c === "disclosed" ? `<p class="msg warn">Disclosure recorded, but this is a two-party call: it needs consent before anything is read.</p>` : "") + consentForm();
+  } else if (c === "revoked") {
+    body = `<p class="msg bad">Consent revoked. The call is quarantined and its evidence is excluded from Today, Signals, Threads, Positions and Ask.</p>
+      <div class="actions"><button type="button" class="btn ghost" data-act="release">Release</button></div><p class="muted" style="font-size:.86rem;margin-top:.5rem">Release checks the stored bytes and reopens consent as pending.</p>`;
+  } else {
+    body = `<p class="msg ok">${c === "consented" ? "Consent" : "Disclosure"} recorded (${JURISDICTION[S.live.jur]}). ${esc(S.live.note)}</p>
+      <div class="actions"><button type="button" class="btn danger" id="revoke-btn" data-act="revoke">Revoke consent</button></div>`;
+  }
+  $("#consent-body").innerHTML = body;
+  $("#company-body").innerHTML = !liveReady() ? `<p class="empty">Once the call is read, place it with a company so it joins that company's thread.</p>`
+    : S.placed ? `<p>Placed with <strong>${esc(S.placed)}</strong>. <a href="#threads">Open the thread</a></p>`
+    : `<p class="muted" style="font-size:.92rem">Named in this call: Acme Analytics, Acme, Ledgerline.</p><div class="actions"><button type="button" class="btn primary small" data-act="place">Place with Acme Analytics</button></div>`;
+  $("#call-learnings").innerHTML = c === "revoked" ? `<p class="empty">Excluded while consent is revoked.</p>`
+    : liveReady() ? learningList(LIVE, "No learning from this call at this strength.") + `<p class="foot" style="margin-top:.7rem">Grades on this call are illustrative.</p>`
+    : `<p class="empty">Learnings appear here when reading finishes, each with its grade and the line it cites.</p>`;
+  $("#transcript").innerHTML = S.live.stage > 2 && c !== "revoked"
+    ? `<ol class="lines">${LIVE_LINES.map(([sp, t, text], i) => `<li id="line-${i + 1}"><span class="n">[${i + 1}]</span><span class="who">${sp} ${t}</span><span class="tx">${esc(text)}</span></li>`).join("")}</ol>`
+    : `<p class="empty">${c === "revoked" ? "Hidden while consent is revoked." : "The transcript appears once speech recognition finishes."}</p>`;
+}
+
+function renderInbox() {
+  const rows = ["mp", "ng", "bw"].map(k => `<tr><td class="mono">${CALLS[k].file}</td><td>${CALLS[k].company}</td><td><span class="pill disclosed">DISCLOSED</span></td><td><span class="pill ready">Ready</span></td></tr>`);
+  if (S.live.added) rows.unshift(`<tr><td><a class="mono" href="#call">${CALLS.ac.file}</a></td><td>${esc(S.placed || "—")}</td><td><span class="pill ${S.live.consent === "none" ? "pending" : S.live.consent}">${S.live.consent === "none" ? "PENDING" : S.live.consent.toUpperCase()}</span></td><td>${statusPill()}</td></tr>`);
+  $("#inbox-rows").innerHTML = rows.join("");
+  $("#add-sample").disabled = S.live.added;
+}
+function renderBoard() {
+  const companies = ["bw", "ng", "mp"].map(k => ({ name: CALLS[k].company, calls: [k] }));
+  if (S.placed && liveReady()) companies.unshift({ name: S.placed, calls: ["ac"] });
+  const card = co => {
+    const top = learnings().filter(l => co.calls.includes(l.c) && strongEnough(l)).sort((a, b) => b.g - a.g)[0];
+    const pos = (co.name === "Brightwater" || co.name === "Marsh and Pike") && !S.answered ? `<p><span class="pill needs_you">1 position needs you</span></p>` : "";
+    return `<article class="tcard"><h3>${esc(co.name)}</h3><p class="muted">${co.calls.length} call · last ${CALLS[co.calls[0]].date}</p>
+      ${top ? `<p>${chip(top)}</p><p>${esc(top.text)}</p>` : `<p class="muted">No evidence at this strength.</p>`}${pos}</article>`;
+  };
+  const col = (title, inner, empty) => `<section class="col" aria-label="${title}"><h2>${title} <span>${inner.length}</span></h2>${inner.join("") || `<p class="empty">${empty}</p>`}</section>`;
+  $("#board").innerHTML = col("Open", companies.map(card), "") +
+    col("Dormant", [], "An open thread with no call for 90 days moves here by itself.") +
+    col("Won", [], "You mark a thread won. Nothing moves it for you.") +
+    col("Lost", [], "You mark a thread lost; its evidence stays.");
+}
+function renderSignals() {
+  const ids = S.joined ? ["s1", "s2"] : ["s1", "s2", "s3"];
+  $("#signal-list").innerHTML = ids.map(sid => {
+    const m = maturity(sid);
+    const ls = learnings().filter(l => signalOf(l) === sid);
+    const why = { validated: "2 or more learnings at E4+ from 2 or more calls.", emerging: `${ls.filter(l => l.g >= 2).length} learnings at E2+ from ${new Set(ls.map(l => l.c)).size} calls in 90 days. Validated needs 2 at E4+ from 2 calls.`,
+      candidate: `${ls.length} learning${ls.length === 1 ? "" : "s"} at E2+. Emerging needs 3 from 2 calls.`, fading: "No anchor left." }[m];
+    return `<section class="card"><div class="card-head"><h2>${esc(SIGNALS[sid])}</h2><span class="pill ${m}">${m[0].toUpperCase() + m.slice(1)}</span></div>
+      <p class="muted" style="font-size:.88rem">${why}${sid === "s2" && S.joined ? " Includes the signal you joined into it." : ""}</p>${learningList(ls, "No supporting learning at this strength.")}</section>`;
+  }).join("");
+}
+function renderPositions() {
+  const backed = ["emerging", "validated"].includes(maturity("s2"));
+  const label = backed ? `<span class="pill backed">Backed</span>` : `<span class="pill guess">Guess</span>`;
+  const cited = GOLDEN.filter(l => l.id === "bw36" || l.id === "mp28");
+  const opts = ["On the buyer's own data, over one month-end", "On made-up sample data, in a demo", "No trial: a paid pilot from the start"];
+  const answer = S.answer
+    ? `<p class="msg ok">Answered. ${opts.map((o, i) => `${esc(o)}: ${S.answer.p[i]}%`).join(" · ")}</p><p style="margin-top:.6rem"><strong>Against myself:</strong> ${esc(S.answer.r)}</p>`
+    : `<form class="form" id="position-form">${opts.map((o, i) => `<label>${esc(o)} <span class="hint">Probability, 0–100</span><input type="number" min="0" max="100" required name="p${i}" value="${[60, 25, 15][i]}"></label>`).join("")}
+      <label>Argue against yourself <span class="hint">Required. What would make you wrong?</span><textarea name="r" required rows="2"></textarea></label>
+      <div class="actions"><button class="btn primary">Answer</button></div></form>`;
+  $("#position-list").innerHTML = `<section class="card position"><div class="card-head"><h2 style="font-size:1.3rem">How should trials run before price is agreed?</h2><span>${S.answered ? "" : `<span class="pill needs_you">Needs you</span> `}${label}</span></div>
+    <p class="muted" style="font-size:.88rem">${backed ? "Backed: a signal behind its evidence is Emerging." : "Guess: its evidence sits in a Candidate signal. It reads Backed once that signal is Emerging; joining the suggested signal does that."}</p>
+    <h3>Evidence</h3><ul class="lrns">${cited.map(learningItem).join("")}</ul><h3>Your answer</h3>${answer}</section>`;
+}
+function renderPeople() {
+  const ready = liveReady();
+  $("#merge-queue").innerHTML = !ready ? `<p class="empty">Nothing to review. Suggestions appear when a call names something two ways, as the Acme call will.</p>`
+    : S.merged ? `<p class="msg ok">Acme is merged into Acme Analytics. <button type="button" class="textlink" data-act="unmerge">Undo</button></p>`
+    : S.apartDone ? `<p class="msg info">Acme and Acme Analytics are kept apart; the pair is not suggested again.</p>`
+    : `<p>“Acme” and “Acme Analytics” may be one company: one name is part of the other.</p><div class="actions"><button type="button" class="btn primary small" data-act="merge">Merge into Acme Analytics</button><button type="button" class="btn ghost small" data-act="apart">Keep apart</button></div>`;
+  const names = [["Brightwater", "company", 1], ["Northgate", "company", 1], ["Marsh and Pike", "company", 1], ["TimeTrack", "—", 1], ["Keyway", "—", 1], ["TallyBook", "—", 1]];
+  if (ready) names.unshift(...(S.merged ? [["Acme Analytics (and Acme)", "company", 1]] : [["Acme Analytics", "company", 1], ["Acme", "—", 1]]), ["Sarah Chen", "person", 1], ["Ledgerline", "—", 1]);
+  $("#names-rows").innerHTML = names.map(([n, k, c]) => `<tr><td>${esc(n)}</td><td>${k}</td><td>${c}</td></tr>`).join("");
+}
+function renderAsk(q) {
+  if (q === undefined) q = S.lastQ;
+  if (!q) return;
+  S.lastQ = q;
+  const words = q.toLowerCase().split(/\W+/).filter(w => w.length > 2);
+  const hits = learnings().filter(l => words.some(w => (l.text + " " + l.q).toLowerCase().includes(w)));
+  $("#ask-results").innerHTML = hits.length ? learningList(hits, `No line at this strength matches “${esc(q)}”.`)
+    : `<p class="empty">No line says “${esc(q)}”. Try fewer words, or ask your own Claude through MCP.</p>`;
+}
+function renderSetup() {
+  const tourDone = TOUR.filter(t => t.done()).length;
+  const steps = [
+    ["Install on your machine", "One install, on a computer you control. Nothing is shared with anyone else's.", "it reports itself healthy", "ok"],
+    ["Fetch the models", "The speech, speaker and language models download once. After that, everything runs offline.", "each model checks out", "ok"],
+    ["Try the sample", `The tour: ${tourDone} of ${TOUR.length} stops.`, "tour stops 1 to 8 done", tourDone === TOUR.length ? "ok" : "running"],
+    ["Company details", "The name on screen, your time zone and the consent rule your calls follow.", "they are saved", "todo"],
+    ["Folders", "Where recordings arrive, and where your calendar export lives.", "a test file arrives and the calendar reads", "todo"],
+    ["The disclosure habit", "A plain line to say when a call is recorded, and where to note it. Your own counsel decides what your jurisdiction needs.", "the first disclosure is recorded", "todo"],
+    ["First real call", "Your go-ahead to process real recordings.", "the first real call is ready", "todo"],
+    ["Backups", "A scheduled backup, restored once so you know it works.", "a restore has been tested", "todo"],
+    ["Monday rhythm", "A Monday digest of what changed, and your own Claude reading the same cited lines.", "the first digest arrives", "todo"] ];
+  const label = { ok: "Done", running: "In progress", todo: "To do" };
+  $("#checklist").innerHTML = steps.map(([t, what, when, st]) => `<li class="is-${st}"><div><strong>${t}</strong><p class="muted" style="margin:0;font-size:.9rem">${esc(what)}</p></div><span class="pill ${st}">${label[st]}</span><p class="done-when">Done when ${esc(when)}.</p></li>`).join("");
+  $("#setup-progress").textContent = `${steps.filter(s => s[3] === "ok").length} of ${steps.length} done`;
+  $("#set-jur").value = S.live.jur;
+}
+
+function renderTour() {
+  $("#shell").classList.toggle("no-tour", !S.tourOpen);
+  $("#tour-open").hidden = S.tourOpen;
+  $("#tour-progress").textContent = `· ${TOUR.filter(t => t.done()).length} of ${TOUR.length}`;
+  $("#tour-steps").innerHTML = TOUR.map((t, i) => `<li><button type="button" data-step="${i}"${i === S.tourStep ? ' aria-current="step"' : ""}><span class="tick${t.done() ? " on" : ""}" aria-hidden="true">${t.done() ? "✓" : i + 1}</span>${t.title}${t.done() ? '<span class="sr-only"> (done)</span>' : ""}</button></li>`).join("");
+  $("#tour-text").textContent = TOUR[S.tourStep].text;
+  $("#tour-back").disabled = S.tourStep === 0;
+  $("#tour-next").textContent = S.tourStep === TOUR.length - 1 ? "Finish" : "Next";
+}
+function spotlight() {
+  $$(".spot").forEach(el => el.classList.remove("spot"));
+  if (!S.tourOpen) return;
+  const step = TOUR[S.tourStep];
+  if (route() !== step.route) return;
+  const el = $(step.target, $(`.route[data-route="${step.route}"]`)) || $(step.target);
+  if (el) { el.classList.add("spot"); el.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }
+}
+function goStep(i) { S.tourStep = Math.max(0, Math.min(TOUR.length - 1, i)); location.hash = TOUR[S.tourStep].route; renderTour(); setTimeout(spotlight, 60); }
+
+const ROUTES = ["welcome", "today", "inbox", "call", "threads", "signals", "positions", "people", "ask", "benchmarks", "setup", "system"];
+const TITLES = { welcome: "Welcome", today: "Today", inbox: "Inbox", call: "Call", threads: "Threads", signals: "Signals", positions: "Positions", people: "People and companies", ask: "Ask", benchmarks: "Benchmarks", setup: "Setup", system: "System" };
+function route() { const r = location.hash.slice(1); return ROUTES.includes(r) ? r : "welcome"; }
+function render() {
+  const r = route();
+  S.seen[r] = true;
+  $$(".route").forEach(s => { s.hidden = s.dataset.route !== r; });
+  $$("a[data-route]").forEach(a => { if (a.dataset.route === r) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  $$("[data-seg]").forEach((el, i) => { el.innerHTML = seg(i); });
+  renderNeeds();
+  ({ today: renderToday, inbox: renderInbox, call: renderCall, threads: renderBoard, signals: renderSignals, positions: renderPositions, people: renderPeople, ask: () => renderAsk(), setup: renderSetup }[r] || (() => {}))();
+  document.title = `${TITLES[r]} · Evidence Plane sample`;
+  $$("[data-today]").forEach(el => { el.textContent = new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" }); });
+  renderTour();
+}
+function navigate() {
+  render(); $("#main").focus({ preventScroll: true }); window.scrollTo(0, 0);
+  $("#nav").classList.remove("open"); $("#menu-btn").setAttribute("aria-expanded", "false"); setTimeout(spotlight, 60);
+}
+
+// Re-render only pages without a form the visitor may be typing in.
+const LIVE_PAGES = ["today", "inbox", "call", "threads", "signals", "people"];
+let timer = null, toastTimer = null, undo = null;
+function advance() {
+  clearTimeout(timer);
+  if (S.live.consent === "revoked" || S.live.consent === "pending" || liveReady()) return;
+  S.live.stage += 1;
+  if (LIVE_PAGES.includes(route())) render(); else { renderNeeds(); renderTour(); }
+  if (!liveReady()) timer = setTimeout(advance, 1600);
+}
+function toast(text, undoFn) {
+  undo = undoFn; $("#toast-text").textContent = text; $("#toast-undo").hidden = !undoFn; $("#toast").hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { $("#toast").hidden = true; }, 7000);
+}
+const ACTS = {
+  join() { S.joined = true; toast("Joined. “Buyers want a worked example…” now counts towards “Buyers want to see it working on their own data…”.", () => { S.joined = false; }); },
+  merge() { S.merged = true; toast("Merged Acme into Acme Analytics.", () => { S.merged = false; }); },
+  unmerge() { S.merged = false; toast("Merge undone. Acme and Acme Analytics are separate again."); },
+  apart() { S.apartDone = true; toast("Kept apart. This pair won't be suggested again.", () => { S.apartDone = false; }); },
+  place() { S.placed = "Acme Analytics"; toast("Placed with Acme Analytics. Its thread is on the Threads board.", () => { S.placed = null; }); },
+  revoke() { S.live.consent = "revoked"; S.revokedOnce = true; clearTimeout(timer); toast("Consent revoked. The call is quarantined; its evidence is excluded."); },
+  release() { S.live.consent = "pending"; S.live.stage = 1; toast("Released. Consent is pending again."); } };
+
+document.addEventListener("click", e => {
+  const cite = e.target.closest("[data-cite]");
+  if (cite) {
+    const q = $("[data-quote]", cite.closest("li"));
+    const open = cite.getAttribute("aria-expanded") !== "true";
+    cite.setAttribute("aria-expanded", String(open)); q.hidden = !open;
+    if (open) {
+      S.citeOpened = true;
+      const line = cite.dataset.cite.startsWith("ac") && $("#line-" + parseInt(cite.dataset.cite.slice(2), 10));
+      $$(".lines li.hl").forEach(li => li.classList.remove("hl")); if (line) line.classList.add("hl");
+    }
+    renderTour(); return;
+  }
+  const act = e.target.closest("[data-act]");
+  if (act && ACTS[act.dataset.act]) { ACTS[act.dataset.act](); render(); return; }
+  if (e.target.closest("[data-strength]")) { S.strength = 0; saveStrength(); render(); return; }
+  const q = e.target.closest("[data-q]");
+  if (q) { $("#ask-input").value = q.dataset.q; renderAsk(q.dataset.q); return; }
+  const step = e.target.closest("[data-step]");
+  if (step) { goStep(Number(step.dataset.step)); return; }
+  if (e.target.closest("[data-start-tour]")) { S.tourOpen = true; S.tourStep = 0; }
+});
+document.addEventListener("change", e => {
+  if (e.target.name && e.target.name.startsWith("strength-")) { S.strength = Number(e.target.value); saveStrength(); render(); }
+  if (e.target.id === "set-jur") { S.live.jur = e.target.value; toast(`Consent forms now pre-fill ${JURISDICTION[e.target.value]}.`); }
+  if (e.target.id === "file-input" && e.target.files.length) $("#add-msg").innerHTML = `<p class="msg info">The prototype does not read files. In the app, ${esc(e.target.files[0].name)} would be hashed, stored and wait here for consent.</p>`;
+});
+document.addEventListener("submit", e => {
+  e.preventDefault();
+  const f = e.target, data = new FormData(f);
+  if (f.id === "consent-form") {
+    const act = e.submitter ? e.submitter.value : "disclosed";
+    S.live.jur = data.get("jur"); S.live.consent = act; S.live.note = data.get("note");
+    if (act === "disclosed" && S.live.jur === "two_party") { render(); return; }
+    S.live.epoch += 1; S.live.stage = 1; render(); timer = setTimeout(advance, 900);
+  } else if (f.id === "position-form") {
+    if (!String(data.get("r")).trim()) return;
+    S.answered = true; S.answer = { p: [0, 1, 2].map(i => data.get("p" + i)), r: data.get("r") }; render();
+  } else if (f.id === "ask-form") renderAsk($("#ask-input").value.trim());
+});
+$("#add-sample").addEventListener("click", () => {
+  S.live.added = true; S.live.consent = "none"; S.live.stage = 1;
+  $("#add-msg").innerHTML = `<p class="msg warn">acme-intro.wav is hashed and stored, and waits at the consent gate. <a href="#call">Open it</a></p>`;
+  render();
+});
+$("#tour-next").addEventListener("click", () => { if (S.tourStep === TOUR.length - 1) { S.tourOpen = false; render(); } else goStep(S.tourStep + 1); });
+$("#tour-back").addEventListener("click", () => goStep(S.tourStep - 1));
+$("#tour-close").addEventListener("click", () => { S.tourOpen = false; render(); $$(".spot").forEach(el => el.classList.remove("spot")); $("#tour-open").focus(); });
+$("#tour-open").addEventListener("click", () => { S.tourOpen = true; goStep(S.tourStep); });
+$("#toast-undo").addEventListener("click", () => { if (undo) { undo(); undo = null; } $("#toast").hidden = true; render(); });
+$("#menu-btn").addEventListener("click", () => { const open = $("#nav").classList.toggle("open"); $("#menu-btn").setAttribute("aria-expanded", String(open)); });
+$("#reset-btn").addEventListener("click", () => { clearTimeout(timer); S = fresh(); location.hash = "welcome"; render(); });
+window.addEventListener("hashchange", navigate);
+S = fresh();
+render();
+setTimeout(spotlight, 60);
+</script>
+</body>
+</html>
