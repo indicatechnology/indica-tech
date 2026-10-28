@@ -185,6 +185,45 @@
   .opt-score { grid-row: 1; grid-column: 3; }
   .bp-cta .btn + .btn { margin-left: 0; margin-top: 10px; }
 }
+
+/* hero: the product in three cards, as on the Evidence Plane page */
+.bp-hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+.bp-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+.bp-brand svg { width: 38px; height: 38px; flex: none; }
+.bp-brand b { display: block; font-size: 1.05rem; color: var(--ink); }
+.bp-brand .kicker { margin: 2px 0 0; }
+.bp-brand .kicker::before { display: none; }
+.bp-hero h1 { font-size: clamp(2.2rem, 4.6vw, 3.9rem); line-height: 1.04; }
+.bp-hero-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.bp-stack { position: relative; margin: 0; min-height: 450px; }
+.bp-card { position: absolute; width: 86%; border: 1px solid var(--ink); background: #FFFDF8; padding: 16px 18px; box-shadow: 10px 10px 0 var(--paper-3); }
+.bp-card-k { display: flex; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 10px; }
+.bp-card p { font-size: 0.95rem; color: var(--ink-2); line-height: 1.5; }
+.bp-card-q { top: 0; left: 0; }
+.bp-lean { margin-top: 8px; display: inline-block; font-family: var(--mono); font-size: 0.72rem !important; text-transform: uppercase; letter-spacing: 0.06em; background: #F7E7C8; color: #6B4A10 !important; padding: 2px 8px; }
+.bp-card-r { top: 132px; left: 9%; }
+.bp-discs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.bp-disc { --c: #8794a6; width: 30px; height: 30px; border-radius: 50%; display: inline-grid; place-items: center; background: var(--c); color: #fff; font-family: var(--mono); font-size: 0.66rem; font-weight: 600; box-shadow: 0 0 0 2px #FFFDF8, 0 0 0 3px var(--c); }
+.bp-split { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) 40px; gap: 10px; align-items: center; font-size: 0.86rem; color: var(--ink-mute); margin-top: 6px; }
+.bp-split b { font-family: var(--mono); color: var(--ink); margin-right: 4px; }
+.bp-split > span:last-child { font-family: var(--mono); text-align: right; color: var(--ink); }
+.bp-bar { height: 8px; background: var(--paper-3); }
+.bp-bar i { display: block; height: 100%; background: var(--ink-faint); }
+.bp-split.is-pick { color: var(--ink); font-weight: 500; }
+.bp-split.is-pick .bp-bar i { background: var(--signal); }
+.bp-card-v { top: 306px; left: 14%; background: var(--ink); border-color: var(--ink); box-shadow: 10px 10px 0 #CFC6B4; }
+.bp-card-v .bp-card-k { color: #8A857D; }
+.bp-card-v p { color: var(--paper); font-size: 1.02rem; }
+.bp-band { background: var(--signal); color: var(--signal-ink); padding: 3px 8px; font-weight: 600; letter-spacing: 0.06em; }
+.bp-card-f { display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; font-family: var(--mono); font-size: 0.7rem; color: #8A857D; text-transform: uppercase; letter-spacing: 0.06em; }
+@media (max-width: 960px) {
+  .bp-hero-grid { grid-template-columns: 1fr; gap: 36px; }
+  .bp-stack { min-height: 0; display: grid; gap: 14px; }
+  .bp-card { position: static; width: auto; box-shadow: 6px 6px 0 var(--paper-3); }
+  .bp-card-v { box-shadow: 6px 6px 0 #CFC6B4; }
+}
+.bp-watch { margin-top: 18px; }
+.bp-watch a { font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink); border-bottom: 1px solid var(--signal); }
 </style>
 </head>
 <body>
@@ -220,10 +259,20 @@
 <main>
 <section class="bp-hero">
   <div class="container">
-    <div class="kicker">Selected work / 05 · In-house product</div>
-    <h1>Board Room</h1>
-    <p class="lead">A founder brings the decision they keep putting off. Eight AI advisors argue it over three rounds, each from a different angle. What comes back is scored advice: what to do, how sure the board is, who disagreed and why, and what to do this week.</p>
-    <div class="bp-meta"><span>Built and run by Indica Technology</span><span>Runs on one machine</span><span>£0 per meeting</span><span>A full meeting in about four and a half minutes</span></div>
+    <div class="bp-hero-grid">
+      <div>
+        <div class="bp-brand"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0B0B0A"/><ellipse cx="16" cy="18" rx="8.5" ry="5.6" fill="none" stroke="#00C46A" stroke-width="2.2"/><circle cx="16" cy="7.6" r="2.3" fill="#00C46A"/><circle cx="6.6" cy="13" r="1.6" fill="#F7F4ED"/><circle cx="25.4" cy="13" r="1.6" fill="#F7F4ED"/><circle cx="6.6" cy="23" r="1.6" fill="#F7F4ED"/><circle cx="25.4" cy="23" r="1.6" fill="#F7F4ED"/><circle cx="16" cy="27.2" r="1.6" fill="#F7F4ED"/></svg><div><b>Board Room</b><div class="kicker">Selected work / 05 · In-house product</div></div></div>
+        <h1>Eight advisors argue your hardest call. You make it.</h1>
+        <p class="lead">A founder brings the decision they keep putting off. Eight AI advisors argue it over three rounds, each from a different angle. What comes back is scored advice: what to do, how sure the board is, who disagreed and why, and what to do this week.</p>
+        <div class="bp-meta"><span>Built and run by Indica Technology</span><span>Runs on one machine</span><span>£0 per meeting</span><span>A full meeting in about four and a half minutes</span></div>
+        <div class="bp-hero-cta"><a href="sample/" class="btn btn-primary">Try the guided sample <span class="arrow">→</span></a><a href="#output" class="btn btn-ghost">See the advice <span class="arrow">↓</span></a></div>
+      </div>
+      <figure class="bp-stack" aria-label="A Board Room meeting in three cards: the question, the first take, the advice">
+        <div class="bp-card bp-card-q"><div class="bp-card-k"><span>The question</span><span>asked 28 Oct</span></div><p>A UK bank pilot starts next month. The demo has no audit log and no fallback. Start on the date, or ask for six weeks?</p><p class="bp-lean">Lean: start on the date</p></div>
+        <div class="bp-card bp-card-r"><div class="bp-card-k"><span>First take · 8 of 8</span><span>writing alone</span></div><div class="bp-discs"><span class="bp-disc" style="--c:#e8a33d">JB</span><span class="bp-disc" style="--c:#f06b3f">PG</span><span class="bp-disc" style="--c:#d94a6a">AH</span><span class="bp-disc" style="--c:#9b5de5">GV</span><span class="bp-disc" style="--c:#3d8bfd">DM</span><span class="bp-disc" style="--c:#1fa67a">GW</span><span class="bp-disc" style="--c:#4c6a92">WB</span><span class="bp-disc" style="--c:#22b8cf">PT</span></div><div class="bp-split"><span><b>A</b> start on the date</span><span class="bp-bar"><i style="width:28%"></i></span><span>2–3</span></div><div class="bp-split is-pick"><span><b>B</b> ask for the delay</span><span class="bp-bar"><i style="width:90%"></i></span><span>9</span></div></div>
+        <div class="bp-card bp-card-v"><div class="bp-card-k"><span class="bp-band">Go with conditions · B</span><span>8.6 / 10</span></div><p>Ask the bank for a six-week delay to rebuild before go-live, on four written conditions.</p><div class="bp-card-f"><span>Dissent: Graham seat</span><span>Support 8.4 / 10</span></div></div>
+      </figure>
+    </div>
     <div class="bp-flow" aria-label="What goes in and what comes out">
       <div class="bp-flow-step"><span class="n">In</span><b>Your decision</b><span>The options, your numbers, your limits, and which way you lean.</span></div>
       <div class="bp-flow-arrow" aria-hidden="true">→</div>
@@ -321,6 +370,7 @@
     <div><dt>Revisit</dt><dd>Revisit if bank delays beyond six weeks or insists on &#x27;hardening during pilot&#x27;, then pivot to Option A only if QA pass rate ≥99.9% by week 2 and bank signs addendum waiving penalties.</dd></div>
   </dl>
 </article>
+    <p class="bp-watch"><a href="sample/#first-take">Watch this meeting happen, step by step: the first take, the debate and the vote <span aria-hidden="true">→</span></a></p>
     <h3 class="bp-sub">And a quick meeting: four advisors, 1 minute 38 seconds</h3>
 <article class="advice advice-quick" aria-label="A quick meeting">
   <p class="asked"><span class="k">Asked</span> Should we move our customer-support AI agent from a paid hosted model to an open-weights model on our own GPUs? We answer 40,000 tickets a month. The model bill is £9,000 a month and growing about 15% a month. We are two engineers and neither of us has run GPUs in production. A GPU server would cost about £2,500 a month. Options: (A) move now, (B) keep the hosted model but cut the bill with caching and a cheaper model for easy tickets, (C) run both side by side for 60 days and decide on the numbers. I lean towards A because the bill scares me.</p>
