@@ -9,22 +9,74 @@
 <meta property="og:description" content="Watch eight AI advisors argue one founder's decision, then make the call yourself.">
 <meta property="og:type" content="website">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230f1c2e'/%3E%3Ccircle cx='16' cy='17' r='7' fill='none' stroke='%23d9a441' stroke-width='2.4'/%3E%3Ccircle cx='16' cy='6.5' r='2.2' fill='%23d9a441'/%3E%3C/svg%3E">
+<script>
+// Theme before first paint: a saved choice wins, otherwise the device's setting decides (CSS).
+(function () { var t = null; try { t = localStorage.getItem("board-room-theme"); } catch (e) {} if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); })();
+</script>
 <style>
 @font-face { font-family: "Montserrat"; font-style: normal; font-weight: 600; font-display: swap; src: url("fonts/montserrat-semibold.ttf") format("truetype"); }
 @font-face { font-family: "Montserrat"; font-style: normal; font-weight: 700; font-display: swap; src: url("fonts/montserrat-bold.ttf") format("truetype"); }
 @font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("fonts/inter-normal-latin.woff2") format("woff2"); }
 @font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("fonts/jetbrains-mono-normal-latin.woff2") format("woff2"); }
 :root {
+  color-scheme: light;
   --page: #f3f5f9; --band: #e7ecf3; --surface: #ffffff; --tile: #f6f8fb; --track: #e3e8ef;
   --ink: #0f1c2e; --ink-text: #f7f9fc; --text: #0f1c2e; --muted: #566375; --line: #dce2ea; --edge: #8794a6;
-  --brass: #b9802a; --brass-ink: #7a520f; --brass-soft: #f7ecd6;
+  --brass: #b9802a; --brass-ink: #7a520f; --brass-soft: #f7ecd6; --on-brass: #ffffff; --brass-hover: #a46f1f;
   --go: #1d6f49; --go-soft: #dcefe4; --cond: #7f5600; --cond-soft: #f7ebcf; --reshape: #a44a14; --reshape-soft: #f9e2d2; --dont: #a3241e; --dont-soft: #f6dfdb;
-  --radius: 18px; --radius-sm: 12px;
   --shadow: 0 1px 2px rgba(15, 28, 46, .05), 0 8px 28px rgba(15, 28, 46, .06);
   --shadow-md: 0 14px 44px rgba(15, 28, 46, .14);
+  --card-border: rgba(15, 28, 46, .04); --head-bg: rgba(255, 255, 255, .92); --btn-hover: #1d3150; --glow: transparent;
+  --bubble-bg: #0f1c2e; --bubble-text: #e9eef6; --bubble-mark: rgba(217, 164, 65, .28); --bubble-mark-text: #ffffff;
+  --strong-bg: #0f1c2e; --strong-text: #f7f9fc; --strong-muted: #c6d0de;
+  --doc-bg: #fffdf8; --doc-line: #efe6d3; --doc-inset: #fbf6ea;
+  --media-1: #eef2f8; --media-2: #e4eaf3;
+  --table-1: #ffffff; --table-2: #eef2f8; --table-stroke: #d3dbe6; --table-inner: #e3e8ef; --table-shadow: rgba(15, 28, 46, .14);
+  --chart-grid: #e3e8ef; --chart-text: #8794a6; --chart-label: #566375; --heat-rgb: 15, 28, 46; --heat-hi: #ffffff;
+  --miss-bg: #f6dfdb; --miss-text: #5c1813;
+  --strip-bg: #0f1c2e; --strip-text: #e9eef6; --strip-hover: #e7b85e; --logo-bg: #0f1c2e;
+  --radius: 18px; --radius-sm: 12px;
   --display: "Montserrat", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0b0e13; --band: #10141b; --surface: #131820; --tile: #19202a; --track: #262e3a;
+    --ink: #f2f5f9; --ink-text: #0b0e13; --text: #e6ebf2; --muted: #96a1b2; --line: #232b36; --edge: #6d7889;
+    --brass: #e2a94c; --brass-ink: #f1c47c; --brass-soft: rgba(226, 169, 76, .14); --on-brass: #1a1305; --brass-hover: #f1c47c;
+    --go: #5ccf97; --go-soft: rgba(92, 207, 151, .13); --cond: #eeb655; --cond-soft: rgba(238, 182, 85, .13); --reshape: #f39257; --reshape-soft: rgba(243, 146, 87, .13); --dont: #f2766d; --dont-soft: rgba(242, 118, 109, .13);
+    --shadow: inset 0 1px 0 rgba(255, 255, 255, .035), 0 12px 32px rgba(0, 0, 0, .45);
+    --shadow-md: 0 20px 60px rgba(0, 0, 0, .6);
+    --card-border: #1f2732; --head-bg: rgba(11, 14, 19, .8); --btn-hover: #ffffff; --glow: rgba(226, 169, 76, .09);
+    --bubble-bg: #1b2330; --bubble-text: #e6ebf2; --bubble-mark: rgba(226, 169, 76, .24); --bubble-mark-text: #fff4dd;
+    --strong-bg: #1f1a12; --strong-text: #f7f1e6; --strong-muted: #cdbfa6;
+    --doc-bg: #17140f; --doc-line: #3a3122; --doc-inset: #1d1912;
+    --media-1: #121822; --media-2: #0e131a;
+    --table-1: #1c2430; --table-2: #121821; --table-stroke: #2c3542; --table-inner: #283140; --table-shadow: rgba(0, 0, 0, .6);
+    --chart-grid: #232b36; --chart-text: #6d7889; --chart-label: #96a1b2; --heat-rgb: 230, 236, 244; --heat-hi: #0b0e13;
+    --miss-bg: rgba(242, 118, 109, .12); --miss-text: #f6c3be;
+    --strip-bg: #07090d; --strip-text: #c9d2de; --strip-hover: #f1c47c; --logo-bg: #1e2836;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0b0e13; --band: #10141b; --surface: #131820; --tile: #19202a; --track: #262e3a;
+  --ink: #f2f5f9; --ink-text: #0b0e13; --text: #e6ebf2; --muted: #96a1b2; --line: #232b36; --edge: #6d7889;
+  --brass: #e2a94c; --brass-ink: #f1c47c; --brass-soft: rgba(226, 169, 76, .14); --on-brass: #1a1305; --brass-hover: #f1c47c;
+  --go: #5ccf97; --go-soft: rgba(92, 207, 151, .13); --cond: #eeb655; --cond-soft: rgba(238, 182, 85, .13); --reshape: #f39257; --reshape-soft: rgba(243, 146, 87, .13); --dont: #f2766d; --dont-soft: rgba(242, 118, 109, .13);
+  --shadow: inset 0 1px 0 rgba(255, 255, 255, .035), 0 12px 32px rgba(0, 0, 0, .45);
+  --shadow-md: 0 20px 60px rgba(0, 0, 0, .6);
+  --card-border: #1f2732; --head-bg: rgba(11, 14, 19, .8); --btn-hover: #ffffff; --glow: rgba(226, 169, 76, .09);
+  --bubble-bg: #1b2330; --bubble-text: #e6ebf2; --bubble-mark: rgba(226, 169, 76, .24); --bubble-mark-text: #fff4dd;
+  --strong-bg: #1f1a12; --strong-text: #f7f1e6; --strong-muted: #cdbfa6;
+  --doc-bg: #17140f; --doc-line: #3a3122; --doc-inset: #1d1912;
+  --media-1: #121822; --media-2: #0e131a;
+  --table-1: #1c2430; --table-2: #121821; --table-stroke: #2c3542; --table-inner: #283140; --table-shadow: rgba(0, 0, 0, .6);
+  --chart-grid: #232b36; --chart-text: #6d7889; --chart-label: #96a1b2; --heat-rgb: 230, 236, 244; --heat-hi: #0b0e13;
+  --miss-bg: rgba(242, 118, 109, .12); --miss-text: #f6c3be;
+  --strip-bg: #07090d; --strip-text: #c9d2de; --strip-hover: #f1c47c; --logo-bg: #1e2836;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
@@ -40,20 +92,21 @@ p { margin: 0; }
 :focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; border-radius: 6px; }
 
 /* ---------- the strip back to the site, as on the Evidence Plane sample ---------- */
-.site-strip { background: var(--ink); color: #e9eef6; font-size: .8rem; }
+.site-strip { background: var(--strip-bg); color: var(--strip-text); font-size: .8rem; }
 .site-strip-in { max-width: 1320px; margin: 0 auto; padding: .35rem 20px; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-.site-strip a { color: #e9eef6; text-decoration: none; display: inline-flex; align-items: center; gap: .45rem; min-height: 30px; }
-.site-strip a:hover { color: #e7b85e; }
-.site-strip a:focus-visible { outline-color: #e7b85e; }
+.site-strip a { color: var(--strip-text); text-decoration: none; display: inline-flex; align-items: center; gap: .45rem; min-height: 30px; }
+.site-strip a:hover { color: var(--strip-hover); }
+.site-strip a:focus-visible { outline-color: var(--strip-hover); }
 .site-strip-right { display: inline-flex; align-items: center; gap: 1.2rem; }
 .site-strip .indica { font-weight: 600; }
 @media (max-width: 640px) { .site-strip-in { padding: .3rem 16px; } .site-strip .hide-sm { display: none; } }
 
 /* ---------- head ---------- */
-.head { position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,.92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.head { position: sticky; top: 0; z-index: 40; background: var(--head-bg); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .head-inner { max-width: 1320px; margin: 0 auto; display: flex; align-items: center; gap: 18px; padding: 10px 20px; }
 .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 700; font-size: 1.08rem; letter-spacing: -.01em; white-space: nowrap; }
 .logo svg { width: 30px; height: 30px; }
+.logo svg rect { fill: var(--logo-bg); }
 .logo em { font-style: normal; color: var(--brass-ink); }
 .nav { display: flex; gap: 2px; flex: 1 1 auto; justify-content: center; flex-wrap: wrap; }
 .nav a { display: inline-flex; align-items: center; gap: 7px; padding: 8px 11px; border-radius: 999px; text-decoration: none; font-size: .92rem; color: var(--muted); white-space: nowrap; }
@@ -63,6 +116,9 @@ p { margin: 0; }
 .nav a .tick { display: none; width: 7px; height: 7px; border-radius: 50%; background: var(--brass); }
 .nav a.done .tick { display: inline-block; }
 .head-right { display: flex; align-items: center; gap: 8px; }
+.theme-btn { width: 38px; height: 38px; border-radius: 50%; display: inline-grid; place-items: center; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; transition: border-color .15s, background .15s; }
+.theme-btn:hover { border-color: var(--brass); }
+.theme-btn svg { width: 18px; height: 18px; }
 .call-pill { display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--ink); border-radius: 999px; padding: 6px 12px; font-weight: 600; font-size: .88rem; text-decoration: none; white-space: nowrap; }
 .call-pill .state { font-family: var(--mono); font-size: .74rem; font-weight: 500; padding: 2px 8px; border-radius: 999px; background: var(--brass-soft); color: var(--brass-ink); }
 .call-pill.made .state { background: var(--go-soft); color: var(--go); }
@@ -82,7 +138,10 @@ main:focus, main:focus-visible { outline: none; }
 .hook .ico { width: 18px; height: 18px; }
 
 /* ---------- primitives ---------- */
-.card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px 24px; border: 1px solid rgba(15,28,46,.04); }
+.card { position: relative; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px 24px; border: 1px solid var(--card-border); }
+/* a soft light that follows the pointer; only the dark theme gives it a colour */
+.card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), var(--glow), transparent 62%); opacity: 0; transition: opacity .3s; }
+.card:hover::after { opacity: 1; }
 .card + .card { margin-top: 16px; }
 .card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
 .card h2 { font-size: 1.12rem; display: flex; align-items: center; gap: 9px; }
@@ -98,10 +157,10 @@ main:focus, main:focus-visible { outline: none; }
 .pill.ink { background: var(--ink); color: var(--ink-text); }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; padding: 11px 20px; font-weight: 600; font-size: .95rem; cursor: pointer; text-decoration: none; border: 1.5px solid var(--ink); transition: transform .15s, background .15s, color .15s; }
 .btn.primary { background: var(--ink); color: var(--ink-text); }
-.btn.primary:hover { background: #1d3150; }
+.btn.primary:hover { background: var(--btn-hover); }
 .btn.ghost { background: transparent; color: var(--ink); }
 .btn.ghost:hover { background: var(--tile); }
-.btn.brass { background: var(--brass); border-color: var(--brass); color: #fff; }
+.btn.brass { background: var(--brass); border-color: var(--brass); color: var(--on-brass); }
 .btn.small { padding: 7px 14px; font-size: .86rem; }
 .btn.wide { width: 100%; }
 .btn:active { transform: translateY(1px); }
@@ -111,7 +170,7 @@ main:focus, main:focus-visible { outline: none; }
 .ico { display: inline-block; flex: none; }
 
 /* seat discs */
-.disc { --c: #8794a6; display: inline-grid; place-items: center; flex: none; width: 38px; height: 38px; border-radius: 50%; background: var(--c); color: #fff; font-family: var(--display); font-weight: 700; font-size: .82rem; letter-spacing: .02em; box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px color-mix(in srgb, var(--c) 45%, transparent); }
+.disc { --c: #8794a6; display: inline-grid; place-items: center; flex: none; width: 38px; height: 38px; border-radius: 50%; background: var(--c); color: #fff; font-family: var(--display); font-weight: 700; font-size: .82rem; letter-spacing: .02em; box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px color-mix(in srgb, var(--c) 45%, transparent); }
 .disc.sm { width: 28px; height: 28px; font-size: .66rem; }
 .disc.lg { width: 52px; height: 52px; font-size: 1.05rem; }
 .disc.you { --c: var(--brass); }
@@ -128,7 +187,7 @@ main:focus, main:focus-visible { outline: none; }
 .table-figure figcaption { text-align: center; font-size: .86rem; color: var(--muted); margin-top: 6px; }
 .paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 26px; }
 .path { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
-.path .media { background: linear-gradient(135deg, #eef2f8, #e4eaf3); display: grid; place-items: center; padding: 14px 18px; min-height: 172px; }
+.path .media { background: linear-gradient(135deg, var(--media-1), var(--media-2)); display: grid; place-items: center; padding: 14px 18px; min-height: 172px; }
 .path .media svg { width: 100%; max-width: 330px; height: auto; max-height: 200px; }
 .path .body { padding: 18px 22px 22px; display: flex; flex-direction: column; flex: 1; }
 .path .tag { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -149,8 +208,8 @@ main:focus, main:focus-visible { outline: none; }
 .names-strip b { color: var(--ink); }
 
 /* ---------- question ---------- */
-.ask-bubble { position: relative; background: var(--ink); color: #e9eef6; border-radius: 22px 22px 22px 6px; padding: 22px 24px; font-size: 1.02rem; line-height: 1.65; }
-.ask-bubble mark { background: rgba(217, 164, 65, .28); color: #fff; border-radius: 4px; padding: 0 3px; box-shadow: inset 0 -2px 0 var(--brass); }
+.ask-bubble { position: relative; background: var(--bubble-bg); color: var(--bubble-text); border-radius: 22px 22px 22px 6px; padding: 22px 24px; font-size: 1.02rem; line-height: 1.65; }
+.ask-bubble mark { background: var(--bubble-mark); color: var(--bubble-mark-text); border-radius: 4px; padding: 0 3px; box-shadow: inset 0 -2px 0 var(--brass); }
 .ask-who { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-size: .86rem; color: var(--muted); }
 .opts-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .opt-tile { border: 1.5px solid var(--line); border-radius: 14px; padding: 12px 14px; display: flex; gap: 12px; align-items: flex-start; background: var(--tile); }
@@ -211,7 +270,7 @@ details.full .text { white-space: pre-line; font-size: .86rem; color: var(--mute
 .crux h3 { font-size: 1.12rem; line-height: 1.35; margin-bottom: 14px; }
 .tug { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
 .side { border-radius: 14px; padding: 12px 14px; background: var(--tile); border: 1.5px solid var(--line); }
-.side.win { background: var(--brass-soft); border-color: rgba(185,128,42,.45); }
+.side.win { background: var(--brass-soft); border-color: color-mix(in srgb, var(--brass) 45%, transparent); }
 .side p { font-size: .92rem; margin-bottom: 10px; }
 .side .who { display: flex; flex-wrap: wrap; gap: 6px; min-height: 28px; align-items: center; }
 .side .none { font-size: .8rem; color: var(--edge); font-style: italic; }
@@ -232,7 +291,7 @@ details.full .text { white-space: pre-line; font-size: .86rem; color: var(--mute
 .slope-note { font-size: .88rem; color: var(--muted); margin-top: 8px; }
 
 /* vote */
-.doc { background: #fffdf8; border: 1px solid #efe6d3; border-radius: 16px; padding: 22px 26px; box-shadow: inset 0 0 0 6px #fbf6ea; }
+.doc { background: var(--doc-bg); border: 1px solid var(--doc-line); border-radius: 16px; padding: 22px 26px; box-shadow: inset 0 0 0 6px var(--doc-inset); }
 .doc .doc-k { font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--brass-ink); }
 .doc p.rec { font-size: 1.05rem; margin: 10px 0 14px; color: var(--ink); }
 .doc ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: .92rem; color: var(--muted); }
@@ -247,8 +306,8 @@ details.full .text { white-space: pre-line; font-size: .86rem; color: var(--mute
 
 /* advice */
 .advice-hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: start; }
-.stamp { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 132px; height: 132px; border-radius: 50%; border: 3px solid var(--cond); color: var(--cond); text-align: center; font-family: var(--display); font-weight: 700; font-size: .86rem; line-height: 1.15; letter-spacing: .04em; transform: rotate(-8deg); background: var(--cond-soft); box-shadow: inset 0 0 0 5px #fff, inset 0 0 0 7px var(--cond); padding: 12px; }
-.stamp.go { border-color: var(--go); color: var(--go); background: var(--go-soft); box-shadow: inset 0 0 0 5px #fff, inset 0 0 0 7px var(--go); }
+.stamp { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 132px; height: 132px; border-radius: 50%; border: 3px solid var(--cond); color: var(--cond); text-align: center; font-family: var(--display); font-weight: 700; font-size: .74rem; line-height: 1.15; letter-spacing: .03em; transform: rotate(-8deg); background: var(--cond-soft); box-shadow: inset 0 0 0 5px var(--surface), inset 0 0 0 7px var(--cond); padding: 12px; }
+.stamp.go { border-color: var(--go); color: var(--go); background: var(--go-soft); box-shadow: inset 0 0 0 5px var(--surface), inset 0 0 0 7px var(--go); }
 .stamp .opt { font-size: 2rem; letter-spacing: 0; }
 .pick-label { font-family: var(--mono); font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brass-ink); }
 .call-big { font-family: var(--display); font-weight: 600; font-size: clamp(1.25rem, 2.2vw, 1.6rem); line-height: 1.3; margin-top: 8px; letter-spacing: -.015em; }
@@ -287,16 +346,16 @@ details.full .text { white-space: pre-line; font-size: .86rem; color: var(--mute
 .tkr .ico { width: 20px; height: 20px; color: var(--brass); margin-bottom: 8px; }
 .tkr b { display: block; font-size: .92rem; margin-bottom: 4px; }
 .tkr p { font-size: .88rem; color: var(--muted); }
-.yourcall { background: var(--ink); color: var(--ink-text); border: 0; }
-.yourcall h2 { color: #fff; }
+.yourcall { background: var(--strong-bg); color: var(--strong-text); border: 1px solid color-mix(in srgb, var(--brass) 30%, transparent); }
+.yourcall h2 { color: var(--strong-text); }
 .yourcall h2 .ico { color: var(--brass); }
-.yourcall p { color: #c6d0de; }
-.yourcall .btn.ghost { color: #fff; border-color: rgba(255,255,255,.5); }
+.yourcall p { color: var(--strong-muted); }
+.yourcall .btn.ghost { color: var(--strong-text); border-color: color-mix(in srgb, var(--strong-text) 50%, transparent); }
 .yourcall .btn.ghost:hover { background: rgba(255,255,255,.08); }
-.yourcall .btn.brass:hover { background: #a46f1f; }
+.yourcall .btn.brass:hover { background: var(--brass-hover); border-color: var(--brass-hover); }
 .call-done { margin-top: 16px; background: rgba(255,255,255,.07); border-radius: 14px; padding: 14px 16px; display: none; }
 .call-done.on { display: block; }
-.call-done b { color: #fff; }
+.call-done b { color: var(--strong-text); }
 
 /* numbers */
 .chart-card svg text { font-family: var(--sans); }
@@ -309,14 +368,14 @@ details.full .text { white-space: pre-line; font-size: .86rem; color: var(--mute
 .repeat-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
 .repeat-row:last-child { border-bottom: 0; }
 .picks { display: flex; gap: 8px; }
-.picks span { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 700; background: var(--ink); color: #fff; }
+.picks span { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 700; background: var(--ink); color: var(--ink-text); }
 .picks span.odd { background: var(--surface); color: var(--ink); border: 2px dashed var(--edge); }
 .runs { width: 100%; border-collapse: collapse; font-size: .86rem; }
 .runs th { text-align: left; font-weight: 600; color: var(--muted); font-size: .78rem; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
 .runs td { padding: 9px 10px 9px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
 .runs td.n { font-family: var(--mono); white-space: nowrap; }
 .scroll { overflow-x: auto; }
-.miss { display: flex; gap: 12px; align-items: flex-start; background: var(--dont-soft); color: #5c1813; border-radius: 14px; padding: 14px 16px; font-size: .93rem; }
+.miss { display: flex; gap: 12px; align-items: flex-start; background: var(--miss-bg); color: var(--miss-text); border-radius: 14px; padding: 14px 16px; font-size: .93rem; }
 .miss .ico { width: 20px; height: 20px; color: var(--dont); margin-top: 2px; }
 
 /* names */
@@ -336,7 +395,7 @@ details.full .text { white-space: pre-line; font-size: .86rem; color: var(--mute
 .tour li button { width: 100%; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: center; text-align: left; background: none; border: 0; border-radius: 10px; padding: 7px 8px; cursor: pointer; font-size: .9rem; color: var(--muted); }
 .tour li button:hover { background: var(--tile); }
 .tour li .n { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-family: var(--mono); font-size: .72rem; border: 1.5px solid var(--line); background: var(--surface); }
-.tour li.done .n { background: var(--ink); border-color: var(--ink); color: #fff; }
+.tour li.done .n { background: var(--ink); border-color: var(--ink); color: var(--ink-text); }
 .tour li.cur button { background: var(--brass-soft); color: var(--ink); font-weight: 600; }
 .tour li.cur .n { border-color: var(--brass); }
 .step-text { margin-top: 14px; background: var(--tile); border-radius: 14px; padding: 14px 15px; font-size: .92rem; }
@@ -345,7 +404,7 @@ details.full .text { white-space: pre-line; font-size: .86rem; color: var(--mute
 .tour .actions .btn { flex: 1; }
 .reopen-tour { position: fixed; right: 18px; bottom: 18px; z-index: 30; box-shadow: var(--shadow-md); }
 .reopen-tour[hidden] { display: none; }
-.toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: var(--ink); color: #fff; border-radius: 999px; padding: 10px 18px; font-size: .92rem; z-index: 60; box-shadow: var(--shadow-md); }
+.toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: var(--ink); color: var(--ink-text); border-radius: 999px; padding: 10px 18px; font-size: .92rem; z-index: 60; box-shadow: var(--shadow-md); }
 .toast[hidden] { display: none; }
 
 .foot { margin-top: 34px; font-size: .84rem; color: var(--muted); }
@@ -361,7 +420,7 @@ details.full .text { white-space: pre-line; font-size: .86rem; color: var(--mute
   .nav a .lbl-long { display: none; }
 }
 @media (max-width: 960px) {
-  .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-bottom: 1px solid var(--line); padding: 10px 14px 14px; flex-direction: column; align-items: stretch; }
+  .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border-bottom: 1px solid var(--line); padding: 10px 14px 14px; flex-direction: column; align-items: stretch; }
   .nav.open { display: flex; }
   .nav a { border-radius: 12px; }
   .head .menu-btn { display: inline-flex; }
@@ -421,6 +480,7 @@ details.full .text { white-space: pre-line; font-size: .86rem; color: var(--mute
       <a href="#numbers" data-route="numbers" data-icon="gauge"><span class="tick"></span>Numbers</a>
     </nav>
     <div class="head-right">
+      <button type="button" class="theme-btn" id="theme-btn" aria-label="Switch to the dark theme"></button>
       <a class="call-pill" id="call-pill" href="#advice"><span class="lbl">Your call</span><span class="state" id="call-state">not made</span></a>
       <button type="button" class="btn ghost small menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
     </div>
@@ -498,7 +558,7 @@ details.full .text { white-space: pre-line; font-size: .86rem; color: var(--mute
         <section class="card" aria-labelledby="h-now1"><div class="card-head"><h2 id="h-now1" data-icon="pen">Now speaking</h2><span class="pill" id="count-1">0 of 8</span></div><div class="now-speaking"><div class="seat-line" id="who-1"></div><p class="say" id="say-1">Press play to hear each advisor's call, one at a time.</p><div class="progress"><span id="bar-1"></span></div></div></section>
       </div>
       <div class="seat-grid" id="cards-1"></div>
-      <section class="card" aria-labelledby="h-heat1" style="margin-top:16px"><div class="card-head"><h2 id="h-heat1" data-icon="grid">Where they started</h2><span class="pill">Scores out of 10</span></div><div class="scroll"><table class="heat" id="heat-1"></table></div><div class="legend"><span><i style="background:#0f1c2e"></i>high score</span><span><i style="background:#e3e8ef"></i>low score</span><span>The last row is the weighted score the software works out. The model never sets it.</span></div></section>
+      <section class="card" aria-labelledby="h-heat1" style="margin-top:16px"><div class="card-head"><h2 id="h-heat1" data-icon="grid">Where they started</h2><span class="pill">Scores out of 10</span></div><div class="scroll"><table class="heat" id="heat-1"></table></div><div class="legend"><span><i style="background:var(--ink)"></i>high score</span><span><i style="background:var(--track)"></i>low score</span><span>The last row is the weighted score the software works out. The model never sets it.</span></div></section>
       <div class="next-link"><a class="btn primary" href="#sticking">Next: what splits them <span data-icon="arrow"></span></a></div>
     </section>
 
@@ -609,6 +669,10 @@ const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const SEAT = Object.fromEntries(DATA.seats.map((s) => [s.key, s]));
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+// The drawings are SVG strings, so they take the theme's colours from CSS at draw time.
+const PALETTE = ["ink", "ink-text", "text", "muted", "edge", "track", "surface", "brass", "brass-ink", "on-brass", "go", "cond", "cond-soft", "dont", "table-1", "table-2", "table-stroke", "table-inner", "table-shadow", "chart-grid", "chart-text", "chart-label", "heat-rgb", "heat-hi"];
+let P = {};
+function readPalette() { const cs = getComputedStyle(document.documentElement); P = Object.fromEntries(PALETTE.map((k) => [k.replace(/-(\w)/g, (_, c) => c.toUpperCase()), cs.getPropertyValue("--" + k).trim()])); }
 
 // ---------- icons (stroke, 24px grid) ----------
 const ICONS = {
@@ -642,15 +706,20 @@ function disc(key, size = "") { const s = SEAT[key]; return `<span class="disc $
 function seatLine(key, sub) { const s = SEAT[key]; return `<div class="seat-line">${disc(key)}<div><b>${esc(s.short)} seat</b><span class="sub">${esc(sub ?? s.pillar)}</span></div></div>`; }
 
 // The table: an oval with "you" at the head and the eight seats around it, drawn to fit any width.
-function tableSvg({ seats = DATA.seats.map((s) => s.key), active = null, dim = false, w = 680, h = 440, labels = true, chips = {} } = {}) {
+// Each drawing gets its own ids: several tables sit on the page at once, some on hidden screens,
+// and a shared gradient id would make the browser paint a hidden copy's fill (none) instead.
+let svgSeq = 0;
+function tableSvg({ seats = DATA.seats.map((s) => s.key), active = null, dim = false, w = 680, h = 440, labels = true, board = null } = {}) {
+  const uid = ++svgSeq;
   const cx = w / 2, cy = h / 2 + 24, rx = w * 0.33, ry = h * 0.21;
   const angles = [-52, -14, 22, 62, 118, 158, 194, 232];
   let out = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Eight advisors around a table with the founder at the head">`;
-  out += `<defs><radialGradient id="tg-${w}" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eef2f8"/></radialGradient><filter id="sh-${w}" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0f1c2e" flood-opacity=".14"/></filter></defs>`;
-  out += `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="url(#tg-${w})" stroke="#d3dbe6" stroke-width="2" filter="url(#sh-${w})"/>`;
-  out += `<ellipse cx="${cx}" cy="${cy}" rx="${rx * 0.62}" ry="${ry * 0.55}" fill="none" stroke="#e3e8ef" stroke-width="1.5" stroke-dasharray="3 6"/>`;
+  out += `<defs><radialGradient id="tg-${uid}" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="${P.table1}"/><stop offset="1" stop-color="${P.table2}"/></radialGradient><filter id="sh-${uid}" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="${P.tableShadow}"/></filter></defs>`;
+  out += `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="url(#tg-${uid})" stroke="${P.tableStroke}" stroke-width="2" filter="url(#sh-${uid})"/>`;
+  if (board) out += boardOnTable(board, cx, cy, rx);
+  else out += `<ellipse cx="${cx}" cy="${cy}" rx="${rx * 0.62}" ry="${ry * 0.55}" fill="none" stroke="${P.tableInner}" stroke-width="1.5" stroke-dasharray="3 6"/>`;
   const hx = cx, hy = cy - ry - 58;
-  out += `<g><circle cx="${hx}" cy="${hy}" r="30" fill="#b9802a"/><circle cx="${hx}" cy="${hy}" r="36" fill="none" stroke="#b9802a" stroke-opacity=".3" stroke-width="3"/><text x="${hx}" y="${hy + 5}" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-weight="700" font-size="14">YOU</text>${labels ? `<text x="${hx}" y="${hy - 44}" text-anchor="middle" fill="#7a520f" font-family="Inter, sans-serif" font-size="13" font-weight="600">You chair the meeting and make the call</text>` : ""}</g>`;
+  out += `<g><circle cx="${hx}" cy="${hy}" r="30" fill="${P.brass}"/><circle cx="${hx}" cy="${hy}" r="36" fill="none" stroke="${P.brass}" stroke-opacity=".3" stroke-width="3"/><text x="${hx}" y="${hy + 5}" text-anchor="middle" fill="${P.onBrass}" font-family="Montserrat, sans-serif" font-weight="700" font-size="14">YOU</text>${labels ? `<text x="${hx}" y="${hy - 44}" text-anchor="middle" fill="${P.brassInk}" font-family="Inter, sans-serif" font-size="13" font-weight="600">You chair the meeting and make the call</text>` : ""}</g>`;
   DATA.seats.forEach((s, i) => {
     const a = (angles[i] * Math.PI) / 180, x = cx + (rx + 64) * Math.cos(a), y = cy + (ry + 56) * Math.sin(a);
     const on = seats.includes(s.key), isActive = active === s.key;
@@ -658,13 +727,36 @@ function tableSvg({ seats = DATA.seats.map((s) => s.key), active = null, dim = f
     out += `<g opacity="${op}" data-seat="${s.key}">`;
     if (isActive) out += `<circle cx="${x}" cy="${y}" r="38" fill="${s.color}" fill-opacity=".16"><animate attributeName="r" values="32;40;32" dur="1.6s" repeatCount="indefinite"/></circle>`;
     out += `<line x1="${x}" y1="${y}" x2="${cx + rx * 0.92 * Math.cos(a)}" y2="${cy + ry * 0.92 * Math.sin(a)}" stroke="${s.color}" stroke-opacity=".25" stroke-width="2"/>`;
-    out += `<circle cx="${x}" cy="${y}" r="27" fill="${s.color}" stroke="#fff" stroke-width="4"/><circle cx="${x}" cy="${y}" r="31" fill="none" stroke="${s.color}" stroke-opacity=".45" stroke-width="1.5" stroke-dasharray="3 3"/>`;
+    out += `<circle cx="${x}" cy="${y}" r="27" fill="${s.color}" stroke="${P.surface}" stroke-width="4"/><circle cx="${x}" cy="${y}" r="31" fill="none" stroke="${s.color}" stroke-opacity=".45" stroke-width="1.5" stroke-dasharray="3 3"/>`;
     out += `<text x="${x}" y="${y + 5}" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-weight="700" font-size="14">${esc(s.initials)}</text>`;
-    if (labels) out += `<text x="${x}" y="${y + 47}" text-anchor="middle" fill="#0f1c2e" font-family="Inter, sans-serif" font-size="13" font-weight="600">${esc(s.short)}</text><text x="${x}" y="${y + 63}" text-anchor="middle" fill="#566375" font-family="Inter, sans-serif" font-size="11.5">${esc(s.label)}</text>`;
-    if (chips[s.key]) out += `<g><rect x="${x - 30}" y="${y - 50}" width="60" height="20" rx="10" fill="${chips[s.key].bg}"/><text x="${x}" y="${y - 36}" text-anchor="middle" fill="${chips[s.key].fg}" font-family="JetBrains Mono, monospace" font-size="11">${esc(chips[s.key].text)}</text></g>`;
+    if (labels) out += `<text x="${x}" y="${y + 47}" text-anchor="middle" fill="${P.ink}" font-family="Inter, sans-serif" font-size="13" font-weight="600">${esc(s.short)}</text><text x="${x}" y="${y + 63}" text-anchor="middle" fill="${P.muted}" font-family="Inter, sans-serif" font-size="11.5">${esc(s.label)}</text>`;
     out += `</g>`;
   });
   return out + `</svg>`;
+}
+
+// The first take, on the table: two lines from 0 to 10, one for the founder's lean (A) and one for
+// the option every advisor put on top (B), with a dot in each advisor's colour where they scored it.
+function boardOnTable(board, cx, cy, rx) {
+  const x0 = cx - rx * 0.66, x1 = cx + rx * 0.66, X = (v) => x0 + (v / 10) * (x1 - x0);
+  const rows = [["A", "A · the founder's lean", P.brass, cy - 24], ["B", "B · ask for the delay", P.ink, cy + 38]];
+  const spoke = Object.keys(board).length;
+  let g = "";
+  for (const [id, label, col, y] of rows) {
+    g += `<text x="${x0}" y="${y - 17}" fill="${col}" font-family="Inter, sans-serif" font-size="16" font-weight="700">${label}</text>`;
+    g += `<line x1="${x0}" x2="${x1}" y1="${y}" y2="${y}" stroke="${P.track}" stroke-width="8" stroke-linecap="round"/>`;
+    g += `<text x="${x0 - 10}" y="${y + 4}" text-anchor="end" fill="${P.muted}" font-family="JetBrains Mono, monospace" font-size="13">0</text><text x="${x1 + 10}" y="${y + 4}" fill="${P.muted}" font-family="JetBrains Mono, monospace" font-size="13">10</text>`;
+    // advisors who gave the same score sit side by side, so every dot stays visible
+    const byScore = {};
+    for (const [k, sc] of Object.entries(board)) (byScore[sc[id]] ||= []).push(k);
+    for (const [v, keys] of Object.entries(byScore)) keys.forEach((k, i) => {
+      const dx = (i - (keys.length - 1) / 2) * 15;
+      g += `<circle cx="${X(Number(v)) + dx}" cy="${y}" r="9.5" fill="${SEAT[k].color}" stroke="${P.surface}" stroke-width="2.5"><title>${esc(SEAT[k].short)}: ${id} ${v}</title></circle>`;
+    });
+    if (spoke) { const vals = Object.values(board).map((sc) => sc[id]); const lo = Math.min(...vals), hi = Math.max(...vals); g += `<text x="${x1}" y="${y - 17}" text-anchor="end" fill="${col}" font-family="JetBrains Mono, monospace" font-size="15" font-weight="600">${lo === hi ? lo : `${lo} to ${hi}`} / 10</text>`; }
+  }
+  if (!spoke) g += `<text x="${cx}" y="${cy + 74}" text-anchor="middle" fill="${P.muted}" font-family="Inter, sans-serif" font-size="15">Press play: each advisor's scores land here as they speak.</text>`;
+  return g;
 }
 
 // ---------- state ----------
@@ -690,7 +782,7 @@ function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = fal
 function renderWelcome() {
   $("#hero-table").innerHTML = tableSvg() + `<figcaption>Eight advisors, each built from one well-known operator's public work. You sit at the head and make the final call.</figcaption>`;
   $("#media-tour").innerHTML = tableSvg({ labels: false, active: "graham", dim: true });
-  $("#media-advice").innerHTML = `<svg width="320" height="160" viewBox="0 0 320 160" fill="none"><rect x="10" y="12" width="300" height="136" rx="16" fill="#fff"/><circle cx="262" cy="64" r="38" fill="#f7ebcf" stroke="#7f5600" stroke-width="2.5"/><text x="262" y="54" text-anchor="middle" fill="#7f5600" font-family="Montserrat, sans-serif" font-weight="700" font-size="16">B</text><text x="262" y="69" text-anchor="middle" fill="#7f5600" font-family="Montserrat, sans-serif" font-weight="700" font-size="8.5">GO WITH</text><text x="262" y="80" text-anchor="middle" fill="#7f5600" font-family="Montserrat, sans-serif" font-weight="700" font-size="8.5">CONDITIONS</text>${[["A", 2.3], ["B", 8.6], ["C", 2.4], ["D", 0.9]].map(([k, v], i) => `<text x="30" y="${44 + i * 25}" fill="#0f1c2e" font-family="Montserrat, sans-serif" font-weight="700" font-size="13">${k}</text><rect x="50" y="${35 + i * 25}" width="160" height="9" rx="4.5" fill="#e3e8ef"/><rect x="50" y="${35 + i * 25}" width="${v * 16}" height="9" rx="4.5" fill="${k === "B" ? "#b9802a" : "#8794a6"}"/>`).join("")}</svg>`;
+  $("#media-advice").innerHTML = `<svg width="320" height="160" viewBox="0 0 320 160" fill="none"><rect x="10" y="12" width="300" height="136" rx="16" fill="${P.surface}"/><circle cx="262" cy="64" r="38" fill="${P.condSoft}" stroke="${P.cond}" stroke-width="2.5"/><text x="262" y="54" text-anchor="middle" fill="${P.cond}" font-family="Montserrat, sans-serif" font-weight="700" font-size="16">B</text><text x="262" y="69" text-anchor="middle" fill="${P.cond}" font-family="Montserrat, sans-serif" font-weight="700" font-size="8.5">GO WITH</text><text x="262" y="80" text-anchor="middle" fill="${P.cond}" font-family="Montserrat, sans-serif" font-weight="700" font-size="8.5">CONDITIONS</text>${[["A", 2.3], ["B", 8.6], ["C", 2.4], ["D", 0.9]].map(([k, v], i) => `<text x="30" y="${44 + i * 25}" fill="${P.ink}" font-family="Montserrat, sans-serif" font-weight="700" font-size="13">${k}</text><rect x="50" y="${35 + i * 25}" width="160" height="9" rx="4.5" fill="${P.track}"/><rect x="50" y="${35 + i * 25}" width="${v * 16}" height="9" rx="4.5" fill="${k === "B" ? P.brass : P.edge}"/>`).join("")}</svg>`;
   const s = DATA.bench.summary;
   $("#welcome-tiles").innerHTML = [
     [DATA.fmt.fullMedian, "A full meeting", "Eight advisors, three rounds"],
@@ -718,7 +810,7 @@ function miniScores(scores, top) { return `<div class="mini-scores">${DATA.full.
 function topOf(scores) { return Object.entries(scores).sort((a, b) => b[1] - a[1])[0]?.[0]; }
 function heat(round, el) {
   const f = DATA.full, opts = f.options.map((o) => o.id);
-  const cell = (v) => { const t = Math.max(0, Math.min(10, v)) / 10; const bg = `rgba(15,28,46,${0.08 + t * 0.86})`; return `<td style="background:${bg};color:${t > 0.45 ? "#fff" : "#0f1c2e"}">${v}</td>`; };
+  const cell = (v) => { const t = Math.max(0, Math.min(10, v)) / 10; const bg = `rgba(${P.heatRgb},${0.08 + t * 0.86})`; return `<td style="background:${bg};color:${t > 0.45 ? P.heatHi : P.ink}">${v}</td>`; };
   const body = f.cards[round].map((c) => `<tr><td class="seat">${disc(c.seat, "sm")} <span style="vertical-align:middle;margin-left:6px">${esc(SEAT[c.seat].short)}</span></td>${opts.map((o) => cell(c.scores[o] ?? 0)).join("")}</tr>`).join("");
   const total = `<tr class="total"><td class="seat">Weighted score</td>${opts.map((o) => cell(f.roundScores[round][o])).join("")}</tr>`;
   $(el).innerHTML = `<thead><tr><th></th>${opts.map((o) => `<th class="opt">${o}${o === "A" ? " · lean" : ""}</th>`).join("")}</tr></thead><tbody>${body}${total}</tbody>`;
@@ -729,10 +821,15 @@ function renderFirst() {
   const f = DATA.full, cards = f.cards[1];
   const leanScores = cards.map((c) => c.scores.A);
   $("#hook-first").textContent = `Writing alone, all ${cards.length} scored the founder's lean ${Math.min(...leanScores)} or ${Math.max(...leanScores)} out of 10.`;
-  $("#table-1").innerHTML = tableSvg();
+  $("#table-1").innerHTML = tableSvg({ board: state.done.first ? Object.fromEntries(cards.map((c) => [c.seat, c.scores])) : {} });
   $("#cards-1").innerHTML = cards.map((c) => `<article class="card seat-card${state.done.first ? "" : " pending"}" data-seat="${c.seat}"><div class="top">${seatLine(c.seat)}<span class="pill ${/no/i.test(c.stance) ? "no" : /yes/i.test(c.stance) ? "go" : "cond"}">${esc(c.stance)}</span></div><p class="call">${esc(c.call)}</p>${miniScores(c.scores, topOf(c.scores))}${c.question ? `<p class="q"><b>Their question for the founder:</b> ${esc(c.question)}</p>` : ""}${c.thisWeek ? `<p class="q"><b>What they'd do this week:</b> ${esc(c.thisWeek)}</p>` : ""}<details class="full"><summary>Read the whole answer</summary><div class="text">${esc(c.text)}</div></details></article>`).join("");
   heat(1, "#heat-1");
-  if (state.done.first) $("#count-1").textContent = `${cards.length} of ${cards.length}`;
+  if (state.done.first) {
+    $("#count-1").textContent = `${cards.length} of ${cards.length}`;
+    $("#bar-1").style.width = "100%";
+    $("#say-1").textContent = "All eight have spoken. Every one of them put B, the delay, at the top. Press play to watch it again.";
+    $("#play-1").innerHTML = icon("play") + "Play it again";
+  }
 }
 let playing = false;
 async function playRound() {
@@ -743,7 +840,7 @@ async function playRound() {
   $$("#cards-1 .seat-card").forEach((el) => el.classList.add("pending"));
   for (let i = 0; i < cards.length; i++) {
     const c = cards[i];
-    $("#table-1").innerHTML = tableSvg({ active: c.seat, dim: true });
+    $("#table-1").innerHTML = tableSvg({ active: c.seat, dim: true, board: Object.fromEntries(cards.slice(0, i + 1).map((x) => [x.seat, x.scores])) });
     $("#who-1").innerHTML = seatLine(c.seat, c.stance);
     $("#count-1").textContent = `${i + 1} of ${cards.length}`;
     $("#bar-1").style.width = `${((i + 1) / cards.length) * 100}%`;
@@ -751,7 +848,7 @@ async function playRound() {
     $(`#cards-1 .seat-card[data-seat="${c.seat}"]`)?.classList.remove("pending");
     await wait(reduced ? 0 : 650);
   }
-  $("#table-1").innerHTML = tableSvg({ chips: Object.fromEntries(cards.map((c) => [c.seat, { text: `A ${c.scores.A} · B ${c.scores.B}`, bg: "#0f1c2e", fg: "#fff" }])) });
+  $("#table-1").innerHTML = tableSvg({ board: Object.fromEntries(cards.map((c) => [c.seat, c.scores])) });
   $("#say-1").textContent = "All eight have spoken. Every one of them put B, the delay, at the top.";
   btn.disabled = false; btn.innerHTML = icon("play") + "Play it again";
   playing = false;
@@ -808,8 +905,8 @@ function network(cards) {
   for (const s of DATA.seats) {
     const [x, y] = pos[s.key], n = hits[s.key] || 0, rr = 24 + n * 2.2;
     if (n) out += `<circle cx="${x}" cy="${y}" r="${rr + 8}" fill="${s.color}" fill-opacity=".14"/>`;
-    out += `<circle cx="${x}" cy="${y}" r="${rr}" fill="${s.color}" stroke="#fff" stroke-width="4"/><text x="${x}" y="${y + 5}" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-weight="700" font-size="${13 + n * 0.6}">${esc(s.initials)}</text>`;
-    if (n > 1) out += `<g><circle cx="${x + rr * 0.78}" cy="${y - rr * 0.78}" r="13" fill="#0f1c2e" stroke="#fff" stroke-width="3"/><text x="${x + rr * 0.78}" y="${y - rr * 0.78 + 4.5}" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-weight="700" font-size="12">${n}</text></g>`;
+    out += `<circle cx="${x}" cy="${y}" r="${rr}" fill="${s.color}" stroke="${P.surface}" stroke-width="4"/><text x="${x}" y="${y + 5}" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-weight="700" font-size="${13 + n * 0.6}">${esc(s.initials)}</text>`;
+    if (n > 1) out += `<g><circle cx="${x + rr * 0.78}" cy="${y - rr * 0.78}" r="13" fill="${P.ink}" stroke="${P.surface}" stroke-width="3"/><text x="${x + rr * 0.78}" y="${y - rr * 0.78 + 4.5}" text-anchor="middle" fill="${P.inkText}" font-family="Montserrat, sans-serif" font-weight="700" font-size="12">${n}</text></g>`;
   }
   return out + `</svg>`;
 }
@@ -819,30 +916,30 @@ function slope() {
   const w = 440, rowH = 34, top = 34, h = top + DATA.seats.length * rowH + 40, x0 = 112, x1 = w - 20;
   const x = (v) => x0 + (v / 10) * (x1 - x0);
   let out = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Each advisor's score for A and for B at the first take and at the vote">`;
-  for (const v of [0, 5, 10]) out += `<line x1="${x(v)}" x2="${x(v)}" y1="${top - 8}" y2="${h - 34}" stroke="#e3e8ef"/><text x="${x(v)}" y="${top - 14}" text-anchor="middle" fill="#8794a6" font-size="11" font-family="JetBrains Mono, monospace">${v}</text>`;
+  for (const v of [0, 5, 10]) out += `<line x1="${x(v)}" x2="${x(v)}" y1="${top - 8}" y2="${h - 34}" stroke="${P.chartGrid}"/><text x="${x(v)}" y="${top - 14}" text-anchor="middle" fill="${P.chartText}" font-size="11" font-family="JetBrains Mono, monospace">${v}</text>`;
   DATA.seats.forEach((s, i) => {
     const y = top + i * rowH + rowH / 2, a = first.find((c) => c.seat === s.key)?.scores, b = last.find((c) => c.seat === s.key)?.scores;
     if (!a || !b) return;
-    out += `<circle cx="16" cy="${y}" r="11" fill="${s.color}"/><text x="16" y="${y + 4}" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-weight="700" font-size="8.5">${esc(s.initials)}</text><text x="34" y="${y + 4}" fill="#0f1c2e" font-size="12" font-family="Inter, sans-serif" font-weight="600">${esc(s.short)}</text>`;
-    for (const [opt, col] of [["A", "#b9802a"], ["B", "#0f1c2e"]]) {
+    out += `<circle cx="16" cy="${y}" r="11" fill="${s.color}"/><text x="16" y="${y + 4}" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-weight="700" font-size="8.5">${esc(s.initials)}</text><text x="34" y="${y + 4}" fill="${P.ink}" font-size="12" font-family="Inter, sans-serif" font-weight="600">${esc(s.short)}</text>`;
+    for (const [opt, col] of [["A", P.brass], ["B", P.ink]]) {
       const p1 = x(a[opt]), p2 = x(b[opt]);
-      out += `<line x1="${p1}" x2="${p2}" y1="${y}" y2="${y}" stroke="${col}" stroke-width="3" stroke-opacity=".35"/><circle cx="${p1}" cy="${y}" r="6" fill="#fff" stroke="${col}" stroke-width="2.2"/><circle cx="${p2}" cy="${y}" r="6" fill="${col}"/>`;
+      out += `<line x1="${p1}" x2="${p2}" y1="${y}" y2="${y}" stroke="${col}" stroke-width="3" stroke-opacity=".35"/><circle cx="${p1}" cy="${y}" r="6" fill="${P.surface}" stroke="${col}" stroke-width="2.2"/><circle cx="${p2}" cy="${y}" r="6" fill="${col}"/>`;
     }
   });
   const ly = h - 14;
-  out += `<circle cx="${x0}" cy="${ly - 4}" r="5" fill="#fff" stroke="#566375" stroke-width="2"/><text x="${x0 + 10}" y="${ly}" fill="#566375" font-size="11" font-family="Inter, sans-serif">first take</text><circle cx="${x0 + 84}" cy="${ly - 4}" r="5" fill="#566375"/><text x="${x0 + 94}" y="${ly}" fill="#566375" font-size="11" font-family="Inter, sans-serif">vote</text><rect x="${x0 + 140}" y="${ly - 9}" width="10" height="10" rx="2" fill="#b9802a"/><text x="${x0 + 155}" y="${ly}" fill="#566375" font-size="11" font-family="Inter, sans-serif">A, the lean</text><rect x="${x0 + 228}" y="${ly - 9}" width="10" height="10" rx="2" fill="#0f1c2e"/><text x="${x0 + 243}" y="${ly}" fill="#566375" font-size="11" font-family="Inter, sans-serif">B, the pick</text>`;
+  out += `<circle cx="${x0}" cy="${ly - 4}" r="5" fill="${P.surface}" stroke="${P.chartLabel}" stroke-width="2"/><text x="${x0 + 10}" y="${ly}" fill="${P.chartLabel}" font-size="11" font-family="Inter, sans-serif">first take</text><circle cx="${x0 + 84}" cy="${ly - 4}" r="5" fill="${P.chartLabel}"/><text x="${x0 + 94}" y="${ly}" fill="${P.chartLabel}" font-size="11" font-family="Inter, sans-serif">vote</text><rect x="${x0 + 140}" y="${ly - 9}" width="10" height="10" rx="2" fill="${P.brass}"/><text x="${x0 + 155}" y="${ly}" fill="${P.chartLabel}" font-size="11" font-family="Inter, sans-serif">A, the lean</text><rect x="${x0 + 228}" y="${ly - 9}" width="10" height="10" rx="2" fill="${P.ink}"/><text x="${x0 + 243}" y="${ly}" fill="${P.chartLabel}" font-size="11" font-family="Inter, sans-serif">B, the pick</text>`;
   return out + `</svg>`;
 }
 
 // ---------- vote ----------
-const VOTE = { endorse: { label: "Endorse", bg: "#1d6f49", soft: "go" }, amend: { label: "Endorse, with an amendment", bg: "#b9802a", soft: "cond" }, dissent: { label: "Dissent", bg: "#a3241e", soft: "no" } };
+const VOTE = { endorse: { label: "Endorse", bg: "go", soft: "go" }, amend: { label: "Endorse, with an amendment", bg: "brass", soft: "cond" }, dissent: { label: "Dissent", bg: "dont", soft: "no" } };
 function renderVote() {
   const f = DATA.full, d = f.draft, cards = f.cards[3] || [];
   $("#draft").innerHTML = `<span class="doc-k">Draft resolution · Option ${esc(d.option)}</span><p class="rec">${esc(d.recommendation)}</p><span class="doc-k">On these conditions</span><ol style="margin-top:8px">${d.conditions.map((c) => `<li>${esc(c)}</li>`).join("")}</ol>`;
   const counts = cards.reduce((m, c) => ((m[c.vote] = (m[c.vote] || 0) + 1), m), {});
   $("#hook-vote").textContent = `${counts.endorse || 0} endorsed. ${counts.amend || 0} asked for changes. ${counts.dissent ? `${counts.dissent} dissented.` : "Nobody dissented."}`;
-  $("#tally").innerHTML = ["endorse", "amend", "dissent"].map((k) => `<span style="width:${((counts[k] || 0) / cards.length) * 100}%;background:${VOTE[k].bg}"></span>`).join("");
-  $("#tally-legend").innerHTML = ["endorse", "amend", "dissent"].map((k) => `<span><i style="background:${VOTE[k].bg}"></i>${VOTE[k].label} · ${counts[k] || 0}</span>`).join("");
+  $("#tally").innerHTML = ["endorse", "amend", "dissent"].map((k) => `<span style="width:${((counts[k] || 0) / cards.length) * 100}%;background:${P[VOTE[k].bg]}"></span>`).join("");
+  $("#tally-legend").innerHTML = ["endorse", "amend", "dissent"].map((k) => `<span><i style="background:${P[VOTE[k].bg]}"></i>${VOTE[k].label} · ${counts[k] || 0}</span>`).join("");
   $("#votes").innerHTML = cards.map((c) => `<div class="vote">${disc(c.seat)}<b style="font-size:.88rem">${esc(SEAT[c.seat].short)}</b><span class="pill ${VOTE[c.vote]?.soft || ""}">${esc(VOTE[c.vote]?.label.split(",")[0] || c.vote)}${c.vote === "amend" ? " +" : ""}</span><span class="score">${c.finalScore ?? "-"}<small>/10</small></span></div>`).join("");
   const amends = cards.filter((c) => c.amendment);
   $("#amend").innerHTML = amends.map((c) => `<div>${disc(c.seat, "sm")}<span><b>${esc(SEAT[c.seat].short)} seat${c.vote === "endorse" ? " (endorsed, and added)" : ""}:</b> ${esc(c.amendment)}</span></div>`).join("");
@@ -904,13 +1001,13 @@ function timeChart(rows) {
   const w = 460, rowH = 30, h = rows.length * rowH + 50, max = Math.max(...rows.map((r) => r.seconds)), pad = 150;
   const x = (s) => pad + (s / (Math.ceil(max / 60) * 60)) * (w - pad - 40);
   let out = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Minutes from question to advice for each of the seven meetings">`;
-  for (let m = 0; m <= Math.ceil(max / 60); m++) out += `<line x1="${x(m * 60)}" x2="${x(m * 60)}" y1="10" y2="${h - 30}" stroke="#e3e8ef"/><text x="${x(m * 60)}" y="${h - 12}" text-anchor="middle" fill="#8794a6" font-size="11" font-family="JetBrains Mono, monospace">${m}m</text>`;
+  for (let m = 0; m <= Math.ceil(max / 60); m++) out += `<line x1="${x(m * 60)}" x2="${x(m * 60)}" y1="10" y2="${h - 30}" stroke="${P.chartGrid}"/><text x="${x(m * 60)}" y="${h - 12}" text-anchor="middle" fill="${P.chartText}" font-size="11" font-family="JetBrains Mono, monospace">${m}m</text>`;
   rows.forEach((r, i) => {
     const y = 14 + i * rowH, full = r.mode === "full";
-    out += `<text x="${pad - 10}" y="${y + 13}" text-anchor="end" fill="#0f1c2e" font-size="12" font-family="Inter, sans-serif">${esc(r.short)}</text>`;
-    out += `<rect x="${pad}" y="${y}" width="${x(r.seconds) - pad}" height="18" rx="9" fill="${full ? "#0f1c2e" : "#b9802a"}"/><text x="${x(r.seconds) + 6}" y="${y + 13}" fill="#566375" font-size="11" font-family="JetBrains Mono, monospace">${esc(r.time)}</text>`;
+    out += `<text x="${pad - 10}" y="${y + 13}" text-anchor="end" fill="${P.ink}" font-size="12" font-family="Inter, sans-serif">${esc(r.short)}</text>`;
+    out += `<rect x="${pad}" y="${y}" width="${x(r.seconds) - pad}" height="18" rx="9" fill="${full ? P.ink : P.brass}"/><text x="${x(r.seconds) + 6}" y="${y + 13}" fill="${P.chartLabel}" font-size="11" font-family="JetBrains Mono, monospace">${esc(r.time)}</text>`;
   });
-  return out + `</svg><div class="legend"><span><i style="background:#0f1c2e"></i>Full: 8 advisors, 3 rounds · median ${esc(DATA.fmt.fullMedian)}</span><span><i style="background:#b9802a"></i>Quick: 4 advisors · median ${esc(DATA.fmt.quickMedian)}</span></div>`;
+  return out + `</svg><div class="legend"><span><i style="background:${P.ink}"></i>Full: 8 advisors, 3 rounds · median ${esc(DATA.fmt.fullMedian)}</span><span><i style="background:${P.brass}"></i>Quick: 4 advisors · median ${esc(DATA.fmt.quickMedian)}</span></div>`;
 }
 
 // ---------- names ----------
@@ -954,8 +1051,23 @@ function route() {
   $("#main").focus({ preventScroll: true });
 }
 
+// ---------- theme ----------
+const darkQuery = matchMedia("(prefers-color-scheme: dark)");
+const themeNow = () => document.documentElement.getAttribute("data-theme") || (darkQuery.matches ? "dark" : "light");
+const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+const MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/></svg>';
+function paintThemeBtn() { const dark = themeNow() === "dark"; const b = $("#theme-btn"); b.innerHTML = dark ? SUN : MOON; b.setAttribute("aria-label", dark ? "Switch to the light theme" : "Switch to the dark theme"); b.title = b.getAttribute("aria-label"); }
+function drawAll() { readPalette(); renderWelcome(); renderQuestion(); renderFirst(); renderSticking(); renderDebate(); renderVote(); renderAdvice(); renderNumbers(); renderNames(); paintIcons(); }
+function setTheme(t) {
+  document.documentElement.setAttribute("data-theme", t);
+  try { localStorage.setItem("board-room-theme", t); } catch (e) { /* private mode: the switch still works for this visit */ }
+  if (!playing) drawAll();
+  paintThemeBtn();
+}
+
 // ---------- wire up ----------
 function init() {
+  readPalette();
   renderWelcome(); renderQuestion(); renderFirst(); renderSticking(); renderDebate(); renderVote(); renderAdvice(); renderNumbers(); renderNames();
   paintIcons(); renderTour(); renderNavTicks();
   $("#play-1").addEventListener("click", playRound);
@@ -969,10 +1081,15 @@ function init() {
   $("#call-actions").addEventListener("click", (e) => { const b = e.target.closest("[data-call]"); if (!b) return; state.call = b.dataset.call; save(); renderCall(); tick("call"); });
   $("#conds").addEventListener("change", (e) => { const c = e.target.closest("[data-cond]"); if (!c) return; state.conds[c.dataset.cond] = c.checked; save(); });
   $("#reset-btn").addEventListener("click", () => { state = { done: {}, call: null, conds: {}, tourOpen: true, tourStep: 0 }; save(); init.rerender(); location.hash = "welcome"; toast("The sample is back to the start."); });
+  $("#theme-btn").addEventListener("click", () => setTheme(themeNow() === "dark" ? "light" : "dark"));
+  darkQuery.addEventListener("change", () => { if (!document.documentElement.getAttribute("data-theme") && !playing) drawAll(); paintThemeBtn(); });
+  // the dark theme's soft light follows the pointer across a card
+  document.addEventListener("pointermove", (e) => { const c = e.target.closest?.(".card"); if (!c) return; const r = c.getBoundingClientRect(); c.style.setProperty("--mx", `${e.clientX - r.left}px`); c.style.setProperty("--my", `${e.clientY - r.top}px`); }, { passive: true });
+  paintThemeBtn();
   window.addEventListener("hashchange", route);
   route();
 }
-init.rerender = () => { renderFirst(); renderAdvice(); paintIcons(); renderTour(); renderNavTicks(); };
+init.rerender = () => { readPalette(); renderFirst(); renderAdvice(); paintIcons(); renderTour(); renderNavTicks(); };
 init();
 </script>
 </body>
