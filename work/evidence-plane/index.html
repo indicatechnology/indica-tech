@@ -28,7 +28,7 @@
   document.documentElement.setAttribute('data-region', OK.indexOf(r) > -1 ? r : 'uk');
 })();
 </script>
-<meta name="description" content="Evidence Plane, an Indica Technology product: recorded calls in, cited and graded evidence out, on your own machine. See the journey and the value, then try the guided sample.">
+<meta name="description" content="Evidence Plane, an Indica Technology product: recorded calls in, cited and graded evidence out, on your own machine. The value, the journey of one call, and the dream, with a guided sample to try.">
 <meta name="robots" content="index, follow">
 <title>Evidence Plane — cited, graded evidence from your calls — Indica Tech</title>
 <link rel="canonical" href="https://indica-tech.com/work/evidence-plane/">
@@ -55,14 +55,36 @@
 </script>
 <style>
 /* Evidence Plane project page: the site's tokens, plus the few pieces this page needs. */
-.ep-hero { padding: clamp(56px, 8vw, 112px) 0 clamp(64px, 8vw, 120px); border-bottom: 1px solid var(--rule); }
-.ep-hero-grid { display: grid; grid-template-columns: 7fr 5fr; gap: 56px; align-items: center; }
-.ep-hero .kicker { margin-bottom: 20px; }
+.ep-hero { padding: clamp(48px, 7vw, 96px) 0 0; border-bottom: 1px solid var(--rule); }
+.ep-hero-grid { display: grid; grid-template-columns: 7fr 5fr; gap: 56px; align-items: center; padding-bottom: clamp(56px, 7vw, 96px); }
+.ep-lockup { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 26px; }
+.ep-mark { width: 40px; height: 40px; flex: none; }
+.ep-lockup b { display: block; font-size: 1.15rem; font-weight: 600; letter-spacing: -.01em; color: var(--ink); line-height: 1.1; }
+.ep-lockup small { display: block; font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); margin-top: 3px; }
 .ep-hero h1 { font-size: clamp(2.4rem, 4.8vw, 4.3rem); margin-bottom: 22px; max-width: 16ch; }
 .ep-hero .lead { font-size: clamp(1.05rem, 1.3vw, 1.22rem); max-width: 52ch; }
-.ep-meta { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 22px; font-family: var(--mono); font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); }
-.ep-meta span::before { content: "/ "; color: var(--rule-2); }
-.ep-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.ep-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.ep-meta span { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--rule-2); padding: 6px 10px; background: var(--paper); }
+.ep-meta .ico { width: 15px; height: 15px; }
+.ep-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+
+/* Headings on this page wrap evenly, so no word sits alone. */
+.section-head h2, .ep-hero h1 { text-wrap: balance; }
+
+/* On this page. */
+.ep-toc { display: flex; flex-wrap: wrap; gap: 0; border-top: 1px solid var(--rule); }
+.ep-toc a { flex: 1 1 auto; display: flex; align-items: center; gap: 10px; padding: 16px 18px; font-family: var(--mono); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-mute); border-right: 1px solid var(--rule); transition: background .2s, color .2s; }
+.ep-toc a:first-child { padding-left: 0; }
+.ep-toc a:last-child { border-right: 0; }
+.ep-toc a:hover { color: var(--ink); background: var(--paper-2); }
+.ep-toc .n { color: var(--signal); }
+
+/* Icons: original line icons in a square tile; the accent is the site's green. */
+.ico { width: 22px; height: 22px; display: block; }
+.ico .acc { fill: var(--signal); }
+.ico .acc-line { stroke: var(--signal); }
+.ep-ico { display: inline-grid; place-items: center; width: 46px; height: 46px; border: 1px solid var(--ink); background: var(--paper); color: var(--ink); margin-bottom: 20px; }
+.proof .ep-ico { border-color: #3A3A35; background: transparent; color: var(--paper); margin-bottom: 18px; }
 
 /* The picture: a call, its transcript, the learning it became. Drawn in HTML and SVG, no image files. */
 .ep-art { position: relative; margin: 0; min-height: 440px; }
@@ -91,14 +113,29 @@
 /* Input, output, value. */
 .ep-iov { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
 .ep-iov .diag-cell { position: relative; }
-.ep-iov .diag-cell:not(:last-child)::after { content: "→"; position: absolute; right: -14px; top: 34px; z-index: 2; width: 28px; height: 28px; display: grid; place-items: center; background: var(--paper); border: 1px solid var(--ink); border-radius: 50%; font-size: .9rem; color: var(--ink); }
+.ep-iov .diag-cell:not(:last-child)::after { content: "→"; position: absolute; right: -15px; top: 44px; z-index: 2; width: 30px; height: 30px; display: grid; place-items: center; background: var(--ink); color: var(--paper); border-radius: 50%; font-size: .9rem; }
 .ep-iov .label.in::before { background: var(--ink-faint); }
 .ep-iov .label.out::before { background: var(--ink); }
 .ep-iov ul { list-style: none; margin: 0; padding: 0; }
-.ep-iov li { padding: 10px 0; border-top: 1px solid var(--rule); color: var(--ink-mute); font-size: .98rem; line-height: 1.5; }
+.ep-iov li { padding: 10px 0 10px 22px; border-top: 1px solid var(--rule); color: var(--ink-mute); font-size: .98rem; line-height: 1.5; position: relative; }
+.ep-iov li::before { content: ""; position: absolute; left: 0; top: 18px; width: 10px; height: 1px; background: var(--ink); }
 .ep-iov .good { background: var(--paper-2); }
+
+/* Card grids: how you use it, and the dream. */
+.ep-cards { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
+.ep-cards.three { grid-template-columns: repeat(3, 1fr); }
+.ep-card-cell { padding: 32px 28px 36px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); background: var(--paper); display: flex; flex-direction: column; }
+.ep-card-cell .n { font-family: var(--mono); font-size: .74rem; letter-spacing: .06em; color: var(--signal); margin-bottom: 14px; }
+.ep-card-cell h3 { font-size: 1.2rem; margin-bottom: 10px; line-height: 1.25; }
+.ep-card-cell p { font-size: .96rem; }
+.ep-card-cell .worth { margin-top: auto; padding-top: 18px; font-family: var(--mono); font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); display: flex; gap: 8px; align-items: center; }
+.ep-card-cell .worth::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--signal); }
+.ep-note { display: flex; gap: 14px; align-items: flex-start; margin-top: 28px; padding: 18px 20px; border: 1px solid var(--rule-2); background: var(--paper-2); max-width: 880px; }
+.ep-note .ico { flex: none; margin-top: 2px; }
+.ep-note p { margin: 0; font-size: .96rem; }
 .ep-after { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 40px; }
 .ep-after p { font-size: .95rem; margin: 0; }
+.step .ep-ico { margin-bottom: 18px; }
 
 /* The grades, drawn as a ladder. */
 .ep-ladder { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, 1fr); align-items: end; border-bottom: 1px solid var(--ink); }
@@ -109,11 +146,6 @@
 .ep-ladder .nm { font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
 .ep-ladder .ds { font-size: .92rem; line-height: 1.45; color: var(--ink-mute); margin: 0; min-height: 4.4em; }
 
-/* How it is built. */
-.ep-build { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; border-top: 1px solid var(--ink); padding-top: 32px; }
-.ep-build h3 { font-size: 1.15rem; margin: 12px 0 8px; line-height: 1.25; }
-.ep-build p { font-size: .96rem; }
-
 /* Closing call to action. */
 .ep-cta { padding: var(--section-y) 0; background: var(--paper-2); border-bottom: 1px solid var(--rule); }
 .ep-cta-grid { display: grid; grid-template-columns: 7fr 5fr; gap: 48px; align-items: end; }
@@ -123,17 +155,20 @@
 @media (max-width: 960px) {
   .ep-hero-grid, .ep-cta-grid { grid-template-columns: 1fr; }
   .ep-art { max-width: 560px; }
-  .ep-iov { grid-template-columns: 1fr; }
-  .ep-iov .diag-cell:not(:last-child)::after { content: "↓"; right: auto; left: 28px; top: auto; bottom: -14px; }
+  .ep-iov, .ep-cards.three { grid-template-columns: 1fr; }
+  .ep-cards { grid-template-columns: 1fr 1fr; }
+  .ep-iov .diag-cell:not(:last-child)::after { content: "↓"; right: auto; left: 28px; top: auto; bottom: -15px; }
   .ep-ladder { grid-template-columns: repeat(3, 1fr); row-gap: 28px; }
-  .ep-build { grid-template-columns: 1fr 1fr; }
   .ep-cta .ep-ctas { justify-content: flex-start; }
+  .ep-toc a { flex: 1 1 33%; border-bottom: 1px solid var(--rule); }
+  .ep-toc a:first-child { padding-left: 18px; }
 }
 @media (max-width: 640px) {
   .ep-art { min-height: 0; display: grid; gap: 12px; }
   .ep-card { position: static; width: auto !important; }
+  .ep-cards { grid-template-columns: 1fr; }
   .ep-ladder { grid-template-columns: repeat(2, 1fr); }
-  .ep-build { grid-template-columns: 1fr; }
+  .ep-toc a { flex: 1 1 50%; }
 }
 </style>
 </head>
@@ -170,10 +205,10 @@
   <div class="container">
     <div class="ep-hero-grid">
       <div>
-        <div class="kicker">Selected work / 06 · In-house product</div>
+        <div class="ep-lockup"><svg class="ep-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0B0B0A"/><rect x="7.5" y="9" width="17" height="2.6" rx="1.3" fill="#F7F4ED"/><rect x="7.5" y="14.7" width="11.5" height="2.6" rx="1.3" fill="#00C46A"/><circle cx="22.6" cy="16" r="1.7" fill="#00C46A"/><rect x="7.5" y="20.4" width="14" height="2.6" rx="1.3" fill="#F7F4ED"/></svg><span><b>Evidence Plane</b><small>Selected work / 06 · In-house product</small></span></div>
         <h1>The memory of what was said, and how solid it is.</h1>
         <p class="lead">Recorded calls go in. Cited, graded evidence comes out: every claim linked to the sentence that made it, and graded by what it cost the speaker to say it. All on your own machine.</p>
-        <div class="ep-meta"><span>Local-first</span><span>Consent built in</span><span>Every claim cited</span></div>
+        <div class="ep-meta"><span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/><circle class="acc" cx="12" cy="15.5" r="1.4" stroke="none"/></svg>Local-first</span><span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6z"/><path d="M8.8 12.2l2.2 2.2 4.4-4.6"/></svg>Consent built in</span><span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4.5H5v15h3M16 4.5h3v15h-3"/><path class="acc-line" d="M9 10h6"/><path d="M9 14h4"/></svg>Every claim cited</span></div>
         <div class="ep-ctas">
           <a href="sample/" class="btn btn-primary">Try the guided sample <span class="arrow">→</span></a>
           <a href="/#contact" class="btn btn-ghost">Talk about it <span class="arrow">→</span></a>
@@ -189,6 +224,14 @@
         <div class="ep-card ep-learn"><p class="ep-chips"><span class="ep-chip">E3 · impact</span><span class="ep-kind">Pain</span></p><p class="ep-say">Matching invoices by hand costs two days a month.</p><p class="ep-row"><span>Cites line 4</span><span>Acme Analytics</span></p></div>
       </figure>
     </div>
+    <nav class="ep-toc" aria-label="On this page">
+      <a href="#value"><span class="n">01</span>Value</a>
+      <a href="#use"><span class="n">02</span>How you use it</a>
+      <a href="#journey"><span class="n">03</span>The journey</a>
+      <a href="#grades"><span class="n">04</span>The grades</a>
+      <a href="#bar"><span class="n">05</span>The bar</a>
+      <a href="#dream"><span class="n">06</span>The dream</a>
+    </nav>
   </div>
 </header>
 
@@ -200,6 +243,7 @@
     </div>
     <div class="ep-iov reveal">
       <div class="diag-cell">
+        <span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v3M8.5 20.5h7"/></svg></span>
         <div class="label in">Input</div>
         <h3>What you give it</h3>
         <ul>
@@ -209,6 +253,7 @@
         </ul>
       </div>
       <div class="diag-cell">
+        <span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect class="acc" x="7.4" y="10.7" width="9.2" height="2.6" rx="1" stroke="none"/><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8.5 7.8h7M8.5 12h7M8.5 16.2h4"/></svg></span>
         <div class="label out">Output</div>
         <h3>What comes back</h3>
         <ul>
@@ -219,6 +264,7 @@
         </ul>
       </div>
       <div class="diag-cell good">
+        <span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><circle class="acc" cx="12" cy="12" r="1.7" stroke="none"/></svg></span>
         <div class="label">Value</div>
         <h3>What it is worth</h3>
         <ul>
@@ -232,17 +278,33 @@
   </div>
 </section>
 
+<section class="process" id="use">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">How you use it / 02</div>
+      <h2>Record as you already do. The rest happens on its own.</h2>
+    </div>
+    <div class="ep-cards reveal">
+      <div class="ep-card-cell"><span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle class="acc" cx="12" cy="12" r="3.6" stroke="none"/></svg></span><div class="n">01</div><h3>Record the meeting</h3><p>Use the recording you already make in Zoom, Teams or Meet, or any audio or video file.</p><div class="worth">No new habit</div></div>
+      <div class="ep-card-cell"><span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5A1.5 1.5 0 0 1 5 6h4l2 2.2h8a1.5 1.5 0 0 1 1.5 1.5V18a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 18z"/><path d="M12 10.8v5.4M9.7 13.9L12 16.2l2.3-2.3"/></svg></span><div class="n">02</div><h3>Let it land in your inbox</h3><p>Point your recorder's save folder at the inbox folder, drop the file in, or upload it. It is picked up by itself.</p><div class="worth">No filing</div></div>
+      <div class="ep-card-cell"><span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.4"/><path d="M3 19.5c.6-3.3 3-5.3 6-5.3s5.4 2 6 5.3"/><path d="M15.4 11.2l2 2 4-4.2"/></svg></span><div class="n">03</div><h3>Confirm people were told</h3><p>One short form: who was on the call, and when they were told it was recorded. Where the law asks for consent, record that.</p><div class="worth">Lawful by design</div></div>
+      <div class="ep-card-cell"><span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect class="acc" x="7.4" y="10.7" width="9.2" height="2.6" rx="1" stroke="none"/><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8.5 7.8h7M8.5 12h7M8.5 16.2h4"/></svg></span><div class="n">04</div><h3>Read the evidence</h3><p>The call is transcribed, read, cited and graded on its own. Open any claim on its sentence, and file the call under its company.</p><div class="worth">Answers you can check</div></div>
+    </div>
+    <div class="ep-note reveal"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6z"/><path d="M8.8 12.2l2.2 2.2 4.4-4.6"/></svg><p>Nothing is read before step 03. Withdraw consent later, and that call's evidence leaves every page while the record that you had consent stays.</p></div>
+  </div>
+</section>
+
 <section class="process" id="journey">
   <div class="container">
     <div class="section-head reveal">
-      <div class="kicker">The journey / 02</div>
+      <div class="kicker">The journey / 03</div>
       <h2>From a recording to a decision, in four steps.</h2>
     </div>
     <div class="steps reveal">
-      <div class="step"><div class="n">01</div><h3>Consent first</h3><p>A call waits at the gate until you record that the people on it were told, or agreed. Revoke it, and its evidence leaves every page.</p><div class="when">The gate</div></div>
-      <div class="step"><div class="n">02</div><h3>Transcribe</h3><p>Speech becomes timestamped lines, and each line gets its speaker. It happens on your machine.</p><div class="when">Offline</div></div>
-      <div class="step"><div class="n">03</div><h3>Read and cite</h3><p>A local model writes learnings from the lines. Each one must cite the sentences it came from, or it is refused.</p><div class="when">Every claim cited</div></div>
-      <div class="step"><div class="n">04</div><h3>Grade and decide</h3><p>Each learning gets a grade from E0 to E5. Signals rise and fade by rules, never on the model's say-so, and open decisions wait for your answer.</p><div class="when">E0 – E5</div></div>
+      <div class="step"><span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6z"/><path d="M8.8 12.2l2.2 2.2 4.4-4.6"/></svg></span><div class="n">01</div><h3>Consent first</h3><p>A call waits at the gate until you record that the people on it were told, or agreed.</p><div class="when">The gate</div></div>
+      <div class="step"><span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12h1.2M6.8 8.5v7M10 5.5v13M13.2 9v6M16.4 6.5v11M19.6 10.2v3.6"/></svg></span><div class="n">02</div><h3>Transcribe</h3><p>Speech becomes timestamped lines, and each line gets its speaker. It happens on your machine.</p><div class="when">Offline</div></div>
+      <div class="step"><span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4.5H5v15h3M16 4.5h3v15h-3"/><path class="acc-line" d="M9 10h6"/><path d="M9 14h4"/></svg></span><div class="n">03</div><h3>Read and cite</h3><p>A local model writes learnings from the lines. Each one must cite the sentences it came from, or it is refused.</p><div class="when">Every claim cited</div></div>
+      <div class="step"><span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16"/><rect x="5" y="15" width="3" height="5"/><rect x="10.5" y="11" width="3" height="9"/><rect class="acc" x="16" y="6" width="3" height="14"/></svg></span><div class="n">04</div><h3>Grade and decide</h3><p>Each learning gets a grade from E0 to E5. Signals rise and fade by rules, never on the model's say-so, and open decisions wait for your answer.</p><div class="when">E0 – E5</div></div>
     </div>
     <div class="ep-after reveal">
       <a href="sample/" class="btn btn-ghost">Walk through it in the guided sample <span class="arrow">→</span></a>
@@ -254,7 +316,7 @@
 <section class="diag" id="grades">
   <div class="container">
     <div class="section-head reveal">
-      <div class="kicker">The grades / 03</div>
+      <div class="kicker">The grades / 04</div>
       <h2>Graded by what it cost to say it.</h2>
     </div>
     <ol class="ep-ladder reveal">
@@ -271,36 +333,35 @@
 <section class="proof" id="bar">
   <div class="container">
     <div class="section-head reveal">
-      <div class="kicker">The bar / 04</div>
+      <div class="kicker">The bar / 05</div>
       <h2>Measured, not claimed.</h2>
     </div>
     <div class="proof-grid reveal">
-      <div class="proof-cell"><div class="num">100<span class="unit">%</span></div><div class="lbl">of citations must resolve to a real sentence</div></div>
-      <div class="proof-cell"><div class="num">99<span class="unit">%+</span></div><div class="lbl">the same grade when a learning is graded twice</div></div>
-      <div class="proof-cell"><div class="num">0</div><div class="lbl">bytes leave the machine: the core runs with the network blocked</div></div>
-      <div class="proof-cell"><div class="num">E0<span class="unit">–</span>E5</div><div class="lbl">one frozen rubric for every learning</div></div>
+      <div class="proof-cell"><span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14l4-4"/><path d="M8.6 11.4l-2 2a3.2 3.2 0 0 0 4.5 4.5l2-2"/><path d="M15.4 12.6l2-2a3.2 3.2 0 0 0-4.5-4.5l-2 2"/></svg></span><div class="num">100<span class="unit">%</span></div><div class="lbl">of citations must resolve to a real sentence</div></div>
+      <div class="proof-cell"><span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3.5l3 3-3 3"/><path d="M4 12v-1.5a4 4 0 0 1 4-4h12"/><path d="M7 20.5l-3-3 3-3"/><path d="M20 12v1.5a4 4 0 0 1-4 4H4"/></svg></span><div class="num">99<span class="unit">%+</span></div><div class="lbl">the same grade when a learning is graded twice</div></div>
+      <div class="proof-cell"><span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/><circle class="acc" cx="12" cy="15.5" r="1.4" stroke="none"/></svg></span><div class="num">0</div><div class="lbl">bytes leave the machine: the core has no route out</div></div>
+      <div class="proof-cell"><span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="8" rx="1.5"/><path d="M7 8v3M11 8v4.5M15 8v3M19 8v2"/></svg></span><div class="num">E0<span class="unit">–</span>E5</div><div class="lbl">one frozen rubric for every learning</div></div>
     </div>
     <div class="proof-body reveal">
       <h3>How it is held</h3>
       <div class="proof-text">
-        <p>Each line above is <strong>a test that fails the build</strong>, not a sentence in a deck. Results are kept by version, misses beside passes, so a slip shows up as a finding instead of being smoothed over.</p>
+        <p>Each line above is <strong>held by a test</strong>, not promised in a deck. A result below its bar is reported as a miss, beside the passes, never smoothed over.</p>
         <p>The grader is frozen, so a grade means the same thing next month as it does today. A new grader adds its grades beside the old ones; none is rewritten.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="diag" id="built">
+<section class="process" id="dream">
   <div class="container">
     <div class="section-head reveal">
-      <div class="kicker">Built / 05</div>
-      <h2>Slice by slice, with a person at every gate.</h2>
+      <div class="kicker">The dream / 06</div>
+      <h2>From one founder's memory to a company that remembers.</h2>
     </div>
-    <div class="ep-build reveal">
-      <div><span class="mono">01 · Slices</span><h3>Small, finished pieces</h3><p>Each slice ends in something you can open and run, and the whole test suite must pass before the next one starts.</p></div>
-      <div><span class="mono">02 · Gates</span><h3>A person signs off</h3><p>Four gates, each needing a human sign-off before the build moves on. Nothing promotes itself.</p></div>
-      <div><span class="mono">03 · Decisions</span><h3>Written down first</h3><p>Every judgement call with lasting effect is logged, with its reason, before the code is written.</p></div>
-      <div><span class="mono">04 · The road</span><h3>Local first, cloud later</h3><p>It proves itself on one machine first. The cloud gets the same promise, unchanged, once it has earned it.</p></div>
+    <div class="ep-cards three reveal">
+      <div class="ep-card-cell"><span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="4" rx="1"/><path d="M5 8.5v10a1.5 1.5 0 0 0 1.5 1.5h11a1.5 1.5 0 0 0 1.5-1.5v-10"/><path class="acc-line" d="M10 13h4"/></svg></span><div class="n">01 · One memory</div><h3>Nothing said is lost</h3><p>Every call you record becomes evidence you can check: cited, graded, and kept on a machine you control.</p><div class="worth">Your memory, kept</div></div>
+      <div class="ep-card-cell"><span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11h-9l-4.5 3.5V16H4z"/><path d="M8.8 10.6l2 2 4.2-4.4"/></svg></span><div class="n">02 · Answers you can check</div><h3>Ask, and see the line</h3><p>Ask in plain words, in the app or from your own Claude, and every answer arrives with the sentence that proves it. Each Monday, what changed and what needs you.</p><div class="worth">Decisions stand on evidence</div></div>
+      <div class="ep-card-cell"><span class="ep-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V6.5l8-3V20M12 9h8v11"/><path d="M7 9h2M7 12.5h2M7 16h2M15 12.5h2M15 16h2M3 20h18"/></svg></span><div class="n">03 · A company that remembers</div><h3>Knowledge that stays</h3><p>The same promise, hosted for you, so the evidence follows the team anywhere, with each company's data in a silo of its own.</p><div class="worth">It stays when people leave</div></div>
     </div>
   </div>
 </section>
@@ -308,7 +369,7 @@
 <section class="ep-cta">
   <div class="container ep-cta-grid">
     <div class="reveal">
-      <div class="kicker">See it / 06</div>
+      <div class="kicker">See it / 07</div>
       <h2>See it read a call.</h2>
       <p>The guided sample takes one call from the consent gate to a decision, with made-up companies and people. It runs in your browser.</p>
     </div>
