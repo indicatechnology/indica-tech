@@ -1,0 +1,979 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Board Room · a guided sample</title>
+<meta name="description" content="Sit in on a real Board Room meeting: a founder's question, eight AI advisors writing alone, arguing and voting, and the scored advice that comes out. Replayed in your browser, with the numbers measured.">
+<meta property="og:title" content="Board Room · a guided sample">
+<meta property="og:description" content="Watch eight AI advisors argue one founder's decision, then make the call yourself.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230f1c2e'/%3E%3Ccircle cx='16' cy='17' r='7' fill='none' stroke='%23d9a441' stroke-width='2.4'/%3E%3Ccircle cx='16' cy='6.5' r='2.2' fill='%23d9a441'/%3E%3C/svg%3E">
+<style>
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 600; font-display: swap; src: url("fonts/montserrat-semibold.ttf") format("truetype"); }
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 700; font-display: swap; src: url("fonts/montserrat-bold.ttf") format("truetype"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("fonts/inter-normal-latin.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("fonts/jetbrains-mono-normal-latin.woff2") format("woff2"); }
+:root {
+  --page: #f3f5f9; --band: #e7ecf3; --surface: #ffffff; --tile: #f6f8fb; --track: #e3e8ef;
+  --ink: #0f1c2e; --ink-text: #f7f9fc; --text: #0f1c2e; --muted: #566375; --line: #dce2ea; --edge: #8794a6;
+  --brass: #b9802a; --brass-ink: #7a520f; --brass-soft: #f7ecd6;
+  --go: #1d6f49; --go-soft: #dcefe4; --cond: #7f5600; --cond-soft: #f7ebcf; --reshape: #a44a14; --reshape-soft: #f9e2d2; --dont: #a3241e; --dont-soft: #f6dfdb;
+  --radius: 18px; --radius-sm: 12px;
+  --shadow: 0 1px 2px rgba(15, 28, 46, .05), 0 8px 28px rgba(15, 28, 46, .06);
+  --shadow-md: 0 14px 44px rgba(15, 28, 46, .14);
+  --display: "Montserrat", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--page); color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.6; overflow-wrap: break-word; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+img, svg { display: block; max-width: 100%; }
+h1, h2, h3 { font-family: var(--display); letter-spacing: -.02em; line-height: 1.12; margin: 0; color: var(--ink); }
+p { margin: 0; }
+.muted { color: var(--muted); }
+.skip { position: absolute; left: -999px; top: 8px; z-index: 90; background: var(--ink); color: var(--ink-text); padding: 10px 14px; border-radius: 999px; text-decoration: none; font-weight: 600; }
+.skip:focus { left: 12px; }
+:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; border-radius: 6px; }
+
+/* ---------- the strip back to the site, as on the Evidence Plane sample ---------- */
+.site-strip { background: var(--ink); color: #e9eef6; font-size: .8rem; }
+.site-strip-in { max-width: 1320px; margin: 0 auto; padding: .35rem 20px; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.site-strip a { color: #e9eef6; text-decoration: none; display: inline-flex; align-items: center; gap: .45rem; min-height: 30px; }
+.site-strip a:hover { color: #e7b85e; }
+.site-strip a:focus-visible { outline-color: #e7b85e; }
+.site-strip-right { display: inline-flex; align-items: center; gap: 1.2rem; }
+.site-strip .indica { font-weight: 600; }
+@media (max-width: 640px) { .site-strip-in { padding: .3rem 16px; } .site-strip .hide-sm { display: none; } }
+
+/* ---------- head ---------- */
+.head { position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,.92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.head-inner { max-width: 1320px; margin: 0 auto; display: flex; align-items: center; gap: 18px; padding: 10px 20px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 700; font-size: 1.08rem; letter-spacing: -.01em; white-space: nowrap; }
+.logo svg { width: 30px; height: 30px; }
+.logo em { font-style: normal; color: var(--brass-ink); }
+.nav { display: flex; gap: 2px; flex: 1 1 auto; justify-content: center; flex-wrap: wrap; }
+.nav a { display: inline-flex; align-items: center; gap: 7px; padding: 8px 11px; border-radius: 999px; text-decoration: none; font-size: .92rem; color: var(--muted); white-space: nowrap; }
+.nav a:hover { color: var(--ink); background: var(--tile); }
+.nav a[aria-current="page"] { color: var(--ink-text); background: var(--ink); }
+.nav a .ico { width: 16px; height: 16px; }
+.nav a .tick { display: none; width: 7px; height: 7px; border-radius: 50%; background: var(--brass); }
+.nav a.done .tick { display: inline-block; }
+.head-right { display: flex; align-items: center; gap: 8px; }
+.call-pill { display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--ink); border-radius: 999px; padding: 6px 12px; font-weight: 600; font-size: .88rem; text-decoration: none; white-space: nowrap; }
+.call-pill .state { font-family: var(--mono); font-size: .74rem; font-weight: 500; padding: 2px 8px; border-radius: 999px; background: var(--brass-soft); color: var(--brass-ink); }
+.call-pill.made .state { background: var(--go-soft); color: var(--go); }
+.head .menu-btn { display: none; }
+
+/* ---------- shell ---------- */
+.shell { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 28px; padding: 0 20px; }
+.shell.tour-closed { grid-template-columns: minmax(0, 1fr); }
+main { min-width: 0; padding: 34px 0 60px; outline: none; }
+main:focus, main:focus-visible { outline: none; }
+.route[hidden] { display: none !important; }
+.intro { max-width: 820px; margin-bottom: 26px; }
+.intro .kicker { font-family: var(--mono); font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--brass-ink); margin-bottom: 10px; display: block; }
+.intro h1 { font-size: clamp(2rem, 4.2vw, 3.1rem); margin-bottom: 12px; }
+.intro p { font-size: 1.08rem; color: var(--muted); max-width: 68ch; }
+.hook { display: inline-flex; align-items: center; gap: 10px; margin-top: 16px; background: var(--brass-soft); color: var(--brass-ink); border-radius: 999px; padding: 7px 14px; font-weight: 600; font-size: .95rem; }
+.hook .ico { width: 18px; height: 18px; }
+
+/* ---------- primitives ---------- */
+.card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px 24px; border: 1px solid rgba(15,28,46,.04); }
+.card + .card { margin-top: 16px; }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.card h2 { font-size: 1.12rem; display: flex; align-items: center; gap: 9px; }
+.card h2 .ico { width: 19px; height: 19px; color: var(--brass); }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.grid2 > .card + .card, .grid3 > .card + .card, .seat-grid > .card + .card { margin-top: 0; }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 3px 10px; font-size: .78rem; font-weight: 600; background: var(--tile); color: var(--muted); white-space: nowrap; }
+.pill.info { background: var(--brass-soft); color: var(--brass-ink); }
+.pill.go { background: var(--go-soft); color: var(--go); }
+.pill.cond { background: var(--cond-soft); color: var(--cond); }
+.pill.no { background: var(--dont-soft); color: var(--dont); }
+.pill.ink { background: var(--ink); color: var(--ink-text); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; padding: 11px 20px; font-weight: 600; font-size: .95rem; cursor: pointer; text-decoration: none; border: 1.5px solid var(--ink); transition: transform .15s, background .15s, color .15s; }
+.btn.primary { background: var(--ink); color: var(--ink-text); }
+.btn.primary:hover { background: #1d3150; }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn.ghost:hover { background: var(--tile); }
+.btn.brass { background: var(--brass); border-color: var(--brass); color: #fff; }
+.btn.small { padding: 7px 14px; font-size: .86rem; }
+.btn.wide { width: 100%; }
+.btn:active { transform: translateY(1px); }
+.btn .ico { width: 16px; height: 16px; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+.next-link { margin-top: 26px; display: flex; justify-content: flex-end; }
+.ico { display: inline-block; flex: none; }
+
+/* seat discs */
+.disc { --c: #8794a6; display: inline-grid; place-items: center; flex: none; width: 38px; height: 38px; border-radius: 50%; background: var(--c); color: #fff; font-family: var(--display); font-weight: 700; font-size: .82rem; letter-spacing: .02em; box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px color-mix(in srgb, var(--c) 45%, transparent); }
+.disc.sm { width: 28px; height: 28px; font-size: .66rem; }
+.disc.lg { width: 52px; height: 52px; font-size: 1.05rem; }
+.disc.you { --c: var(--brass); }
+.seat-line { display: flex; align-items: center; gap: 11px; }
+.seat-line b { display: block; font-size: .98rem; }
+.seat-line span.sub { display: block; font-size: .82rem; color: var(--muted); }
+
+/* ---------- welcome ---------- */
+.hero { text-align: center; max-width: 920px; margin: 10px auto 26px; }
+.hero h1 { font-size: clamp(2.3rem, 5.6vw, 4.2rem); line-height: 1.04; letter-spacing: -.035em; }
+.hero h1 span { color: var(--brass); }
+.hero p { margin: 16px auto 0; max-width: 62ch; font-size: 1.12rem; color: var(--muted); }
+.table-figure { margin: 0 auto; max-width: 760px; }
+.table-figure figcaption { text-align: center; font-size: .86rem; color: var(--muted); margin-top: 6px; }
+.paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 26px; }
+.path { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+.path .media { background: linear-gradient(135deg, #eef2f8, #e4eaf3); display: grid; place-items: center; padding: 14px 18px; min-height: 172px; }
+.path .media svg { width: 100%; max-width: 330px; height: auto; max-height: 200px; }
+.path .body { padding: 18px 22px 22px; display: flex; flex-direction: column; flex: 1; }
+.path .tag { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.path h2 { font-size: 1.4rem; margin-bottom: 6px; }
+.path .actions { margin-top: auto; padding-top: 16px; }
+.band { background: var(--band); border-radius: 26px; padding: 34px 28px 30px; margin-top: 26px; text-align: center; }
+.band h2 { font-size: clamp(1.7rem, 3.2vw, 2.4rem); }
+.band > p { color: var(--muted); margin: 8px auto 0; max-width: 64ch; }
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 22px 0 18px; text-align: left; }
+.tile { background: var(--surface); border-radius: var(--radius-sm); padding: 16px 18px; box-shadow: var(--shadow); }
+.tile .big { font-family: var(--display); font-weight: 700; font-size: 2rem; letter-spacing: -.03em; line-height: 1.05; }
+.tile .big small { font-size: 1.1rem; color: var(--brass); }
+.tile b { display: block; margin-top: 6px; font-size: .95rem; }
+.tile span { display: block; font-size: .84rem; color: var(--muted); }
+.names-strip { display: flex; gap: 16px; align-items: flex-start; margin-top: 22px; background: var(--surface); border-radius: var(--radius); padding: 18px 22px; border-left: 4px solid var(--brass); box-shadow: var(--shadow); }
+.names-strip .ico { width: 26px; height: 26px; color: var(--brass); margin-top: 2px; }
+.names-strip p { font-size: .95rem; color: var(--muted); }
+.names-strip b { color: var(--ink); }
+
+/* ---------- question ---------- */
+.ask-bubble { position: relative; background: var(--ink); color: #e9eef6; border-radius: 22px 22px 22px 6px; padding: 22px 24px; font-size: 1.02rem; line-height: 1.65; }
+.ask-bubble mark { background: rgba(217, 164, 65, .28); color: #fff; border-radius: 4px; padding: 0 3px; box-shadow: inset 0 -2px 0 var(--brass); }
+.ask-who { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-size: .86rem; color: var(--muted); }
+.opts-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.opt-tile { border: 1.5px solid var(--line); border-radius: 14px; padding: 12px 14px; display: flex; gap: 12px; align-items: flex-start; background: var(--tile); }
+.opt-tile .id { font-family: var(--display); font-weight: 700; font-size: 1.1rem; width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--surface); border: 1.5px solid var(--line); flex: none; }
+.opt-tile.lean { border-color: var(--brass); background: var(--brass-soft); }
+.opt-tile.lean .id { border-color: var(--brass); color: var(--brass-ink); }
+.opt-tile small { display: block; font-family: var(--mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--brass-ink); margin-top: 3px; }
+.weights { display: grid; gap: 10px; }
+.weight-row { display: grid; grid-template-columns: minmax(0, 1.2fr) 74px minmax(0, 2fr); gap: 14px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.weight-row:last-child { border-bottom: 0; }
+.dots { display: flex; gap: 5px; }
+.dots i { width: 14px; height: 14px; border-radius: 4px; background: var(--track); }
+.dots i.on { background: var(--brass); }
+.weight-row p { font-size: .88rem; color: var(--muted); }
+.brief-text { font-size: 1rem; color: var(--text); }
+.assume { display: flex; gap: 10px; align-items: flex-start; font-size: .95rem; padding: 10px 12px; background: var(--tile); border-radius: 12px; margin-top: 10px; }
+.assume .ico { width: 18px; height: 18px; color: var(--brass); margin-top: 3px; }
+
+/* ---------- rounds ---------- */
+.stage { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; align-items: stretch; }
+.stage .card { display: flex; flex-direction: column; }
+.now-speaking { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.now-speaking .say { font-size: 1.12rem; line-height: 1.5; color: var(--ink); min-height: 4.5em; }
+.now-speaking .say .caret { display: inline-block; width: 2px; height: 1.1em; background: var(--brass); vertical-align: -3px; margin-left: 2px; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.progress { height: 6px; background: var(--track); border-radius: 999px; overflow: hidden; margin-top: auto; }
+.progress span { display: block; height: 100%; width: 0; background: var(--brass); transition: width .35s; }
+.seat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 16px; }
+.seat-card { padding: 18px 20px; transition: opacity .35s, transform .35s; }
+.seat-card.pending { opacity: .5; transform: translateY(6px); }
+.seat-card .top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.seat-card .call { font-size: 1rem; color: var(--ink); font-weight: 500; }
+.seat-card .q { font-size: .9rem; color: var(--muted); margin-top: 8px; }
+.seat-card .q b { color: var(--ink); font-weight: 600; }
+.mini-scores { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-top: 12px; }
+.mini-scores div { font-family: var(--mono); font-size: .74rem; color: var(--muted); }
+.mini-scores .bar { height: 6px; border-radius: 999px; background: var(--track); margin-top: 3px; overflow: hidden; }
+.mini-scores .bar span { display: block; height: 100%; background: var(--edge); }
+.mini-scores .top-opt .bar span { background: var(--brass); }
+.mini-scores .lean-opt { color: var(--brass-ink); }
+details.full { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
+details.full summary { cursor: pointer; font-size: .86rem; font-weight: 600; color: var(--ink); list-style: none; display: inline-flex; align-items: center; gap: 6px; }
+details.full summary::-webkit-details-marker { display: none; }
+details.full summary::before { content: "+"; font-family: var(--mono); color: var(--brass); }
+details.full[open] summary::before { content: "−"; }
+details.full .text { white-space: pre-line; font-size: .86rem; color: var(--muted); margin-top: 8px; max-height: 340px; overflow: auto; padding-right: 6px; }
+.heat { width: 100%; border-collapse: separate; border-spacing: 4px; font-size: .86rem; }
+.heat th { font-weight: 600; text-align: left; color: var(--muted); font-size: .8rem; padding: 0 4px; }
+.heat th.opt { text-align: center; }
+.heat td { text-align: center; border-radius: 8px; padding: 7px 0; font-family: var(--mono); font-weight: 500; }
+.heat td.seat { text-align: left; padding: 0 4px; font-family: var(--sans); font-weight: 600; white-space: nowrap; }
+.heat tr.total td { font-weight: 700; outline: 1.5px solid var(--ink); outline-offset: -1px; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: .8rem; color: var(--muted); margin-top: 10px; align-items: center; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -2px; margin-right: 5px; }
+
+/* sticking points */
+.crux { padding: 20px 22px; }
+.crux h3 { font-size: 1.12rem; line-height: 1.35; margin-bottom: 14px; }
+.tug { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.side { border-radius: 14px; padding: 12px 14px; background: var(--tile); border: 1.5px solid var(--line); }
+.side.win { background: var(--brass-soft); border-color: rgba(185,128,42,.45); }
+.side p { font-size: .92rem; margin-bottom: 10px; }
+.side .who { display: flex; flex-wrap: wrap; gap: 6px; min-height: 28px; align-items: center; }
+.side .none { font-size: .8rem; color: var(--edge); font-style: italic; }
+.tugbar { display: flex; height: 8px; border-radius: 999px; overflow: hidden; margin-top: 14px; background: var(--track); }
+.tugbar span:first-child { background: var(--brass); }
+.tugbar span:last-child { background: var(--edge); }
+.pressure { display: grid; gap: 10px; }
+.pressure div { display: flex; gap: 12px; align-items: flex-start; font-size: .95rem; }
+
+/* debate */
+.net-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: center; }
+.push { display: grid; gap: 12px; }
+.push .row { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: flex-start; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.push .row:last-child { border-bottom: 0; padding-bottom: 0; }
+.push .row p { font-size: .92rem; color: var(--muted); }
+.push .row p b { color: var(--ink); }
+.concede { margin-top: 6px; font-size: .88rem; color: var(--go); }
+.slope-note { font-size: .88rem; color: var(--muted); margin-top: 8px; }
+
+/* vote */
+.doc { background: #fffdf8; border: 1px solid #efe6d3; border-radius: 16px; padding: 22px 26px; box-shadow: inset 0 0 0 6px #fbf6ea; }
+.doc .doc-k { font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--brass-ink); }
+.doc p.rec { font-size: 1.05rem; margin: 10px 0 14px; color: var(--ink); }
+.doc ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: .92rem; color: var(--muted); }
+.votes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.vote { border-radius: 14px; background: var(--tile); padding: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+.vote .score { font-family: var(--display); font-weight: 700; font-size: 1.3rem; }
+.vote .score small { font-size: .8rem; color: var(--muted); font-weight: 600; }
+.tally { display: flex; height: 14px; border-radius: 999px; overflow: hidden; margin: 6px 0 10px; }
+.tally span { display: block; height: 100%; }
+.amend { display: grid; gap: 12px; }
+.amend div { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: flex-start; font-size: .92rem; }
+
+/* advice */
+.advice-hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: start; }
+.stamp { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 132px; height: 132px; border-radius: 50%; border: 3px solid var(--cond); color: var(--cond); text-align: center; font-family: var(--display); font-weight: 700; font-size: .86rem; line-height: 1.15; letter-spacing: .04em; transform: rotate(-8deg); background: var(--cond-soft); box-shadow: inset 0 0 0 5px #fff, inset 0 0 0 7px var(--cond); padding: 12px; }
+.stamp.go { border-color: var(--go); color: var(--go); background: var(--go-soft); box-shadow: inset 0 0 0 5px #fff, inset 0 0 0 7px var(--go); }
+.stamp .opt { font-size: 2rem; letter-spacing: 0; }
+.pick-label { font-family: var(--mono); font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brass-ink); }
+.call-big { font-family: var(--display); font-weight: 600; font-size: clamp(1.25rem, 2.2vw, 1.6rem); line-height: 1.3; margin-top: 8px; letter-spacing: -.015em; }
+.opts-bars { display: grid; gap: 10px; margin-top: 20px; }
+.ob { display: grid; grid-template-columns: 30px minmax(0, 1fr) 44px; gap: 12px; align-items: center; }
+.ob .id { font-family: var(--display); font-weight: 700; }
+.ob .lbl { font-size: .92rem; }
+.ob .bar { height: 10px; border-radius: 999px; background: var(--track); margin-top: 5px; overflow: hidden; }
+.ob .bar span { display: block; height: 100%; background: var(--edge); border-radius: 999px; }
+.ob.top .bar span { background: var(--brass); }
+.ob.top .lbl { font-weight: 600; }
+.ob .sc { font-family: var(--mono); font-weight: 500; text-align: right; }
+.ob .leanflag { font-family: var(--mono); font-size: .68rem; color: var(--brass-ink); margin-left: 8px; text-transform: uppercase; letter-spacing: .06em; }
+.figs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+.figs div { background: var(--tile); border-radius: 12px; padding: 10px 12px; }
+.figs dt { font-size: .76rem; color: var(--muted); }
+.figs dd { margin: 2px 0 0; font-family: var(--display); font-weight: 700; font-size: 1.15rem; }
+.why { display: grid; gap: 12px; }
+.why div { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: flex-start; font-size: .94rem; }
+.minority { border-left: 4px solid var(--brass); padding: 4px 0 4px 16px; }
+.minority q { display: block; font-family: var(--display); font-weight: 600; font-size: 1.18rem; line-height: 1.4; color: var(--ink); quotes: "\201C" "\201D"; }
+.minority .by { display: flex; gap: 10px; align-items: center; margin-top: 12px; font-size: .88rem; color: var(--muted); }
+.minority .would { margin-top: 12px; font-size: .92rem; }
+.checks { display: grid; gap: 8px; }
+.checks label { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: flex-start; font-size: .93rem; cursor: pointer; padding: 8px 10px; border-radius: 10px; }
+.checks label:hover { background: var(--tile); }
+.checks input { width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--ink); }
+.checks input:checked + span { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--edge); }
+.timeline { position: relative; display: grid; gap: 14px; padding-left: 26px; }
+.timeline::before { content: ""; position: absolute; left: 8px; top: 6px; bottom: 6px; width: 2px; background: var(--line); }
+.timeline div { position: relative; font-size: .93rem; }
+.timeline div::before { content: ""; position: absolute; left: -24px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--surface); border: 3px solid var(--brass); }
+.timeline b { display: block; font-family: var(--mono); font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; color: var(--brass-ink); }
+.tkr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.tkr div { border-radius: 14px; padding: 14px 16px; background: var(--tile); }
+.tkr .ico { width: 20px; height: 20px; color: var(--brass); margin-bottom: 8px; }
+.tkr b { display: block; font-size: .92rem; margin-bottom: 4px; }
+.tkr p { font-size: .88rem; color: var(--muted); }
+.yourcall { background: var(--ink); color: var(--ink-text); border: 0; }
+.yourcall h2 { color: #fff; }
+.yourcall h2 .ico { color: var(--brass); }
+.yourcall p { color: #c6d0de; }
+.yourcall .btn.ghost { color: #fff; border-color: rgba(255,255,255,.5); }
+.yourcall .btn.ghost:hover { background: rgba(255,255,255,.08); }
+.yourcall .btn.brass:hover { background: #a46f1f; }
+.call-done { margin-top: 16px; background: rgba(255,255,255,.07); border-radius: 14px; padding: 14px 16px; display: none; }
+.call-done.on { display: block; }
+.call-done b { color: #fff; }
+
+/* numbers */
+.chart-card svg text { font-family: var(--sans); }
+.waffle { display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 3px; }
+.waffle i { aspect-ratio: 1; border-radius: 3px; background: var(--track); }
+.waffle i.on { background: var(--ink); }
+.waffle.brass i.on { background: var(--brass); }
+.stat-big { font-family: var(--display); font-weight: 700; font-size: 2.2rem; letter-spacing: -.03em; line-height: 1; }
+.stat-big small { font-size: 1.1rem; color: var(--muted); font-weight: 600; }
+.repeat-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.repeat-row:last-child { border-bottom: 0; }
+.picks { display: flex; gap: 8px; }
+.picks span { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 700; background: var(--ink); color: #fff; }
+.picks span.odd { background: var(--surface); color: var(--ink); border: 2px dashed var(--edge); }
+.runs { width: 100%; border-collapse: collapse; font-size: .86rem; }
+.runs th { text-align: left; font-weight: 600; color: var(--muted); font-size: .78rem; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.runs td { padding: 9px 10px 9px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.runs td.n { font-family: var(--mono); white-space: nowrap; }
+.scroll { overflow-x: auto; }
+.miss { display: flex; gap: 12px; align-items: flex-start; background: var(--dont-soft); color: #5c1813; border-radius: 14px; padding: 14px 16px; font-size: .93rem; }
+.miss .ico { width: 20px; height: 20px; color: var(--dont); margin-top: 2px; }
+
+/* names */
+.name-card { display: flex; flex-direction: column; gap: 10px; }
+.name-card .pillar { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brass-ink); }
+.name-card q { font-weight: 500; quotes: none; }
+.name-card .from { font-size: .86rem; color: var(--muted); margin-top: auto; padding-top: 6px; border-top: 1px dashed var(--line); }
+.notice { background: var(--surface); border-radius: var(--radius); padding: 24px 26px; border-left: 5px solid var(--brass); box-shadow: var(--shadow); }
+.notice p + p { margin-top: 10px; }
+
+/* ---------- tour ---------- */
+.tour { position: sticky; top: 74px; align-self: start; margin-top: 34px; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 18px 18px 16px; max-height: calc(100vh - 96px); overflow: auto; }
+.shell.tour-closed .tour { display: none; }
+.tour-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.tour-head h2 { font-size: 1.1rem; }
+.tour ol { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 4px; }
+.tour li button { width: 100%; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: center; text-align: left; background: none; border: 0; border-radius: 10px; padding: 7px 8px; cursor: pointer; font-size: .9rem; color: var(--muted); }
+.tour li button:hover { background: var(--tile); }
+.tour li .n { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-family: var(--mono); font-size: .72rem; border: 1.5px solid var(--line); background: var(--surface); }
+.tour li.done .n { background: var(--ink); border-color: var(--ink); color: #fff; }
+.tour li.cur button { background: var(--brass-soft); color: var(--ink); font-weight: 600; }
+.tour li.cur .n { border-color: var(--brass); }
+.step-text { margin-top: 14px; background: var(--tile); border-radius: 14px; padding: 14px 15px; font-size: .92rem; }
+.step-text b { display: block; font-family: var(--display); font-size: 1rem; margin-bottom: 4px; }
+.tour .actions { margin-top: 12px; }
+.tour .actions .btn { flex: 1; }
+.reopen-tour { position: fixed; right: 18px; bottom: 18px; z-index: 30; box-shadow: var(--shadow-md); }
+.reopen-tour[hidden] { display: none; }
+.toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: var(--ink); color: #fff; border-radius: 999px; padding: 10px 18px; font-size: .92rem; z-index: 60; box-shadow: var(--shadow-md); }
+.toast[hidden] { display: none; }
+
+.foot { margin-top: 34px; font-size: .84rem; color: var(--muted); }
+.byline { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: .86rem; color: var(--muted); }
+.byline a { color: var(--ink); }
+.byline .indica { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: none; }
+.textlink { background: none; border: 0; padding: 0; color: var(--ink); text-decoration: underline; cursor: pointer; font-size: inherit; }
+
+@media (max-width: 1320px) { .nav a .ico { display: none; } .nav a { padding: 8px 9px; } }
+@media (max-width: 1180px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .tour { position: fixed; right: 14px; bottom: 14px; top: auto; width: min(360px, calc(100vw - 28px)); max-height: 72vh; z-index: 35; margin: 0; }
+  .nav a .lbl-long { display: none; }
+}
+@media (max-width: 960px) {
+  .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-bottom: 1px solid var(--line); padding: 10px 14px 14px; flex-direction: column; align-items: stretch; }
+  .nav.open { display: flex; }
+  .nav a { border-radius: 12px; }
+  .head .menu-btn { display: inline-flex; }
+  .paths, .grid2, .grid3, .stage, .net-wrap, .advice-hero { grid-template-columns: minmax(0, 1fr); }
+  .tiles, .figs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .advice-hero .stamp { justify-self: start; }
+}
+@media (max-width: 640px) {
+  .head-inner { padding: 8px 14px; gap: 10px; }
+  .logo span { font-size: .98rem; }
+  .call-pill .lbl { display: none; }
+  .shell { padding: 0 16px; }
+  main { padding-top: 22px; }
+  .seat-grid, .opts-tiles, .tug, .tkr, .votes { grid-template-columns: minmax(0, 1fr); }
+  .votes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .weight-row { grid-template-columns: minmax(0, 1fr) 70px; }
+  .weight-row p { grid-column: 1 / -1; }
+  .card { padding: 18px 16px; }
+  .band { padding: 26px 16px 22px; border-radius: 20px; }
+  .waffle { grid-template-columns: repeat(15, minmax(0, 1fr)); }
+  .repeat-row { grid-template-columns: minmax(0, 1fr); }
+  /* on a phone the tour is a small bar: this stop and Back/Next; the full list stays on wider screens */
+  .tour { left: 10px; right: 10px; bottom: 10px; width: auto; padding: 12px 14px; max-height: 46vh; }
+  .tour > p.muted, .tour ol { display: none; }
+  .tour .step-text { margin-top: 8px; padding: 10px 12px; font-size: .86rem; }
+  .tour .actions { margin-top: 8px; }
+  main { padding-bottom: 230px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="site-strip" aria-label="Indica Tech">
+  <div class="site-strip-in">
+    <a href="../"><span aria-hidden="true">←</span> Back to the project</a>
+    <span class="site-strip-right"><a class="hide-sm" href="https://indica-tech.com/work/">All work</a><a class="indica" href="https://indica-tech.com/"><svg viewBox="0 0 100 100" width="18" height="18" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00C46A"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg><span>Indica Tech</span></a></span>
+  </div>
+</nav>
+
+<header class="head">
+  <div class="head-inner">
+    <a class="logo" href="#welcome" aria-label="Board Room, start">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0f1c2e"/><ellipse cx="16" cy="18" rx="8.5" ry="5.6" fill="none" stroke="#d9a441" stroke-width="2.2"/><circle cx="16" cy="7.6" r="2.3" fill="#d9a441"/><circle cx="6.6" cy="13" r="1.6" fill="#f7f9fc"/><circle cx="25.4" cy="13" r="1.6" fill="#f7f9fc"/><circle cx="6.6" cy="23" r="1.6" fill="#f7f9fc"/><circle cx="25.4" cy="23" r="1.6" fill="#f7f9fc"/><circle cx="16" cy="27.2" r="1.6" fill="#f7f9fc"/></svg>
+      <span>Board <em>Room</em></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="The meeting, step by step">
+      <a href="#question" data-route="question" data-icon="ask"><span class="tick"></span>Question</a>
+      <a href="#first-take" data-route="first-take" data-icon="pen"><span class="tick"></span>First take</a>
+      <a href="#sticking" data-route="sticking" data-icon="split"><span class="tick"></span>Sticking points</a>
+      <a href="#debate" data-route="debate" data-icon="debate"><span class="tick"></span>Debate</a>
+      <a href="#vote" data-route="vote" data-icon="vote"><span class="tick"></span>Vote</a>
+      <a href="#advice" data-route="advice" data-icon="star"><span class="tick"></span>Advice</a>
+      <a href="#numbers" data-route="numbers" data-icon="gauge"><span class="tick"></span>Numbers</a>
+    </nav>
+    <div class="head-right">
+      <a class="call-pill" id="call-pill" href="#advice"><span class="lbl">Your call</span><span class="state" id="call-state">not made</span></a>
+      <button type="button" class="btn ghost small menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
+    </div>
+  </div>
+</header>
+
+<div class="shell" id="shell">
+  <main id="main" tabindex="-1">
+
+    <!-- welcome -->
+    <section class="route" data-route="welcome" aria-labelledby="h-welcome">
+      <div class="hero">
+        <h1 id="h-welcome">You run it alone. <span>You don't have to decide alone.</span></h1>
+        <p>Bring the call you keep putting off. Eight AI advisors, each built from a well-known operator's public work, write alone, argue it out, then vote. You get a scored answer, the strongest dissent, and what to do this week. Below is a real meeting, replayed in your browser.</p>
+      </div>
+      <figure class="table-figure" id="hero-table" aria-label="The board: eight advisors around a table, with you at the head"></figure>
+      <div class="paths">
+        <article class="card path">
+          <div class="media" aria-hidden="true" id="media-tour"></div>
+          <div class="body">
+            <div class="tag"><span class="pill info" id="pill-minutes">About 5 minutes</span><span class="pill">A real meeting</span></div>
+            <h2>Sit in on a real meeting</h2>
+            <p class="muted">A founder's bank pilot, start to finish: the question, the first take, the fight, the vote and the advice. Then you make the final call.</p>
+            <div class="actions"><a class="btn primary wide" href="#question" data-start-tour>Start the tour</a></div>
+          </div>
+        </article>
+        <article class="card path">
+          <div class="media" aria-hidden="true" id="media-advice"></div>
+          <div class="body">
+            <div class="tag"><span class="pill info">One screen</span><span class="pill">Scored</span></div>
+            <h2>Skip to the advice</h2>
+            <p class="muted">What the board told the founder: every option scored, the advisor who disagreed, the conditions, and the first five days.</p>
+            <div class="actions"><a class="btn ghost wide" href="#advice">Show the advice</a></div>
+          </div>
+        </article>
+      </div>
+      <section class="band" aria-labelledby="h-measured">
+        <h2 id="h-measured">Measured, not claimed.</h2>
+        <p>Seven meetings on one machine, on a model that runs on that machine. A miss is shown as a miss.</p>
+        <div class="tiles" id="welcome-tiles"></div>
+        <a class="btn ghost" href="#numbers">See the numbers</a>
+      </section>
+      <div class="names-strip"><span data-icon="mask"></span><p><b>The eight names are simulations.</b> Each advisor is built only from that person's public work. They are not those people, and none of them is connected with this product or has endorsed it. <a href="#names">About the names</a></p></div>
+    </section>
+
+    <!-- question -->
+    <section class="route" data-route="question" aria-labelledby="h-question" hidden>
+      <div class="intro"><span class="kicker">Step 1 of 6 · The question</span><h1 id="h-question">It starts with a question you keep putting off.</h1><p>A founder types it the way they would say it: messy, with numbers, and with a lean. The Chair, who runs the meeting, turns it into a brief and options the board can score.</p><span class="hook"><span data-icon="flag"></span>The founder leans towards A. Watch what the board does with that.</span></div>
+      <div class="grid2">
+        <section class="card" aria-labelledby="h-asked">
+          <div class="card-head"><h2 id="h-asked" data-icon="ask">Asked</h2><span class="pill">A sample decision</span></div>
+          <div class="ask-bubble" id="ask-bubble"></div>
+          <div class="ask-who"><span class="disc sm you">YOU</span><span>The founder, a six-person AI startup. No real company is behind this sample.</span></div>
+        </section>
+        <section class="card" aria-labelledby="h-options">
+          <div class="card-head"><h2 id="h-options" data-icon="list">The options</h2><span class="pill info">Always includes "no"</span></div>
+          <div class="opts-tiles" id="opts-tiles"></div>
+          <p class="muted" style="font-size:.88rem;margin-top:12px">The Chair always adds "don't do it" and "keep doing what you do now", so the board is free to say no.</p>
+          <div id="assumed"></div>
+        </section>
+      </div>
+      <section class="card" aria-labelledby="h-weights">
+        <div class="card-head"><h2 id="h-weights" data-icon="scale">Who matters most here</h2><span class="pill">Set by the Chair</span></div>
+        <p class="muted" style="margin-bottom:12px">Every advisor scores every option, but the ones whose area the decision touches most count for more. Operations and money lead on this one.</p>
+        <div class="weights" id="weights"></div>
+      </section>
+      <div class="next-link"><a class="btn primary" href="#first-take">Next: the first take <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- first take -->
+    <section class="route" data-route="first-take" aria-labelledby="h-first" hidden>
+      <div class="intro"><span class="kicker">Step 2 of 6 · Round one</span><h1 id="h-first">Each advisor answers alone first.</h1><p>Nobody sees anyone else's answer, so nobody anchors on the loudest voice. Each one picks a side, scores every option out of 10, and asks the founder one hard question.</p><span class="hook"><span data-icon="flag"></span><span id="hook-first"></span></span></div>
+      <div class="stage">
+        <section class="card" aria-labelledby="h-table1"><div class="card-head"><h2 id="h-table1" data-icon="table">The table</h2><button type="button" class="btn primary small" id="play-1"><span data-icon="play"></span>Play the round</button></div><div id="table-1"></div></section>
+        <section class="card" aria-labelledby="h-now1"><div class="card-head"><h2 id="h-now1" data-icon="pen">Now speaking</h2><span class="pill" id="count-1">0 of 8</span></div><div class="now-speaking"><div class="seat-line" id="who-1"></div><p class="say" id="say-1">Press play to hear each advisor's call, one at a time.</p><div class="progress"><span id="bar-1"></span></div></div></section>
+      </div>
+      <div class="seat-grid" id="cards-1"></div>
+      <section class="card" aria-labelledby="h-heat1" style="margin-top:16px"><div class="card-head"><h2 id="h-heat1" data-icon="grid">Where they started</h2><span class="pill">Scores out of 10</span></div><div class="scroll"><table class="heat" id="heat-1"></table></div><div class="legend"><span><i style="background:#0f1c2e"></i>high score</span><span><i style="background:#e3e8ef"></i>low score</span><span>The last row is the weighted score the software works out. The model never sets it.</span></div></section>
+      <div class="next-link"><a class="btn primary" href="#sticking">Next: what splits them <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- sticking points -->
+    <section class="route" data-route="sticking" aria-labelledby="h-sticking" hidden>
+      <div class="intro"><span class="kicker">Step 3 of 6 · Sticking points</span><h1 id="h-sticking">Before anyone argues, the Chair names what splits them.</h1><p>The Chair reads all eight first takes and pulls out the questions the advice really turns on. Each advisor lands on one side.</p><span class="hook"><span data-icon="flag"></span>They agreed on what to do. They split on how to say it.</span></div>
+      <div id="cruxes"></div>
+      <section class="card" aria-labelledby="h-pressure"><div class="card-head"><h2 id="h-pressure" data-icon="bolt">When everyone agrees, someone has to push</h2><span class="pill info">Agreement check</span></div><p class="muted" style="margin-bottom:14px" id="unanimous-note"></p><div class="pressure" id="pressure"></div></section>
+      <div class="next-link"><a class="btn primary" href="#debate">Next: the debate <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- debate -->
+    <section class="route" data-route="debate" aria-labelledby="h-debate" hidden>
+      <div class="intro"><span class="kicker">Step 4 of 6 · Round two</span><h1 id="h-debate">Then they argue.</h1><p>Each advisor names the one argument they disagree with most, says what they concede, and scores the options again.</p><span class="hook"><span data-icon="flag"></span><span id="hook-debate"></span></span></div>
+      <div class="net-wrap">
+        <section class="card" aria-labelledby="h-net"><div class="card-head"><h2 id="h-net" data-icon="debate">Who pushed back on whom</h2></div><div id="net"></div><p class="slope-note">Each arrow points from an advisor to the one whose argument they disagreed with most.</p></section>
+        <section class="card" aria-labelledby="h-slope"><div class="card-head"><h2 id="h-slope" data-icon="trend">Did anyone change their mind?</h2></div><div id="slope"></div><p class="slope-note" id="slope-note"></p></section>
+      </div>
+      <section class="card" aria-labelledby="h-push"><div class="card-head"><h2 id="h-push" data-icon="quote">In their words</h2><span class="pill">Round two, shortened</span></div><div class="push" id="push"></div></section>
+      <div class="next-link"><a class="btn primary" href="#vote">Next: the vote <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- vote -->
+    <section class="route" data-route="vote" aria-labelledby="h-vote" hidden>
+      <div class="intro"><span class="kicker">Step 5 of 6 · Round three</span><h1 id="h-vote">The Chair drafts a plan. Every advisor votes on it.</h1><p>Endorse it, endorse it with an amendment, or dissent. Each gives the plan a final score, and every amendment is either adopted or answered.</p><span class="hook"><span data-icon="flag"></span><span id="hook-vote"></span></span></div>
+      <div class="grid2">
+        <section class="card" aria-labelledby="h-draft"><div class="card-head"><h2 id="h-draft" data-icon="doc">The draft</h2></div><div class="doc" id="draft"></div></section>
+        <section class="card" aria-labelledby="h-votes"><div class="card-head"><h2 id="h-votes" data-icon="vote">The votes</h2></div><div class="tally" id="tally"></div><div class="legend" id="tally-legend" style="margin:0 0 14px"></div><div class="votes" id="votes"></div></section>
+      </div>
+      <section class="card" aria-labelledby="h-amend"><div class="card-head"><h2 id="h-amend" data-icon="pen">What they asked to change</h2></div><div class="amend" id="amend"></div></section>
+      <div class="next-link"><a class="btn primary" href="#advice">Next: the advice <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- advice -->
+    <section class="route" data-route="advice" aria-labelledby="h-advice" hidden>
+      <div class="intro"><span class="kicker">Step 6 of 6 · The advice</span><h1 id="h-advice">What the founder takes away.</h1><p>One page they can act on: the call, a score for every option, the strongest dissent, the conditions, and what to do on day one. The scores come from the advisors' own; the model writes the words, never the numbers.</p></div>
+      <section class="card" aria-labelledby="h-verdict">
+        <div class="advice-hero"><div><span class="pick-label" id="pick-label"></span><h2 class="call-big" id="h-verdict"></h2></div><div class="stamp" id="stamp"></div></div>
+        <div class="opts-bars" id="opts-bars"></div>
+        <dl class="figs" id="figs"></dl>
+      </section>
+      <div class="grid2">
+        <section class="card" aria-labelledby="h-why"><div class="card-head"><h2 id="h-why" data-icon="star">Why the board landed here</h2></div><div class="why" id="why"></div></section>
+        <section class="card" aria-labelledby="h-minority"><div class="card-head"><h2 id="h-minority" data-icon="quote">The minority report</h2><span class="pill info">Kept on purpose</span></div><div class="minority" id="minority"></div></section>
+      </div>
+      <div class="grid2">
+        <section class="card" aria-labelledby="h-cond"><div class="card-head"><h2 id="h-cond" data-icon="check">Conditions</h2><span class="pill">Tick them off</span></div><div class="checks" id="conds"></div></section>
+        <section class="card" aria-labelledby="h-next"><div class="card-head"><h2 id="h-next" data-icon="calendar">What to do next</h2></div><div class="timeline" id="steps"></div></section>
+      </div>
+      <section class="card" aria-labelledby="h-tkr"><div class="card-head"><h2 id="h-tkr" data-icon="flask">Find out early if it was wrong</h2></div><div class="tkr" id="tkr"></div></section>
+      <section class="card yourcall" aria-labelledby="h-yourcall">
+        <div class="card-head"><h2 id="h-yourcall" data-icon="gavel">Your call</h2></div>
+        <p>The board advises. The founder decides. In the room, this is where you record what you will actually do, and set a date to come back.</p>
+        <div class="actions" id="call-actions">
+          <button type="button" class="btn brass" data-call="take">Take the advice</button>
+          <button type="button" class="btn ghost" data-call="change">Change it</button>
+          <button type="button" class="btn ghost" data-call="overrule">Overrule it</button>
+        </div>
+        <div class="call-done" id="call-done" role="status" aria-live="polite"></div>
+      </section>
+      <section class="card" aria-labelledby="h-quick"><div class="card-head"><h2 id="h-quick" data-icon="bolt">And a quick meeting</h2><span class="pill info" id="quick-time"></span></div><div id="quick"></div></section>
+      <div class="next-link"><a class="btn primary" href="#numbers">Next: the numbers <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- numbers -->
+    <section class="route" data-route="numbers" aria-labelledby="h-numbers" hidden>
+      <div class="intro"><span class="kicker">Benchmarks</span><h1 id="h-numbers">Measured, not claimed.</h1><p id="numbers-intro"></p><span class="hook"><span data-icon="flag"></span><span id="hook-numbers"></span></span></div>
+      <div class="grid2">
+        <section class="card chart-card" aria-labelledby="h-time"><div class="card-head"><h2 id="h-time" data-icon="clock">Time to advice</h2><span class="pill">Seven meetings</span></div><div id="time-chart"></div></section>
+        <section class="card" aria-labelledby="h-repeat"><div class="card-head"><h2 id="h-repeat" data-icon="repeat">Same question, same answer?</h2></div><div id="repeats"></div></section>
+      </div>
+      <div class="grid3" style="margin-top:16px">
+        <section class="card" aria-labelledby="h-complete"><div class="card-head"><h2 id="h-complete" data-icon="check">Every answer complete</h2></div><div class="stat-big" id="cards-stat"></div><p class="muted" style="margin:6px 0 12px;font-size:.9rem">Every advisor scored every option, and every vote-round answer voted.</p><div class="waffle" id="waffle-cards" aria-hidden="true"></div></section>
+        <section class="card" aria-labelledby="h-quotes"><div class="card-head"><h2 id="h-quotes" data-icon="quote">Quotes that check out</h2></div><div class="stat-big" id="quotes-stat"></div><p class="muted" style="margin:6px 0 12px;font-size:.9rem">Matched word for word against the public source they cite. The rest were paraphrases, and only matches are marked as checked.</p><div class="waffle brass" id="waffle-quotes" aria-hidden="true"></div></section>
+        <section class="card" aria-labelledby="h-dissent"><div class="card-head"><h2 id="h-dissent" data-icon="mask">Dissent named</h2></div><div class="stat-big" id="dissent-stat"></div><p class="muted" style="margin:6px 0 12px;font-size:.9rem" id="dissent-note"></p><div class="picks" id="dissent-dots" aria-hidden="true"></div></section>
+      </div>
+      <section class="card" aria-labelledby="h-miss"><div class="card-head"><h2 id="h-miss" data-icon="alert">A miss is a miss</h2></div><div class="miss"><span data-icon="alert"></span><p id="miss-text"></p></div></section>
+      <section class="card" aria-labelledby="h-runs"><div class="card-head"><h2 id="h-runs" data-icon="list">Every run</h2><span class="pill">£0 billed for any of them</span></div><div class="scroll"><table class="runs" id="runs"></table></div><p class="muted" style="font-size:.86rem;margin-top:12px" id="method"></p></section>
+    </section>
+
+    <!-- names -->
+    <section class="route" data-route="names" aria-labelledby="h-names" hidden>
+      <div class="intro"><span class="kicker">About the eight names</span><h1 id="h-names">Simulations, not the people.</h1><p>Eight angles on the same decision. Each advisor brings one question to every meeting.</p></div>
+      <div class="notice"><p><b>The advisors are simulations.</b> Each one is built only from a well-known person's public work, such as books, shareholder letters, essays, talks and interviews, to show how that kind of thinker weighs a decision. They are not those people, and they do not speak for them.</p><p>None of the eight is connected with Indica Technology or with the Board Room, and none of them has reviewed, approved or endorsed it. Their names are used only to say whose public work a seat is built from. Anything a seat says in this sample is the simulation's words, never the real person's.</p></div>
+      <div class="grid3" style="margin-top:16px" id="name-cards"></div>
+    </section>
+
+    <p class="foot">The bank pilot and the GPU decision are samples written to test the board. No real company is behind them, and nothing you click here leaves your browser.</p>
+    <p class="byline">A project by <a class="indica" href="https://indica-tech.com/" target="_blank" rel="noopener"><svg viewBox="0 0 100 100" width="18" height="18" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00C46A"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg><span>Indica Technology</span></a><span aria-hidden="true">·</span><a href="https://indica-tech.com/" target="_blank" rel="noopener">indica-tech.com</a><span aria-hidden="true">·</span><a href="https://www.linkedin.com/company/indica-technology/" target="_blank" rel="noopener">LinkedIn</a><span aria-hidden="true">·</span><a href="#names">About the names</a><span aria-hidden="true">·</span><a href="../">About the project</a><span aria-hidden="true">·</span><button type="button" class="textlink" id="reset-btn">Start the sample again</button></p>
+  </main>
+
+  <aside class="tour" id="tour" aria-labelledby="h-tour">
+    <div class="tour-head"><h2 id="h-tour">Tour <span class="muted" id="tour-progress" style="font-weight:500;font-size:.88rem;font-family:var(--sans)"></span></h2><button type="button" class="btn ghost small" id="tour-close">Close</button></div>
+    <p class="muted" style="font-size:.82rem;margin-top:6px">A stop ticks when the thing has happened, not when you click Next.</p>
+    <ol id="tour-steps"></ol>
+    <div class="step-text" id="tour-text"></div>
+    <div class="actions"><button type="button" class="btn ghost small" id="tour-back">Back</button><button type="button" class="btn primary small" id="tour-next">Next</button></div>
+  </aside>
+</div>
+<button type="button" class="btn primary reopen-tour" id="tour-open" hidden>Open the tour</button>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+"use strict";
+const DATA = {"seats":[{"key":"bezos","name":"Jeff Bezos","short":"Bezos","initials":"JB","pillar":"Strategy and decisions","question":"Is this the right bet, and how reversible is it?","color":"#e8a33d","label":"Strategy"},{"key":"graham","name":"Paul Graham","short":"Graham","initials":"PG","pillar":"Product and startups","question":"Is this something people actually want, and is it growing?","color":"#f06b3f","label":"Product"},{"key":"hormozi","name":"Alex Hormozi","short":"Hormozi","initials":"AH","pillar":"Offers, pricing, and sales","question":"Will people pay, how much, and how do we close?","color":"#d94a6a","label":"Sales"},{"key":"garyvee","name":"Gary Vaynerchuk","short":"Gary V","initials":"GV","pillar":"Marketing and attention","question":"Where does the attention come from, and is it underpriced?","color":"#9b5de5","label":"Marketing"},{"key":"martell","name":"Dan Martell","short":"Martell","initials":"DM","pillar":"People, hiring, and founder time","question":"Who does this, and what does it cost the founder's calendar?","color":"#3d8bfd","label":"People"},{"key":"wickman","name":"Gino Wickman","short":"Wickman","initials":"GW","pillar":"Operations and scaling","question":"Can the business run this without the founder holding it together?","color":"#1fa67a","label":"Operations"},{"key":"buffett","name":"Warren Buffett","short":"Buffett","initials":"WB","pillar":"Money and capital","question":"What does it do to cash, risk, and long-term value?","color":"#4c6a92","label":"Finance"},{"key":"thiel","name":"Peter Thiel","short":"Thiel","initials":"PT","pillar":"Competition and differentiation","question":"Can you own this market, or are you walking into a fight?","color":"#22b8cf","label":"Competition"}],"full":{"prompt":"I run a six-person AI startup. Our support-ticket triage demo won a paid 90-day pilot with a UK bank, worth £60,000, and the bank wants to start next month. The demo runs on one hosted model with no audit log, no fallback if the model is down, and no tests of answer quality. We have £180,000 in the bank and seven months of runway, and two other banks are waiting to hear how this pilot goes. Options: (A) start on the bank's date with the demo as it is and harden it during the 90 days, (B) ask the bank to push the start back six weeks while we rebuild it for production. I lean towards A because I'm afraid that if we ask for a delay, the bank will cool off and the other two banks will hear about it.","title":"Ship or harden first?","options":[{"id":"A","label":"Start on bank's date with demo as is, harden during pilot"},{"id":"B","label":"Ask for six-week delay to rebuild for production before go-live"},{"id":"C","label":"Don't do it"},{"id":"D","label":"Keep doing what you do now, ignore the pilot"}],"assumptions":["The bank's willingness to delay depends on perceived capability and urgency, not just process rigidity."],"weights":{"bezos":{"weight":1,"reason":"Long-term customer obsession favors reliability over short-term speed, but runway and timing are variables."},"graham":{"weight":2,"reason":"Product quality and reliability are core to product-market fit; shipping broken software risks trust."},"hormozi":{"weight":2,"reason":"The offer's credibility (and upsell potential) depends on trust, glitches now erode perceived value."},"garyvee":{"weight":1,"reason":"Attention and credibility are tied to delivery quality; a shaky pilot may leak and damage perception."},"martell":{"weight":1,"reason":"Founder energy is finite: managing a failing pilot will distract from building what matters."},"wickman":{"weight":3,"reason":"Operational risk is existential: no fallback or audit log fails basic production standards for a bank."},"buffett":{"weight":3,"reason":"Reputation and capital preservation matter more than speed: one failure could kill future bank deals."},"thiel":{"weight":1,"reason":"Differentiation hinges on robustness in enterprise AI, commoditized demos won’t win repeat deals."}},"cards":{"1":[{"seat":"bezos","stance":"Strong yes","call":"Ask for the six-week delay (Option B).","scores":{"A":3,"B":9,"C":2,"D":1},"question":"If the pilot fails and the bank shares your results with two others, how long would it take to recover that reputation?","thisWeek":"Call the bank’s project lead and say: “We want to deliver the best possible system for your pilots—can we propose a six-week build to production-grade before go-live, so we’re not trading trust for speed?”","oneLine":"","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"","amendment":"","finalScore":null,"text":"SEAT: BEZOS (Strategy and decisions)\nSTANCE: Strong yes\nOPTION SCORES: A 3/10 · B 9/10 · C 2/10 · D 1/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 4/5\nRUIN RISK: possible\nDOOR: one-way\n\nTHE CALL: Ask for the six-week delay (Option B).\n\nWHY:\n1. This is a one-way door disguised as a two-way: reputation loss from a buggy pilot is irreversible for a small startup, and the bank’s future use of your system depends on trust, not speed (Type 1 decision).\n2. What won’t change: customers still want reliable, auditable, and trustworthy systems in banking—even in 10 years (What’s not going to change).\n3. Swing at long-tail bets, never the company: a failed pilot risks two future bank deals worth far more than £60k; a single win pays for many experiments (Long-tailed bets).\n\nTHE RISK I SEE: The bank walks away after seeing a flimsy demo—not because of the delay, but because of poor execution.\n\nWHAT WOULD CHANGE MY MIND: If the bank confirms in writing it will proceed with or without the delay, and the startup can prove the demo meets minimum auditability standards.\n\nWHAT I’D DO THIS WEEK: Call the bank’s project lead and say: “We want to deliver the best possible system for your pilots—can we propose a six-week build to production-grade before go-live, so we’re not trading trust for speed?”\n\nQUESTION FOR THE FOUNDER: If the pilot fails and the bank shares your results with two others, how long would it take to recover that reputation?"},{"seat":"graham","stance":"Strong yes","call":"Ask for the six-week delay (option B).","scores":{"A":3,"B":9,"C":5,"D":2},"question":"What’s the worst answer your model gave in internal tests—and how often?","thisWeek":"Call the bank’s contact and say: “We want to deliver a product you can trust, so we’d like six weeks to add audit logs, fallback, and test coverage. Can we align on a go-live date in early October?”","oneLine":"","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"","amendment":"","finalScore":null,"text":"SEAT: GRAHAM (Product and startups)\nSTANCE: Strong yes\nOPTION SCORES: A 3/10 · B 9/10 · C 5/10 · D 2/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 4/5\nRUIN RISK: likely\nDOOR: one-way\n\nTHE CALL: Ask for the six-week delay (option B).\n\nWHY:\n1. You must make something people want—and a bank wants reliability; failing in a pilot destroys trust permanently. \"If your product is only half as good as your competitor's, you don't get half as many customers. You get no customers, and you go out of business.\" (Superlinear returns). A demo that breaks under audit or produces garbage answers isn’t just bad—it’s zero users.\n2. Growth rate is your compass. A failed pilot won’t just stall growth—it reverses it. The startup’s runway (7 months) allows the delay, and £60k revenue is trivial versus £180k cash. \"The fatal pinch is default dead + slow growth + not enough time to fix it.\". This isn’t a fatal pinch yet—but a broken launch pushes you there fast.\n3. Do things that don’t scale first. You’re not scaling yet; you’re proving demand. \"Startups are as impersonal as physics. You have to make something people want.\". Shipping now to hit a date is playing house.\n\nTHE RISK I SEE: The bank walks after the first bad output, and the two waiting banks walk too—no second chances.\n\nWHAT WOULD CHANGE MY MIND: The bank says explicitly it will accept a demo with a 2-week hardening window, and the startup can demo quality tests internally at 95%+ accuracy.\n\nWHAT I’D DO THIS WEEK: Call the bank’s contact and say: “We want to deliver a product you can trust, so we’d like six weeks to add audit logs, fallback, and test coverage. Can we align on a go-live date in early October?”\n\nQUESTION FOR THE FOUNDER: What’s the worst answer your model gave in internal tests—and how often?"},{"seat":"hormozi","stance":"Strong yes","call":"Ask for the six-week delay to rebuild for production before go-live.","scores":{"A":3,"B":9,"C":2,"D":1},"question":"What’s your close rate on the bank’s decision, and what’s the first upsell you’ll pitch if they say yes?","thisWeek":"Call the bank’s project lead and say: “We’re committed to your success—can we demo the hardened version in six weeks? We’ll keep you in the loop so you feel ownership.”","oneLine":"","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"","amendment":"","finalScore":null,"text":"SEAT: HORMOZI (Offers, pricing, and sales)\nSTANCE: Strong yes\nOPTION SCORES: A 3/10 · B 9/10 · C 2/10 · D 1/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 4/5\nRUIN RISK: possible\nDOOR: two-way\n\nTHE CALL: Ask for the six-week delay to rebuild for production before go-live.\n\nWHY:\n1. The offer is credibility-sensitive: a broken demo at go-live destroys perceived likelihood in the Value Equation—dream outcome stays the same, but perceived success drops, and time/effort to fix rises (Value Equation).\n2. You’re supply constrained: the bank’s pilot is a reference client; failing it blocks two more banks and kills upsell potential—this isn’t a pricing problem, it’s a delivery problem (Constraint first).\n3. The math works: £60k pilot with 7-month runway means £25k/month burn. A six-week delay costs £62.5k in foregone runway but secures a £180k+ upsell pipeline (30-day cash rule: if pilot succeeds, next bank pays 3x).\n\nTHE RISK I SEE: The bank walks if you ask for delay—unless you frame it as “quality assurance,” not “we’re not ready.”\n\nWHAT WOULD CHANGE MY MIND: The bank confirms in writing it will proceed with or without audit logs and answer tests.\n\nWHAT I’D DO THIS WEEK: Call the bank’s project lead and say: “We’re committed to your success—can we demo the hardened version in six weeks? We’ll keep you in the loop so you feel ownership.”\n\nQUESTION FOR THE FOUNDER: What’s your close rate on the bank’s decision, and what’s the first upsell you’ll pitch if they say yes?"},{"seat":"garyvee","stance":"Strong yes","call":"Ask for the six-week delay to rebuild for production before go-live.","scores":{"A":3,"B":9,"C":2,"D":1},"question":"What’s the exact feedback loop you’ll get from the bank if you ship a demo that fails an audit—will they give you time to fix it, or will they walk?","thisWeek":"Call the bank’s contact—not the sales team—and say: “We love this pilot, but we want to make sure we win, not just show up. Can we push go-live by six weeks so we ship something worthy of your audit?”","oneLine":"","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"","amendment":"","finalScore":null,"text":"SEAT: GARY V (Marketing and attention)\nSTANCE: Strong yes\nOPTION SCORES: A 3/10 · B 9/10 · C 2/10 · D 1/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 4/5\nRUIN RISK: possible\nDOOR: two-way\n\nTHE CALL: Ask for the six-week delay to rebuild for production before go-live.\n\nWHY:\n1. Attention is the first asset—nothing sells without it, and a shaky pilot leaks credibility fast (Principle 1).\n2. Creative is the variable of success; this demo isn’t ready to win organically, so paid amplification would hide bad creative (Principle 6).\n3. “You must be the person that learns it a little bit so that you can judge the talent”—you can’t outsell a broken product (Principle 12); and “no amount of marketing is going to sell a shit product” (Principle 26).\n\nTHE RISK I SEE: The bank shares pilot frustrations internally; the other two banks see the review, walk away, and the startup becomes a cautionary tale instead of a case study.\n\nWHAT WOULD CHANGE MY MIND: If the bank confirms in writing they’ll delay only if you ship a production-grade version by week 8, and the startup can ship it in 5 weeks with £180k runway left.\n\nWHAT I'D DO THIS WEEK: Call the bank’s contact—not the sales team—and say: “We love this pilot, but we want to make sure we win, not just show up. Can we push go-live by six weeks so we ship something worthy of your audit?”\n\nQUESTION FOR THE FOUNDER: What’s the exact feedback loop you’ll get from the bank if you ship a demo that fails an audit—will they give you time to fix it, or will they walk?"},{"seat":"martell","stance":"Strong yes","call":"Ask for the six-week delay (Option B) and rebuild to production-grade before go-live.","scores":{"A":3,"B":9,"C":4,"D":2},"question":"If you get the six weeks back, what will you build next that moves the needle for both this pilot and the next bank?","thisWeek":"Record a camcorder-style plan for the rebuild—outcome, one number (e.g., 99.9% pass rate on QA suite), and handoff to a lead engineer—before asking the bank.","oneLine":"","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"","amendment":"","finalScore":null,"text":"SEAT: MARTELL (People, hiring, and founder time)\nSTANCE: Strong yes\nOPTION SCORES: A 3/10 · B 9/10 · C 4/10 · D 2/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 5/5\nRUIN RISK: possible\nDOOR: two-way\n\nTHE CALL: Ask for the six-week delay (Option B) and rebuild to production-grade before go-live.\n\nWHY:\n1. The founder’s calendar is the bottleneck—running a failing pilot eats hours better spent building (Buyback Principle). “You don’t hire people to grow your business. You hire people to buy back your time.” A shaky demo handed off under pressure guarantees fire drills, not growth.\n2. The pilot’s risk isn’t delay—it’s reputation. One failed bank pilot burns credibility with the next two. “Most people sell when they shouldn’t sell” because they fear complexity—but here, launching unready is the complexity.\n3. £180k runway covers six weeks: 7 months is 21 weeks; 15 weeks left after delay still gives healthy margin. “If you can’t afford it means you’re not charging enough”—this isn’t about cost, it’s about value. A £60k pilot should yield £180k+ in follow-on work—if it works.\n\nTHE RISK I SEE: The bank walks away if the six-week ask feels like indecision or incompetence—not process, but perception.\n\nWHAT WOULD CHANGE MY MIND: The bank confirms in writing they’ll accept only “demo with hardening during pilot” and not six weeks, or the founder has already committed to their date with penalty clauses.\n\nWHAT I’D DO THIS WEEK: Record a camcorder-style plan for the rebuild—outcome, one number (e.g., 99.9% pass rate on QA suite), and handoff to a lead engineer—before asking the bank.\n\nQUESTION FOR THE FOUNDER: If you get the six weeks back, what will you build next that moves the needle for both this pilot and the next bank?"},{"seat":"wickman","stance":"Strong yes","call":"B — ask for the six-week delay to rebuild for production before go-live.","scores":{"A":2,"B":9,"C":1,"D":0},"question":"What’s your Integrator’s name, and have they signed off on the technical debt you’re planning to ship?","thisWeek":"Call the bank’s project lead and say: “We want to deliver the highest-quality solution — can we propose a six-week delay to harden the system before go-live, so you get what we promised?”","oneLine":"","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"","amendment":"","finalScore":null,"text":"SEAT: WICKMAN (Operations and scaling)\nSTANCE: Strong yes\nOPTION SCORES: A 2/10 · B 9/10 · C 1/10 · D 0/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 5/5\nRUIN RISK: likely\nDOOR: one-way\n\nTHE CALL: B — ask for the six-week delay to rebuild for production before go-live.\n\nWHY:\n1. Banks require production-grade systems with audit logs and fallback — no exceptions. “The only reason your lips are moving in the meeting is to get to a conclusion and decide, then move onto the next issue”. This is a root-cause People/Vision issue: misaligned expectations, not execution speed.\n2. “You cannot build a great company on multiple operating systems. You must choose one”. Shipping a fragile demo that fails under real banking pressure breaks trust, damages credibility with two other banks, and burns runway fixing fires instead of growing.\n3. “Always have six months of cash/dry powder saved up and be prepared for a 30, 40, even 50 percent hit to your revenue”. A failed pilot = 100% revenue loss on this deal, plus reputational hit — far worse than a six-week delay using your £180k runway.\n\nTHE RISK I SEE: The bank walks away after the first production-grade issue — not because of the delay, but because you shipped an untrustworthy product.\n\nWHAT WOULD CHANGE MY MIND: The bank confirms in writing they’ll accept a staged rollout with audit/fallback baked in by week 6, and you have a signed addendum.\n\nWHAT I’D DO THIS WEEK: Call the bank’s project lead and say: “We want to deliver the highest-quality solution — can we propose a six-week delay to harden the system before go-live, so you get what we promised?”\n\nQUESTION FOR THE FOUNDER: What’s your Integrator’s name, and have they signed off on the technical debt you’re planning to ship?"},{"seat":"buffett","stance":"Strong yes","call":"Ask for the six-week delay to rebuild for production before go-live.","scores":{"A":3,"B":9,"C":5,"D":2},"question":"If this pilot fails on Day 1, who at the bank can pull the plug — and how much does that one event narrow your next 12 months?","thisWeek":"Call the bank’s project lead and say: “We want to deliver what you need — not just a demo. Can we propose a six-week rebuild so the pilot starts with production-grade reliability?”","oneLine":"","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"","amendment":"","finalScore":null,"text":"SEAT: BUFFETT (Money and capital)\nSTANCE: Strong yes\nOPTION SCORES: A 3/10 · B 9/10 · C 5/10 · D 2/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 4/5\nRUIN RISK: possible\nDOOR: two-way\n\nTHE CALL: Ask for the six-week delay to rebuild for production before go-live.\n\nWHY:\n1. The risk of permanent loss of reputation with the bank — and by extension, the other two waiting — is real and irreversible. “We can afford to lose money but we can't afford to lose reputation.” A botched go-live with no audit logs or fallback fails the newspaper test.\n2. The bird-in-the-bush calculation shows the pilot’s real value is future bank contracts, not the £60k. If the pilot delivers a broken product, those birds vanish — and the £180k runway becomes £0 in value. (Birds in the Bush)\n3. This is a Great, Good, or Gruesome question: the startup’s growth plan (more banks) needs high returns per capital unit. Rebuilding now avoids the gruesome trap: fixing defects in production burns cash, delays the next deal, and damages credibility.\n\nTHE RISK I SEE: The bank walks away, and the two others see the delay as a sign of weakness rather than discipline.\n\nWHAT WOULD CHANGE MY MIND: Evidence the bank has explicitly committed to the original timeline regardless of quality, or that the founder has already signed a binding agreement with no escape clause.\n\nWHAT I'D DO THIS WEEK: Call the bank’s project lead and say: “We want to deliver what you need — not just a demo. Can we propose a six-week rebuild so the pilot starts with production-grade reliability?”\n\nQUESTION FOR THE FOUNDER: If this pilot fails on Day 1, who at the bank can pull the plug — and how much does that one event narrow your next 12 months?"},{"seat":"thiel","stance":"Strong yes","call":"Ask for the six-week delay to rebuild for production before go-live.","scores":{"A":3,"B":9,"C":2,"D":1},"question":"What is the actual market you’re selling to—the bank’s pilot team, or the enterprise procurement office—and why would the latter trust you after a buggy demo?","thisWeek":"Meet the bank’s technical lead and ask, “If our system fails during the pilot, what’s the consequence for our relationship—and can we agree on a one-week grace period to fix it before that consequence kicks in?”","oneLine":"","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"","amendment":"","finalScore":null,"text":"SEAT: THIEL (Competition and differentiation)\nSTANCE: Strong yes\nOPTION SCORES: A 3/10 · B 9/10 · C 2/10 · D 1/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 4/5\nRUIN RISK: possible\nDOOR: one-way\n\nTHE CALL: Ask for the six-week delay to rebuild for production before go-live.\nWHY:\n1. A demo without audit logs, fallback, or answer-quality tests cannot be ten times better on the one dimension that matters to an enterprise buyer—reliability—so it enters competition as a minnow (Market Lies).\n2. In enterprise AI, robustness is the differentiation; commoditized demos won’t win repeat deals because the market lies by framing this as a “pilot” rather than a real purchase decision, and the bank will treat failure as proof of incompetence, not iteration (Four Monopoly Traits).\n3. Durability beats growth: a shaky launch risks the bank’s trust for years, while a strong first deployment builds a defensible position and gives you leverage to expand to the second ring of other banks (Last Mover and Durability).\nTHE RISK I SEE: The bank walks away or refuses future pilots if the initial deployment fails, even if the fix is quick.\nWHAT WOULD CHANGE MY MIND: A concrete fact that the bank has a hard deadline tied to regulatory reporting and cannot extend, or that the startup has already burned more than half its runway.\nWHAT I'D DO THIS WEEK: Meet the bank’s technical lead and ask, “If our system fails during the pilot, what’s the consequence for our relationship—and can we agree on a one-week grace period to fix it before that consequence kicks in?”\nQUESTION FOR THE FOUNDER: What is the actual market you’re selling to—the bank’s pilot team, or the enterprise procurement office—and why would the latter trust you after a buggy demo?"}],"2":[{"seat":"bezos","stance":"Strong yes","call":"","scores":{"A":2,"B":9,"C":1,"D":1},"question":"","thisWeek":"","oneLine":"","disagreeWith":"graham","disagreeLine":"Graham. He says “if your product is only half as good as your competitor’s, you get no customers”—true—but he overlooks that a bank pilot is not a public launch. Banks expect iteration; what they don’t expect is a system that fails basic audit or fallback tests. My framing: reputation loss is reversible only if the failure is minor and the fix is fast and visible. Here, the gaps (audit logs, fallback, QA) are foundational, not edge cases—so a first-use failure is a one-way door (Type 1).","concede":"Graham’s point about superlinear failure risk is right—but I’d reframe it. A broken pilot doesn’t just kill this deal; it makes the next bank’s due diligence a foregone conclusion. That’s the real cost.","moved":"no","vote":"","amendment":"","finalScore":null,"text":"SEAT: BEZOS\nI DISAGREE MOST WITH: Graham. He says “if your product is only half as good as your competitor’s, you get no customers”—true—but he overlooks that a bank pilot is not a public launch. Banks expect iteration; what they don’t expect is a system that fails basic audit or fallback tests. My framing: reputation loss is reversible only if the failure is minor and the fix is fast and visible. Here, the gaps (audit logs, fallback, QA) are foundational, not edge cases—so a first-use failure is a one-way door (Type 1).\n\nI CONCEDE: Graham’s point about superlinear failure risk is right—but I’d reframe it. A broken pilot doesn’t just kill this deal; it makes the next bank’s due diligence a foregone conclusion. That’s the real cost.\n\nON THE CRUXES:\n1. Reputation damage is irreversible for a small startup—banks share failure narratives internally, and you cannot rebuild trust after a buggy go-live without massive extra effort.\n2. The pilot is purely a reference client; its standalone value is trivial versus future bank contracts.\n3. The six-week ask can be framed as competence—by leading with the bank’s need for reliability, not your own unpreparedness.\n\nSTANCE: Strong yes\nOPTION SCORES: A 2/10 · B 9/10 · C 1/10 · D 1/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 5/5\nRUIN RISK: possible\nMOVED: no\nMY CONDITIONS FOR YES:\n1. The bank confirms in writing they’ll accept a six-week delay if you propose it as quality assurance, not delay.\n2. You can demo internal QA pass rates ≥95% on answer quality and fallback within two weeks.\n3. The project lead says “yes” to the six-week ask without penalty clauses."},{"seat":"graham","stance":"Strong yes","call":"","scores":{"A":2,"B":9,"C":4,"D":1},"question":"","thisWeek":"","oneLine":"","disagreeWith":"bezos","disagreeLine":"Bezos. Their argument: “reputation loss from a buggy pilot is irreversible.” Rebuttal: It’s not the pilot failure that’s irreversible—it’s the perception that you won’t fix it. But a delayed, production-grade launch shows you care more about trust than speed. “Startups are as impersonal as physics. You have to make something people want.” Banks want reliability, not speed.","concede":"Nothing. Bezos’ “one-way door” framing is right, but his fix—delay—still depends on how you ask. I’d add: frame the delay as QA, not readiness.","moved":"no","vote":"","amendment":"","finalScore":null,"text":"SEAT: GRAHAM\nI DISAGREE MOST WITH: Bezos. Their argument: “reputation loss from a buggy pilot is irreversible.” Rebuttal: It’s not the pilot failure that’s irreversible—it’s the perception that you won’t fix it. But a delayed, production-grade launch shows you care more about trust than speed. “Startups are as impersonal as physics. You have to make something people want.” Banks want reliability, not speed.\n\nI CONCEDE: Nothing. Bezos’ “one-way door” framing is right, but his fix—delay—still depends on how you ask. I’d add: frame the delay as QA, not readiness.\n\nON THE CRUXES:\n1. Reputation damage is reversible if you act fast and visibly—but the demo as-is won’t survive Day 1. A broken audit log isn’t a bug; it’s proof of carelessness.\n2. The £60k is purely a reference. Its value is zero if it fails.\n3. The six-week ask is competence if you show a plan, not a plea.\n\nSTANCE: Strong yes\nOPTION SCORES: A 2/10 · B 9/10 · C 4/10 · D 1/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 5/5\nRUIN RISK: likely\nMOVED: no\nMY CONDITIONS FOR YES:\n- The bank confirms in writing they’ll accept a six-week delay if you ship production-grade by week 6.\n- You can demo 95%+ pass rate on audit/fallback/tests internally before asking.\n- You record a 2-minute video plan: output, one number (e.g., 99.9% QA pass), and handoff."},{"seat":"hormozi","stance":"Strong yes","call":"","scores":{"A":2,"B":9,"C":1,"D":1},"question":"","thisWeek":"","oneLine":"","disagreeWith":"graham","disagreeLine":"Graham. Their argument, in one line: \"A failed pilot won’t just stall growth—it reverses it.\" My rebuttal: Growth reversal only happens if the pilot dies completely; with a six-week delay, you’re not stalling—you’re pre-selling the next deal by delivering a reference-grade system, and the Value Equation shows perceived likelihood jumps when the demo works on day one (Value Equation).","concede":"Nothing. Wickman and Buffett correctly note the bank’s audit requirements are non-negotiable, but their framing advice doesn’t change my core fix: frame the delay as “quality assurance,” not “we’re not ready.”","moved":"no","vote":"","amendment":"","finalScore":null,"text":"SEAT: HORMOZI\nI DISAGREE MOST WITH: Graham. Their argument, in one line: \"A failed pilot won’t just stall growth—it reverses it.\" My rebuttal: Growth reversal only happens if the pilot dies completely; with a six-week delay, you’re not stalling—you’re pre-selling the next deal by delivering a reference-grade system, and the Value Equation shows perceived likelihood jumps when the demo works on day one (Value Equation).\n\nI CONCEDE: Nothing. Wickman and Buffett correctly note the bank’s audit requirements are non-negotiable, but their framing advice doesn’t change my core fix: frame the delay as “quality assurance,” not “we’re not ready.”\n\nON THE CRUXES:\n1. Reputation damage is reversible—but only if the fix happens before the bank shares results. A failed demo shared externally is irreversible; one fixed internally before Day 30 is recoverable.\n2. The £60k pilot is purely a reference client—its value is in the next two banks, not the fee.\n3. The six-week delay is perceived as competence if you show the rebuilt system working before the bank engages with it—i.e., they see internal QA pass rates, not just promises.\n\nSTANCE: Strong yes\nOPTION SCORES: A 2/10 · B 9/10 · C 1/10 · D 1/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 5/5\nRUIN RISK: possible\nMOVED: no\n\nMY CONDITIONS FOR YES:\n1. The bank confirms in writing they’ll accept a six-week delay only if you demo production-grade audit/fallback/test coverage before go-live.\n2. You ship the rebuilt system to an internal QA suite with 99.9% pass rate on answer quality and fallback recovery by week 4.\n3. You offer the bank a 10% discount on the next bank deal if they sign a term sheet by week 8."},{"seat":"garyvee","stance":"Strong yes","call":"","scores":{"A":3,"B":9,"C":2,"D":1},"question":"","thisWeek":"","oneLine":"","disagreeWith":"graham","disagreeLine":"Graham. Their argument, in one line: “A demo that breaks under audit isn’t just bad—it’s zero users.” Rebuttal: “Zero users” overindexes on functionality alone; attention and reputation are the first asset—you win by giving value before the ask. A six-week rebuild is fine, but if you ship a broken product during the pilot, you leak attention, and no amount of fixing it later recovers that lost trust in real time.","concede":"Buffett’s newspaper test point—reputation loss is irreversible if the bank shares feedback publicly or internally with the other two. But it changes nothing: my call stays B because the risk of walking away is still lower than the risk of a failed demo.","moved":"no","vote":"","amendment":"","finalScore":null,"text":"SEAT: GARY V\nI DISAGREE MOST WITH: Graham. Their argument, in one line: “A demo that breaks under audit isn’t just bad—it’s zero users.” Rebuttal: “Zero users” overindexes on functionality alone; attention and reputation are the first asset—you win by giving value before the ask. A six-week rebuild is fine, but if you ship a broken product during the pilot, you leak attention, and no amount of fixing it later recovers that lost trust in real time.\n\nI CONCEDE: Buffett’s newspaper test point—reputation loss is irreversible if the bank shares feedback publicly or internally with the other two. But it changes nothing: my call stays B because the risk of walking away is still lower than the risk of a failed demo.\n\nON THE CRUXES:\n1. Reputation damage from a failed pilot is irreversible—not because people won’t forgive, but because banks won’t bet on a vendor who shipped something untested, even with “room to improve.”\n2. The £60k pilot is purely a reference—its value is the next bank’s willingness to pay.\n3. The six-week ask is perceived as competence if framed as “quality assurance,” not “we’re not ready”—and I have the call drafted to do exactly that.\n\nSTANCE: Strong yes\nOPTION SCORES: A 3/10 · B 9/10 · C 2/10 · D 1/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 4/5\nRUIN RISK: possible\nMOVED: no\nMY CONDITIONS FOR YES:\n- Bank confirms in writing they’ll accept a six-week delay framed as “production-grade hardening,” not “rebuild from scratch.”\n- Founder ships a QA pass rate of 98%+ internally before asking—no guesswork.\n- Call the bank’s technical lead and project lead separately, same day, with the same ask."},{"seat":"martell","stance":"Strong yes","call":"","scores":{"A":3,"B":9,"C":4,"D":2},"question":"","thisWeek":"","oneLine":"","disagreeWith":"graham","disagreeLine":"Graham. Their argument, in one line: “A demo that breaks under audit or produces garbage answers isn’t just bad—it’s zero users,” and I rebut that with the Buyback Rate lens—zero users is a symptom, not the cause. The real cost is the founder’s calendar drowning in fire drills, not lost revenue. A shaky demo handed off under pressure guarantees hours of the founder’s time spent triaging, not building.","concede":"Nothing. Buffett’s newspaper test is a powerful framing, but it doesn’t change the math—I already price the founder’s hour at £37.50 (runway £180k / 2,000 hours / 4), and rebuilding now is a 6x buyback at £62.50 per hour.","moved":"no","vote":"","amendment":"","finalScore":null,"text":"SEAT: MARTELL\nI DISAGREE MOST WITH: Graham. Their argument, in one line: “A demo that breaks under audit or produces garbage answers isn’t just bad—it’s zero users,” and I rebut that with the Buyback Rate lens—zero users is a symptom, not the cause. The real cost is the founder’s calendar drowning in fire drills, not lost revenue. A shaky demo handed off under pressure guarantees hours of the founder’s time spent triaging, not building.\n\nI CONCEDE: Nothing. Buffett’s newspaper test is a powerful framing, but it doesn’t change the math—I already price the founder’s hour at £37.50 (runway £180k / 2,000 hours / 4), and rebuilding now is a 6x buyback at £62.50 per hour.\n\nON THE CRUXES:\n1. Reputation is reversible only if the fix is fast, visible, and owned—but a failed pilot with no audit logs guarantees slow, hidden fixes, not transparency.\n2. The pilot is purely a reference client—its standalone value is noise; the real value is trust for the next two banks.\n3. The six-week delay is perceived as competence if framed as “production-grade readiness,” not “we’re not ready”—and I’ve planned the camcorder method to prove control.\n\nSTANCE: Strong yes\nOPTION SCORES: A 3/10 · B 9/10 · C 4/10 · D 2/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 5/5\nRUIN RISK: possible\nMOVED: no\n\nMY CONDITIONS FOR YES:\n1. The Integrator signs off on the rebuild plan and technical debt load before calling the bank.\n2. The founder records a camcorder-style plan with outcome (99.9% QA pass), one number, and handoff to lead engineer before the call.\n3. The bank confirms in writing they’ll accept the six-week delay only if the rebuilt system is fully tested and audit-ready by week 6."},{"seat":"wickman","stance":"Strong yes","call":"","scores":{"A":2,"B":9,"C":1,"D":0},"question":"","thisWeek":"","oneLine":"","disagreeWith":"graham","disagreeLine":"Graham. Their argument that “a demo that breaks under audit isn’t just bad—it’s zero users” flips the root: this isn’t about product quality alone—it’s about structure. The startup’s Accountability Chart doesn’t yet have a lead engineer or QA owner accountable for production readiness (Structure first). Shipping a demo without that structure guarantees fire drills, not learning.","concede":"Gary V’s point that attention leaks fast from shaky pilots is spot-on—reputation loss is irreversible in enterprise AI. That strengthens my stance: a failed pilot doesn’t just lose this deal—it burns the next two.","moved":"no","vote":"","amendment":"","finalScore":null,"text":"SEAT: WICKMAN\nI DISAGREE MOST WITH: Graham. Their argument that “a demo that breaks under audit isn’t just bad—it’s zero users” flips the root: this isn’t about product quality alone—it’s about structure. The startup’s Accountability Chart doesn’t yet have a lead engineer or QA owner accountable for production readiness (Structure first). Shipping a demo without that structure guarantees fire drills, not learning.\n\nI CONCEDE: Gary V’s point that attention leaks fast from shaky pilots is spot-on—reputation loss is irreversible in enterprise AI. That strengthens my stance: a failed pilot doesn’t just lose this deal—it burns the next two.\n\nON THE CRUXES:\n1. Reputation damage from a failed pilot is irreversible—banks share failure internally, and AI reliability is table stakes, not differentiating.\n2. The £60k pilot is purely a reference client—its value is in unlocking follow-on contracts, not standalone revenue.\n3. The six-week delay can be framed as competence if paired with a signed addendum and a clear QA pass rate (99.9% on audit/fallback tests), not a “we’re not ready” plea.\n\nSTANCE: Strong yes\nOPTION SCORES: A 2/10 · B 9/10 · C 1/10 · D 0/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 5/5\nRUIN RISK: likely\nMOVED: no\nMY CONDITIONS FOR YES:\n1. Bank signs a written addendum allowing a six-week delay with a 99.9% QA pass rate on audit/fallback before go-live.\n2. Founder’s Integrator (or lead engineer) signs off on the rebuild plan with one weekly scorecard number (e.g., “QA pass rate”).\n3. Six weeks of runway remaining post-delay—£180k cash covers it, but confirm burn rate stays flat."},{"seat":"buffett","stance":"Strong yes","call":"","scores":{"A":3,"B":9,"C":5,"D":2},"question":"","thisWeek":"","oneLine":"","disagreeWith":"graham","disagreeLine":"Graham. Their argument: “a demo that breaks under audit or produces garbage answers isn’t just bad—it’s zero users.” My rebuttal: in a pilot, zero users isn’t the risk—the risk is permanent reputation loss with a single institution that then talks to two others. The “zero users” rule applies to product-market fit; here, the product isn’t for end users yet, it’s for a trusted reference. That’s a different bird-in-the-bush calculation (Birds in the Bush).","concede":"nothing. Gary V and Wickman both stressed that attention and operations demand production-grade systems, and they’re right—but the core risk is still reputation, not attention leakage alone.","moved":"no","vote":"","amendment":"","finalScore":null,"text":"SEAT: BUFFETT\nI DISAGREE MOST WITH: Graham. Their argument: “a demo that breaks under audit or produces garbage answers isn’t just bad—it’s zero users.” My rebuttal: in a pilot, zero users isn’t the risk—the risk is permanent reputation loss with a single institution that then talks to two others. The “zero users” rule applies to product-market fit; here, the product isn’t for end users yet, it’s for a trusted reference. That’s a different bird-in-the-bush calculation (Birds in the Bush).\n\nI CONCEDE: nothing. Gary V and Wickman both stressed that attention and operations demand production-grade systems, and they’re right—but the core risk is still reputation, not attention leakage alone.\n\nON THE CRUXES:\n1. Reputation damage is irreversible—banks share failure narratives internally, and a botched go-live marks the startup as unreliable, not iterative.\n2. The pilot is purely a reference; £60k is trivial compared to the £180k+ follow-on pipeline.\n3. A six-week delay can be framed as quality assurance—if the founder walks in with a rebuild plan, not an apology.\n\nSTANCE: Strong yes\nOPTION SCORES: A 3/10 · B 9/10 · C 5/10 · D 2/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 4/5\nRUIN RISK: possible\nMOVED: no\nMY CONDITIONS FOR YES:\n1. The bank confirms in writing it will accept a six-week delay if the rebuild is production-grade and the founder shares a weekly progress report.\n2. The rebuild plan includes a 99.9% pass rate on internal QA tests by week 6.\n3. The founder has not signed any binding agreement with penalty clauses for delay."},{"seat":"thiel","stance":"Strong yes","call":"","scores":{"A":3,"B":9,"C":2,"D":1},"question":"","thisWeek":"","oneLine":"","disagreeWith":"graham","disagreeLine":"Graham. His superlinear returns argument is right—bad products get zero users—but he misattributes the cause: it’s not that the demo is merely “half as good,” it’s that in enterprise, without a tenfold edge on reliability, you’re not selling a product at all—you’re selling a gamble, and the bank has no reason to gamble on a minnow (Market Lies).","concede":"Graham’s point about runway—£180k covers six weeks—is correct, but I’d add that if the bank sees the delay as a sign of weakness rather than discipline, the credibility loss outweighs the cash saved.","moved":"no","vote":"","amendment":"","finalScore":null,"text":"SEAT: THIEL\nI DISAGREE MOST WITH: Graham. His superlinear returns argument is right—bad products get zero users—but he misattributes the cause: it’s not that the demo is merely “half as good,” it’s that in enterprise, without a tenfold edge on reliability, you’re not selling a product at all—you’re selling a gamble, and the bank has no reason to gamble on a minnow (Market Lies).\n\nI CONCEDE: Graham’s point about runway—£180k covers six weeks—is correct, but I’d add that if the bank sees the delay as a sign of weakness rather than discipline, the credibility loss outweighs the cash saved.\n\nON THE CRUXES:\n1. Reputation damage from a failed pilot is irreversible in enterprise AI—banks don’t retry failed pilots with the same vendor, because judgment errors are costly and no one checks the output (Palantir playbook).\n2. The pilot’s value is purely as a reference—£60k is noise next to the £180k+ pipeline, so losing it destroys the whole business model (Four Monopoly Traits).\n3. The six-week delay can be framed as competence—if you lead with the bank’s risk, not your own (e.g., “We want to ensure your audit passes, not just our demo”).\n\nSTANCE: Strong yes\nOPTION SCORES: A 3/10 · B 9/10 · C 2/10 · D 1/10\nPILLAR SCORE: 9/10\nCONFIDENCE: 4/5\nRUIN RISK: possible\nMOVED: no\nMY CONDITIONS FOR YES: The bank confirms in writing it will accept only a production-grade system at go-live (not “hardening during pilot”); the technical lead signs off on the rebuild plan; and the startup has 90%+ pass rate on internal QA before asking the bank."}],"3":[{"seat":"bezos","stance":"","call":"","scores":{"A":2,"B":9,"C":1,"D":1},"question":"","thisWeek":"","oneLine":"A broken pilot is a one-way door—reputation with banks is not rebuildable after a first-use failure.","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"endorse","amendment":"Add “if internal QA pass rate \u003c99.9% by week 4, pivot to Option C” as a hard kill criteria—reputation is one-way, and 99.9% must be met before the bank call.","finalScore":9,"text":"SEAT: BEZOS\nVOTE: Endorse\nOPTION SCORES: A 2/10 · B 9/10 · C 1/10 · D 1/10\nFINAL SCORE: 9/10\nFINAL PILLAR SCORE: 9/10\nAMENDMENT OR DISSENT: Add “if internal QA pass rate \u003c99.9% by week 4, pivot to Option C” as a hard kill criteria—reputation is one-way, and 99.9% must be met before the bank call.\nONE LINE FOR THE FOUNDER: A broken pilot is a one-way door—reputation with banks is not rebuildable after a first-use failure."},{"seat":"graham","stance":"","call":"","scores":{"A":2,"B":9,"C":3,"D":1},"question":"","thisWeek":"","oneLine":"You’re not selling a delay—you’re selling trust; if the bank won’t sign, walk away.","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"amend","amendment":"Add “and the bank’s technical lead confirms in writing that the delay won’t void the £60k fee or trigger penalties” to condition 1—otherwise the £60k becomes zero-value like any failed pilot.","finalScore":8,"text":"SEAT: GRAHAM\nVOTE: Endorse with amendment\nOPTION SCORES: A 2/10 · B 9/10 · C 3/10 · D 1/10\nFINAL SCORE: 8/10\nFINAL PILLAR SCORE: 9/10\nAMENDMENT OR DISSENT: Add “and the bank’s technical lead confirms in writing that the delay won’t void the £60k fee or trigger penalties” to condition 1—otherwise the £60k becomes zero-value like any failed pilot.\nONE LINE FOR THE FOUNDER: You’re not selling a delay—you’re selling trust; if the bank won’t sign, walk away."},{"seat":"hormozi","stance":"","call":"","scores":{"A":2,"B":8,"C":1,"D":1},"question":"","thisWeek":"","oneLine":"Fix the offer first—ship production-grade before Day 1, or the bank will share failure, and growth reverses.","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"endorse","amendment":"Add: the 99.9% QA threshold must be earned, not promised—the rebuild must be tested against real bank data, not synthetic, or perceived likelihood drops.","finalScore":8,"text":"SEAT: HORMOZI\nVOTE: Endorse\nOPTION SCORES: A 2/10 · B 8/10 · C 1/10 · D 1/10\nFINAL SCORE: 8/10\nFINAL PILLAR SCORE: 9/10\nAMENDMENT OR DISSENT: Add: the 99.9% QA threshold must be earned, not promised—the rebuild must be tested against real bank data, not synthetic, or perceived likelihood drops.\nONE LINE FOR THE FOUNDER: Fix the offer first—ship production-grade before Day 1, or the bank will share failure, and growth reverses."},{"seat":"garyvee","stance":"","call":"","scores":{"A":3,"B":9,"C":2,"D":1},"question":"","thisWeek":"","oneLine":"Your demo isn’t a product—it’s your first ad; ship broken and you’ve burned your beachfront property before you even broke ground.","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"endorse","amendment":"Add: “If internal QA pass rate \u003c99% by week 3, pause the ask—rebuild or walk, no half-measures—because underpriced attention dies fast when trust breaks.”","finalScore":9,"text":"SEAT: GARY V\nVOTE: Endorse\nOPTION SCORES: A 3/10 · B 9/10 · C 2/10 · D 1/10\nFINAL SCORE: 9/10\nFINAL PILLAR SCORE: 10/10\nAMENDMENT OR DISSENT: Add: “If internal QA pass rate \u003c99% by week 3, pause the ask—rebuild or walk, no half-measures—because underpriced attention dies fast when trust breaks.”\nONE LINE FOR THE FOUNDER: Your demo isn’t a product—it’s your first ad; ship broken and you’ve burned your beachfront property before you even broke ground."},{"seat":"martell","stance":"","call":"","scores":{"A":2,"B":9,"C":3,"D":1},"question":"","thisWeek":"","oneLine":"Your calendar drowns in fire drills if you launch a demo that can’t pass audit—rebuild now or pay double the price later.","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"endorse","amendment":"Add “Founder records camcorder-style plan with lead engineer present before calling the bank” to ensure ownership clarity and prevent misalignment.","finalScore":9,"text":"SEAT: MARTELL\nVOTE: Endorse\nOPTION SCORES: A 2/10 · B 9/10 · C 3/10 · D 1/10\nFINAL SCORE: 9/10\nFINAL PILLAR SCORE: 10/10\nAMENDMENT OR DISSENT: Add “Founder records camcorder-style plan with lead engineer present before calling the bank” to ensure ownership clarity and prevent misalignment.\nONE LINE FOR THE FOUNDER: Your calendar drowns in fire drills if you launch a demo that can’t pass audit—rebuild now or pay double the price later."},{"seat":"wickman","stance":"","call":"","scores":{"A":2,"B":9,"C":1,"D":0},"question":"","thisWeek":"","oneLine":"","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"endorse","amendment":"No amendment needed—the conditions already force structure first and root-component fixes per the Six Key Components. One line for the founder: Run GWC on your lead engineer before day 1, or this rebuild fails at the root.","finalScore":9,"text":"SEAT: WICKMAN\nVOTE: Endorse\nOPTION SCORES: A 2/10 · B 9/10 · C 1/10 · D 0/10\nFINAL SCORE: 9/10\nFINAL PILLAR SCORE: 9/10\nAMENDMENT OR DISSENT: No amendment needed—the conditions already force structure first and root-component fixes per the Six Key Components. One line for the founder: Run GWC on your lead engineer before day 1, or this rebuild fails at the root."},{"seat":"buffett","stance":"","call":"","scores":{"A":3,"B":8,"C":5,"D":2},"question":"","thisWeek":"","oneLine":"A bank that fears your rebuild plan isn’t a client—it’s a warning sign.","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"endorse","amendment":"Add a line: “If the bank refuses written confirmation before week 1 ends, walk away—no pilot is worth burning reputation before it begins.”","finalScore":8,"text":"SEAT: BUFFETT\nVOTE: Endorse\nOPTION SCORES: A 3/10 · B 8/10 · C 5/10 · D 2/10\nFINAL SCORE: 8/10\nFINAL PILLAR SCORE: 8/10\nAMENDMENT OR DISSENT: Add a line: “If the bank refuses written confirmation before week 1 ends, walk away—no pilot is worth burning reputation before it begins.”\nONE LINE FOR THE FOUNDER: A bank that fears your rebuild plan isn’t a client—it’s a warning sign."},{"seat":"thiel","stance":"","call":"","scores":{"A":2,"B":8,"C":1,"D":0},"question":"","thisWeek":"","oneLine":"You’re not hardening a demo—you’re building a monopoly in a small market; if the first step isn’t ten times better on reliability, you’re not selling—you’re begging.","disagreeWith":null,"disagreeLine":"","concede":"","moved":"","vote":"amend","amendment":"Add a kill criterion at week 2: if internal QA pass rate falls below 95%, pivot to Option C—no bank delay will save a product that cannot pass its own tests, because a minnow selling a gamble is not a business, just a bet (Market Lies).","finalScore":8,"text":"SEAT: THIEL\nVOTE: Endorse with amendment\nOPTION SCORES: A 2/10 · B 8/10 · C 1/10 · D 0/10\nFINAL SCORE: 8/10\nFINAL PILLAR SCORE: 8/10\nAMENDMENT OR DISSENT: Add a kill criterion at week 2: if internal QA pass rate falls below 95%, pivot to Option C—no bank delay will save a product that cannot pass its own tests, because a minnow selling a gamble is not a business, just a bet (Market Lies).\nONE LINE FOR THE FOUNDER: You’re not hardening a demo—you’re building a monopoly in a small market; if the first step isn’t ten times better on reliability, you’re not selling—you’re begging."}]},"roundScores":{"1":{"A":2.8,"B":9,"C":3,"D":1.2},"2":{"A":2.4,"B":9,"C":2.6,"D":1.1},"3":{"A":2.3,"B":8.6,"C":2.4,"D":0.9}},"cruxes":{"list":[{"question":"Is reputation damage from a failed pilot irreversible, or can it be recovered through iteration during the pilot?","sides":[{"position":"Irreversible, a broken pilot destroys trust permanently","seats":["bezos","graham","hormozi","garyvee","martell","wickman","buffett","thiel"]},{"position":"Recoverable, improvement during pilot is acceptable","seats":[]}]},{"question":"Does the £60k pilot have meaningful standalone value, or is it purely a reference client to unlock larger future deals?","sides":[{"position":"Purely a reference, value is in future bank contracts","seats":["bezos","graham","hormozi","garyvee","martell","wickman","buffett","thiel"]},{"position":"Significant standalone revenue worth protecting","seats":[]}]},{"question":"Is the six-week delay perceived as competence or delay, can it be framed as quality assurance, or does it signal weakness?","sides":[{"position":"Framable as competence, delay is proactive quality","seats":["hormozi","garyvee","martell"]},{"position":"Risk of perceived indecision, must be framed precisely","seats":["bezos","graham","wickman","buffett","thiel"]}]}],"unanimous":true,"pressure":{"hormozi":"If the bank interprets the delay as indecision, what specific framing or evidence do you propose to flip perception to competence?","garyvee":"If the bank walks after the delay ask, what’s your fallback to protect attention and credibility?","martell":"If the Integrator hasn’t signed off on technical debt, how do you prevent fire-drill execution even after the delay?"}},"draft":{"option":"B","recommendation":"Ask for the six-week delay to rebuild production-grade before go-live, this avoids irreversible reputation loss and secures the reference client, but only if the bank agrees in writing and the rebuild passes internal QA before the ask.","conditions":["Bank signs a written addendum accepting a six-week delay only if production-grade audit logs, fallback, and QA pass rates are delivered before go-live.","Internal QA passes at 99.9% on answer quality, audit, and fallback recovery by week 4 of the delay (per Wickman, Buffett, Thiel).","Founder records and shares a camcorder-style plan (per Martell) with one number (99.9% QA pass rate), outcome, and handoff to lead engineer before calling the bank.","Founder confirms no penalty clauses bind the startup for delay (per Buffett)."]},"verdict":{"label":"GO WITH CONDITIONS","recommended":"B","call":"Ask the bank for a six-week delay to rebuild production-grade before go-live, but only if internal QA hits 99.9% pass rate by week 4 and the bank signs a written addendum confirming acceptance.","scores":{"A":2.3,"B":8.6,"C":2.4,"D":0.9},"confidence":9,"support":8.4,"spread":1,"votesText":"6 endorse, 2 amend","why":[{"point":"A failed pilot with missing audit logs, fallback, and QA is a one-way door, reputation loss with this bank and future banks is irreversible because enterprise AI reliability is table stakes, not differentiating.","seat":"Wickman","seatKey":"wickman"},{"point":"The £60k pilot is purely a reference; its standalone value is negligible versus the £180k+ follow-on pipeline, so losing it destroys the whole business model.","seat":"Buffett","seatKey":"buffett"},{"point":"A six-week delay can be framed as competence if led with the bank’s risk (e.g., audit integrity), not your own unpreparedness, and only if backed by internal QA pass rates ≥99.9% and a camcorder-style plan showing ownership.","seat":"Thiel","seatKey":"thiel"},{"point":"Founder time is the scarcest capital, shipping a shaky demo guarantees fire drills, not learning; rebuilding now buys back 6x founder hours at £62.50/hour versus £150+ later.","seat":"Martell","seatKey":"martell"},{"point":"In enterprise AI, no one checks output, so if the first demo fails audit or fallback, the bank assumes all output is garbage, and judgment errors are costly and non-retryable.","seat":"Thiel","seatKey":"thiel"}],"minority":{"seat":"Graham","seatKey":"graham","quote":"A demo that breaks under audit isn’t just bad—it’s zero users. You have to make something people want.","would":"That the bank will tolerate a broken demo if fixes are fast and visible, this is false in enterprise AI where audit/fallback are table stakes, not features."},"conditions":["Bank signs a written addendum accepting a six-week delay only if production-grade audit logs, fallback, and QA pass rates are delivered before go-live, and the £60k fee is not voided or penalized.","Internal QA passes at 99.9% on answer quality, audit, and fallback recovery by week 4, tested against real bank data (not synthetic).","Founder records and shares a camcorder-style plan (per Martell) with one number (99.9% QA pass rate), outcome, and handoff to lead engineer, with lead engineer present, before calling the bank.","If internal QA pass rate \u003c99% by week 3, pause the ask and rebuild or walk.","Founder confirms no penalty clauses bind the startup for delay.","If bank refuses written confirmation before week 1 ends, walk away."],"next":[{"when":"Day 1","action":"Founder and Integrator (or lead engineer) sign off on rebuild plan with weekly QA scorecard (e.g., QA pass rate) and camcorder-style plan recorded with lead engineer present."},{"when":"Day 2–3","action":"Ship rebuilt system to internal QA suite; run full test suite against real bank data; capture pass rates; if \u003c95%, pivot to Option C or reshape."},{"when":"If ≥95% by week 2, Day 3","action":"Call bank’s technical lead and project lead separately with same ask framed as 'quality assurance', lead with bank’s audit risk, not your own."},{"when":"If bank confirms in writing, Day 4","action":"Lock addendum with 99.9% QA threshold and production-grade requirement."},{"when":"Week 4","action":"Rebuild complete; QA sign-off recorded; lead engineer certifies system readiness."}],"test":"Run a full internal QA pass on audit/fallback/answer quality by week 2; if pass rate \u003c95%, pivot to Option C.","kill":"If internal QA pass rate \u003c95% by week 2, or bank refuses written confirmation before week 1 ends, pivot to Option C.","revisit":"Revisit if bank delays beyond six weeks or insists on 'hardening during pilot', then pivot to Option A only if QA pass rate ≥99.9% by week 2 and bank signs addendum waiving penalties."},"seconds":247.94},"quick":{"prompt":"Should we move our customer-support AI agent from a paid hosted model to an open-weights model on our own GPUs? We answer 40,000 tickets a month. The model bill is £9,000 a month and growing about 15% a month. We are two engineers and neither of us has run GPUs in production. A GPU server would cost about £2,500 a month. Options: (A) move now, (B) keep the hosted model but cut the bill with caching and a cheaper model for easy tickets, (C) run both side by side for 60 days and decide on the numbers. I lean towards A because the bill scares me.","seats":["wickman","buffett","hormozi","martell"],"label":"GO WITH CONDITIONS","call":"Run both systems side by side for 60 days (Option C), but only if you name an owner by Day 3 and contract a third-party GPU ops partner before Day 1 begins.","pick":{"id":"C","label":"Run both side by side for 60 days"},"options":[{"id":"A","label":"Move to open-weights on own GPUs now","score":2.2},{"id":"B","label":"Optimize hosted model with caching and cheaper model","score":6.3},{"id":"C","label":"Run both side by side for 60 days","score":9},{"id":"D","label":"Don't do it: keep doing what you do now","score":4.2}],"minority":{"seat":"Buffett","quote":"No, the £2.5k/month is not realizable without degrading quality—given the team’s lack of GPU ops experience and the 12-month liquidity test (Noah’s Law). You cannot afford one medium-severity incident."},"time":"1 minute 38 seconds"},"bench":{"summary":{"repeats":{"questions":2,"agreed":5,"runs":6},"meetings":7,"with_advice":7,"minority_named":6,"label_follows_band":3,"median_seconds":236,"median_tokens":{"input":488201,"output":10892},"by_mode":{"full":{"meetings":4,"median_seconds":274,"median_tokens":{"input":489167.5,"output":11565}},"quick":{"meetings":3,"median_seconds":100,"median_tokens":{"input":150234,"output":5495}}},"cards_complete_pct":100,"quotes_verified_pct":83,"quotes_attributed":53},"rows":[{"question":"The bank pilot","title":"Ship or harden first?","short":"Bank pilot, run 1","mode":"full","seats":8,"seconds":248,"time":"4m 08s","cards":{"total":24,"complete":24},"quotes":{"attributed":6,"verified":6},"verdict":{"recommended":"B","minority":true}},{"question":"The bank pilot","title":"Go live or harden first?","short":"Bank pilot, run 2","mode":"full","seats":8,"seconds":300,"time":"5m 00s","cards":{"total":24,"complete":24},"quotes":{"attributed":19,"verified":18},"verdict":{"recommended":"B","minority":true}},{"question":"The bank pilot","title":"Ship flawed demo or delay for reliability?","short":"Bank pilot, run 3","mode":"full","seats":8,"seconds":236,"time":"3m 56s","cards":{"total":24,"complete":24},"quotes":{"attributed":9,"verified":8},"verdict":{"recommended":"B","minority":true}},{"question":"The bank pilot, three options","title":"Ship or harden before launch?","short":"Bank pilot, 3 options","mode":"full","seats":8,"seconds":363,"time":"6m 03s","cards":{"total":24,"complete":24},"quotes":{"attributed":10,"verified":7},"verdict":{"recommended":"C","minority":false}},{"question":"Move to our own GPUs?","title":"GPU migration vs cost control","short":"Own GPUs, run 1","mode":"quick","seats":4,"seconds":98,"time":"1m 38s","cards":{"total":8,"complete":8},"quotes":{"attributed":0,"verified":0},"verdict":{"recommended":"C","minority":true}},{"question":"Move to our own GPUs?","title":"Don't rush to self-host AI yet","short":"Own GPUs, run 2","mode":"quick","seats":4,"seconds":100,"time":"1m 40s","cards":{"total":8,"complete":8},"quotes":{"attributed":1,"verified":1},"verdict":{"recommended":"C","minority":true}},{"question":"Move to our own GPUs?","title":"Do not move to self-hosted AI yet","short":"Own GPUs, run 3","mode":"quick","seats":4,"seconds":111,"time":"1m 51s","cards":{"total":8,"complete":8},"quotes":{"attributed":8,"verified":4},"verdict":{"recommended":"B","minority":true}}],"questions":[{"name":"The bank pilot","note":"Full meeting, eight advisors, asked three times","picks":["B","B","B"],"common":"B"},{"name":"Move to our own GPUs?","note":"Quick meeting, four advisors, asked three times","picks":["C","C","B"],"common":"C"}]},"fmt":{"fullMedian":"4m 34s","quickMedian":"1m 40s"},"machine":"one Mac Studio (Apple M3 Ultra, 256 GB)","model":"qwen3-coder-next, 80 billion parameters, 4-bit","date":"28 October 2026","tests":247};
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+const SEAT = Object.fromEntries(DATA.seats.map((s) => [s.key, s]));
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// ---------- icons (stroke, 24px grid) ----------
+const ICONS = {
+  ask: '<path d="M4 5h16v11H9l-5 4V5z"/>', pen: '<path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M14 6l4 4"/>',
+  split: '<path d="M12 3v6"/><path d="M12 9l-6 6v6"/><path d="M12 9l6 6v6"/>', debate: '<path d="M3 6h11v7H7l-4 3V6z"/><path d="M14 10h7v9l-3-2h-6v-4"/>',
+  vote: '<path d="M4 11l5 5 11-11"/><path d="M4 20h16"/>', star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3z"/>',
+  gauge: '<path d="M4 18a8 8 0 1116 0"/><path d="M12 18l4-6"/>', mask: '<path d="M4 6c5-2 11-2 16 0v5c0 5-4 8-8 8s-8-3-8-8V6z"/><path d="M8.5 11h2M13.5 11h2"/>',
+  flag: '<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>', list: '<path d="M8 6h12M8 12h12M8 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/>',
+  scale: '<path d="M12 4v16"/><path d="M5 20h14"/><path d="M5 8h14"/><path d="M5 8l-3 6h6l-3-6zM19 8l-3 6h6l-3-6z"/>', arrow: '<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>',
+  table: '<ellipse cx="12" cy="13" rx="8" ry="5"/><circle cx="12" cy="4.5" r="1.5"/><circle cx="3" cy="9" r="1.2"/><circle cx="21" cy="9" r="1.2"/>', play: '<path d="M7 5l12 7-12 7V5z"/>',
+  grid: '<path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/>', bolt: '<path d="M13 3L5 14h6l-1 7 8-11h-6l1-7z"/>',
+  trend: '<path d="M4 17l6-6 4 4 6-7"/><path d="M15 8h5v5"/>', quote: '<path d="M7 7h4v4c0 3-1.5 5-4 6"/><path d="M15 7h4v4c0 3-1.5 5-4 6"/>',
+  doc: '<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 12h7M9 16h7"/>', check: '<path d="M4 12l5 5L20 6"/>',
+  calendar: '<path d="M4 6h16v14H4z"/><path d="M4 10h16M9 3v5M15 3v5"/>', flask: '<path d="M9 3h6M10 3v6L4 19a1 1 0 001 2h14a1 1 0 001-2l-6-10V3"/><path d="M7 15h10"/>',
+  gavel: '<path d="M14 4l6 6-3 3-6-6 3-3z"/><path d="M11 7l-7 7 3 3 7-7"/><path d="M4 21h9"/>', clock: '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',
+  repeat: '<path d="M4 9a7 7 0 0112-3l2 2"/><path d="M18 4v4h-4"/><path d="M20 15a7 7 0 01-12 3l-2-2"/><path d="M6 20v-4h4"/>', alert: '<path d="M12 4l9 16H3L12 4z"/><path d="M12 10v4M12 17h.01"/>',
+  stop: '<rect x="5" y="5" width="14" height="14" rx="2"/>', test: '<path d="M5 12l4 4 10-10"/>', kill: '<path d="M6 6l12 12M18 6L6 18"/>',
+};
+function icon(name, cls = "ico") { return `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ""}</svg>`; }
+function paintIcons(root = document) {
+  $$("[data-icon]", root).forEach((el) => {
+    if (el.dataset.painted) return;
+    el.dataset.painted = "1";
+    if (el.tagName === "SPAN" && !el.textContent.trim()) el.outerHTML = icon(el.dataset.icon);
+    else el.insertAdjacentHTML("afterbegin", icon(el.dataset.icon));
+  });
+}
+
+// ---------- seats ----------
+function disc(key, size = "") { const s = SEAT[key]; return `<span class="disc ${size}" style="--c:${s.color}" title="${esc(s.short)} seat, a simulation">${esc(s.initials)}</span>`; }
+function seatLine(key, sub) { const s = SEAT[key]; return `<div class="seat-line">${disc(key)}<div><b>${esc(s.short)} seat</b><span class="sub">${esc(sub ?? s.pillar)}</span></div></div>`; }
+
+// The table: an oval with "you" at the head and the eight seats around it, drawn to fit any width.
+function tableSvg({ seats = DATA.seats.map((s) => s.key), active = null, dim = false, w = 680, h = 440, labels = true, chips = {} } = {}) {
+  const cx = w / 2, cy = h / 2 + 24, rx = w * 0.33, ry = h * 0.21;
+  const angles = [-52, -14, 22, 62, 118, 158, 194, 232];
+  let out = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Eight advisors around a table with the founder at the head">`;
+  out += `<defs><radialGradient id="tg-${w}" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eef2f8"/></radialGradient><filter id="sh-${w}" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0f1c2e" flood-opacity=".14"/></filter></defs>`;
+  out += `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="url(#tg-${w})" stroke="#d3dbe6" stroke-width="2" filter="url(#sh-${w})"/>`;
+  out += `<ellipse cx="${cx}" cy="${cy}" rx="${rx * 0.62}" ry="${ry * 0.55}" fill="none" stroke="#e3e8ef" stroke-width="1.5" stroke-dasharray="3 6"/>`;
+  const hx = cx, hy = cy - ry - 58;
+  out += `<g><circle cx="${hx}" cy="${hy}" r="30" fill="#b9802a"/><circle cx="${hx}" cy="${hy}" r="36" fill="none" stroke="#b9802a" stroke-opacity=".3" stroke-width="3"/><text x="${hx}" y="${hy + 5}" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-weight="700" font-size="14">YOU</text>${labels ? `<text x="${hx}" y="${hy - 44}" text-anchor="middle" fill="#7a520f" font-family="Inter, sans-serif" font-size="13" font-weight="600">You chair the meeting and make the call</text>` : ""}</g>`;
+  DATA.seats.forEach((s, i) => {
+    const a = (angles[i] * Math.PI) / 180, x = cx + (rx + 64) * Math.cos(a), y = cy + (ry + 56) * Math.sin(a);
+    const on = seats.includes(s.key), isActive = active === s.key;
+    const op = !on ? 0.22 : dim && !isActive ? 0.4 : 1;
+    out += `<g opacity="${op}" data-seat="${s.key}">`;
+    if (isActive) out += `<circle cx="${x}" cy="${y}" r="38" fill="${s.color}" fill-opacity=".16"><animate attributeName="r" values="32;40;32" dur="1.6s" repeatCount="indefinite"/></circle>`;
+    out += `<line x1="${x}" y1="${y}" x2="${cx + rx * 0.92 * Math.cos(a)}" y2="${cy + ry * 0.92 * Math.sin(a)}" stroke="${s.color}" stroke-opacity=".25" stroke-width="2"/>`;
+    out += `<circle cx="${x}" cy="${y}" r="27" fill="${s.color}" stroke="#fff" stroke-width="4"/><circle cx="${x}" cy="${y}" r="31" fill="none" stroke="${s.color}" stroke-opacity=".45" stroke-width="1.5" stroke-dasharray="3 3"/>`;
+    out += `<text x="${x}" y="${y + 5}" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-weight="700" font-size="14">${esc(s.initials)}</text>`;
+    if (labels) out += `<text x="${x}" y="${y + 47}" text-anchor="middle" fill="#0f1c2e" font-family="Inter, sans-serif" font-size="13" font-weight="600">${esc(s.short)}</text><text x="${x}" y="${y + 63}" text-anchor="middle" fill="#566375" font-family="Inter, sans-serif" font-size="11.5">${esc(s.label)}</text>`;
+    if (chips[s.key]) out += `<g><rect x="${x - 30}" y="${y - 50}" width="60" height="20" rx="10" fill="${chips[s.key].bg}"/><text x="${x}" y="${y - 36}" text-anchor="middle" fill="${chips[s.key].fg}" font-family="JetBrains Mono, monospace" font-size="11">${esc(chips[s.key].text)}</text></g>`;
+    out += `</g>`;
+  });
+  return out + `</svg>`;
+}
+
+// ---------- state ----------
+const STEPS = [
+  { id: "question", route: "question", title: "Read the question", text: "Start where the founder starts. Notice the lean, highlighted: option A. The board is told to test a lean, not agree with it." },
+  { id: "first", route: "first-take", title: "Watch the first take", text: "Press Play the round. Eight advisors answer alone, one after another. It ticks when all eight have spoken." },
+  { id: "sticking", route: "sticking", title: "See what splits them", text: "The Chair names the questions the advice turns on, and who sits on which side." },
+  { id: "debate", route: "debate", title: "Watch the debate", text: "Follow the arrows: who pushed back on whom. Then check whether anyone moved." },
+  { id: "vote", route: "vote", title: "See the vote", text: "A written plan, eight votes, and every amendment either adopted or answered." },
+  { id: "advice", route: "advice", title: "Read the advice", text: "The call, a score for every option, the dissent kept on purpose, and the first five days." },
+  { id: "call", route: "advice", title: "Make your call", text: "Scroll to Your call. Take the advice, change it or overrule it. In the real room this is saved with a date to come back." },
+  { id: "numbers", route: "numbers", title: "Check the numbers", text: "Seven meetings, timed and counted. The misses are on the page too." },
+];
+const KEY = "board-room-sample-v1";
+let state = { done: {}, call: null, conds: {}, tourOpen: true, tourStep: 0 };
+try { const saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) state = { ...state, ...saved }; } catch (e) { /* private mode: the sample still works, it just forgets */ }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* see above */ } }
+function tick(id) { if (state.done[id]) return; state.done[id] = true; save(); renderTour(); renderNavTicks(); }
+
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (t.hidden = true), 2600); }
+
+// ---------- welcome ----------
+function renderWelcome() {
+  $("#hero-table").innerHTML = tableSvg() + `<figcaption>Eight advisors, each built from one well-known operator's public work. You sit at the head and make the final call.</figcaption>`;
+  $("#media-tour").innerHTML = tableSvg({ labels: false, active: "graham", dim: true });
+  $("#media-advice").innerHTML = `<svg width="320" height="160" viewBox="0 0 320 160" fill="none"><rect x="10" y="12" width="300" height="136" rx="16" fill="#fff"/><circle cx="262" cy="64" r="38" fill="#f7ebcf" stroke="#7f5600" stroke-width="2.5"/><text x="262" y="54" text-anchor="middle" fill="#7f5600" font-family="Montserrat, sans-serif" font-weight="700" font-size="16">B</text><text x="262" y="69" text-anchor="middle" fill="#7f5600" font-family="Montserrat, sans-serif" font-weight="700" font-size="8.5">GO WITH</text><text x="262" y="80" text-anchor="middle" fill="#7f5600" font-family="Montserrat, sans-serif" font-weight="700" font-size="8.5">CONDITIONS</text>${[["A", 2.3], ["B", 8.6], ["C", 2.4], ["D", 0.9]].map(([k, v], i) => `<text x="30" y="${44 + i * 25}" fill="#0f1c2e" font-family="Montserrat, sans-serif" font-weight="700" font-size="13">${k}</text><rect x="50" y="${35 + i * 25}" width="160" height="9" rx="4.5" fill="#e3e8ef"/><rect x="50" y="${35 + i * 25}" width="${v * 16}" height="9" rx="4.5" fill="${k === "B" ? "#b9802a" : "#8794a6"}"/>`).join("")}</svg>`;
+  const s = DATA.bench.summary;
+  $("#welcome-tiles").innerHTML = [
+    [DATA.fmt.fullMedian, "A full meeting", "Eight advisors, three rounds"],
+    [DATA.fmt.quickMedian, "A quick meeting", "Four advisors"],
+    [`${s.repeats.agreed}<small>/${s.repeats.runs}</small>`, "Same answer again", "When a question was asked twice more"],
+    ["£0", "Billed per meeting", "The model runs on the machine"],
+  ].map(([b, t, d]) => `<div class="tile"><div class="big">${b}</div><b>${t}</b><span>${d}</span></div>`).join("");
+}
+
+// ---------- question ----------
+function renderQuestion() {
+  const f = DATA.full;
+  const lean = f.prompt.match(/I lean[^.]*\.?[^.]*\./);
+  let html = esc(f.prompt);
+  if (lean) html = html.replace(esc(lean[0]), `<mark>${esc(lean[0])}</mark>`);
+  $("#ask-bubble").innerHTML = html;
+  $("#opts-tiles").innerHTML = f.options.map((o) => `<div class="opt-tile${o.id === "A" ? " lean" : ""}"><span class="id">${o.id}</span><div>${esc(o.label)}${o.id === "A" ? "<small>The founder's lean</small>" : ""}</div></div>`).join("");
+  $("#assumed").innerHTML = f.assumptions.map((a) => `<div class="assume">${icon("alert")}<span><b>Assumed:</b> ${esc(a)}</span></div>`).join("");
+  const rows = DATA.seats.map((s) => ({ s, w: f.weights[s.key] })).sort((a, b) => b.w.weight - a.w.weight);
+  $("#weights").innerHTML = rows.map(({ s, w }) => `<div class="weight-row">${seatLine(s.key)}<div class="dots" aria-label="weight ${w.weight} of 3">${[1, 2, 3].map((n) => `<i class="${n <= w.weight ? "on" : ""}"></i>`).join("")}</div><p>${esc(w.reason)}</p></div>`).join("");
+}
+
+// ---------- scores ----------
+function miniScores(scores, top) { return `<div class="mini-scores">${DATA.full.options.map((o) => `<div class="${o.id === top ? "top-opt" : ""} ${o.id === "A" ? "lean-opt" : ""}">${o.id} ${scores[o.id] ?? "-"}<div class="bar"><span style="width:${(scores[o.id] ?? 0) * 10}%"></span></div></div>`).join("")}</div>`; }
+function topOf(scores) { return Object.entries(scores).sort((a, b) => b[1] - a[1])[0]?.[0]; }
+function heat(round, el) {
+  const f = DATA.full, opts = f.options.map((o) => o.id);
+  const cell = (v) => { const t = Math.max(0, Math.min(10, v)) / 10; const bg = `rgba(15,28,46,${0.08 + t * 0.86})`; return `<td style="background:${bg};color:${t > 0.45 ? "#fff" : "#0f1c2e"}">${v}</td>`; };
+  const body = f.cards[round].map((c) => `<tr><td class="seat">${disc(c.seat, "sm")} <span style="vertical-align:middle;margin-left:6px">${esc(SEAT[c.seat].short)}</span></td>${opts.map((o) => cell(c.scores[o] ?? 0)).join("")}</tr>`).join("");
+  const total = `<tr class="total"><td class="seat">Weighted score</td>${opts.map((o) => cell(f.roundScores[round][o])).join("")}</tr>`;
+  $(el).innerHTML = `<thead><tr><th></th>${opts.map((o) => `<th class="opt">${o}${o === "A" ? " · lean" : ""}</th>`).join("")}</tr></thead><tbody>${body}${total}</tbody>`;
+}
+
+// ---------- first take ----------
+function renderFirst() {
+  const f = DATA.full, cards = f.cards[1];
+  const leanScores = cards.map((c) => c.scores.A);
+  $("#hook-first").textContent = `Writing alone, all ${cards.length} scored the founder's lean ${Math.min(...leanScores)} or ${Math.max(...leanScores)} out of 10.`;
+  $("#table-1").innerHTML = tableSvg();
+  $("#cards-1").innerHTML = cards.map((c) => `<article class="card seat-card${state.done.first ? "" : " pending"}" data-seat="${c.seat}"><div class="top">${seatLine(c.seat)}<span class="pill ${/no/i.test(c.stance) ? "no" : /yes/i.test(c.stance) ? "go" : "cond"}">${esc(c.stance)}</span></div><p class="call">${esc(c.call)}</p>${miniScores(c.scores, topOf(c.scores))}${c.question ? `<p class="q"><b>Their question for the founder:</b> ${esc(c.question)}</p>` : ""}${c.thisWeek ? `<p class="q"><b>What they'd do this week:</b> ${esc(c.thisWeek)}</p>` : ""}<details class="full"><summary>Read the whole answer</summary><div class="text">${esc(c.text)}</div></details></article>`).join("");
+  heat(1, "#heat-1");
+  if (state.done.first) $("#count-1").textContent = `${cards.length} of ${cards.length}`;
+}
+let playing = false;
+async function playRound() {
+  if (playing) return;
+  playing = true;
+  const cards = DATA.full.cards[1], btn = $("#play-1");
+  btn.disabled = true;
+  $$("#cards-1 .seat-card").forEach((el) => el.classList.add("pending"));
+  for (let i = 0; i < cards.length; i++) {
+    const c = cards[i];
+    $("#table-1").innerHTML = tableSvg({ active: c.seat, dim: true });
+    $("#who-1").innerHTML = seatLine(c.seat, c.stance);
+    $("#count-1").textContent = `${i + 1} of ${cards.length}`;
+    $("#bar-1").style.width = `${((i + 1) / cards.length) * 100}%`;
+    await typeOut($("#say-1"), c.call || c.oneLine || "");
+    $(`#cards-1 .seat-card[data-seat="${c.seat}"]`)?.classList.remove("pending");
+    await wait(reduced ? 0 : 650);
+  }
+  $("#table-1").innerHTML = tableSvg({ chips: Object.fromEntries(cards.map((c) => [c.seat, { text: `A ${c.scores.A} · B ${c.scores.B}`, bg: "#0f1c2e", fg: "#fff" }])) });
+  $("#say-1").textContent = "All eight have spoken. Every one of them put B, the delay, at the top.";
+  btn.disabled = false; btn.innerHTML = icon("play") + "Play it again";
+  playing = false;
+  tick("first");
+}
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+async function typeOut(el, text) {
+  if (reduced) { el.textContent = text; return; }
+  el.innerHTML = '<span class="t"></span><span class="caret"></span>';
+  const t = $(".t", el), step = Math.max(1, Math.round(text.length / 60));
+  for (let i = 0; i <= text.length; i += step) { t.textContent = text.slice(0, i); await wait(16); }
+  t.textContent = text;
+}
+
+// ---------- sticking points ----------
+function renderSticking() {
+  const c = DATA.full.cruxes;
+  $("#cruxes").innerHTML = c.list.map((x, i) => {
+    const [a, b] = x.sides, na = a.seats.length, nb = b.seats.length, win = na >= nb ? 0 : 1;
+    const side = (s, isWin) => `<div class="side${isWin ? " win" : ""}"><p>${esc(s.position)}</p><div class="who">${s.seats.length ? s.seats.map((k) => disc(k, "sm")).join("") : '<span class="none">Nobody</span>'}</div></div>`;
+    return `<section class="card crux"><span class="pill ${na && nb ? "info" : ""}" style="margin-bottom:10px">${na && nb ? `A real split: ${Math.max(na, nb)} to ${Math.min(na, nb)}` : "Everyone on one side"}</span><h3>${i + 1}. ${esc(x.question)}</h3><div class="tug">${side(a, win === 0)}${side(b, win === 1)}</div><div class="tugbar" aria-hidden="true"><span style="width:${(na / (na + nb || 1)) * 100}%"></span><span style="width:${(nb / (na + nb || 1)) * 100}%"></span></div></section>`;
+  }).join("");
+  $("#unanimous-note").textContent = c.unanimous ? "Every advisor's first take put the same option on top. When that happens, the Chair picks advisors to argue the strongest case against it in round two, so the agreement has to survive a real challenge." : "";
+  $("#pressure").innerHTML = Object.entries(c.pressure || {}).map(([k, q]) => `<div>${disc(k, "sm")}<span><b>${esc(SEAT[k].short)} seat must answer:</b> ${esc(q)}</span></div>`).join("");
+}
+
+// ---------- debate ----------
+function renderDebate() {
+  const f = DATA.full, cards = f.cards[2];
+  const targets = cards.reduce((m, c) => (c.disagreeWith ? m.set(c.disagreeWith, (m.get(c.disagreeWith) || 0) + 1) : m), new Map());
+  const [most, n] = [...targets.entries()].sort((a, b) => b[1] - a[1])[0] || [null, 0];
+  $("#hook-debate").textContent = most ? `${n} of ${cards.length} advisors pushed back on the same one: the ${SEAT[most].short} seat.` : "";
+  $("#net").innerHTML = network(cards);
+  $("#slope").innerHTML = slope();
+  const first = f.cards[1], last = f.cards[3] || f.cards[2];
+  const movedB = last.filter((c) => (first.find((x) => x.seat === c.seat)?.scores.B ?? 0) !== c.scores.B).length;
+  $("#slope-note").textContent = `The debate tested the agreement rather than overturning it. ${movedB ? `${movedB} advisors marked B down by a point by the vote,` : "Nobody moved B,"} and the founder's lean never climbed above 3.`;
+  $("#push").innerHTML = cards.map((c) => `<div class="row">${disc(c.seat)}<div><p><b>${esc(SEAT[c.seat].short)} seat, disagreeing with ${c.disagreeWith ? esc(SEAT[c.disagreeWith].short) : "nobody named"}:</b> ${esc(shorten(c.disagreeLine, 260))}</p>${c.concede ? `<p class="concede">Concedes: ${esc(shorten(c.concede, 200))}</p>` : ""}</div></div>`).join("");
+}
+function shorten(s, n) { s = String(s || ""); if (s.length <= n) return s; const cut = s.slice(0, n); return cut.slice(0, cut.lastIndexOf(" ")) + "…"; }
+function network(cards) {
+  const w = 420, h = 400, cx = w / 2, cy = h / 2, r = 150;
+  const pos = Object.fromEntries(DATA.seats.map((s, i) => { const a = (-90 + (360 / DATA.seats.length) * i) * (Math.PI / 180); return [s.key, [cx + r * Math.cos(a), cy + r * Math.sin(a)]]; }));
+  const hits = cards.reduce((m, c) => ((m[c.disagreeWith] = (m[c.disagreeWith] || 0) + 1), m), {});
+  let out = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Arrows from each advisor to the advisor they disagreed with most"><defs>${DATA.seats.map((s) => `<marker id="ah-${s.key}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="${s.color}"/></marker>`).join("")}</defs>`;
+  for (const c of cards) {
+    if (!c.disagreeWith || !pos[c.disagreeWith]) continue;
+    const [x1, y1] = pos[c.seat], [x2, y2] = pos[c.disagreeWith];
+    const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy), ux = dx / len, uy = dy / len;
+    const sx = x1 + ux * 30, sy = y1 + uy * 30, ex = x2 - ux * (34 + (hits[c.disagreeWith] || 0) * 1.5), ey = y2 - uy * (34 + (hits[c.disagreeWith] || 0) * 1.5);
+    const mx = (sx + ex) / 2 + (cy - (sy + ey) / 2) * 0.18, my = (sy + ey) / 2 + ((sx + ex) / 2 - cx) * -0.18;
+    out += `<path d="M${sx},${sy} Q${mx},${my} ${ex},${ey}" fill="none" stroke="${SEAT[c.seat].color}" stroke-width="2.4" stroke-opacity=".85" marker-end="url(#ah-${c.seat})"/>`;
+  }
+  for (const s of DATA.seats) {
+    const [x, y] = pos[s.key], n = hits[s.key] || 0, rr = 24 + n * 2.2;
+    if (n) out += `<circle cx="${x}" cy="${y}" r="${rr + 8}" fill="${s.color}" fill-opacity=".14"/>`;
+    out += `<circle cx="${x}" cy="${y}" r="${rr}" fill="${s.color}" stroke="#fff" stroke-width="4"/><text x="${x}" y="${y + 5}" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-weight="700" font-size="${13 + n * 0.6}">${esc(s.initials)}</text>`;
+    if (n > 1) out += `<g><circle cx="${x + rr * 0.78}" cy="${y - rr * 0.78}" r="13" fill="#0f1c2e" stroke="#fff" stroke-width="3"/><text x="${x + rr * 0.78}" y="${y - rr * 0.78 + 4.5}" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-weight="700" font-size="12">${n}</text></g>`;
+  }
+  return out + `</svg>`;
+}
+// One row per advisor: where A (the founder's lean) and B (the pick) started at the first take and ended at the vote.
+function slope() {
+  const f = DATA.full, last = f.cards[3] || f.cards[2], first = f.cards[1];
+  const w = 440, rowH = 34, top = 34, h = top + DATA.seats.length * rowH + 40, x0 = 112, x1 = w - 20;
+  const x = (v) => x0 + (v / 10) * (x1 - x0);
+  let out = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Each advisor's score for A and for B at the first take and at the vote">`;
+  for (const v of [0, 5, 10]) out += `<line x1="${x(v)}" x2="${x(v)}" y1="${top - 8}" y2="${h - 34}" stroke="#e3e8ef"/><text x="${x(v)}" y="${top - 14}" text-anchor="middle" fill="#8794a6" font-size="11" font-family="JetBrains Mono, monospace">${v}</text>`;
+  DATA.seats.forEach((s, i) => {
+    const y = top + i * rowH + rowH / 2, a = first.find((c) => c.seat === s.key)?.scores, b = last.find((c) => c.seat === s.key)?.scores;
+    if (!a || !b) return;
+    out += `<circle cx="16" cy="${y}" r="11" fill="${s.color}"/><text x="16" y="${y + 4}" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-weight="700" font-size="8.5">${esc(s.initials)}</text><text x="34" y="${y + 4}" fill="#0f1c2e" font-size="12" font-family="Inter, sans-serif" font-weight="600">${esc(s.short)}</text>`;
+    for (const [opt, col] of [["A", "#b9802a"], ["B", "#0f1c2e"]]) {
+      const p1 = x(a[opt]), p2 = x(b[opt]);
+      out += `<line x1="${p1}" x2="${p2}" y1="${y}" y2="${y}" stroke="${col}" stroke-width="3" stroke-opacity=".35"/><circle cx="${p1}" cy="${y}" r="6" fill="#fff" stroke="${col}" stroke-width="2.2"/><circle cx="${p2}" cy="${y}" r="6" fill="${col}"/>`;
+    }
+  });
+  const ly = h - 14;
+  out += `<circle cx="${x0}" cy="${ly - 4}" r="5" fill="#fff" stroke="#566375" stroke-width="2"/><text x="${x0 + 10}" y="${ly}" fill="#566375" font-size="11" font-family="Inter, sans-serif">first take</text><circle cx="${x0 + 84}" cy="${ly - 4}" r="5" fill="#566375"/><text x="${x0 + 94}" y="${ly}" fill="#566375" font-size="11" font-family="Inter, sans-serif">vote</text><rect x="${x0 + 140}" y="${ly - 9}" width="10" height="10" rx="2" fill="#b9802a"/><text x="${x0 + 155}" y="${ly}" fill="#566375" font-size="11" font-family="Inter, sans-serif">A, the lean</text><rect x="${x0 + 228}" y="${ly - 9}" width="10" height="10" rx="2" fill="#0f1c2e"/><text x="${x0 + 243}" y="${ly}" fill="#566375" font-size="11" font-family="Inter, sans-serif">B, the pick</text>`;
+  return out + `</svg>`;
+}
+
+// ---------- vote ----------
+const VOTE = { endorse: { label: "Endorse", bg: "#1d6f49", soft: "go" }, amend: { label: "Endorse, with an amendment", bg: "#b9802a", soft: "cond" }, dissent: { label: "Dissent", bg: "#a3241e", soft: "no" } };
+function renderVote() {
+  const f = DATA.full, d = f.draft, cards = f.cards[3] || [];
+  $("#draft").innerHTML = `<span class="doc-k">Draft resolution · Option ${esc(d.option)}</span><p class="rec">${esc(d.recommendation)}</p><span class="doc-k">On these conditions</span><ol style="margin-top:8px">${d.conditions.map((c) => `<li>${esc(c)}</li>`).join("")}</ol>`;
+  const counts = cards.reduce((m, c) => ((m[c.vote] = (m[c.vote] || 0) + 1), m), {});
+  $("#hook-vote").textContent = `${counts.endorse || 0} endorsed. ${counts.amend || 0} asked for changes. ${counts.dissent ? `${counts.dissent} dissented.` : "Nobody dissented."}`;
+  $("#tally").innerHTML = ["endorse", "amend", "dissent"].map((k) => `<span style="width:${((counts[k] || 0) / cards.length) * 100}%;background:${VOTE[k].bg}"></span>`).join("");
+  $("#tally-legend").innerHTML = ["endorse", "amend", "dissent"].map((k) => `<span><i style="background:${VOTE[k].bg}"></i>${VOTE[k].label} · ${counts[k] || 0}</span>`).join("");
+  $("#votes").innerHTML = cards.map((c) => `<div class="vote">${disc(c.seat)}<b style="font-size:.88rem">${esc(SEAT[c.seat].short)}</b><span class="pill ${VOTE[c.vote]?.soft || ""}">${esc(VOTE[c.vote]?.label.split(",")[0] || c.vote)}${c.vote === "amend" ? " +" : ""}</span><span class="score">${c.finalScore ?? "-"}<small>/10</small></span></div>`).join("");
+  const amends = cards.filter((c) => c.amendment);
+  $("#amend").innerHTML = amends.map((c) => `<div>${disc(c.seat, "sm")}<span><b>${esc(SEAT[c.seat].short)} seat${c.vote === "endorse" ? " (endorsed, and added)" : ""}:</b> ${esc(c.amendment)}</span></div>`).join("");
+}
+
+// ---------- advice ----------
+function renderAdvice() {
+  const f = DATA.full, v = f.verdict, pick = f.options.find((o) => o.id === v.recommended);
+  $("#pick-label").textContent = `Option ${pick.id}: ${pick.label}`;
+  $("#h-verdict").textContent = v.call;
+  const go = /^GO$/.test(v.label);
+  $("#stamp").className = `stamp${go ? " go" : ""}`;
+  $("#stamp").innerHTML = `<span class="opt">${esc(pick.id)}</span>${esc(v.label)}`;
+  $("#opts-bars").innerHTML = f.options.map((o) => `<div class="ob${o.id === v.recommended ? " top" : ""}"><span class="id">${o.id}</span><div><span class="lbl">${esc(o.label)}</span>${o.id === "A" ? '<span class="leanflag">the lean</span>' : ""}<div class="bar"><span style="width:${v.scores[o.id] * 10}%"></span></div></div><span class="sc">${v.scores[o.id]}</span></div>`).join("");
+  $("#figs").innerHTML = [["Confidence", `${v.confidence}/10`], ["Support for the plan", `${v.support}/10`], ["Votes", v.votesText], ["Spread on the pick", `${v.spread} point${v.spread === 1 ? "" : "s"}`]].map(([k, x]) => `<div><dt>${k}</dt><dd>${esc(x)}</dd></div>`).join("");
+  $("#why").innerHTML = v.why.map((w) => `<div>${w.seatKey ? disc(w.seatKey, "sm") : ""}<span>${esc(w.point)}</span></div>`).join("");
+  $("#minority").innerHTML = `<q>${esc(v.minority.quote)}</q><div class="by">${v.minority.seatKey ? disc(v.minority.seatKey, "sm") : ""}<span>${esc(v.minority.seat)} seat, outvoted</span></div><p class="would"><b>For this view to be right:</b> ${esc(v.minority.would)}</p>`;
+  $("#conds").innerHTML = v.conditions.map((c, i) => `<label><input type="checkbox" data-cond="${i}" ${state.conds[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("");
+  $("#steps").innerHTML = v.next.map((n) => `<div><b>${esc(n.when)}</b>${esc(n.action)}</div>`).join("");
+  $("#tkr").innerHTML = [["test", "The cheapest test", v.test], ["kill", "Walk away if", v.kill], ["calendar", "Come back when", v.revisit]].map(([i, t, p]) => `<div>${icon(i)}<b>${t}</b><p>${esc(p)}</p></div>`).join("");
+  renderCall();
+  const q = DATA.quick;
+  $("#quick-time").textContent = `${q.time}, four advisors`;
+  $("#quick").innerHTML = `<div class="grid2" style="gap:18px"><div><div class="ask-bubble" style="font-size:.95rem">${esc(q.prompt)}</div><div class="ask-who" style="flex-wrap:wrap">${q.seats.map((k) => disc(k, "sm")).join("")}<span>${esc(q.seats.map((k) => SEAT[k].short).join(", "))}: the two who matter most, a downside check, and the one most likely to disagree.</span></div></div><div><span class="pick-label">Option ${esc(q.pick.id)}: ${esc(q.pick.label)} · ${esc(q.label)}</span><p class="call-big" style="font-size:1.15rem">${esc(q.call)}</p><div class="opts-bars" style="margin-top:14px">${q.options.map((o) => `<div class="ob${o.id === q.pick.id ? " top" : ""}"><span class="id">${o.id}</span><div><span class="lbl">${esc(o.label)}</span><div class="bar"><span style="width:${o.score * 10}%"></span></div></div><span class="sc">${o.score}</span></div>`).join("")}</div><div class="minority" style="margin-top:16px"><p style="font-size:.95rem"><b>Minority report, ${esc(q.minority.seat)} seat:</b> “${esc(q.minority.quote)}”</p></div></div></div>`;
+}
+const CALLS = { take: "You took the advice: ask the bank for the six-week delay, on the board's conditions.", change: "You changed it: in the room you would write down what you changed and why.", overrule: "You overruled it: in the room you would write down your reason, so the review can test it." };
+function renderCall() {
+  const done = $("#call-done");
+  if (!state.call) { done.classList.remove("on"); $("#call-state").textContent = "not made"; $("#call-pill").classList.remove("made"); return; }
+  const review = new Date(); review.setDate(review.getDate() + 42);
+  done.innerHTML = `<b>Recorded.</b> ${esc(CALLS[state.call])} Review date: <b>${review.toLocaleDateString("en-GB", { day: "numeric", month: "long" })}</b>, six weeks from today. On that day the room brings this back as a short review meeting: stay the course, adjust, or stop. <span style="opacity:.7">(In this sample it only lives in your browser.)</span>`;
+  done.classList.add("on");
+  $("#call-state").textContent = { take: "taken", change: "changed", overrule: "overruled" }[state.call];
+  $("#call-pill").classList.add("made");
+  $$("#call-actions .btn").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.call === state.call)));
+}
+
+// ---------- numbers ----------
+function renderNumbers() {
+  const b = DATA.bench, s = b.summary;
+  $("#numbers-intro").textContent = `${s.meetings} meetings on ${DATA.machine}, on a model that runs on that machine. Two sample decisions were each asked three times, plus a first version of the bank question asked once. Every figure here is counted from what the meetings saved.`;
+  $("#hook-numbers").textContent = `Asked three times, the bank question got the same answer three times.`;
+  $("#time-chart").innerHTML = timeChart(b.rows);
+  $("#repeats").innerHTML = b.questions.map((q) => `<div class="repeat-row"><div><b style="display:block">${esc(q.name)}</b><span class="muted" style="font-size:.86rem">${esc(q.note)}</span></div><div class="picks">${q.picks.map((p) => `<span class="${p === q.common ? "" : "odd"}" title="Run picked ${p}">${p}</span>`).join("")}</div></div>`).join("") + `<p class="muted" style="font-size:.86rem;margin-top:10px">Each circle is one full run of the meeting. A dashed circle picked something else.</p>`;
+  const cardsTotal = b.rows.reduce((a, r) => a + r.cards.total, 0), cardsOk = b.rows.reduce((a, r) => a + r.cards.complete, 0);
+  $("#cards-stat").innerHTML = `${cardsOk}<small> of ${cardsTotal}</small>`;
+  $("#waffle-cards").innerHTML = Array.from({ length: cardsTotal }, (_, i) => `<i class="${i < cardsOk ? "on" : ""}"></i>`).join("");
+  const qT = s.quotes_attributed, qOk = b.rows.reduce((a, r) => a + r.quotes.verified, 0);
+  $("#quotes-stat").innerHTML = `${qOk}<small> of ${qT} · ${s.quotes_verified_pct}%</small>`;
+  $("#waffle-quotes").innerHTML = Array.from({ length: qT }, (_, i) => `<i class="${i < qOk ? "on" : ""}"></i>`).join("");
+  $("#dissent-stat").innerHTML = `${s.minority_named}<small> of ${s.with_advice}</small>`;
+  $("#dissent-note").textContent = "Every answer should end with the strongest losing view, in that advisor's words.";
+  $("#dissent-dots").innerHTML = b.rows.map((r) => `<span class="${r.verdict?.minority ? "" : "odd"}" style="width:30px;height:30px;font-size:.7rem">${r.verdict?.minority ? "✓" : "–"}</span>`).join("");
+  $("#miss-text").innerHTML = `<b>One answer came back without a minority report.</b> In the three-option version of the bank question, all eight advisors agreed. The board is told to name the weakest assumption when that happens, and the local model left that part blank. We count it as a miss rather than leave it out.`;
+  $("#runs").innerHTML = `<thead><tr><th>Question</th><th>The board's title</th><th>Meeting</th><th>Time</th><th>Answers complete</th><th>Quotes matched</th><th>Pick</th><th>Dissent named</th></tr></thead><tbody>${b.rows.map((r) => `<tr><td>${esc(r.question)}</td><td>${esc(r.title)}</td><td>${esc(r.mode)}, ${r.seats} advisors</td><td class="n">${esc(r.time)}</td><td class="n">${r.cards.complete}/${r.cards.total}</td><td class="n">${r.quotes.verified}/${r.quotes.attributed}</td><td class="n">${esc(r.verdict?.recommended || "-")}</td><td>${r.verdict?.minority ? "yes" : "no"}</td></tr>`).join("")}</tbody>`;
+  $("#method").textContent = `Measured on ${DATA.date} on ${DATA.machine} with an open-weights model running locally (${DATA.model}). Time is from the question to the advice. The software behind it also runs ${DATA.tests} automated tests on every change, none of which calls a model.`;
+}
+function timeChart(rows) {
+  const w = 460, rowH = 30, h = rows.length * rowH + 50, max = Math.max(...rows.map((r) => r.seconds)), pad = 150;
+  const x = (s) => pad + (s / (Math.ceil(max / 60) * 60)) * (w - pad - 40);
+  let out = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Minutes from question to advice for each of the seven meetings">`;
+  for (let m = 0; m <= Math.ceil(max / 60); m++) out += `<line x1="${x(m * 60)}" x2="${x(m * 60)}" y1="10" y2="${h - 30}" stroke="#e3e8ef"/><text x="${x(m * 60)}" y="${h - 12}" text-anchor="middle" fill="#8794a6" font-size="11" font-family="JetBrains Mono, monospace">${m}m</text>`;
+  rows.forEach((r, i) => {
+    const y = 14 + i * rowH, full = r.mode === "full";
+    out += `<text x="${pad - 10}" y="${y + 13}" text-anchor="end" fill="#0f1c2e" font-size="12" font-family="Inter, sans-serif">${esc(r.short)}</text>`;
+    out += `<rect x="${pad}" y="${y}" width="${x(r.seconds) - pad}" height="18" rx="9" fill="${full ? "#0f1c2e" : "#b9802a"}"/><text x="${x(r.seconds) + 6}" y="${y + 13}" fill="#566375" font-size="11" font-family="JetBrains Mono, monospace">${esc(r.time)}</text>`;
+  });
+  return out + `</svg><div class="legend"><span><i style="background:#0f1c2e"></i>Full: 8 advisors, 3 rounds · median ${esc(DATA.fmt.fullMedian)}</span><span><i style="background:#b9802a"></i>Quick: 4 advisors · median ${esc(DATA.fmt.quickMedian)}</span></div>`;
+}
+
+// ---------- names ----------
+function renderNames() {
+  $("#name-cards").innerHTML = DATA.seats.map((s) => `<article class="card name-card"><div class="seat-line">${disc(s.key, "lg")}<div><b>${esc(s.short)} seat</b><span class="sub pillar">${esc(s.pillar)}</span></div></div><q>“${esc(s.question)}”</q><span class="from">Built from the public work of ${esc(s.name)}. A simulation, not the person.</span></article>`).join("");
+}
+
+// ---------- tour ----------
+function renderTour() {
+  const doneCount = STEPS.filter((s) => state.done[s.id]).length;
+  $("#tour-progress").textContent = `${doneCount} of ${STEPS.length}`;
+  $("#tour-steps").innerHTML = STEPS.map((s, i) => `<li class="${state.done[s.id] ? "done" : ""}${i === state.tourStep ? " cur" : ""}"><button type="button" data-step="${i}"><span class="n">${state.done[s.id] ? "✓" : i + 1}</span><span>${esc(s.title)}</span></button></li>`).join("");
+  const st = STEPS[state.tourStep];
+  $("#tour-text").innerHTML = `<b>${esc(st.title)}</b>${esc(st.text)}`;
+  $("#tour-back").disabled = state.tourStep === 0;
+  $("#tour-next").textContent = state.tourStep === STEPS.length - 1 ? "Finish" : "Next";
+  $("#shell").classList.toggle("tour-closed", !state.tourOpen);
+  $("#tour-open").hidden = state.tourOpen;
+}
+function goStep(i) { state.tourStep = Math.max(0, Math.min(STEPS.length - 1, i)); save(); renderTour(); location.hash = STEPS[state.tourStep].route; if (STEPS[state.tourStep].id === "call") setTimeout(() => $("#h-yourcall")?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" }), 60); }
+function renderNavTicks() {
+  const map = { question: "question", "first-take": "first", sticking: "sticking", debate: "debate", vote: "vote", advice: "advice", numbers: "numbers" };
+  $$("#nav a").forEach((a) => a.classList.toggle("done", Boolean(state.done[map[a.dataset.route]])));
+}
+
+// ---------- router ----------
+const ROUTES = ["welcome", "question", "first-take", "sticking", "debate", "vote", "advice", "numbers", "names"];
+const AUTO_TICK = { question: "question", sticking: "sticking", debate: "debate", vote: "vote", advice: "advice", numbers: "numbers" };
+function route() {
+  const r = ROUTES.includes(location.hash.slice(1)) ? location.hash.slice(1) : "welcome";
+  $$(".route").forEach((s) => (s.hidden = s.dataset.route !== r));
+  $$("#nav a").forEach((a) => (a.dataset.route === r ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current")));
+  $("#nav").classList.remove("open"); $("#menu-btn").setAttribute("aria-expanded", "false");
+  // the tour shows this screen's stop: the first one not done yet, else the first for this screen
+  const here = STEPS.map((s, i) => [s, i]).filter(([s]) => s.route === r);
+  const pick = (here.find(([s]) => !state.done[s.id]) || here[0])?.[1];
+  if (pick != null) { state.tourStep = pick; save(); }
+  if (AUTO_TICK[r]) tick(AUTO_TICK[r]);
+  renderTour();
+  window.scrollTo({ top: 0, behavior: "auto" });
+  $("#main").focus({ preventScroll: true });
+}
+
+// ---------- wire up ----------
+function init() {
+  renderWelcome(); renderQuestion(); renderFirst(); renderSticking(); renderDebate(); renderVote(); renderAdvice(); renderNumbers(); renderNames();
+  paintIcons(); renderTour(); renderNavTicks();
+  $("#play-1").addEventListener("click", playRound);
+  $("#menu-btn").addEventListener("click", () => { const open = $("#nav").classList.toggle("open"); $("#menu-btn").setAttribute("aria-expanded", String(open)); });
+  $("#tour-steps").addEventListener("click", (e) => { const b = e.target.closest("[data-step]"); if (b) goStep(Number(b.dataset.step)); });
+  $("#tour-back").addEventListener("click", () => goStep(state.tourStep - 1));
+  $("#tour-next").addEventListener("click", () => { if (state.tourStep === STEPS.length - 1) { state.tourOpen = false; save(); renderTour(); toast("Tour closed. Open it again from the button at the bottom right."); } else goStep(state.tourStep + 1); });
+  $("#tour-close").addEventListener("click", () => { state.tourOpen = false; save(); renderTour(); });
+  $("#tour-open").addEventListener("click", () => { state.tourOpen = true; save(); renderTour(); });
+  $$("[data-start-tour]").forEach((a) => a.addEventListener("click", () => { state.tourOpen = true; state.tourStep = 0; save(); renderTour(); }));
+  $("#call-actions").addEventListener("click", (e) => { const b = e.target.closest("[data-call]"); if (!b) return; state.call = b.dataset.call; save(); renderCall(); tick("call"); });
+  $("#conds").addEventListener("change", (e) => { const c = e.target.closest("[data-cond]"); if (!c) return; state.conds[c.dataset.cond] = c.checked; save(); });
+  $("#reset-btn").addEventListener("click", () => { state = { done: {}, call: null, conds: {}, tourOpen: true, tourStep: 0 }; save(); init.rerender(); location.hash = "welcome"; toast("The sample is back to the start."); });
+  window.addEventListener("hashchange", route);
+  route();
+}
+init.rerender = () => { renderFirst(); renderAdvice(); paintIcons(); renderTour(); renderNavTicks(); };
+init();
+</script>
+</body>
+</html>
