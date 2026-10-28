@@ -23,8 +23,23 @@
   --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --strip-bg: #0d0d0e; --strip-text: #f4f1ea; --on-lime: #0d0d0e; --kind-text: #3d3a34; --dot: #a8a294; --mark: #d2ff00;
+  --c-mp: #0f766e; --c-ng: #7c3aed; --c-bw: #1d4ed8; --c-ac: #c2410c; --c-you: #0d0d0e;
   color-scheme: light;
 }
+/* Dark, chosen with the switch in the header; the sample always opens light. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0f0f10; --band: #161618; --surface: #1a1a1d; --tile: #222226; --track: #2c2c31;
+  --ink: #f4f1ea; --ink-text: #0f0f10; --text: #ecebe6; --muted: #a8a49a; --line: #2e2e33; --edge: #77746b;
+  --accent: #f4f1ea; --accent-soft: rgba(210, 255, 0, .13); --red: #d9473b; --red-text: #f2877e; --red-soft: rgba(242, 135, 126, .14);
+  --ok-text: #9ad49a; --ok-soft: rgba(154, 212, 154, .13); --warn-text: #f0c066; --warn-soft: rgba(240, 192, 102, .13); --bad-text: #f2877e; --bad-soft: rgba(242, 135, 126, .14);
+  --shadow: inset 0 1px 0 rgba(255, 255, 255, .03), 0 10px 30px rgba(0, 0, 0, .45);
+  --shadow-md: 0 20px 60px rgba(0, 0, 0, .6);
+  --strip-bg: #050506; --kind-text: #d6d2c8; --dot: #6f6c64; --mark: rgba(210, 255, 0, .3);
+  --c-mp: #14a394; --c-ng: #8b5cf6; --c-bw: #3b82f6; --c-ac: #ea580c; --c-you: #f4f1ea;
+}
+:root[data-theme="dark"] .logo svg { border-radius: 9px; box-shadow: 0 0 0 1px var(--line); }
 * { box-sizing: border-box; }
 html { background: var(--page); }
 body { margin: 0; background: var(--page); color: var(--text); font: 15px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
@@ -43,9 +58,9 @@ p { margin: 0 0 .6rem; }
 
 
 /* The way back: a slim strip above the app, to the project page and to indica-tech.com. */
-.site-strip { background: var(--ink); color: #f4f1ea; font-size: .8rem; }
+.site-strip { background: var(--strip-bg); color: var(--strip-text); font-size: .8rem; }
 .site-strip-in { max-width: 1440px; margin: 0 auto; padding: .35rem 24px; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-.site-strip a { color: #f4f1ea; text-decoration: none; display: inline-flex; align-items: center; gap: .45rem; min-height: 30px; }
+.site-strip a { color: var(--strip-text); text-decoration: none; display: inline-flex; align-items: center; gap: .45rem; min-height: 30px; }
 .site-strip a:hover { color: var(--lime); }
 .site-strip a:focus-visible { outline-color: var(--lime); }
 .site-strip-right { display: inline-flex; align-items: center; gap: 1.2rem; }
@@ -72,7 +87,7 @@ p { margin: 0 0 .6rem; }
 .head-right a.plain:hover { background: var(--page); }
 .head-right a.plain[aria-current="page"] { background: var(--ink); color: var(--ink-text); }
 .needs-pill { display: inline-flex; align-items: center; gap: .45rem; font-weight: 650; font-size: .9rem; color: var(--text); text-decoration: none; padding: .35rem .45rem .35rem .85rem; border: 1px solid var(--ink); border-radius: 999px; min-height: 40px; }
-.count { min-width: 1.5rem; height: 1.5rem; display: inline-grid; place-items: center; font-size: .76rem; font-weight: 700; padding: 0 .4rem; border-radius: 999px; background: var(--lime); color: var(--ink); }
+.count { min-width: 1.5rem; height: 1.5rem; display: inline-grid; place-items: center; font-size: .76rem; font-weight: 700; padding: 0 .4rem; border-radius: 999px; background: var(--lime); color: var(--on-lime); }
 .count.zero { background: var(--ok-soft); color: var(--ok-text); }
 .head-right .menu-btn { display: none; }
 
@@ -94,7 +109,7 @@ main:focus { outline: none; }
 
 .btn { font: inherit; font-weight: 600; font-size: .92rem; border-radius: 999px; padding: .5rem 1.25rem; min-height: 42px; cursor: pointer; border: 1px solid transparent; display: inline-flex; align-items: center; justify-content: center; gap: .4rem; text-decoration: none; transition: background-color .15s, color .15s; }
 .btn.primary { background: var(--ink); color: var(--ink-text); }
-.btn.primary:hover { background: var(--lime); color: var(--ink); }
+.btn.primary:hover { background: var(--lime); color: var(--on-lime); }
 .btn.ghost { background: var(--surface); color: var(--ink); border-color: var(--ink); }
 .btn.ghost:hover { background: var(--page); }
 .btn.danger { background: var(--red); color: #fff; }
@@ -107,7 +122,7 @@ main:focus { outline: none; }
 
 .pill { display: inline-flex; align-items: center; font-size: .76rem; font-weight: 600; padding: .16rem .62rem; border-radius: 999px; white-space: nowrap; }
 .pill.grade { background: var(--ink); color: var(--ink-text); font-family: var(--mono); font-weight: 500; }
-.pill.kind { background: var(--track); color: #3d3a34; }
+.pill.kind { background: var(--track); color: var(--kind-text); }
 .pill.open, .pill.emerging, .pill.running, .pill.info { background: var(--accent-soft); color: var(--accent); }
 .pill.ok, .pill.ready, .pill.validated, .pill.backed, .pill.won, .pill.disclosed, .pill.consented, .pill.pass { background: var(--ok-soft); color: var(--ok-text); }
 .pill.warn, .pill.pending, .pill.candidate, .pill.guess, .pill.dormant, .pill.waived { background: var(--warn-soft); color: var(--warn-text); }
@@ -120,7 +135,7 @@ main:focus { outline: none; }
 .seg legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .seg label { position: relative; }
 .seg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; margin: 0; }
-.seg span { display: block; padding: .32rem .85rem; min-height: 32px; border-radius: 999px; font-size: .86rem; font-weight: 600; cursor: pointer; color: #3d3a34; }
+.seg span { display: block; padding: .32rem .85rem; min-height: 32px; border-radius: 999px; font-size: .86rem; font-weight: 600; cursor: pointer; color: var(--kind-text); }
 .seg input:checked + span { background: var(--ink); color: var(--ink-text); }
 .seg input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 1px; }
 
@@ -134,11 +149,11 @@ blockquote.quote .mono { color: var(--muted); }
 
 .stages { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; }
 .stage { display: flex; align-items: center; gap: .4rem; padding: .32rem .75rem; border-radius: 999px; background: var(--track); font-size: .84rem; font-weight: 600; color: var(--muted); }
-.stage::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%; background: #a8a294; }
+.stage::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%; background: var(--dot); }
 .stage.done { background: var(--ok-soft); color: var(--ok-text); }
 .stage.done::before { background: var(--ok-text); }
 .stage.now { background: var(--ink); color: var(--ink-text); }
-.stage.now::before { background: #fff; animation: pulse 1s ease-in-out infinite; }
+.stage.now::before { background: var(--ink-text); animation: pulse 1s ease-in-out infinite; }
 .stage.stopped { background: var(--red-soft); color: var(--red-text); }
 .stage.stopped::before { background: var(--red); }
 .stage-note { margin: .8rem 0 0; font-size: .93rem; }
@@ -151,7 +166,7 @@ blockquote.quote .mono { color: var(--muted); }
 
 .form { display: grid; gap: .7rem; }
 .form label { display: grid; gap: .25rem; font-size: .88rem; font-weight: 600; }
-.form input, .form select, .form textarea, .ask input { font: inherit; font-weight: 400; color: var(--text); background: var(--surface); border: 1px solid #8c877b; border-radius: 999px; padding: .5rem 1rem; min-height: 44px; width: 100%; }
+.form input, .form select, .form textarea, .ask input { font: inherit; font-weight: 400; color: var(--text); background: var(--surface); border: 1px solid var(--edge); border-radius: 999px; padding: .5rem 1rem; min-height: 44px; width: 100%; }
 .form textarea { border-radius: 16px; }
 .form input:focus, .form select:focus, .form textarea:focus, .ask input:focus { border-color: var(--ink); outline: 2px solid var(--accent); outline-offset: 1px; }
 .form .hint { font-weight: 400; color: var(--muted); font-size: .82rem; }
@@ -168,9 +183,9 @@ blockquote.quote .mono { color: var(--muted); }
 
 .board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .9rem; }
 .col { background: var(--track); border-radius: var(--radius); padding: .8rem; min-width: 0; }
-.col h2 { display: flex; justify-content: space-between; align-items: center; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: #3d3a34; margin: .1rem .2rem .75rem; font-family: var(--sans); }
+.col h2 { display: flex; justify-content: space-between; align-items: center; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--kind-text); margin: .1rem .2rem .75rem; font-family: var(--sans); }
 .col h2 span { background: var(--surface); border-radius: 999px; padding: .05rem .55rem; letter-spacing: 0; }
-.col .empty { background: transparent; border: 1px dashed #8c877b; }
+.col .empty { background: transparent; border: 1px dashed var(--edge); }
 .tcard { background: var(--surface); border-radius: var(--radius-sm); padding: .9rem; margin-bottom: .6rem; box-shadow: var(--shadow); }
 .tcard h3 { margin: 0 0 .2rem; font-size: 1.45rem; text-transform: none; letter-spacing: -.01em; color: var(--text); font-family: var(--display); font-weight: 400; }
 .tcard p { font-size: .87rem; margin: .35rem 0 0; }
@@ -222,7 +237,7 @@ tr:last-child td { border-bottom: 0; }
 dl.settings { display: grid; grid-template-columns: 12rem 1fr; gap: .55rem 1rem; margin: 0; font-size: .93rem; align-items: center; }
 dl.settings dt { color: var(--muted); }
 dl.settings dd { margin: 0; }
-dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 999px; padding: .35rem .9rem; min-height: 38px; background: var(--surface); }
+dl.settings select { font: inherit; color: var(--text); border: 1px solid var(--edge); border-radius: 999px; padding: .35rem .9rem; min-height: 38px; background: var(--surface); }
 
 .tour { position: sticky; top: 80px; margin: 2.2rem 24px 2rem 0; max-height: calc(100vh - 100px); overflow: auto; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 1.2rem; }
 .tour-head { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
@@ -231,9 +246,9 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
 .tour li button { width: 100%; text-align: left; font: inherit; font-size: .92rem; display: flex; gap: .6rem; align-items: center; padding: .4rem .55rem; min-height: 38px; border-radius: 999px; border: 0; background: none; color: var(--text); cursor: pointer; }
 .tour li button:hover { background: var(--page); }
 .tour li button[aria-current="step"] { background: var(--ink); color: var(--ink-text); font-weight: 600; }
-.tick { width: 1.35rem; height: 1.35rem; border-radius: 50%; background: var(--track); color: #3d3a34; display: grid; place-items: center; font-size: .72rem; font-weight: 700; flex: none; }
-.tick.on { background: var(--ok-text); color: #fff; }
-.tour li button[aria-current="step"] .tick:not(.on) { background: #fff; color: var(--ink); }
+.tick { width: 1.35rem; height: 1.35rem; border-radius: 50%; background: var(--track); color: var(--kind-text); display: grid; place-items: center; font-size: .72rem; font-weight: 700; flex: none; }
+.tick.on { background: var(--ok-text); color: var(--surface); }
+.tour li button[aria-current="step"] .tick:not(.on) { background: var(--ink-text); color: var(--ink); }
 .tour .step-text { background: var(--tile); border-radius: var(--radius-sm); padding: .85rem .95rem; font-size: .93rem; }
 .spot { outline: 3px solid var(--accent) !important; outline-offset: 5px; border-radius: 14px; animation: spot 1.4s ease-in-out 2; }
 @keyframes spot { 50% { outline-color: transparent; } }
@@ -241,18 +256,219 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
 .reopen-tour[hidden] { display: none; }
 .toast { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 50; background: var(--ink); color: var(--ink-text); padding: .6rem .7rem .6rem 1.1rem; border-radius: 999px; display: flex; gap: .9rem; align-items: center; max-width: calc(100vw - 32px); box-shadow: var(--shadow-md); font-size: .92rem; }
 .toast[hidden] { display: none; }
-.toast button { font: inherit; font-weight: 600; color: var(--ink); background: #fff; border: 0; border-radius: 999px; padding: .2rem .8rem; cursor: pointer; min-height: 30px; }
+.toast button { font: inherit; font-weight: 600; color: var(--ink); background: var(--ink-text); border: 0; border-radius: 999px; padding: .2rem .8rem; cursor: pointer; min-height: 30px; }
 .byline { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .7rem; margin-top: .8rem; font-size: .86rem; color: var(--muted); }
 .byline a { color: var(--ink); text-underline-offset: 2px; }
 .byline .indica { display: inline-flex; align-items: center; gap: .4rem; font-weight: 600; text-decoration: none; }
 .foot { margin-top: 2.5rem; font-size: .82rem; color: var(--muted); max-width: 62rem; }
 .intro .mono { overflow-wrap: anywhere; }
 
+/* The theme switch, the call badge and the workspace row. */
+.theme-btn { width: 40px; height: 40px; border-radius: 50%; display: inline-grid; place-items: center; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; flex: none; padding: 0; }
+.theme-btn:hover { border-color: var(--ink); }
+.theme-btn .ico { width: 18px; height: 18px; opacity: 1; }
+.call-pill { display: inline-flex; align-items: center; gap: .5rem; border: 1px solid var(--ink); border-radius: 999px; padding: .35rem .45rem .35rem .9rem; min-height: 40px; font-weight: 650; font-size: .9rem; color: var(--text); text-decoration: none; white-space: nowrap; }
+.call-pill .state { font-family: var(--mono); font-size: .74rem; font-weight: 500; padding: .12rem .55rem; border-radius: 999px; background: var(--warn-soft); color: var(--warn-text); }
+.call-pill.made .state { background: var(--ok-soft); color: var(--ok-text); }
+.head-right a.plain[aria-current="true"] { background: var(--ink); color: var(--ink-text); }
+.head-right a.plain[aria-current="true"] .count { box-shadow: 0 0 0 1.5px var(--ink); }
+.subnav { border-top: 1px solid var(--line); background: var(--surface); }
+.subnav[hidden] { display: none; }
+.subnav-in { max-width: 1440px; margin: 0 auto; padding: .35rem 24px; display: flex; align-items: center; gap: .15rem; overflow-x: auto; }
+.subnav-label { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-right: .6rem; white-space: nowrap; }
+.subnav a { color: var(--text); text-decoration: none; font-size: .88rem; padding: .3rem .7rem; border-radius: 999px; min-height: 36px; display: inline-flex; align-items: center; gap: .4rem; white-space: nowrap; }
+.subnav a:hover { background: var(--page); }
+.subnav a[aria-current="page"] { background: var(--track); font-weight: 600; }
+.subnav .ico { width: 15px; height: 15px; opacity: .85; }
+.subnav .back-story { margin-left: auto; font-weight: 600; flex-direction: row-reverse; }
+.shell.ws .tour { top: 124px; }
+
+/* The story: a step label, one line to notice, and the way on. */
+.story .intro { max-width: 64rem; }
+.story .intro h1 { font-size: clamp(2.4rem, 4.6vw, 3.7rem); line-height: 1.02; max-width: 20ch; text-wrap: balance; }
+.kicker { display: block; font-family: var(--mono); font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: .7rem; }
+.hook { display: inline-flex; align-items: center; gap: .6rem; margin-top: .9rem; background: var(--accent-soft); color: var(--text); border-radius: 999px; padding: .45rem 1.05rem; font-weight: 600; font-size: .95rem; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lime) 60%, transparent); }
+.hook .ico { width: 18px; height: 18px; }
+.next-link { display: flex; justify-content: flex-end; margin-top: 1.8rem; }
+.next-link .btn { flex-direction: row-reverse; }
+.next-link .ico, .back-story .ico { width: 16px; height: 16px; }
+.grid.wide-left { grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); }
+.eyebrow { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 .35rem; }
+.btn.lime { background: var(--lime); color: var(--on-lime); }
+.btn.lime:hover { background: #e4ff5c; }
+
+/* A colour for each call, and one for you. */
+.av { --c: var(--ink); width: 2rem; height: 2rem; border-radius: 50%; display: inline-grid; place-items: center; background: var(--c); color: #fff; font-size: .68rem; font-weight: 700; letter-spacing: .02em; flex: none; box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px color-mix(in srgb, var(--c) 40%, transparent); }
+.av.sm { width: 1.5rem; height: 1.5rem; font-size: .52rem; }
+.av.c-you { color: var(--ink-text); }
+.av.c-none { color: var(--muted); }
+.c-mp { --c: var(--c-mp); } .c-ng { --c: var(--c-ng); } .c-bw { --c: var(--c-bw); } .c-ac { --c: var(--c-ac); } .c-you { --c: var(--c-you); } .c-none { --c: var(--track); }
+.fl { fill: var(--c); }
+
+/* Welcome: one picture of the whole path, calls to a decision. */
+.hero h1 em { font-style: italic; background: linear-gradient(transparent 70%, var(--mark) 70%, var(--mark) 90%, transparent 90%); padding: 0 .06em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.flow { margin: 1.4rem auto 0; max-width: 1000px; }
+.flow svg { width: 100%; height: auto; display: block; overflow: visible; }
+.flow .colh { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; fill: var(--muted); }
+.flow .edge, .net .edge { fill: none; stroke: var(--c); stroke-linecap: round; }
+.flow .edge { stroke-width: 1.6; stroke-opacity: .6; stroke-dasharray: 1; animation: draw 1.3s cubic-bezier(.3, .7, .3, 1) backwards; }
+@keyframes draw { from { stroke-dashoffset: 1; } }
+.flow .ini, .net .ini { fill: #fff; font: 700 11px var(--sans); }
+.flow .nm, .net .nm { fill: var(--text); font: 600 13.5px var(--sans); }
+.flow .sub, .net .sub { fill: var(--muted); font: 400 12px var(--sans); }
+.flow .next circle { fill: var(--surface); stroke: var(--c); stroke-width: 2; stroke-dasharray: 4 4; }
+.flow .next .ini { fill: var(--c); }
+.flow .gp rect { fill: var(--ink); }
+.flow .gp text { fill: var(--ink-text); font: 500 11.5px var(--mono); }
+.sbox { fill: var(--surface); stroke: var(--line); stroke-width: 1.2; }
+.flow .st, .net .st { fill: var(--text); font: 600 13px var(--sans); }
+.flow .you { fill: var(--ink); stroke: var(--lime); stroke-width: 3; }
+.flow .you-t { fill: var(--ink-text); font: 700 11px var(--sans); letter-spacing: .04em; }
+.flow-cap { text-align: center; color: var(--muted); font-size: .92rem; margin: .7rem auto 0; max-width: 46rem; }
+.mini .ink { fill: var(--ink); } .mini .ln { fill: var(--track); } .mini .ln2 { fill: var(--edge); opacity: .55; } .mini .ln3 { fill: var(--edge); }
+.mini .hl { fill: var(--accent-soft); stroke: var(--ink); stroke-width: 1; }
+.mini .wire { fill: none; stroke: var(--ink); stroke-width: 1.6; }
+.mini .mono-t { fill: var(--text); font: 500 11px var(--mono); }
+.mini .ink-t { fill: var(--ink-text); font: 500 11.5px var(--mono); }
+.mini .seal-c { fill: none; stroke: var(--ok-text); stroke-width: 2; } .mini .seal-c2 { fill: none; stroke: var(--ok-text); stroke-width: 1; }
+.mini .seal-t { fill: var(--ok-text); font: 700 11px var(--sans); letter-spacing: .08em; }
+.tiles.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.notice { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .9rem 1.2rem; align-items: center; background: var(--surface); border-radius: var(--radius); padding: 1.3rem 1.5rem; box-shadow: var(--shadow); border-left: 5px solid var(--lime); margin-top: 1.4rem; }
+.notice .ico { width: 26px; height: 26px; }
+.notice p { margin: 0; }
+
+/* Step 1: the recording and the gate. */
+.filecard { display: grid; gap: .7rem; background: var(--tile); border-radius: var(--radius-sm); padding: 1rem 1.1rem; }
+.filecard .fname { font-family: var(--mono); font-weight: 500; margin: 0; }
+.filecard .fmeta { font-size: .84rem; color: var(--muted); margin: .1rem 0 0; }
+.filecard.waiting { border: 1.5px dashed var(--edge); background: transparent; }
+.wave { width: 100%; height: 56px; display: block; }
+.wave rect { fill: var(--edge); opacity: .55; }
+.wave.on rect { fill: var(--ink); opacity: 1; }
+.gate { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; margin: 0 0 1rem; padding: 0; list-style: none; }
+.gate li { background: var(--tile); border-radius: var(--radius-sm); padding: .6rem .75rem; font-size: .84rem; }
+.gate li b { display: block; font-size: .92rem; }
+.gate li span { display: block; color: var(--muted); font-size: .78rem; line-height: 1.35; margin-top: .15rem; }
+.gate li.on { background: var(--ink); color: var(--ink-text); }
+.gate li.past { background: var(--ok-soft); color: var(--ok-text); }
+.gate li.stop { background: var(--red-soft); color: var(--red-text); }
+.gate li.on span, .gate li.past span, .gate li.stop span { color: inherit; opacity: .8; }
+
+/* Step 2: the transcript, by speaker. */
+.lines.spk li { grid-template-columns: 2.4rem 1.5rem 2.7rem minmax(0, 1fr); align-items: start; }
+.lines .t { font-family: var(--mono); font-size: .78rem; color: var(--muted); padding-top: .2rem; }
+.spk-legend { display: grid; gap: .55rem; margin-bottom: 1rem; }
+.spk-legend span { display: flex; align-items: center; gap: .6rem; font-size: .9rem; }
+.spk-legend b { margin-left: auto; font-weight: 500; }
+.spk-strip { height: 26px; border-radius: 8px; background: var(--track); overflow: hidden; display: flex; }
+.spk-strip i { display: block; height: 100%; background: var(--c); border-right: 2px solid var(--surface); }
+.spk-axis { display: flex; justify-content: space-between; font-family: var(--mono); font-size: .72rem; color: var(--muted); margin-top: .35rem; }
+dl.settings.compact { grid-template-columns: 8.5rem minmax(0, 1fr); }
+
+/* Step 3: each learning wired to the line it cites. */
+.trace { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 4.5rem; }
+.trace > svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.trace h3 { margin: 0 0 .6rem; }
+.trace .wire { fill: none; stroke: var(--edge); stroke-width: 1.3; opacity: .5; }
+.trace .wire.on { stroke: var(--ink); stroke-width: 2.4; opacity: 1; }
+.tlrn { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+.tlrn button { width: 100%; text-align: left; font: inherit; color: var(--text); background: var(--tile); border: 1px solid transparent; border-radius: var(--radius-sm); padding: .65rem .85rem; cursor: pointer; display: grid; gap: .3rem; transition: border-color .15s, background-color .15s; }
+.tlrn button:hover { border-color: var(--edge); }
+.tlrn button[aria-pressed="true"] { border-color: var(--ink); background: var(--surface); box-shadow: var(--shadow); }
+.tlrn .row { display: flex; flex-wrap: wrap; gap: .35rem; }
+.tlrn .cites { font-size: .8rem; color: var(--muted); }
+.tlrn .said { font-size: .88rem; border-left: 3px solid var(--ink); padding: .1rem 0 .1rem .6rem; }
+
+/* Step 4: the evidence ladder. */
+.ladder { list-style: none; margin: 0; padding: 0; display: grid; gap: .45rem; }
+.ladder li { display: grid; grid-template-columns: 10rem minmax(0, 1fr) 2rem; gap: 1rem; align-items: center; padding: .7rem .9rem; border-radius: var(--radius-sm); background: var(--tile); transition: opacity .2s; }
+.ladder li.dim { opacity: .35; }
+.ladder .lv { display: grid; gap: .2rem; justify-items: start; }
+.ladder .lv small { color: var(--muted); font-size: .78rem; line-height: 1.3; }
+.ladder .dots { display: flex; flex-wrap: wrap; gap: .4rem; }
+.ladder .dots button { border: 0; padding: 0; background: none; cursor: pointer; border-radius: 50%; min-width: 28px; min-height: 28px; display: grid; place-items: center; }
+.ladder .dots button[aria-pressed="true"] .av { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--ink); }
+.ladder .n { font-family: var(--mono); text-align: right; color: var(--muted); }
+.lv-detail { margin-top: 1rem; }
+.keylist { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
+.keylist li { display: flex; align-items: center; gap: .75rem; }
+.keylist small { display: block; color: var(--muted); font-size: .82rem; }
+
+/* Step 5: calls to signals, and how a stage is earned. */
+#net { overflow-x: auto; }
+#net svg { width: 100%; height: auto; display: block; min-width: 620px; }
+.net .edge { stroke-opacity: .6; }
+.net .edge.moved { animation: pop 1.2s ease-out; }
+@keyframes pop { from { stroke-opacity: 1; stroke: var(--ink); } }
+.net .sig.gone { opacity: .4; }
+.mat rect { fill: var(--track); } .mat text { fill: var(--kind-text); font: 600 11.5px var(--sans); }
+.mat.candidate rect { fill: var(--warn-soft); } .mat.candidate text { fill: var(--warn-text); }
+.mat.emerging rect { fill: var(--accent-soft); } .mat.emerging text { fill: var(--text); }
+.mat.validated rect { fill: var(--ok-soft); } .mat.validated text { fill: var(--ok-text); }
+.mat.fading rect { fill: var(--bad-soft); } .mat.fading text { fill: var(--bad-text); }
+.rules { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; font-size: .92rem; }
+.rules li { display: grid; grid-template-columns: 6.6rem minmax(0, 1fr); gap: .8rem; align-items: center; }
+.rules .pill { justify-self: start; }
+.mtrack { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin: .8rem 0 .35rem; }
+.mtrack span { height: 8px; border-radius: 999px; background: var(--track); }
+.mtrack span.on { background: var(--ink); }
+.mlabels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); font-family: var(--mono); font-size: .72rem; color: var(--muted); }
+
+/* Step 6: your call. */
+.decide { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1.2rem 2rem; align-items: start; }
+.decide .q { font-family: var(--display); font-weight: 400; font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.08; letter-spacing: -.01em; margin: 0 0 1.1rem; }
+.decide .barrow { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 3.4rem; }
+.prob { display: grid; gap: .9rem; }
+.prob label { display: grid; grid-template-columns: 2rem minmax(0, 1fr) 3.4rem; gap: .15rem .8rem; align-items: center; font-weight: 600; }
+.prob .letter { grid-row: 1 / span 2; width: 2rem; height: 2rem; border-radius: 9px; display: grid; place-items: center; background: var(--track); font-weight: 700; font-size: .85rem; }
+.prob .opt { grid-column: 2; }
+.prob input[type="range"] { grid-column: 2; width: 100%; min-height: 28px; accent-color: var(--ink); padding: 0; border: 0; background: none; }
+.prob output { grid-column: 3; grid-row: 1 / span 2; font-family: var(--mono); text-align: right; }
+.sum { font-size: .84rem; color: var(--muted); margin: .6rem 0 .2rem; }
+.seal { width: 124px; height: 124px; border-radius: 50%; border: 2px solid var(--warn-text); color: var(--warn-text); display: grid; place-content: center; text-align: center; box-shadow: inset 0 0 0 5px var(--surface), inset 0 0 0 6.5px var(--warn-text); padding: .8rem; }
+.seal b { display: block; font-family: var(--display); font-size: 2rem; font-weight: 400; line-height: 1; }
+.seal small { display: block; font-size: .6rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-top: .3rem; line-height: 1.3; }
+.seal.backed { border-color: var(--ok-text); color: var(--ok-text); box-shadow: inset 0 0 0 5px var(--surface), inset 0 0 0 6.5px var(--ok-text); }
+.yourcall { margin-top: 1.1rem; background: var(--ink); color: var(--ink-text); }
+.yourcall h2 { color: var(--ink-text); }
+.yourcall p { color: var(--ink-text); opacity: .85; max-width: 60rem; }
+.yourcall .btn.ghost { background: transparent; color: var(--ink-text); border-color: color-mix(in srgb, var(--ink-text) 45%, transparent); }
+.yourcall .btn.ghost:hover { background: color-mix(in srgb, var(--ink-text) 10%, transparent); }
+
+@media (max-width: 1280px) { .grid.wide-left { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+@media (max-width: 900px) {
+  .grid.wide-left, .tiles.four { grid-template-columns: 1fr 1fr; }
+  .grid.wide-left { grid-template-columns: 1fr; }
+  .trace { grid-template-columns: 1fr; gap: 1.2rem; }
+  .trace > svg { display: none; }
+  .gate { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .call-pill .lbl { display: none; }
+  .call-pill { padding: .35rem .45rem; }
+  .hook { border-radius: 16px; align-items: flex-start; padding: .55rem .9rem; }
+  .hook .ico { margin-top: .15rem; }
+  .tiles.four { grid-template-columns: 1fr; }
+  .notice { grid-template-columns: 1fr; }
+  .flow { overflow-x: auto; }
+  .flow svg { min-width: 680px; }
+  .lines.spk li { grid-template-columns: 2rem 1.5rem minmax(0, 1fr); }
+  .lines.spk .t { display: none; }
+  .lines.spk .tx { grid-column: auto; }
+  .ladder li { grid-template-columns: minmax(0, 1fr) 2rem; }
+  .ladder .dots { grid-column: 1 / -1; grid-row: 2; }
+  .decide { grid-template-columns: 1fr; }
+  .decide .barrow { grid-template-columns: 1fr 3.4rem; }
+  .rules li { grid-template-columns: 1fr; gap: .3rem; }
+  .subnav-in { padding: .35rem 16px; }
+  .subnav .back-story { margin-left: .4rem; }
+}
+
 @media (max-width: 1240px) {
   .shell { grid-template-columns: minmax(0, 1fr); }
   .tour { position: fixed; right: 16px; bottom: 16px; top: auto; margin: 0; z-index: 30; width: min(340px, calc(100vw - 32px)); max-height: 62vh; }
 }
-@media (max-width: 1100px) {
+@media (max-width: 1280px) {
   .head-right .menu-btn { display: inline-flex; }
   .nav { display: none; position: absolute; left: 0; right: 0; top: 100%; background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: var(--shadow-md); flex-direction: column; align-items: stretch; padding: .6rem 16px 1rem; gap: .2rem; }
   .nav.open { display: flex; }
@@ -281,6 +497,8 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
   *, *::before { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 </style>
+<!-- The theme key is shared with indica-tech.com and the Board Room sample, so a visitor's choice carries over. -->
+<script>(function () { var t = null; try { t = localStorage.getItem("indica-theme"); } catch (e) {} if (t === "dark") document.documentElement.setAttribute("data-theme", "dark"); })();</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -294,75 +512,76 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
 <header class="head">
   <div class="head-inner">
     <a class="logo" href="#welcome"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0d0d0e"/><rect x="7.5" y="9" width="17" height="2.6" rx="1.3" fill="#f4f1ea"/><rect x="7.5" y="14.7" width="11.5" height="2.6" rx="1.3" fill="#d2ff00"/><circle cx="22.6" cy="16" r="1.7" fill="#d2ff00"/><rect x="7.5" y="20.4" width="14" height="2.6" rx="1.3" fill="#f4f1ea"/></svg><span>Evidence <em>Plane</em></span></a>
-    <nav class="nav" id="nav" aria-label="Pages">
-      <a href="#today" data-route="today" data-icon="today">Today</a>
-      <a href="#inbox" data-route="inbox" data-icon="inbox">Inbox</a>
-      <a href="#ask" data-route="ask" data-icon="ask">Ask</a>
-      <a href="#threads" data-route="threads" data-icon="company">Threads</a>
+    <nav class="nav" id="nav" aria-label="The journey">
+      <a href="#call" data-route="call" data-icon="shield">The call</a>
+      <a href="#transcript" data-route="transcript" data-icon="wave">Transcript</a>
+      <a href="#learnings" data-route="learnings" data-icon="cite">Learnings</a>
+      <a href="#grades" data-route="grades" data-icon="ladder">Grades</a>
       <a href="#signals" data-route="signals" data-icon="signals">Signals</a>
-      <a href="#positions" data-route="positions" data-icon="scale">Positions</a>
-      <a href="#people" data-route="people" data-icon="people">People</a>
-      <a href="#benchmarks" data-route="benchmarks" data-icon="gauge">Benchmarks</a>
-      <a href="#setup" data-route="setup" data-icon="sliders" class="only-menu">Setup</a>
-      <a href="#system" data-route="system" data-icon="pulse" class="only-menu">System</a>
+      <a href="#decide" data-route="decide" data-icon="scale">Decide</a>
+      <a href="#numbers" data-route="numbers" data-icon="gauge">Numbers</a>
+      <a href="#today" data-icon="today" class="only-menu">Workspace</a>
     </nav>
     <div class="head-right">
-      <a class="needs-pill" href="#today"><span class="label">Needs you</span><span class="count" id="needs-count" aria-label="items">0</span></a>
-      <a class="plain" href="#setup" data-route="setup">Setup</a>
-      <a class="plain" href="#system" data-route="system">System</a>
+      <button type="button" class="theme-btn" id="theme-btn" aria-label="Switch to the dark theme"></button>
+      <a class="call-pill" id="call-pill" href="#decide"><span class="lbl">Your call</span><span class="state" id="call-state">not made</span></a>
+      <a class="plain ws-link" id="ws-link" href="#today">Workspace <span class="count" id="needs-count" aria-label="items">0</span></a>
       <button type="button" class="btn ghost small menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
     </div>
   </div>
+  <nav class="subnav" id="subnav" aria-label="Workspace" hidden>
+    <div class="subnav-in"><span class="subnav-label">Workspace</span>
+      <a href="#today" data-route="today" data-icon="today">Today</a>
+      <a href="#inbox" data-route="inbox" data-icon="inbox">Inbox</a>
+      <a href="#threads" data-route="threads" data-icon="company">Threads</a>
+      <a href="#people" data-route="people" data-icon="people">People</a>
+      <a href="#ask" data-route="ask" data-icon="ask">Ask</a>
+      <a href="#setup" data-route="setup" data-icon="sliders">Setup</a>
+      <a href="#system" data-route="system" data-icon="pulse">System</a>
+      <a class="back-story" href="#call" data-icon="arrow">Back to the story</a>
+    </div>
+  </nav>
 </header>
 
 <div class="shell" id="shell">
   <main id="main" tabindex="-1"><div class="wrap">
     <section class="route" data-route="welcome" aria-labelledby="h-welcome">
       <div class="hero">
-        <h1 id="h-welcome">Every claim. Traced to the sentence it came from.</h1>
-        <p>Drop in a consented call. It is transcribed, read and graded on this machine, and every learning links back to the line someone said.</p>
+        <h1 id="h-welcome">Every claim. <em>Traced to the sentence it came from.</em></h1>
+        <p>Drop in a consented call. It is transcribed, read and graded on this machine, and every learning links back to the line someone said. Here is one company's calls, followed all the way to a decision.</p>
       </div>
+      <figure class="flow" id="flow"><figcaption class="flow-cap">Three calls you already had, and the one you add next. Every learning cites a line, every signal is earned by rules, and the decision stays yours.</figcaption></figure>
       <div class="paths">
         <article class="card path">
-          <div class="media" aria-hidden="true">
-            <svg width="300" height="150" viewBox="0 0 300 150" fill="none">
-              <rect x="10" y="18" width="190" height="34" rx="17" fill="#0d0d0e"/><text x="28" y="40" fill="#fff" font-family="JetBrains Mono, ui-monospace, monospace" font-size="13">E4 · behaviour</text>
-              <rect x="10" y="62" width="280" height="12" rx="6" fill="#ddd7ca"/><rect x="10" y="82" width="230" height="12" rx="6" fill="#ddd7ca"/>
-              <rect x="10" y="108" width="120" height="28" rx="14" fill="#fff" stroke="#0d0d0e"/><text x="30" y="127" fill="#0d0d0e" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600">cite line 28</text>
-            </svg>
-          </div>
+          <div class="media" aria-hidden="true"><svg class="mini" id="mini-follow" width="300" height="150" viewBox="0 0 300 150" fill="none"></svg></div>
           <div class="body">
-            <div class="tag"><span class="pill info">About 20 minutes</span><span class="pill kind">Synthetic calls</span></div>
-            <h2>Explore the sample company</h2>
-            <p class="muted">A short tour shows each part, and you try each one yourself: add a call, clear the gate, check a claim, join, answer, revoke.</p>
-            <div class="actions"><a class="btn primary wide" href="#today" data-start-tour>Start the tour</a></div>
+            <div class="tag"><span class="pill info">About 5 minutes</span><span class="pill kind">One call, start to finish</span></div>
+            <h2>Follow one call</h2>
+            <p class="muted">Add a call, clear the gate, watch it being read, check a claim, join a pattern and make the call. Each stop ticks when it has happened.</p>
+            <div class="actions"><a class="btn primary wide" href="#call" data-start-tour>Start the tour</a></div>
           </div>
         </article>
         <article class="card path">
-          <div class="media" aria-hidden="true">
-            <svg width="300" height="150" viewBox="0 0 300 150" fill="none">
-              <circle cx="24" cy="30" r="12" fill="#0d0d0e"/><path d="M18 30l4 4 8-8" stroke="#fff" stroke-width="2.5" fill="none"/><rect x="48" y="24" width="200" height="12" rx="6" fill="#ddd7ca"/>
-              <circle cx="24" cy="74" r="12" fill="#0d0d0e"/><path d="M18 74l4 4 8-8" stroke="#fff" stroke-width="2.5" fill="none"/><rect x="48" y="68" width="160" height="12" rx="6" fill="#ddd7ca"/>
-              <circle cx="24" cy="118" r="11" fill="#fff" stroke="#8c877b" stroke-width="2"/><rect x="48" y="112" width="220" height="12" rx="6" fill="#e9e5da"/>
-            </svg>
-          </div>
+          <div class="media" aria-hidden="true"><svg class="mini" id="mini-decide" width="300" height="150" viewBox="0 0 300 150" fill="none"></svg></div>
           <div class="body">
-            <div class="tag"><span class="pill info">Nine steps</span><span class="pill kind">Each ticks itself</span></div>
-            <h2>Set up your company</h2>
-            <p class="muted">From install to your first Monday digest, on your own machine. Nothing is shared with anyone else's install.</p>
-            <div class="actions"><a class="btn ghost wide" href="#setup">Open the checklist</a></div>
+            <div class="tag"><span class="pill info">One screen</span><span class="pill kind">Backed or guess</span></div>
+            <h2>Skip to your call</h2>
+            <p class="muted">The decision the calls point to, the evidence behind it, and whether that evidence is strong enough to back you.</p>
+            <div class="actions"><a class="btn ghost wide" href="#decide">Show the decision</a></div>
           </div>
         </article>
       </div>
       <section class="band" aria-labelledby="h-measured">
         <div class="band-head"><h2 id="h-measured">Measured, not claimed.</h2><p>What every call is held to. Each line is a test, and a miss is shown as a miss, never hidden.</p></div>
-        <div class="tiles">
+        <div class="tiles four">
           <div class="tile"><span class="big">100%</span><span class="label">Citations resolve</span><span class="target">Every learning must cite a real sentence</span></div>
           <div class="tile"><span class="big">99%+</span><span class="label">The same grade, twice</span><span class="target">The frozen grader repeats itself</span></div>
+          <div class="tile"><span class="big">E0–E5</span><span class="label">Every claim graded</span><span class="target">By what it cost someone to say it</span></div>
           <div class="tile"><span class="big">0 bytes</span><span class="label">Leave this machine</span><span class="target">The core has no route out</span></div>
         </div>
-        <div class="actions" style="justify-content:center;margin-top:1.4rem"><a class="btn ghost" href="#benchmarks">See the checks</a></div>
+        <div class="actions" style="justify-content:center;margin-top:1.4rem"><a class="btn ghost" href="#numbers">See the numbers</a></div>
       </section>
+      <div class="notice"><span data-icon="sliders"></span><p><strong>Running it at your company?</strong> Nine steps, from install to your first Monday digest. Each one ticks itself when it is done, and nothing is shared with anyone else's install.</p><a class="btn ghost" href="#setup">Open the checklist</a></div>
     </section>
 
     <section class="route" data-route="today" aria-labelledby="h-today" hidden>
@@ -387,25 +606,53 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
         <div class="form">
           <label>Choose a file <span class="hint">Audio, video or a document. The prototype does not read files; use the sample call below.</span><input type="file" id="file-input"></label>
         </div>
-        <div class="actions"><button type="button" class="btn primary" id="add-sample">Add a new sample call (1:04)</button></div>
+        <div class="actions"><button type="button" class="btn primary" id="add-sample" data-act="add">Add a new sample call (1:04)</button></div>
         <div id="add-msg" aria-live="polite"></div>
       </section>
       <section class="card" style="margin-top:1.1rem" aria-labelledby="h-arrived"><div class="card-head"><h2 id="h-arrived" data-icon="list">Arrived</h2></div><div class="table-wrap"><table><thead><tr><th scope="col">File</th><th scope="col">Company</th><th scope="col">Consent</th><th scope="col">Status</th></tr></thead><tbody id="inbox-rows"></tbody></table></div></section>
     </section>
 
-    <section class="route" data-route="call" aria-labelledby="h-call" hidden>
-      <div class="intro"><p class="crumb muted"><a href="#inbox">Inbox</a> / call</p><h1 id="h-call">acme-intro.wav</h1><p class="muted mono">sha256 b6759921411e4bc20a35a0027c3473a15b2e6e1168b9d3b5f350eacb4b8173b9 · 1:04 · two speakers</p></div>
-      <section class="card" id="reading-card" aria-labelledby="h-stages"><div class="card-head"><h2 id="h-stages" data-icon="wave">Reading</h2><span id="call-status"></span></div><ol class="stages" id="stages"></ol><p class="stage-note" id="stage-note" aria-live="polite"></p></section>
-      <div class="grid" style="margin-top:1.1rem">
+    <section class="route story" data-route="call" aria-labelledby="h-call" hidden>
+      <div class="intro"><span class="kicker">Step 1 of 6 · The call</span><h1 id="h-call">It starts with a call you were on.</h1><p class="muted">A recording lands in your watch folder, or you upload it. It is hashed and stored, then it waits: nothing is read until you record that the people on it were told.</p><span class="hook"><span data-icon="flag"></span><span id="hook-call"></span></span></div>
+      <div class="grid">
+        <section class="card" id="rec-card" aria-labelledby="h-rec"><div class="card-head"><h2 id="h-rec" data-icon="wave">The recording</h2><span id="call-status"></span></div><div id="rec-body"></div></section>
+        <section class="card" id="gate-card" aria-labelledby="h-gate"><div class="card-head"><h2 id="h-gate" data-icon="shield">The gate</h2><span id="consent-pill"></span></div><ul class="gate" id="gate-steps"></ul><div id="consent-body"></div></section>
+      </div>
+      <section class="card" id="reading-card" style="margin-top:1.1rem" aria-labelledby="h-stages"><div class="card-head"><h2 id="h-stages" data-icon="list">Then it is read, on this machine</h2></div><ol class="stages" id="stages"></ol><p class="stage-note" id="stage-note" aria-live="polite"></p></section>
+      <section class="card" id="company-card" style="margin-top:1.1rem" aria-labelledby="h-company"><div class="card-head"><h2 id="h-company" data-icon="company">Company</h2></div><div id="company-body"></div></section>
+      <div class="next-link"><a class="btn primary" href="#transcript" data-icon="arrow">Continue to the transcript</a></div>
+    </section>
+
+    <section class="route story" data-route="transcript" aria-labelledby="h-transcript" hidden>
+      <div class="intro"><span class="kicker">Step 2 of 6 · The transcript</span><h1 id="h-transcript">Who said what, line by line.</h1><p class="muted">Speech becomes numbered lines on this machine. Each line gets its speaker and its time, so anything written later can point straight back to it.</p><span class="hook"><span data-icon="flag"></span><span id="hook-transcript"></span></span></div>
+      <div class="grid wide-left">
+        <section class="card" id="spk-card" aria-labelledby="h-spk"><div class="card-head"><h2 id="h-spk" data-icon="doc">acme-intro.wav</h2><span id="spk-status"></span></div><div id="spk-body"></div></section>
         <div class="stack">
-          <section class="card" id="consent-card" aria-labelledby="h-consent"><div class="card-head"><h2 id="h-consent" data-icon="shield">Consent</h2><span id="consent-pill"></span></div><div id="consent-body"></div></section>
-          <section class="card" id="company-card" aria-labelledby="h-company"><div class="card-head"><h2 id="h-company" data-icon="company">Company</h2></div><div id="company-body"></div></section>
-        </div>
-        <div class="stack">
-          <section class="card" aria-labelledby="h-call-lrn"><div class="card-head"><h2 id="h-call-lrn" data-icon="cite">Learnings</h2><span data-seg></span></div><div id="call-learnings"></div></section>
-          <section class="card" aria-labelledby="h-transcript"><div class="card-head"><h2 id="h-transcript" data-icon="doc">Transcript</h2></div><div id="transcript"></div></section>
+          <section class="card" aria-labelledby="h-who"><div class="card-head"><h2 id="h-who" data-icon="people">Who talked when</h2></div><div id="who-body"></div></section>
+          <section class="card" aria-labelledby="h-local"><div class="card-head"><h2 id="h-local" data-icon="shield">Where it ran</h2></div>
+            <dl class="settings compact"><dt>Speech to text</dt><dd>On this machine</dd><dt>Speakers</dt><dd>On this machine</dd><dt>Sent out</dt><dd>Nothing</dd><dt>The recording</dt><dd>Kept as it arrived, never changed</dd></dl></section>
         </div>
       </div>
+      <div class="next-link"><a class="btn primary" href="#learnings" data-icon="arrow">Continue to the learnings</a></div>
+    </section>
+
+    <section class="route story" data-route="learnings" aria-labelledby="h-learnings" hidden>
+      <div class="intro"><span class="kicker">Step 3 of 6 · The learnings</span><h1 id="h-learnings">What counts, and where it was said.</h1><p class="muted">A language model on this machine reads the numbered lines and writes down what matters: pains, requests, budgets, objections and decisions. Each one must cite the lines it came from, or it is refused.</p><span class="hook"><span data-icon="flag"></span><span id="hook-learnings"></span></span></div>
+      <section class="card" aria-labelledby="h-trace"><div class="card-head"><h2 id="h-trace" data-icon="cite">Every learning, traced to its line</h2><span class="muted" id="trace-src" style="font-size:.84rem"></span></div><div class="trace" id="trace"></div></section>
+      <section class="card" style="margin-top:1.1rem" aria-labelledby="h-kinds"><div class="card-head"><h2 id="h-kinds" data-icon="bars">What the calls said, by kind</h2></div><div class="bars" id="kinds-body"></div></section>
+      <div class="next-link"><a class="btn primary" href="#grades" data-icon="arrow">Continue to the grades</a></div>
+    </section>
+
+    <section class="route story" data-route="grades" aria-labelledby="h-grades" hidden>
+      <div class="intro"><span class="kicker">Step 4 of 6 · The grades</span><h1 id="h-grades">Said is not done.</h1><p class="muted">A frozen grader scores each learning by what it cost someone to say it, from E0, an inference, to E5, a signed commitment. The same learning gets the same grade every time.</p><span class="hook"><span data-icon="flag"></span><span id="hook-grades"></span></span></div>
+      <div class="grid wide-left">
+        <section class="card" aria-labelledby="h-ladder"><div class="card-head"><h2 id="h-ladder" data-icon="ladder">The evidence ladder</h2><span id="grades-seg" data-seg></span></div><ol class="ladder" id="ladder"></ol><div class="lv-detail" id="ladder-pick"></div></section>
+        <div class="stack">
+          <section class="card" aria-labelledby="h-key"><div class="card-head"><h2 id="h-key" data-icon="company">The calls</h2></div><ul class="keylist" id="co-key"></ul></section>
+          <section class="card" aria-labelledby="h-strongest"><div class="card-head"><h2 id="h-strongest" data-icon="flag">Strongest so far</h2></div><div id="strongest"></div></section>
+        </div>
+      </div>
+      <div class="next-link"><a class="btn primary" href="#signals" data-icon="arrow">Continue to the signals</a></div>
     </section>
 
     <section class="route" data-route="threads" aria-labelledby="h-threads" hidden>
@@ -413,15 +660,28 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
       <div class="board" id="board"></div>
     </section>
 
-    <section class="route" data-route="signals" aria-labelledby="h-signals" hidden>
-      <div class="intro"><h1 id="h-signals">Signals</h1><p class="muted">A signal is one thing several calls say. Its stage comes from rules over grades, calls and dates, never from the model: 3 learnings at E2 or above from 2 calls in 90 days make it Emerging; 2 at E4 or above from 2 calls in 180 days make it Validated.</p></div>
-      <div class="card-head"><span></span><span data-seg></span></div>
+    <section class="route story" data-route="signals" aria-labelledby="h-signals" hidden>
+      <div class="intro"><span class="kicker">Step 5 of 6 · The signals</span><h1 id="h-signals">One call is an anecdote. Three are a pattern.</h1><p class="muted">Each learning gets a short statement, and the same statement joins the same signal, whichever call it came from. A signal's stage comes from rules over grades, calls and dates, never from the model.</p><span class="hook"><span data-icon="flag"></span><span id="hook-signals"></span></span></div>
+      <section class="card net" aria-labelledby="h-net"><div class="card-head"><h2 id="h-net" data-icon="signals">From calls to signals</h2><span class="muted" style="font-size:.84rem">The thicker the line, the higher the grade</span></div><div id="net"></div></section>
+      <div class="grid" style="margin-top:1.1rem">
+        <section class="card" id="join-card" aria-labelledby="h-join"><div class="card-head"><h2 id="h-join" data-icon="flag">Suggested join</h2></div><div id="join-body"></div></section>
+        <section class="card" aria-labelledby="h-rules"><div class="card-head"><h2 id="h-rules" data-icon="scale">How a signal earns its stage</h2></div>
+          <ul class="rules"><li><span class="pill candidate">Candidate</span><span>One learning at E2 or above.</span></li><li><span class="pill emerging">Emerging</span><span>3 learnings at E2 or above, from 2 calls, within 90 days.</span></li><li><span class="pill validated">Validated</span><span>2 learnings at E4 or above, from 2 calls, within 180 days.</span></li><li><span class="pill fading">Fading</span><span>Its newest support has aged. Nothing is deleted.</span></li></ul></section>
+      </div>
+      <div class="card-head" style="margin-top:2rem"><h2>Each signal, and what backs it</h2><span data-seg></span></div>
       <div class="stack" id="signal-list"></div>
+      <div class="next-link"><a class="btn primary" href="#decide" data-icon="arrow">Continue to your call</a></div>
     </section>
 
-    <section class="route" data-route="positions" aria-labelledby="h-positions" hidden>
-      <div class="intro"><h1 id="h-positions">Positions</h1><p class="muted">Open decisions drafted from your calls. You give each option a probability and argue against yourself; the label says whether the evidence backs it.</p></div>
-      <div class="stack" id="position-list"></div>
+    <section class="route story" data-route="decide" aria-labelledby="h-decide" hidden>
+      <div class="intro"><span class="kicker">Step 6 of 6 · Your call</span><h1 id="h-decide">Then you decide, and argue against yourself.</h1><p class="muted">Open decisions are drafted from what was said. You give each option a probability and say what would prove you wrong. The label says whether the evidence backs you; the model never decides.</p><span class="hook"><span data-icon="flag"></span><span id="hook-decide"></span></span></div>
+      <section class="card" id="decide-card" aria-labelledby="h-q"><div class="decide"><div><p class="eyebrow">Position · drafted from two calls</p><h2 id="h-q" class="q">How should trials run before price is agreed?</h2><div id="decide-body"></div></div><div id="seal"></div></div></section>
+      <div class="grid" style="margin-top:1.1rem">
+        <section class="card" aria-labelledby="h-evid"><div class="card-head"><h2 id="h-evid" data-icon="cite">The evidence behind it</h2></div><ul class="lrns" id="decide-evidence"></ul></section>
+        <section class="card" aria-labelledby="h-label"><div class="card-head"><h2 id="h-label" data-icon="scale">Backed or guess</h2></div><div id="label-body"></div></section>
+      </div>
+      <div id="yourcall"></div>
+      <div class="next-link"><a class="btn primary" href="#numbers" data-icon="arrow">Continue to the numbers</a></div>
     </section>
 
     <section class="route" data-route="people" aria-labelledby="h-people" hidden>
@@ -441,9 +701,9 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
       <p class="foot">You can ask from your own Claude or Cursor as well: it reads the same cited lines, and it can only read.</p>
     </section>
 
-    <section class="route" data-route="benchmarks" aria-labelledby="h-bench" hidden>
-      <div class="intro"><h1 id="h-bench">Benchmarks</h1><p class="muted">Every check the product runs, with its bar. A miss shows as a miss, beside the passes. The figures come from this sample's made-up calls.</p></div>
-      <div class="tiles">
+    <section class="route story" data-route="numbers" aria-labelledby="h-bench" hidden>
+      <div class="intro"><span class="kicker">The numbers</span><h1 id="h-bench">Every check, with its bar.</h1><p class="muted">What every call is held to. A miss shows as a miss, beside the passes. The figures come from this sample's made-up calls.</p><span class="hook"><span data-icon="flag"></span><span>Four of six checks pass. The two below target say so.</span></span></div>
+      <div class="tiles" id="numbers-tiles">
         <div class="tile"><span class="big">0–5.5%</span><span class="label">Word error, clean audio</span><span class="target">Target ≤ 12% on clean audio; very poor audio is reported, not gated</span><span><span class="pill pass">Pass</span></span></div>
         <div class="tile"><span class="big">3.9%</span><span class="label">Speaker error</span><span class="target">Target ≤ 20% · every call between 3.0% and 4.4%</span><span><span class="pill pass">Pass</span></span></div>
         <div class="tile"><span class="big">100%</span><span class="label">Citations resolve</span><span class="target">Target 100%: a learning that cites nothing is refused</span><span><span class="pill pass">Pass</span></span></div>
@@ -468,6 +728,7 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
           <p class="muted" style="font-size:.86rem;margin-top:.8rem">163 hand-graded learnings. The grader rates plans higher than a person does; that gap is reported, not hidden.</p>
         </section>
       </div>
+      <div class="next-link"><a class="btn primary" href="#today" data-icon="arrow">Open the workspace</a></div>
     </section>
 
     <section class="route" data-route="setup" aria-labelledby="h-setup" hidden>
@@ -586,28 +847,41 @@ const STAGES = [
   ["Signals", "Each learning gets a short statement; the same statement joins the same signal."],
   ["Positions", "Open decisions are drafted from what was said."],
   ["Ready", "Every learning is cited and graded. This call now counts everywhere."] ];
+// A colour and initials for each call, and the new call's speakers.
+const CO = { mp: { init: "MP" }, ng: { init: "NG" }, bw: { init: "BW" }, ac: { init: "AC" } };
+const av = (c, sm) => `<span class="av c-${c}${sm ? " sm" : ""}" aria-hidden="true">${CO[c].init}</span>`;
+const spkAv = (c, sp) => sp === "SPEAKER_00" ? `<span class="av sm c-you" aria-hidden="true">YOU</span>` : `<span class="av sm c-${c}" aria-hidden="true">S${Number(sp.slice(-2))}</span>`;
+const spkName = (c, sp) => sp === "SPEAKER_00" ? "You" : c === "ac" ? "Operations lead" : `Speaker ${Number(sp.slice(-2))}`;
+const secs = t => { const [m, sec] = t.split(":").map(Number); return m * 60 + sec; };
+const icon = name => `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[name]}</svg>`;
+const FLOW_SIG = { s1: ["Matching by hand", "costs days a month"], s2: ["Own data first,", "then a decision"], s3: ["A worked example", "before committing"] };
+const SIG_LINES = { s1: ["Matching payments by hand", "costs days every month"], s2: ["Buyers want it on their own", "data before deciding"], s3: ["Buyers want a worked", "example before committing"] };
+const SHORT = { 5: "a binding commitment", 4: "an action already taken", 3: "it states an effect", 2: "a concrete detail", 1: "stated, without specifics", 0: "an inference" };
+const OPTS = ["On the buyer's own data, over one month-end", "On made-up sample data, in a demo", "No trial: a paid pilot from the start"];
+const MAT_ORDER = ["candidate", "emerging", "validated"];
 const TOUR = [
-  { route: "today", target: "#needs", title: "Today", done: () => S.seen.today,
-    text: "This is the sample company after a few weeks of calls. Needs you collects everything waiting for a decision; Next up briefs you for your next meeting." },
-  { route: "inbox", target: "#add-sample", title: "Add a call", done: () => S.live.added,
-    text: "Add the held-back sample call. It is hashed and stored, then stops at the consent gate: nothing is read until its participants were told." },
-  { route: "call", target: "#consent-card", title: "Clear the gate", done: () => S.live.epoch > 0,
-    text: "Record a disclosure, then watch the call being read. Try two-party consent first: there a disclosure is not enough, and the gate says why." },
-  { route: "signals", target: ".textlink[data-cite]", title: "Check a claim", done: () => S.citeOpened,
-    text: "While the call is read, open any cite. You get the exact line, who said it and when. Every claim on every page works this way." },
-  { route: "signals", target: "[data-seg] .seg", title: "Strongest only", done: () => S.strength > 0,
-    text: "Switch to E3+. A grade is what it cost someone to say it: E3 states an effect, E4 an action already taken." },
-  { route: "today", target: "#needs", title: "Join or merge", done: () => S.joined || S.merged,
-    text: "Join the two suggested signals and watch the second one turn Emerging, or merge Acme into Acme Analytics. Nothing joins or merges by itself, and both can be undone." },
-  { route: "positions", target: "#position-list .card", title: "Answer a position", done: () => S.answered,
-    text: "Give each option a probability and argue against yourself. Its label reads Backed only while a signal behind it is Emerging or Validated." },
-  { route: "call", target: "#revoke-btn", title: "Revoke", done: () => S.revokedOnce,
-    text: "Revoke consent on the call. Its evidence leaves every page at once, while the record that you had consent stays. Release reopens consent as pending." } ];
+  { route: "call", target: "#gate-card", title: "Clear the gate", done: () => S.live.epoch > 0,
+    text: "Add the sample call, then record a disclosure. Try two-party first: there a disclosure is not enough, and the gate says why." },
+  { route: "transcript", target: "#spk-card", title: "Watch it being read", done: () => S.readSeen,
+    text: "Speech becomes numbered lines, each with its speaker and time, on this machine. The stop ticks when reading has finished." },
+  { route: "learnings", target: "#trace", title: "Check a claim", done: () => S.citeOpened,
+    text: "Pick any learning on the right. The line it cites lights up on the left: the exact words, who said them and when." },
+  { route: "grades", target: "#grades-seg", title: "Strongest only", done: () => S.strength > 0,
+    text: "Switch to E3+. A grade is what it cost someone to say it: E3 states an effect, E4 is an action already taken." },
+  { route: "signals", target: "#join-card", title: "Join the pattern", done: () => S.joined,
+    text: "Two signals say nearly the same thing. Join them and watch the stage move. Nothing joins by itself, and a join can be undone." },
+  { route: "decide", target: "#decide-card", title: "Make your call", done: () => S.answered,
+    text: "Give each option a probability and argue against yourself. The label reads Backed only while a signal behind it is Emerging." },
+  { route: "call", target: "#revoke-btn", title: "Take it back", done: () => S.revokedOnce,
+    text: "Revoke consent on the call. Its evidence leaves every page at once, while the record that you had consent stays." },
+  { route: "numbers", target: "#numbers-tiles", title: "Check the numbers", done: () => !!S.seen.numbers,
+    text: "Every check the product runs, with its bar. A miss is shown as a miss, beside the passes." } ];
 
 let S;
 function fresh() {
   return { seen: {}, strength: readStrength(), citeOpened: false, joined: false, merged: false, answered: false, revokedOnce: false,
-    apartDone: false, lastQ: "", placed: null, answer: null, tourOpen: false, tourStep: 0,
+    apartDone: false, sigApart: false, readSeen: false, pick: null, lpick: null, lastQ: "", placed: null, answer: null,
+    tourOpen: matchMedia("(min-width: 1241px)").matches, tourStep: 0,
     live: { added: false, consent: "none", jur: "one_party", stage: 0, epoch: 0, note: "" } };
 }
 function readStrength() { try { return Number(localStorage.getItem("ep-proto-strength")) || 0; } catch (e) { return 0; } }
@@ -629,6 +903,7 @@ function maturity(sid) {
   return count(2) >= 1 ? "candidate" : "fading";
 }
 function companyOf(c) { return c === "ac" ? S.placed : CALLS[c].company; }
+function callName(c) { return c === "ac" ? S.placed || "Acme call, not placed" : CALLS[c].company; }
 
 function chip(l) { return `<span class="pill grade" title="E${l.g} ${RUBRIC[l.g]}: ${RUBRIC_LONG[l.g]}">E${l.g} · ${RUBRIC[l.g]}</span>`; }
 function learningItem(l) {
@@ -651,14 +926,14 @@ function needsItems() {
   const items = [];
   if (S.live.added && (S.live.consent === "none" || S.live.consent === "pending" || (S.live.consent === "disclosed" && S.live.jur === "two_party")))
     items.push(`<li><p class="what">Consent</p><p>acme-intro.wav is waiting at the gate.</p><a class="btn primary small" href="#call">Record disclosure or consent</a></li>`);
-  if (!S.joined)
+  if (!S.joined && !S.sigApart)
     items.push(`<li><p class="what">Suggested join</p><p>“${esc(SIGNALS.s3)}” may be the same signal as “${esc(SIGNALS.s2)}”.</p>
       <div class="actions"><button type="button" class="btn primary small" data-act="join">Join them</button><a class="btn ghost small" href="#signals">Compare first</a></div></li>`);
   if (liveReady() && !S.merged && !S.apartDone)
     items.push(`<li><p class="what">Names</p><p>“Acme” and “Acme Analytics” may be the same company (one is part of the other).</p>
       <div class="actions"><button type="button" class="btn primary small" data-act="merge">Merge into Acme Analytics</button><button type="button" class="btn ghost small" data-act="apart">Keep apart</button></div></li>`);
   if (!S.answered)
-    items.push(`<li><p class="what">Position</p><p>How should trials run before price is agreed?</p><a class="btn ghost small" href="#positions">Answer it</a></li>`);
+    items.push(`<li><p class="what">Position</p><p>How should trials run before price is agreed?</p><a class="btn ghost small" href="#decide">Answer it</a></li>`);
   return items;
 }
 function renderNeeds() {
@@ -717,22 +992,53 @@ function consentForm() {
     <div class="actions"><button class="btn primary" name="act" value="disclosed">Record disclosure</button><button class="btn ghost" name="act" value="consented">Record consent</button></div>
   </form>`;
 }
+// Step 1: the recording and the gate.
+function waveSvg(on) {
+  const bars = Array.from({ length: 72 }, (_, i) => 6 + Math.round(Math.abs(Math.sin(i * .9) * Math.cos(i * .23)) * 34 + (i % 5) * 2));
+  return `<svg class="wave${on ? " on" : ""}" viewBox="0 0 432 56" preserveAspectRatio="none" aria-hidden="true">${bars.map((h, i) => `<rect x="${i * 6}" y="${(56 - h) / 2}" width="3.4" height="${h}" rx="1.7"/>`).join("")}</svg>`;
+}
+const atGate = () => { const c = S.live.consent; return c === "none" || c === "pending" || (c === "disclosed" && S.live.jur === "two_party"); };
+function callHook() {
+  const c = S.live.consent;
+  if (!S.live.added) return "Add the call, then clear the gate.";
+  if (c === "revoked") return "Revoked: this call's evidence has left every page.";
+  if (c === "disclosed" && S.live.jur === "two_party") return "A two-party call: a disclosure is not enough here.";
+  if (atGate()) return "Nothing is read until consent clears it.";
+  return liveReady() ? "Read and ready. Every learning from it cites a line." : "Cleared. Reading has started, on this machine.";
+}
+function gateSteps() {
+  const c = S.live.consent;
+  const steps = [["Waiting", "Stored, not read"], ["Disclosed", "Clears one-party and GDPR calls"], ["Consented", "Clears every call, two-party too"]];
+  if (c === "revoked") steps[0] = ["Revoked", "Quarantined; the history stays"];
+  const at = !S.live.added ? -1 : c === "consented" ? 2 : c === "disclosed" ? 1 : 0;
+  return steps.map(([t, d], i) => {
+    const cls = c === "revoked" ? (i === 0 ? "stop" : "") : i === at ? (i === 1 && S.live.jur === "two_party" ? "stop" : "on") : i < at ? "past" : "";
+    return `<li class="${cls}"><b>${t}</b><span>${d}</span></li>`;
+  }).join("");
+}
 function renderCall() {
   const c = S.live.consent;
+  $("#hook-call").textContent = callHook();
+  $("#gate-steps").innerHTML = gateSteps();
   if (!S.live.added) {
-    $("#stages").innerHTML = ""; $("#call-status").innerHTML = ""; $("#consent-pill").innerHTML = "";
-    $("#stage-note").innerHTML = `This call has not arrived yet. <a href="#inbox">Add it in the Inbox</a>.`;
-    $("#consent-body").innerHTML = `<p class="empty">Nothing to consent to yet.</p>`;
-    $("#company-body").innerHTML = $("#call-learnings").innerHTML = $("#transcript").innerHTML = `<p class="empty">Appears once the call has arrived and been read.</p>`;
+    $("#rec-body").innerHTML = `<div class="filecard waiting">${waveSvg(false)}<div><p class="fname">acme-intro.wav</p><p class="fmeta">1:04 · two speakers · just arrived</p></div></div>
+      <div class="actions"><button type="button" class="btn primary" data-act="add">Add the call</button></div>
+      <p class="muted" style="font-size:.86rem;margin:.6rem 0 0">In the app, a recording saved to <span class="mono">~/Evidence/inbox</span> is added by itself. An upload works the same way.</p>`;
+    $("#call-status").innerHTML = $("#consent-pill").innerHTML = $("#stages").innerHTML = "";
+    $("#stage-note").textContent = "Nothing is read until the gate clears.";
+    $("#consent-body").innerHTML = `<p class="empty">Nothing to clear yet. Add the call first.</p>`;
+    $("#company-body").innerHTML = `<p class="empty">Once the call is read, place it with a company so it joins that company's thread.</p>`;
     return;
   }
+  const state = c === "revoked" ? "Quarantined. The bytes are kept; nothing from it is shown." : liveReady() ? `Read: ${LIVE_LINES.length} lines and ${LIVE.length} learnings.` : atGate() ? "Hashed and stored. Not read." : "Being read now.";
+  $("#rec-body").innerHTML = `<div class="filecard">${waveSvg(!atGate() && c !== "revoked")}<div><p class="fname">acme-intro.wav</p><p class="fmeta">1:04 · two speakers · sha256 b675…73b9</p></div></div><p class="muted" style="font-size:.9rem;margin:.7rem 0 0">${state}</p>`;
   renderStages();
   $("#consent-pill").innerHTML = `<span class="pill ${c === "none" ? "pending" : c}">${c === "none" ? "PENDING" : c.toUpperCase()}</span>`;
   let body;
-  if (c === "none" || c === "pending" || (c === "disclosed" && S.live.jur === "two_party")) {
+  if (atGate()) {
     body = (c === "disclosed" ? `<p class="msg warn">Disclosure recorded, but this is a two-party call: it needs consent before anything is read.</p>` : "") + consentForm();
   } else if (c === "revoked") {
-    body = `<p class="msg bad">Consent revoked. The call is quarantined and its evidence is excluded from Today, Signals, Threads, Positions and Ask.</p>
+    body = `<p class="msg bad">Consent revoked. The call is quarantined and its evidence is excluded from every page.</p>
       <div class="actions"><button type="button" class="btn ghost" data-act="release">Release</button></div><p class="muted" style="font-size:.86rem;margin-top:.5rem">Release checks the stored bytes and reopens consent as pending.</p>`;
   } else {
     body = `<p class="msg ok">${c === "consented" ? "Consent" : "Disclosure"} recorded (${JURISDICTION[S.live.jur]}). ${esc(S.live.note)}</p>
@@ -742,12 +1048,80 @@ function renderCall() {
   $("#company-body").innerHTML = !liveReady() ? `<p class="empty">Once the call is read, place it with a company so it joins that company's thread.</p>`
     : S.placed ? `<p>Placed with <strong>${esc(S.placed)}</strong>. <a href="#threads">Open the thread</a></p>`
     : `<p class="muted" style="font-size:.92rem">Named in this call: Acme Analytics, Acme, Ledgerline.</p><div class="actions"><button type="button" class="btn primary small" data-act="place">Place with Acme Analytics</button></div>`;
-  $("#call-learnings").innerHTML = c === "revoked" ? `<p class="empty">Excluded while consent is revoked.</p>`
-    : liveReady() ? learningList(LIVE, "No learning from this call at this strength.") + `<p class="foot" style="margin-top:.7rem">Grades on this call are illustrative.</p>`
-    : `<p class="empty">Learnings appear here when reading finishes, each with its grade and the line it cites.</p>`;
-  $("#transcript").innerHTML = S.live.stage > 2 && c !== "revoked"
-    ? `<ol class="lines">${LIVE_LINES.map(([sp, t, text], i) => `<li id="line-${i + 1}"><span class="n">[${i + 1}]</span><span class="who">${sp} ${t}</span><span class="tx">${esc(text)}</span></li>`).join("")}</ol>`
-    : `<p class="empty">${c === "revoked" ? "Hidden while consent is revoked." : "The transcript appears once speech recognition finishes."}</p>`;
+}
+
+// Step 2: the transcript, by speaker.
+function transcriptState() {
+  if (!S.live.added) return "absent";
+  if (S.live.consent === "revoked") return "revoked";
+  if (atGate()) return "gate";
+  return S.live.stage > 2 ? "lines" : "reading";
+}
+function renderTranscript() {
+  const st = transcriptState(), named = S.live.stage > 3;
+  if (liveReady()) S.readSeen = true;
+  $("#spk-status").innerHTML = S.live.added ? statusPill() : "";
+  $("#hook-transcript").textContent = { absent: "The call has not arrived yet. Step 1 adds it.", gate: "Waiting at the gate. Clear it in step 1.", revoked: "Hidden while consent is revoked.",
+    reading: "Being transcribed now, on this machine.", lines: liveReady() ? `${LIVE_LINES.length} lines, 2 speakers, 1:04. Every line has a number.` : "Lines arrive as they are read." }[st];
+  $("#spk-body").innerHTML = st === "lines"
+    ? `<ol class="lines spk">${LIVE_LINES.map(([sp, t, text], i) => `<li id="line-${i + 1}"><span class="n">[${i + 1}]</span>${named ? spkAv("ac", sp) : '<span class="av sm c-none" aria-hidden="true">?</span>'}<span class="t">${t}</span><span class="tx">${esc(text)}</span></li>`).join("")}</ol>`
+    : `<p class="empty">${{ absent: "No call yet.", gate: "Nothing is read until consent clears the gate.", revoked: "Hidden while consent is revoked; the bytes are kept.", reading: "Transcribing. The lines appear here as soon as speech recognition finishes." }[st]}</p>${st === "reading" ? "" : `<div class="actions"><a class="btn ghost small" href="#call">Go to step 1</a></div>`}`;
+  if (st !== "lines" || !named) { $("#who-body").innerHTML = `<p class="empty">${st === "lines" ? "Finding the speakers." : "Shown once the call is read."}</p>`; return; }
+  const end = secs("1:04");
+  const segs = LIVE_LINES.map(([sp, t], i) => ({ sp, len: (i + 1 < LIVE_LINES.length ? secs(LIVE_LINES[i + 1][1]) : end) - secs(t) }));
+  const share = sp => Math.round(segs.filter(x => x.sp === sp).reduce((a, x) => a + x.len, 0) / end * 100);
+  $("#who-body").innerHTML = `<div class="spk-legend">${["SPEAKER_00", "SPEAKER_01"].map(sp => `<span>${spkAv("ac", sp)}${spkName("ac", sp)}${sp === "SPEAKER_01" ? ", Acme" : ""}<b class="mono">${share(sp)}%</b></span>`).join("")}</div>
+    <div class="spk-strip" role="img" aria-label="Who talked when: you ${share("SPEAKER_00")}%, the operations lead ${share("SPEAKER_01")}%">${segs.map(x => `<i class="${x.sp === "SPEAKER_00" ? "c-you" : "c-ac"}" style="flex:${x.len}"></i>`).join("")}</div>
+    <div class="spk-axis"><span>0:00</span><span>0:32</span><span>1:04</span></div>`;
+}
+
+// Step 3: every learning wired to the line it cites.
+function traceSource() {
+  if (liveReady()) return { c: "ac", full: true, ls: LIVE, lines: LIVE_LINES.map(([sp, t, q], i) => ({ n: i + 1, sp, t, q })) };
+  const ls = GOLDEN.filter(l => l.c === "bw");
+  return { c: "bw", full: false, ls, lines: ls.map(l => ({ n: l.n, sp: l.sp, t: l.t, q: l.q })).sort((a, b) => a.n - b.n) };
+}
+function renderLearnings() {
+  const src = traceSource();
+  if (S.pick && !src.ls.some(l => l.id === S.pick)) S.pick = null;
+  const picked = src.ls.find(l => l.id === S.pick);
+  $("#hook-learnings").textContent = src.full ? `${LIVE.length} learnings from the new call. Every one cites a line you can check.` : "Showing the Brightwater call. Add the new call in step 1 to watch one read from scratch.";
+  $("#trace-src").textContent = src.full ? `acme-intro.wav · ${LIVE_LINES.length} lines` : "brightwater.wav · the lines it cites";
+  $("#trace").innerHTML = `<svg aria-hidden="true"></svg>
+    <div><h3>What was said</h3><ol class="lines spk">${src.lines.map(x => `<li data-line="${x.n}"${picked && picked.n === x.n ? ' class="hl"' : ""}><span class="n">[${x.n}]</span>${spkAv(src.c, x.sp)}<span class="t">${x.t}</span><span class="tx">${esc(x.q)}</span></li>`).join("")}</ol></div>
+    <div><h3>What it means</h3><ul class="tlrn">${src.ls.map(l => `<li><button type="button" data-pick="${l.id}" aria-pressed="${S.pick === l.id}"><span class="row">${chip(l)}<span class="pill kind">${l.kind}</span></span><span>${esc(l.text)}</span>${S.pick === l.id ? `<span class="said">“${esc(src.lines.find(x => x.n === l.n).q)}”</span>` : ""}<span class="cites">Cites line ${l.n}${S.pick === l.id ? ` · ${spkName(src.c, l.sp)}, at ${l.t}` : ""}</span></button></li>`).join("")}</ul></div>`;
+  const ls = learnings(), kinds = ["pain", "request", "budget", "objection", "decision", "other"];
+  const max = Math.max(...kinds.map(k => ls.filter(l => l.kind === k).length));
+  $("#kinds-body").innerHTML = kinds.map(k => { const n = ls.filter(l => l.kind === k).length; return `<div class="barrow"><span class="name">${k[0].toUpperCase() + k.slice(1)}</span><span class="track"><span class="fill" style="width:${n / max * 100}%"></span></span><span class="val">${n}</span></div>`; }).join("");
+  requestAnimationFrame(drawWires);
+}
+function drawWires() {
+  const box = $("#trace"), svg = box && $("svg", box);
+  if (!svg || route() !== "learnings" || !svg.getClientRects().length) return;
+  const b = box.getBoundingClientRect(), f1 = n => n.toFixed(1);
+  svg.setAttribute("viewBox", `0 0 ${f1(b.width)} ${f1(b.height)}`);
+  svg.innerHTML = traceSource().ls.slice().sort((x, y) => (x.id === S.pick) - (y.id === S.pick)).map(l => {
+    const from = $(`[data-line="${l.n}"]`, box), to = $(`[data-pick="${l.id}"]`, box);
+    if (!from || !to) return "";
+    const f = from.getBoundingClientRect(), t = to.getBoundingClientRect();
+    const x1 = f.right - b.left + 4, y1 = f.top + f.height / 2 - b.top, x2 = t.left - b.left - 4, y2 = t.top + t.height / 2 - b.top, mx = (x1 + x2) / 2;
+    return `<path class="wire${S.pick === l.id ? " on" : ""}" d="M${f1(x1)} ${f1(y1)}C${f1(mx)} ${f1(y1)} ${f1(mx)} ${f1(y2)} ${f1(x2)} ${f1(y2)}"/>`;
+  }).join("");
+}
+
+// Step 4: the evidence ladder.
+function renderGrades() {
+  const ls = learnings(), min = [0, 2, 3, 4][S.strength];
+  $("#hook-grades").textContent = `${ls.filter(l => l.g >= 4).length} of ${ls.length} learnings are E4: things people already did, not things they said they would.`;
+  $("#ladder").innerHTML = [5, 4, 3, 2, 1, 0].map(g => {
+    const at = ls.filter(l => l.g === g);
+    const dots = at.map(l => `<button type="button" data-lpick="${l.id}" aria-pressed="${S.lpick === l.id}" aria-label="${esc(`E${g} ${l.kind}, ${callName(l.c)}: ${l.text}`)}" title="${esc(l.text)}">${av(l.c, true)}</button>`).join("");
+    return `<li class="${g < min ? "dim" : ""}"><div class="lv"><span class="pill grade">E${g} · ${RUBRIC[g]}</span><small>${SHORT[g]}</small></div><div class="dots">${dots || '<span class="muted" style="font-size:.84rem">None yet</span>'}</div><span class="n">${at.length}</span></li>`;
+  }).join("");
+  const picked = ls.find(l => l.id === S.lpick);
+  $("#ladder-pick").innerHTML = picked ? `<ul class="lrns">${learningItem(picked)}</ul>` : `<p class="empty">Pick a dot to read the learning and check its line.</p>`;
+  $("#co-key").innerHTML = ["mp", "ng", "bw", "ac"].map(c => `<li>${av(c)}<span><b>${esc(callName(c))}</b><small>${c === "ac" && !liveReady() ? "Not read yet: step 1 adds it" : `${ls.filter(l => l.c === c).length} learnings · ${CALLS[c].date}`}</small></span></li>`).join("");
+  $("#strongest").innerHTML = learningList(ls, "Nothing this strong yet.", 3);
 }
 
 function renderInbox() {
@@ -771,31 +1145,108 @@ function renderBoard() {
     col("Won", [], "You mark a thread won. Nothing moves it for you.") +
     col("Lost", [], "You mark a thread lost; its evidence stays.");
 }
+// Step 5: calls to signals.
+function netSvg() {
+  const cos = ["mp", "ng", "bw"].concat(liveReady() ? ["ac"] : []);
+  const cy = i => 55 + i * 231 / (cos.length - 1), sy = { s1: 70, s2: 170, s3: 270 }, seen = {};
+  const edges = learnings().filter(l => l.sig).map(l => {
+    const t = signalOf(l), k = seen[l.c + t] = (seen[l.c + t] || 0) + 1, y1 = cy(cos.indexOf(l.c)) + (k - 1) * 7, y2 = sy[t] + (k - 1) * 7 - 4;
+    return `<path class="edge c-${l.c}${l.sig !== t ? " moved" : ""}" style="stroke-width:${l.g >= 4 ? 4 : l.g === 3 ? 2.8 : 1.6}" d="M224 ${y1}C372 ${y1} 372 ${y2} 518 ${y2}"><title>${esc(`E${l.g} ${l.kind}: ${l.text}`)}</title></path>`;
+  }).join("");
+  const nodes = cos.map((c, i) => `<g><circle class="fl c-${c}" cx="200" cy="${cy(i)}" r="21"/><text class="ini" x="200" y="${cy(i) + 4}" text-anchor="middle">${CO[c].init}</text><text class="nm" x="168" y="${cy(i) - 2}" text-anchor="end">${esc(callName(c))}</text><text class="sub" x="168" y="${cy(i) + 14}" text-anchor="end">${learnings().filter(l => l.c === c).length} learnings</text></g>`).join("");
+  const sigs = ["s1", "s2", "s3"].map(sid => {
+    const y = sy[sid], gone = sid === "s3" && S.joined, m = gone ? "joined" : maturity(sid);
+    return `<g class="sig${gone ? " gone" : ""}"><rect class="sbox" x="520" y="${y - 30}" width="340" height="60" rx="12"/><text class="st" x="538" y="${y - 4}">${SIG_LINES[sid][0]}</text><text class="st" x="538" y="${y + 14}">${SIG_LINES[sid][1]}</text><g class="mat ${m}"><rect x="752" y="${y - 11}" width="94" height="22" rx="11"/><text x="799" y="${y + 4}" text-anchor="middle">${m[0].toUpperCase() + m.slice(1)}</text></g></g>`;
+  }).join("");
+  return `<svg viewBox="0 0 880 340" role="img" aria-label="Calls on the left, signals on the right. Each line is a learning that supports a signal; the list below says the same in words.">${edges}${nodes}${sigs}</svg>`;
+}
+function mtrack(m) {
+  const at = MAT_ORDER.indexOf(m);
+  return `<div class="mtrack" aria-hidden="true">${MAT_ORDER.map((_, i) => `<span class="${i <= at ? "on" : ""}"></span>`).join("")}</div><div class="mlabels" aria-hidden="true"><span>Candidate</span><span>Emerging</span><span>Validated</span></div>`;
+}
+const cap = w => w[0].toUpperCase() + w.slice(1);
 function renderSignals() {
+  const m2 = maturity("s2");
+  $("#hook-signals").textContent = S.joined ? `Joined. The signal is now ${cap(m2)}: three learnings from three calls.` : "Two signals say nearly the same thing. Join them and watch the stage move.";
+  $("#net").innerHTML = netSvg();
+  $("#join-body").innerHTML = S.joined
+    ? `<p class="msg ok">Joined. “${esc(SIGNALS.s3)}” now counts towards “${esc(SIGNALS.s2)}”, which is ${cap(m2)}.</p><div class="actions"><button type="button" class="btn ghost small" data-act="unjoin">Undo the join</button></div>`
+    : S.sigApart ? `<p class="msg info">Kept apart. The two are not suggested again.</p><div class="actions"><button type="button" class="btn ghost small" data-act="unapart">Undo</button></div>`
+    : `<p>“${esc(SIGNALS.s3)}”</p><p class="muted" style="font-size:.86rem;margin:-.2rem 0 .4rem">may be the same signal as</p><p>“${esc(SIGNALS.s2)}”</p>
+      <p class="muted" style="font-size:.88rem">Joined, three learnings from three calls back it: enough to move from Candidate to Emerging.</p>
+      <div class="actions"><button type="button" class="btn primary" data-act="join">Join them</button><button type="button" class="btn ghost" data-act="sigapart">Keep apart</button></div>`;
   const ids = S.joined ? ["s1", "s2"] : ["s1", "s2", "s3"];
   $("#signal-list").innerHTML = ids.map(sid => {
     const m = maturity(sid);
     const ls = learnings().filter(l => signalOf(l) === sid);
     const why = { validated: "2 or more learnings at E4+ from 2 or more calls.", emerging: `${ls.filter(l => l.g >= 2).length} learnings at E2+ from ${new Set(ls.map(l => l.c)).size} calls in 90 days. Validated needs 2 at E4+ from 2 calls.`,
       candidate: `${ls.length} learning${ls.length === 1 ? "" : "s"} at E2+. Emerging needs 3 from 2 calls.`, fading: "No anchor left." }[m];
-    return `<section class="card"><div class="card-head"><h2>${esc(SIGNALS[sid])}</h2><span class="pill ${m}">${m[0].toUpperCase() + m.slice(1)}</span></div>
-      <p class="muted" style="font-size:.88rem">${why}${sid === "s2" && S.joined ? " Includes the signal you joined into it." : ""}</p>${learningList(ls, "No supporting learning at this strength.")}</section>`;
+    return `<section class="card"><div class="card-head"><h2>${esc(SIGNALS[sid])}</h2><span class="pill ${m}">${cap(m)}</span></div>${mtrack(m)}
+      <p class="muted" style="font-size:.88rem;margin-top:.7rem">${why}${sid === "s2" && S.joined ? " Includes the signal you joined into it." : ""}</p>${learningList(ls, "No supporting learning at this strength.")}</section>`;
   }).join("");
 }
-function renderPositions() {
-  const backed = ["emerging", "validated"].includes(maturity("s2"));
-  const label = backed ? `<span class="pill backed">Backed</span>` : `<span class="pill guess">Guess</span>`;
-  const cited = GOLDEN.filter(l => l.id === "bw36" || l.id === "mp28");
-  const opts = ["On the buyer's own data, over one month-end", "On made-up sample data, in a demo", "No trial: a paid pilot from the start"];
-  const answer = S.answer
-    ? `<p class="msg ok">Answered. ${opts.map((o, i) => `${esc(o)}: ${S.answer.p[i]}%`).join(" · ")}</p><p style="margin-top:.6rem"><strong>Against myself:</strong> ${esc(S.answer.r)}</p>`
-    : `<form class="form" id="position-form">${opts.map((o, i) => `<label>${esc(o)} <span class="hint">Probability, 0–100</span><input type="number" min="0" max="100" required name="p${i}" value="${[60, 25, 15][i]}"></label>`).join("")}
-      <label>Argue against yourself <span class="hint">Required. What would make you wrong?</span><textarea name="r" required rows="2"></textarea></label>
-      <div class="actions"><button class="btn primary">Answer</button></div></form>`;
-  $("#position-list").innerHTML = `<section class="card position"><div class="card-head"><h2 style="font-size:1.3rem">How should trials run before price is agreed?</h2><span>${S.answered ? "" : `<span class="pill needs_you">Needs you</span> `}${label}</span></div>
-    <p class="muted" style="font-size:.88rem">${backed ? "Backed: a signal behind its evidence is Emerging." : "Guess: its evidence sits in a Candidate signal. It reads Backed once that signal is Emerging; joining the suggested signal does that."}</p>
-    <h3>Evidence</h3><ul class="lrns">${cited.map(learningItem).join("")}</ul><h3>Your answer</h3>${answer}</section>`;
+
+// Step 6: your call.
+function updateSum() {
+  const el = $("#prob-sum");
+  if (!el) return;
+  const sum = $$("[data-prob]").reduce((a, x) => a + Number(x.value), 0);
+  el.textContent = sum === 100 ? "Adds up to 100%." : `Adds up to ${sum}%. Most people aim for 100.`;
 }
+function renderDecide() {
+  const m = maturity("s2"), backed = ["emerging", "validated"].includes(m);
+  const p = S.answer ? S.answer.p.map(Number) : [60, 25, 15];
+  $("#hook-decide").textContent = S.answered ? "Recorded. If the evidence changes, the label changes with it."
+    : backed ? "The evidence backs this one. Now say what would prove you wrong." : "It reads Guess until a signal behind it is Emerging. Step 5 can change that.";
+  $("#seal").innerHTML = `<div class="seal${backed ? " backed" : ""}"><b>${backed ? "Backed" : "Guess"}</b><small>${backed ? `by ${m === "emerging" ? "an Emerging" : "a Validated"} signal` : "until a signal emerges"}</small></div>`;
+  $("#decide-body").innerHTML = S.answered
+    ? `<div class="bars">${OPTS.map((o, i) => `<div class="barrow"><span class="name">${"ABC"[i]} · ${esc(o)}</span><span class="track"><span class="fill" style="width:${p[i]}%"></span></span><span class="val">${p[i]}%</span></div>`).join("")}</div>
+      <p style="margin-top:.9rem"><strong>Against myself:</strong> ${esc(S.answer.r)}</p><div class="actions"><button type="button" class="btn ghost small" data-act="reopen">Change my answer</button></div>`
+    : `<form class="form" id="position-form"><div class="prob">${OPTS.map((o, i) => `<label><span class="letter" aria-hidden="true">${"ABC"[i]}</span><span class="opt">${esc(o)}</span><input type="range" min="0" max="100" step="5" name="p${i}" value="${p[i]}" data-prob="${i}"><output id="out-${i}">${p[i]}%</output></label>`).join("")}</div>
+      <p class="sum" id="prob-sum" aria-live="polite"></p>
+      <label>Argue against yourself <span class="hint">Required. What would make you wrong?</span><textarea name="r" required rows="2">${S.answer ? esc(S.answer.r) : ""}</textarea></label>
+      <div class="actions"><button class="btn primary">Make the call</button></div></form>`;
+  updateSum();
+  $("#decide-evidence").innerHTML = GOLDEN.filter(l => l.id === "bw36" || l.id === "mp28").map(learningItem).join("");
+  $("#label-body").innerHTML = `<p>${backed ? `Backed: a signal behind this position's evidence is ${cap(m)}.` : "Guess: its evidence sits in a Candidate signal, so nothing yet backs it."}</p>${mtrack(m)}
+    <p class="muted" style="font-size:.88rem;margin-top:.8rem">${backed ? "The label is computed from the signal's stage. If the signal fades, it reads Guess again." : `Join the suggested signal in <a href="#signals">step 5</a> and this reads Backed.`}</p>`;
+  $("#yourcall").innerHTML = S.answered ? `<section class="card yourcall" aria-labelledby="h-yc"><div class="card-head"><h2 id="h-yc">${icon("scale")}Your call is made</h2></div>
+    <p>${p[0]}% on the buyer's own data, over one month-end, recorded with your argument against it. It leaves Needs you, and its label moves with the evidence: Backed while a signal behind it is Emerging, Guess if that fades.</p>
+    <div class="actions"><a class="btn lime" href="#numbers">Check the numbers</a><a class="btn ghost" href="#today">Open the workspace</a></div></section>` : "";
+}
+
+// Welcome: one picture of the whole path, and the two cards' pictures.
+function flowSvg() {
+  const calls = ["mp", "ng", "bw", "ac"], cy = i => 70 + i * 82, py = i => 44 + i * 38, sy = { s1: 92, s2: 190, s3: 288 };
+  const picks = ["mp8", "mp28", "ng11", "ng38", "bw12", "bw20", "bw36"].map(id => GOLDEN.find(l => l.id === id)).concat(LIVE[0]);
+  const head = [["Calls", 150], ["Learnings", 470], ["Signals", 745], ["You", 940]].map(([t, x]) => `<text class="colh" x="${x}" y="16" text-anchor="middle">${t}</text>`).join("");
+  const e1 = picks.map((l, i) => { const y1 = cy(calls.indexOf(l.c)), y2 = py(i); return `<path class="edge c-${l.c}" pathLength="1" style="animation-delay:${i * 90}ms" d="M174 ${y1}C290 ${y1} 290 ${y2} 400 ${y2}"/>`; }).join("");
+  const e2 = picks.map((l, i) => l.sig ? `<path class="edge c-${l.c}" pathLength="1" style="animation-delay:${700 + i * 90}ms" d="M540 ${py(i)}C600 ${py(i)} 600 ${sy[l.sig]} 650 ${sy[l.sig]}"/>` : "").join("");
+  const e3 = ["s1", "s2", "s3"].map((sid, i) => `<path class="edge c-you" pathLength="1" style="animation-delay:${1400 + i * 120}ms" d="M840 ${sy[sid]}C880 ${sy[sid]} 880 190 913 190"/>`).join("");
+  const sub = { mp: `${CALLS.mp.ago} days ago`, ng: `${CALLS.ng.ago} days ago`, bw: `${CALLS.bw.ago} days ago`, ac: "the call you add" };
+  const nodes = calls.map((c, i) => `<g${c === "ac" ? ' class="next c-ac"' : ""}><circle class="fl c-${c}" cx="150" cy="${cy(i)}" r="22"/><text class="ini" x="150" y="${cy(i) + 4}" text-anchor="middle">${CO[c].init}</text><text class="nm" x="116" y="${cy(i) - 2}" text-anchor="end">${c === "ac" ? "Acme Analytics" : CALLS[c].company}</text><text class="sub" x="116" y="${cy(i) + 14}" text-anchor="end">${sub[c]}</text></g>`).join("");
+  const pills = picks.map((l, i) => `<g class="gp"><rect x="400" y="${py(i) - 13}" width="140" height="26" rx="13"/><text x="470" y="${py(i) + 4}" text-anchor="middle">E${l.g} · ${l.kind}</text></g>`).join("");
+  const sigs = ["s1", "s2", "s3"].map(sid => `<g><rect class="sbox" x="650" y="${sy[sid] - 28}" width="190" height="56" rx="12"/><text class="st" x="664" y="${sy[sid] - 4}">${FLOW_SIG[sid][0]}</text><text class="st" x="664" y="${sy[sid] + 14}">${FLOW_SIG[sid][1]}</text></g>`).join("");
+  const you = `<circle class="you" cx="940" cy="190" r="26"/><text class="you-t" x="940" y="194" text-anchor="middle">YOU</text><text class="sub" x="940" y="236" text-anchor="middle">decide</text>`;
+  return `<svg viewBox="0 0 1000 340" role="img" aria-label="Four calls become graded learnings, the learnings join three signals, and you decide.">${head}${e1}${e2}${e3}${nodes}${pills}${sigs}${you}</svg>`;
+}
+function miniFollow() {
+  const bars = Array.from({ length: 34 }, (_, i) => 4 + Math.round(Math.abs(Math.sin(i * 1.3) * Math.cos(i * .4)) * 22));
+  const wave = bars.map((h, i) => `<rect class="ink" x="${16 + i * 8}" y="${30 - h / 2}" width="4" height="${h}" rx="2"/>`).join("");
+  const rows = [3, 4, 5].map((n, i) => `<rect class="${n === 4 ? "hl" : "ln"}" x="12" y="${62 + i * 26}" width="152" height="20" rx="6"/><text class="mono-t" x="20" y="${76 + i * 26}">[${n}]</text><rect class="ln2" x="48" y="${69 + i * 26}" width="${[96, 104, 80][i]}" height="6" rx="3"/>`).join("");
+  return `${wave}${rows}<path class="wire" d="M166 98C186 98 186 98 204 98"/><rect class="ink" x="204" y="84" width="86" height="28" rx="14"/><text class="ink-t" x="247" y="102" text-anchor="middle">E3 · pain</text>`;
+}
+function miniDecide() {
+  const bars = [60, 25, 15].map((v, i) => `<text class="mono-t" x="14" y="${48 + i * 34}">${"ABC"[i]}</text><rect class="ln" x="34" y="${38 + i * 34}" width="140" height="12" rx="6"/><rect class="${i ? "ln3" : "ink"}" x="34" y="${38 + i * 34}" width="${140 * v / 100}" height="12" rx="6"/><text class="mono-t" x="180" y="${48 + i * 34}">${v}%</text>`).join("");
+  return `${bars}<circle class="seal-c" cx="252" cy="75" r="40"/><circle class="seal-c2" cx="252" cy="75" r="34"/><text class="seal-t" x="252" y="79" text-anchor="middle">BACKED</text>`;
+}
+function paintThemeBtn() {
+  const dark = document.documentElement.getAttribute("data-theme") === "dark", b = $("#theme-btn");
+  b.innerHTML = icon(dark ? "sun" : "moon");
+  b.setAttribute("aria-label", dark ? "Switch to the light theme" : "Switch to the dark theme");
+  b.title = b.getAttribute("aria-label");
+}
+
 function renderPeople() {
   const ready = liveReady();
   $("#merge-queue").innerHTML = !ready ? `<p class="empty">Nothing to review. Suggestions appear when a call names something two ways, as the Acme call will.</p>`
@@ -852,28 +1303,44 @@ function spotlight() {
 }
 function goStep(i) { S.tourStep = Math.max(0, Math.min(TOUR.length - 1, i)); location.hash = TOUR[S.tourStep].route; renderTour(); setTimeout(spotlight, 60); }
 
-const ROUTES = ["welcome", "today", "inbox", "call", "threads", "signals", "positions", "people", "ask", "benchmarks", "setup", "system"];
-const TITLES = { welcome: "Welcome", today: "Today", inbox: "Inbox", call: "Call", threads: "Threads", signals: "Signals", positions: "Positions", people: "People and companies", ask: "Ask", benchmarks: "Benchmarks", setup: "Setup", system: "System" };
-function route() { const r = location.hash.slice(1); return ROUTES.includes(r) ? r : "welcome"; }
+const STORY = ["call", "transcript", "learnings", "grades", "signals", "decide", "numbers"];
+const WORKSPACE = ["today", "inbox", "threads", "people", "ask", "setup", "system"];
+const ROUTES = ["welcome", ...STORY, ...WORKSPACE];
+const ALIAS = { positions: "decide", benchmarks: "numbers" };
+const TITLES = { welcome: "Welcome", call: "The call", transcript: "The transcript", learnings: "The learnings", grades: "The grades", signals: "The signals", decide: "Your call", numbers: "The numbers",
+  today: "Today", inbox: "Inbox", threads: "Threads", people: "People and companies", ask: "Ask", setup: "Setup", system: "System" };
+function route() { const h = location.hash.slice(1), r = ALIAS[h] || h; return ROUTES.includes(r) ? r : "welcome"; }
 function render() {
-  const r = route();
+  const r = route(), ws = WORKSPACE.includes(r);
   S.seen[r] = true;
   $$(".route").forEach(s => { s.hidden = s.dataset.route !== r; });
   $$("a[data-route]").forEach(a => { if (a.dataset.route === r) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  $("#subnav").hidden = !ws;
+  $("#shell").classList.toggle("ws", ws);
+  if (ws) $("#ws-link").setAttribute("aria-current", "true"); else $("#ws-link").removeAttribute("aria-current");
   $$("[data-seg]").forEach((el, i) => { el.innerHTML = seg(i); });
   renderNeeds();
-  ({ today: renderToday, inbox: renderInbox, call: renderCall, threads: renderBoard, signals: renderSignals, positions: renderPositions, people: renderPeople, ask: () => renderAsk(), setup: renderSetup }[r] || (() => {}))();
+  ({ call: renderCall, transcript: renderTranscript, learnings: renderLearnings, grades: renderGrades, signals: renderSignals, decide: renderDecide,
+    today: renderToday, inbox: renderInbox, threads: renderBoard, people: renderPeople, ask: () => renderAsk(), setup: renderSetup }[r] || (() => {}))();
+  $("#call-pill").classList.toggle("made", S.answered);
+  $("#call-state").textContent = S.answered ? "made" : "not made";
   document.title = `${TITLES[r]} · Evidence Plane sample`;
   $$("[data-today]").forEach(el => { el.textContent = new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" }); });
   renderTour();
 }
 function navigate() {
+  // The tour follows the page: a stop for this page becomes the current one, the first not yet done.
+  const r = route();
+  if (TOUR[S.tourStep].route !== r) {
+    const open = TOUR.findIndex(t => t.route === r && !t.done()), any = TOUR.findIndex(t => t.route === r);
+    if (any >= 0) S.tourStep = open >= 0 ? open : any;
+  }
   render(); $("#main").focus({ preventScroll: true }); window.scrollTo(0, 0);
   $("#nav").classList.remove("open"); $("#menu-btn").setAttribute("aria-expanded", "false"); setTimeout(spotlight, 60);
 }
 
 // Re-render only pages without a form the visitor may be typing in.
-const LIVE_PAGES = ["today", "inbox", "call", "threads", "signals", "people"];
+const LIVE_PAGES = ["today", "inbox", "call", "transcript", "learnings", "grades", "signals", "threads", "people"];
 let timer = null, toastTimer = null, undo = null;
 function advance() {
   clearTimeout(timer);
@@ -893,7 +1360,16 @@ const ACTS = {
   apart() { S.apartDone = true; toast("Kept apart. This pair won't be suggested again.", () => { S.apartDone = false; }); },
   place() { S.placed = "Acme Analytics"; toast("Placed with Acme Analytics. Its thread is on the Threads board.", () => { S.placed = null; }); },
   revoke() { S.live.consent = "revoked"; S.revokedOnce = true; clearTimeout(timer); toast("Consent revoked. The call is quarantined; its evidence is excluded."); },
-  release() { S.live.consent = "pending"; S.live.stage = 1; toast("Released. Consent is pending again."); } };
+  release() { S.live.consent = "pending"; S.live.stage = 1; toast("Released. Consent is pending again."); },
+  add() {
+    S.live.added = true; S.live.consent = "none"; S.live.stage = 1;
+    const msg = $("#add-msg");
+    if (msg) msg.innerHTML = `<p class="msg warn">acme-intro.wav is hashed and stored, and waits at the consent gate. <a href="#call">Open it</a></p>`;
+  },
+  unjoin() { S.joined = false; toast("Join undone. The two signals are separate again."); },
+  sigapart() { S.sigApart = true; toast("Kept apart. This pair won't be suggested again.", () => { S.sigApart = false; }); },
+  unapart() { S.sigApart = false; },
+  reopen() { S.answered = false; } };
 
 document.addEventListener("click", e => {
   const cite = e.target.closest("[data-cite]");
@@ -908,6 +1384,10 @@ document.addEventListener("click", e => {
     }
     renderTour(); return;
   }
+  const pick = e.target.closest("[data-pick]");
+  if (pick) { const id = pick.dataset.pick; S.pick = S.pick === id ? null : id; S.citeOpened = true; renderLearnings(); renderTour(); $(`[data-pick="${id}"]`).focus(); return; }
+  const lp = e.target.closest("[data-lpick]");
+  if (lp) { const id = lp.dataset.lpick; S.lpick = S.lpick === id ? null : id; renderGrades(); $(`[data-lpick="${id}"]`).focus(); return; }
   const act = e.target.closest("[data-act]");
   if (act && ACTS[act.dataset.act]) { ACTS[act.dataset.act](); render(); return; }
   if (e.target.closest("[data-strength]")) { S.strength = 0; saveStrength(); render(); return; }
@@ -935,11 +1415,6 @@ document.addEventListener("submit", e => {
     S.answered = true; S.answer = { p: [0, 1, 2].map(i => data.get("p" + i)), r: data.get("r") }; render();
   } else if (f.id === "ask-form") renderAsk($("#ask-input").value.trim());
 });
-$("#add-sample").addEventListener("click", () => {
-  S.live.added = true; S.live.consent = "none"; S.live.stage = 1;
-  $("#add-msg").innerHTML = `<p class="msg warn">acme-intro.wav is hashed and stored, and waits at the consent gate. <a href="#call">Open it</a></p>`;
-  render();
-});
 $("#tour-next").addEventListener("click", () => { if (S.tourStep === TOUR.length - 1) { S.tourOpen = false; render(); } else goStep(S.tourStep + 1); });
 $("#tour-back").addEventListener("click", () => goStep(S.tourStep - 1));
 $("#tour-close").addEventListener("click", () => { S.tourOpen = false; render(); $$(".spot").forEach(el => el.classList.remove("spot")); $("#tour-open").focus(); });
@@ -948,10 +1423,32 @@ $("#toast-undo").addEventListener("click", () => { if (undo) { undo(); undo = nu
 $("#menu-btn").addEventListener("click", () => { const open = $("#nav").classList.toggle("open"); $("#menu-btn").setAttribute("aria-expanded", String(open)); });
 $("#reset-btn").addEventListener("click", () => { clearTimeout(timer); S = fresh(); location.hash = "welcome"; render(); });
 window.addEventListener("hashchange", navigate);
+$("#theme-btn").addEventListener("click", () => {
+  const dark = document.documentElement.getAttribute("data-theme") !== "dark";
+  if (dark) document.documentElement.setAttribute("data-theme", "dark"); else document.documentElement.removeAttribute("data-theme");
+  try { localStorage.setItem("indica-theme", dark ? "dark" : "light"); } catch (e) { /* storage blocked: the switch still works for this visit */ }
+  paintThemeBtn();
+});
+document.addEventListener("input", e => {
+  const i = e.target.dataset ? e.target.dataset.prob : undefined;
+  if (i === undefined) return;
+  $("#out-" + i).textContent = `${e.target.value}%`;
+  updateSum();
+});
+window.addEventListener("resize", () => { if (route() === "learnings") drawWires(); });
+if (document.fonts) document.fonts.ready.then(() => { if (route() === "learnings") drawWires(); });
 // Original line icons, shared with the project page (icons.py).
 const ICON = {"ask": "<circle cx=\"11\" cy=\"11\" r=\"6.5\"/><path d=\"M16 16l4 4\"/>", "bars": "<path d=\"M4 20h16M7 20v-6M12 20V8M17 20v-9\"/>", "calendar": "<rect x=\"4\" y=\"5\" width=\"16\" height=\"15\" rx=\"2\"/><path d=\"M4 9.5h16M8.5 3v4M15.5 3v4M8 13h3M8 16.5h6\"/>", "cite": "<path d=\"M8 4.5H5v15h3M16 4.5h3v15h-3\"/><path class=\"acc-line\" d=\"M9 10h6\"/><path d=\"M9 14h4\"/>", "company": "<path d=\"M4 20V6.5l8-3V20M12 9h8v11\"/><path d=\"M7 9h2M7 12.5h2M7 16h2M15 12.5h2M15 16h2M3 20h18\"/>", "doc": "<rect class=\"acc\" x=\"7.4\" y=\"10.7\" width=\"9.2\" height=\"2.6\" rx=\"1\" stroke=\"none\"/><rect x=\"5\" y=\"3\" width=\"14\" height=\"18\" rx=\"2\"/><path d=\"M8.5 7.8h7M8.5 12h7M8.5 16.2h4\"/>", "flag": "<path d=\"M5 21V4M5 4h11l-2 4 2 4H5\"/>", "gauge": "<path d=\"M4 16a8 8 0 1 1 16 0\"/><path class=\"acc-line\" d=\"M12 16l4-5\"/><path d=\"M3 19.5h18\"/>", "inbox": "<path d=\"M4 13l2.5-7.5h11L20 13v5.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5z\"/><path d=\"M4 13h4.5l1.2 2.5h4.6l1.2-2.5H20\"/>", "ladder": "<path d=\"M4 20h16\"/><rect x=\"5\" y=\"15\" width=\"3\" height=\"5\"/><rect x=\"10.5\" y=\"11\" width=\"3\" height=\"9\"/><rect class=\"acc\" x=\"16\" y=\"6\" width=\"3\" height=\"14\"/>", "list": "<path d=\"M9 6h11M9 12h11M9 18h11\"/><circle cx=\"5\" cy=\"6\" r=\"1.1\" fill=\"currentColor\"/><circle cx=\"5\" cy=\"12\" r=\"1.1\" fill=\"currentColor\"/><circle cx=\"5\" cy=\"18\" r=\"1.1\" fill=\"currentColor\"/>", "people": "<circle cx=\"9\" cy=\"8.5\" r=\"3.2\"/><path d=\"M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5\"/><circle cx=\"16.5\" cy=\"9.5\" r=\"2.6\"/><path d=\"M15.6 14.6c2.6.1 4.4 1.8 4.9 4.9\"/>", "pulse": "<path d=\"M3 12h4l2.5-6 5 12 2.5-6h4\"/>", "scale": "<path d=\"M12 4v16M7 20h10M5 8h14\"/><path d=\"M5 8l-2.5 6a2.5 2.5 0 0 0 5 0zM19 8l-2.5 6a2.5 2.5 0 0 0 5 0z\"/>", "shield": "<path d=\"M12 3l7 3v5c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6z\"/><path d=\"M8.8 12.2l2.2 2.2 4.4-4.6\"/>", "signals": "<path d=\"M3 17l5.5-5.5 4 4L21 7\"/><path d=\"M15 7h6v6\"/>", "sliders": "<path d=\"M5 4v16M12 4v16M19 4v16\"/><circle cx=\"5\" cy=\"9\" r=\"2.1\" fill=\"currentColor\"/><circle cx=\"12\" cy=\"15\" r=\"2.1\" fill=\"currentColor\"/><circle cx=\"19\" cy=\"7.5\" r=\"2.1\" fill=\"currentColor\"/>", "today": "<rect x=\"4\" y=\"5\" width=\"16\" height=\"15\" rx=\"2\"/><path d=\"M4 9.5h16M8.5 3v4M15.5 3v4\"/><circle class=\"acc\" cx=\"12\" cy=\"14.6\" r=\"1.8\" stroke=\"none\"/>", "upload": "<path d=\"M12 15V4M8 8l4-4 4 4\"/><path d=\"M4.5 14.5V18a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3.5\"/>", "wave": "<path d=\"M3.5 12h1.2M6.8 8.5v7M10 5.5v13M13.2 9v6M16.4 6.5v11M19.6 10.2v3.6\"/>"};
+Object.assign(ICON, {
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6L6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"/>',
+  moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>' });
 document.querySelectorAll("[data-icon]").forEach(el => el.insertAdjacentHTML("afterbegin",
   `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[el.dataset.icon]}</svg>`));
+$("#flow").insertAdjacentHTML("afterbegin", flowSvg());
+$("#mini-follow").innerHTML = miniFollow();
+$("#mini-decide").innerHTML = miniDecide();
+paintThemeBtn();
 S = fresh();
 render();
 setTimeout(spotlight, 60);
