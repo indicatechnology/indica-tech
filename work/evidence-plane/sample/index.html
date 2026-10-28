@@ -42,6 +42,15 @@ p { margin: 0 0 .6rem; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 
+/* The way back: a slim strip above the app, to the project page and to indica-tech.com. */
+.site-strip { background: var(--ink); color: #f4f1ea; font-size: .8rem; }
+.site-strip-in { max-width: 1440px; margin: 0 auto; padding: .35rem 24px; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.site-strip a { color: #f4f1ea; text-decoration: none; display: inline-flex; align-items: center; gap: .45rem; min-height: 30px; }
+.site-strip a:hover { color: var(--lime); }
+.site-strip a:focus-visible { outline-color: var(--lime); }
+.site-strip-right { display: inline-flex; align-items: center; gap: 1.2rem; }
+.site-strip .indica { font-weight: 600; }
+@media (max-width: 640px) { .site-strip-in { padding: .3rem 16px; } .site-strip .hide-sm { display: none; } }
 .head { position: sticky; top: 0; z-index: 40; background: var(--surface); border-bottom: 1px solid var(--line); }
 .head-inner { max-width: 1440px; margin: 0 auto; display: flex; align-items: center; gap: 1.5rem; padding: 0 24px; min-height: 64px; }
 .logo { display: flex; align-items: center; gap: .55rem; font-family: var(--display); font-weight: 400; font-size: 1.45rem; letter-spacing: -.01em; color: var(--text); text-decoration: none; white-space: nowrap; }
@@ -275,6 +284,12 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+<nav class="site-strip" aria-label="Indica Tech">
+  <div class="site-strip-in">
+    <a href="../"><span aria-hidden="true">←</span> Back to the project</a>
+    <span class="site-strip-right"><a class="hide-sm" href="https://indica-tech.com/work/">All work</a><a class="indica" href="https://indica-tech.com/"><svg viewBox="0 0 100 100" width="18" height="18" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00C46A"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg><span>Indica Tech</span></a></span>
+  </div>
+</nav>
 
 <header class="head">
   <div class="head-inner">
