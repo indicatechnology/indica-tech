@@ -154,6 +154,38 @@ h2 { font-size: clamp(1.8rem, 3.5vw, 3rem); }
 .wk-ico { border-radius: 12px; border-color: var(--rule); background: var(--tile); }
 .wk-tags span { border: 0; border-radius: 999px; background: var(--signal-soft); color: var(--brass-ink); font-family: var(--sans); text-transform: none; letter-spacing: 0; font-size: .8rem; font-weight: 600; padding: 4px 11px; }
 
+/* ---------- the Evidence Plane project page ---------- */
+.ep-hero h1 { font-size: clamp(2.2rem, 4.6vw, 3.9rem); }
+.ep-lockup small { color: var(--brass-ink); }
+.ep-mark [fill="#00C46A"] { fill: #d2ff00; }
+.ep-meta span { border: 0; border-radius: 999px; background: var(--signal-soft); color: var(--brass-ink); font-family: var(--sans); text-transform: none; letter-spacing: 0; font-size: .82rem; font-weight: 600; padding: 6px 12px; }
+.ep-card { border: 1px solid var(--card-border); border-radius: var(--radius-sm); background: var(--doc); box-shadow: var(--shadow); }
+.ep-learn { background: var(--deep); border-color: var(--deep); box-shadow: var(--shadow-md); }
+.ep-learn .ep-row { color: var(--deep-faint); }
+.ep-lines p + p { border-top-style: solid; }
+.ep-lines .hl { border-radius: 6px; }
+.ep-flow-step { border: 1px solid var(--card-border); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+.ep-flow-step .n { color: var(--brass-ink); }
+.ep-flow-step.is-box { background: var(--deep); border-color: var(--flag-border, var(--deep)); box-shadow: var(--shadow-md); }
+.ep-flow-step.is-box .n { color: var(--deep-accent); }
+.ep-flow-step.is-box b { color: var(--on-deep); }
+.ep-flow-step.is-box span:last-child { color: var(--deep-mute); }
+.ep-ico { border-radius: 12px; border-color: var(--rule); background: var(--tile); }
+.proof .ep-ico { border-color: var(--deep-line); background: var(--deep-2); color: var(--on-deep); }
+.ep-iov, .ep-cards { border: 0; gap: 16px; }
+.ep-iov .diag-cell:not(:last-child)::after { inset: auto; right: -23px; top: 46px; border-radius: 50%; background: var(--ink); color: var(--paper); box-shadow: var(--shadow); z-index: 3; }
+.ep-iov li::before { background: var(--signal); }
+.ep-iov .good { background: linear-gradient(var(--signal-soft), var(--signal-soft)), var(--surface); }
+.ep-card-cell { border: 1px solid var(--card-border); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+.ep-note { border: 1px solid var(--card-border); border-left: 4px solid var(--signal); border-radius: var(--radius-sm); background: var(--surface); box-shadow: var(--shadow); }
+.ep-ladder { border-bottom-color: var(--rule-2); }
+.ep-ladder .bar { border-top: 0; border-radius: 10px 10px 0 0; }
+.ep-ladder li:last-child .bar { box-shadow: inset 0 3px 0 var(--signal); }
+.ep-ladder .g { font-family: var(--display); font-weight: 700; }
+@media (max-width: 960px) {
+  .ep-iov .diag-cell:not(:last-child)::after { right: auto; left: 28px; top: auto; bottom: -23px; }
+}
+
 /* ---------- phones: the nav gets one more button, so the tagline goes ---------- */
 @media (max-width: 640px) {
   .brand em { display: none; }
