@@ -46,6 +46,13 @@ p { margin: 0 0 .6rem; }
 .head-inner { max-width: 1440px; margin: 0 auto; display: flex; align-items: center; gap: 1.5rem; padding: 0 24px; min-height: 64px; }
 .logo { display: flex; align-items: center; gap: .55rem; font-family: var(--display); font-weight: 400; font-size: 1.45rem; letter-spacing: -.01em; color: var(--text); text-decoration: none; white-space: nowrap; }
 .logo svg { width: 28px; height: 28px; flex: none; }
+/* Original line icons, shared with the project page (icons.py). */
+.ico { width: 18px; height: 18px; flex: none; }
+.ico .acc { fill: var(--lime); stroke: var(--ink); stroke-width: .8; }
+.nav a, .head-right a.plain { gap: .45rem; }
+.nav .ico, .head-right .ico { width: 16px; height: 16px; opacity: .85; }
+.card-head h2 { display: inline-flex; align-items: center; gap: .55rem; }
+.card-head h2 .ico { width: 19px; height: 19px; }
 .logo em { font-style: italic; }
 .nav { display: flex; align-items: center; gap: .15rem; flex: 1; justify-content: center; }
 .nav a { color: var(--text); text-decoration: none; font-size: .93rem; padding: .45rem .7rem; border-radius: 999px; min-height: 40px; display: inline-flex; align-items: center; }
@@ -273,16 +280,16 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
   <div class="head-inner">
     <a class="logo" href="#welcome"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0d0d0e"/><rect x="7.5" y="9" width="17" height="2.6" rx="1.3" fill="#f4f1ea"/><rect x="7.5" y="14.7" width="11.5" height="2.6" rx="1.3" fill="#d2ff00"/><circle cx="22.6" cy="16" r="1.7" fill="#d2ff00"/><rect x="7.5" y="20.4" width="14" height="2.6" rx="1.3" fill="#f4f1ea"/></svg><span>Evidence <em>Plane</em></span></a>
     <nav class="nav" id="nav" aria-label="Pages">
-      <a href="#today" data-route="today">Today</a>
-      <a href="#inbox" data-route="inbox">Inbox</a>
-      <a href="#ask" data-route="ask">Ask</a>
-      <a href="#threads" data-route="threads">Threads</a>
-      <a href="#signals" data-route="signals">Signals</a>
-      <a href="#positions" data-route="positions">Positions</a>
-      <a href="#people" data-route="people">People</a>
-      <a href="#benchmarks" data-route="benchmarks">Benchmarks</a>
-      <a href="#setup" data-route="setup" class="only-menu">Setup</a>
-      <a href="#system" data-route="system" class="only-menu">System</a>
+      <a href="#today" data-route="today" data-icon="today">Today</a>
+      <a href="#inbox" data-route="inbox" data-icon="inbox">Inbox</a>
+      <a href="#ask" data-route="ask" data-icon="ask">Ask</a>
+      <a href="#threads" data-route="threads" data-icon="company">Threads</a>
+      <a href="#signals" data-route="signals" data-icon="signals">Signals</a>
+      <a href="#positions" data-route="positions" data-icon="scale">Positions</a>
+      <a href="#people" data-route="people" data-icon="people">People</a>
+      <a href="#benchmarks" data-route="benchmarks" data-icon="gauge">Benchmarks</a>
+      <a href="#setup" data-route="setup" data-icon="sliders" class="only-menu">Setup</a>
+      <a href="#system" data-route="system" data-icon="pulse" class="only-menu">System</a>
     </nav>
     <div class="head-right">
       <a class="needs-pill" href="#today"><span class="label">Needs you</span><span class="count" id="needs-count" aria-label="items">0</span></a>
@@ -333,13 +340,13 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
         </article>
       </div>
       <section class="band" aria-labelledby="h-measured">
-        <div class="band-head"><h2 id="h-measured">Measured, not claimed.</h2><p>Figures from a development run, on made-up calls. The misses sit beside the passes.</p></div>
+        <div class="band-head"><h2 id="h-measured">Measured, not claimed.</h2><p>What every call is held to. Each line is a test, and a miss is shown as a miss, never hidden.</p></div>
         <div class="tiles">
-          <div class="tile"><span class="big">100%</span><span class="label">Citations resolve</span><span class="target">Target 100%</span><span><span class="pill pass">Pass</span></span></div>
-          <div class="tile"><span class="big">163/163</span><span class="label">Grader repeats itself</span><span class="target">Target 99%</span><span><span class="pill pass">Pass</span></span></div>
-          <div class="tile"><span class="big">72.4%</span><span class="label">Learnings found</span><span class="target">Target 95%</span><span><span class="pill waived">Below target</span></span></div>
+          <div class="tile"><span class="big">100%</span><span class="label">Citations resolve</span><span class="target">Every learning must cite a real sentence</span></div>
+          <div class="tile"><span class="big">99%+</span><span class="label">The same grade, twice</span><span class="target">The frozen grader repeats itself</span></div>
+          <div class="tile"><span class="big">0 bytes</span><span class="label">Leave this machine</span><span class="target">The core has no route out</span></div>
         </div>
-        <div class="actions" style="justify-content:center;margin-top:1.4rem"><a class="btn ghost" href="#benchmarks">See every benchmark</a></div>
+        <div class="actions" style="justify-content:center;margin-top:1.4rem"><a class="btn ghost" href="#benchmarks">See the checks</a></div>
       </section>
     </section>
 
@@ -347,13 +354,13 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
       <div class="intro"><h1 id="h-today">Today</h1><p class="muted"><span data-today></span>. What needs you, what is being read, and what you are walking into next.</p></div>
       <div class="grid">
         <div class="stack">
-          <section class="card" id="needs" aria-labelledby="h-needs"><div class="card-head"><h2 id="h-needs">Needs you</h2></div><ul class="needs-list" id="needs-list"></ul></section>
-          <section class="card" aria-labelledby="h-reading"><div class="card-head"><h2 id="h-reading">Reading now</h2></div><div id="reading-now"></div></section>
+          <section class="card" id="needs" aria-labelledby="h-needs"><div class="card-head"><h2 id="h-needs" data-icon="flag">Needs you</h2></div><ul class="needs-list" id="needs-list"></ul></section>
+          <section class="card" aria-labelledby="h-reading"><div class="card-head"><h2 id="h-reading" data-icon="wave">Reading now</h2></div><div id="reading-now"></div></section>
         </div>
         <div class="stack">
-          <section class="card" aria-labelledby="h-next"><div class="card-head"><h2 id="h-next">Next up</h2><span class="muted" style="font-size:.84rem">from your calendar folder</span></div><div id="next-up"></div></section>
-          <section class="card" aria-labelledby="h-strong"><div class="card-head"><h2 id="h-strong">Strongest new evidence</h2><span data-seg></span></div><div id="strong-list"></div></section>
-          <section class="card" aria-labelledby="h-week"><div class="card-head"><h2 id="h-week">This week</h2></div><div id="week"></div></section>
+          <section class="card" aria-labelledby="h-next"><div class="card-head"><h2 id="h-next" data-icon="calendar">Next up</h2><span class="muted" style="font-size:.84rem">from your calendar folder</span></div><div id="next-up"></div></section>
+          <section class="card" aria-labelledby="h-strong"><div class="card-head"><h2 id="h-strong" data-icon="ladder">Strongest new evidence</h2><span data-seg></span></div><div id="strong-list"></div></section>
+          <section class="card" aria-labelledby="h-week"><div class="card-head"><h2 id="h-week" data-icon="bars">This week</h2></div><div id="week"></div></section>
         </div>
       </div>
     </section>
@@ -361,27 +368,27 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
     <section class="route" data-route="inbox" aria-labelledby="h-inbox" hidden>
       <div class="intro"><h1 id="h-inbox">Inbox</h1><p class="muted">Every file that arrived, by upload or in a watched folder, with its consent state. Nothing is read until consent clears it.</p></div>
       <section class="card" aria-labelledby="h-upload">
-        <div class="card-head"><h2 id="h-upload">Add a call or document</h2></div>
+        <div class="card-head"><h2 id="h-upload" data-icon="upload">Add a call or document</h2></div>
         <div class="form">
           <label>Choose a file <span class="hint">Audio, video or a document. The prototype does not read files; use the sample call below.</span><input type="file" id="file-input"></label>
         </div>
         <div class="actions"><button type="button" class="btn primary" id="add-sample">Add a new sample call (1:04)</button></div>
         <div id="add-msg" aria-live="polite"></div>
       </section>
-      <section class="card" style="margin-top:1.1rem" aria-labelledby="h-arrived"><div class="card-head"><h2 id="h-arrived">Arrived</h2></div><div class="table-wrap"><table><thead><tr><th scope="col">File</th><th scope="col">Company</th><th scope="col">Consent</th><th scope="col">Status</th></tr></thead><tbody id="inbox-rows"></tbody></table></div></section>
+      <section class="card" style="margin-top:1.1rem" aria-labelledby="h-arrived"><div class="card-head"><h2 id="h-arrived" data-icon="list">Arrived</h2></div><div class="table-wrap"><table><thead><tr><th scope="col">File</th><th scope="col">Company</th><th scope="col">Consent</th><th scope="col">Status</th></tr></thead><tbody id="inbox-rows"></tbody></table></div></section>
     </section>
 
     <section class="route" data-route="call" aria-labelledby="h-call" hidden>
       <div class="intro"><p class="crumb muted"><a href="#inbox">Inbox</a> / call</p><h1 id="h-call">acme-intro.wav</h1><p class="muted mono">sha256 b6759921411e4bc20a35a0027c3473a15b2e6e1168b9d3b5f350eacb4b8173b9 · 1:04 · two speakers</p></div>
-      <section class="card" id="reading-card" aria-labelledby="h-stages"><div class="card-head"><h2 id="h-stages">Reading</h2><span id="call-status"></span></div><ol class="stages" id="stages"></ol><p class="stage-note" id="stage-note" aria-live="polite"></p></section>
+      <section class="card" id="reading-card" aria-labelledby="h-stages"><div class="card-head"><h2 id="h-stages" data-icon="wave">Reading</h2><span id="call-status"></span></div><ol class="stages" id="stages"></ol><p class="stage-note" id="stage-note" aria-live="polite"></p></section>
       <div class="grid" style="margin-top:1.1rem">
         <div class="stack">
-          <section class="card" id="consent-card" aria-labelledby="h-consent"><div class="card-head"><h2 id="h-consent">Consent</h2><span id="consent-pill"></span></div><div id="consent-body"></div></section>
-          <section class="card" id="company-card" aria-labelledby="h-company"><div class="card-head"><h2 id="h-company">Company</h2></div><div id="company-body"></div></section>
+          <section class="card" id="consent-card" aria-labelledby="h-consent"><div class="card-head"><h2 id="h-consent" data-icon="shield">Consent</h2><span id="consent-pill"></span></div><div id="consent-body"></div></section>
+          <section class="card" id="company-card" aria-labelledby="h-company"><div class="card-head"><h2 id="h-company" data-icon="company">Company</h2></div><div id="company-body"></div></section>
         </div>
         <div class="stack">
-          <section class="card" aria-labelledby="h-call-lrn"><div class="card-head"><h2 id="h-call-lrn">Learnings</h2><span data-seg></span></div><div id="call-learnings"></div></section>
-          <section class="card" aria-labelledby="h-transcript"><div class="card-head"><h2 id="h-transcript">Transcript</h2></div><div id="transcript"></div></section>
+          <section class="card" aria-labelledby="h-call-lrn"><div class="card-head"><h2 id="h-call-lrn" data-icon="cite">Learnings</h2><span data-seg></span></div><div id="call-learnings"></div></section>
+          <section class="card" aria-labelledby="h-transcript"><div class="card-head"><h2 id="h-transcript" data-icon="doc">Transcript</h2></div><div id="transcript"></div></section>
         </div>
       </div>
     </section>
@@ -404,8 +411,8 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
 
     <section class="route" data-route="people" aria-labelledby="h-people" hidden>
       <div class="intro"><h1 id="h-people">People &amp; companies</h1><p class="muted">Names said in calls. Two names become one only when you merge them, and a merge can be undone.</p></div>
-      <div class="grid"><section class="card" aria-labelledby="h-merge"><div class="card-head"><h2 id="h-merge">To review</h2></div><div id="merge-queue"></div></section>
-      <section class="card" aria-labelledby="h-names"><div class="card-head"><h2 id="h-names">Names</h2></div><div class="table-wrap"><table><thead><tr><th scope="col">Name</th><th scope="col">Kind</th><th scope="col">Calls</th></tr></thead><tbody id="names-rows"></tbody></table></div></section></div>
+      <div class="grid"><section class="card" aria-labelledby="h-merge"><div class="card-head"><h2 id="h-merge" data-icon="people">To review</h2></div><div id="merge-queue"></div></section>
+      <section class="card" aria-labelledby="h-names"><div class="card-head"><h2 id="h-names" data-icon="list">Names</h2></div><div class="table-wrap"><table><thead><tr><th scope="col">Name</th><th scope="col">Kind</th><th scope="col">Calls</th></tr></thead><tbody id="names-rows"></tbody></table></div></section></div>
     </section>
 
     <section class="route" data-route="ask" aria-labelledby="h-ask" hidden>
@@ -415,12 +422,12 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
         <form class="ask" id="ask-form" role="search"><label class="sr-only" for="ask-input">Search the calls</label><input id="ask-input" type="search" placeholder="What did buyers say about budget?" autocomplete="off"><button class="btn primary" type="submit">Find</button></form>
         <div class="chiprow"><span class="muted" style="font-size:.86rem">Try</span><button type="button" class="btn ghost small" data-q="budget">budget</button><button type="button" class="btn ghost small" data-q="trial own data">trial own data</button><button type="button" class="btn ghost small" data-q="by hand">by hand</button><button type="button" class="btn ghost small" data-q="sign">sign</button></div>
       </section>
-      <section class="card" style="margin-top:1.1rem" aria-labelledby="h-results"><div class="card-head"><h2 id="h-results">Lines</h2><span data-seg></span></div><div id="ask-results" aria-live="polite"><p class="empty">Ask a question, or pick one of the examples. Results are the lines themselves, strongest first.</p></div></section>
+      <section class="card" style="margin-top:1.1rem" aria-labelledby="h-results"><div class="card-head"><h2 id="h-results" data-icon="cite">Lines</h2><span data-seg></span></div><div id="ask-results" aria-live="polite"><p class="empty">Ask a question, or pick one of the examples. Results are the lines themselves, strongest first.</p></div></section>
       <p class="foot">You can ask from your own Claude or Cursor as well: it reads the same cited lines, and it can only read.</p>
     </section>
 
     <section class="route" data-route="benchmarks" aria-labelledby="h-bench" hidden>
-      <div class="intro"><h1 id="h-bench">Benchmarks</h1><p class="muted">Every check the product runs, with its bar. A miss shows as a miss, beside the passes. These figures are from a development run on made-up calls.</p></div>
+      <div class="intro"><h1 id="h-bench">Benchmarks</h1><p class="muted">Every check the product runs, with its bar. A miss shows as a miss, beside the passes. The figures come from this sample's made-up calls.</p></div>
       <div class="tiles">
         <div class="tile"><span class="big">0–5.5%</span><span class="label">Word error, clean audio</span><span class="target">Target ≤ 12% on clean audio; very poor audio is reported, not gated</span><span><span class="pill pass">Pass</span></span></div>
         <div class="tile"><span class="big">3.9%</span><span class="label">Speaker error</span><span class="target">Target ≤ 20% · every call between 3.0% and 4.4%</span><span><span class="pill pass">Pass</span></span></div>
@@ -430,7 +437,7 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
         <div class="tile"><span class="big">70.7 min</span><span class="label">A 60-minute call to graded learnings</span><span class="target">Target ≤ 60 min, on an ordinary processor</span><span><span class="pill waived">Below target</span></span></div>
       </div>
       <div class="grid" style="margin-top:1.1rem">
-        <section class="card" aria-labelledby="h-xv"><div class="card-head"><h2 id="h-xv">Learnings found, as the reading improved</h2><span class="muted" style="font-size:.84rem">red line: the 95% target</span></div>
+        <section class="card" aria-labelledby="h-xv"><div class="card-head"><h2 id="h-xv" data-icon="bars">Learnings found, as the reading improved</h2><span class="muted" style="font-size:.84rem">red line: the 95% target</span></div>
           <div class="bars">
             <div class="barrow"><span class="name">Reading, version 2</span><span class="track"><span class="fill" style="width:72.4%"></span><span class="goal" style="left:95%"></span></span><span class="val">72.4%</span></div>
             <div class="barrow"><span class="name">Reading, version 1</span><span class="track"><span class="fill" style="width:38.7%"></span><span class="goal" style="left:95%"></span></span><span class="val">38.7%</span></div>
@@ -438,7 +445,7 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
           </div>
           <p class="muted" style="font-size:.86rem;margin-top:.8rem">The control swaps four definitions on purpose. The scorer has to rate it low, and does.</p>
         </section>
-        <section class="card" aria-labelledby="h-hand"><div class="card-head"><h2 id="h-hand">Grader against hand grades</h2><span class="pill todo">Not gated</span></div>
+        <section class="card" aria-labelledby="h-hand"><div class="card-head"><h2 id="h-hand" data-icon="scale">Grader against hand grades</h2><span class="pill todo">Not gated</span></div>
           <div class="bars">
             <div class="barrow"><span class="name">Same grade</span><span class="track"><span class="fill" style="width:59.5%"></span></span><span class="val">59.5%</span></div>
             <div class="barrow"><span class="name">Within one level</span><span class="track"><span class="fill" style="width:72.4%"></span></span><span class="val">72.4%</span></div>
@@ -450,8 +457,8 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
 
     <section class="route" data-route="setup" aria-labelledby="h-setup" hidden>
       <div class="intro"><h1 id="h-setup">Setup</h1><p class="muted">Running this at your company. Each step ticks itself when what it describes exists; there is nothing to tick by hand.</p></div>
-      <section class="card" aria-labelledby="h-checklist"><div class="card-head"><h2 id="h-checklist">Checklist</h2><span id="setup-progress" class="pill info"></span></div><ol class="checklist" id="checklist"></ol></section>
-      <section class="card" style="margin-top:1.1rem" aria-labelledby="h-settings"><div class="card-head"><h2 id="h-settings">Settings</h2></div>
+      <section class="card" aria-labelledby="h-checklist"><div class="card-head"><h2 id="h-checklist" data-icon="list">Checklist</h2><span id="setup-progress" class="pill info"></span></div><ol class="checklist" id="checklist"></ol></section>
+      <section class="card" style="margin-top:1.1rem" aria-labelledby="h-settings"><div class="card-head"><h2 id="h-settings" data-icon="sliders">Settings</h2></div>
         <dl class="settings">
           <dt><label for="set-jur">Default jurisdiction</label></dt><dd><select id="set-jur"><option value="one_party">One-party consent</option><option value="two_party">Two-party consent</option><option value="gdpr">GDPR</option></select> <span class="muted" style="font-size:.84rem">pre-fills every consent form</span></dd>
           <dt>Local time zone</dt><dd class="mono">Europe/London</dd>
@@ -466,7 +473,7 @@ dl.settings select { font: inherit; border: 1px solid #8c877b; border-radius: 99
 
     <section class="route" data-route="system" aria-labelledby="h-system" hidden>
       <div class="intro"><h1 id="h-system">System</h1><p class="muted">The machine's health, kept out of your way: what is running, what is waiting, and anything that failed, with a plain note on what to do about it.</p></div>
-      <section class="card" aria-labelledby="h-health"><div class="card-head"><h2 id="h-health">Health</h2><span class="pill ready">All ready</span></div>
+      <section class="card" aria-labelledby="h-health"><div class="card-head"><h2 id="h-health" data-icon="pulse">Health</h2><span class="pill ready">All ready</span></div>
         <dl class="settings">
           <dt>Recordings inbox</dt><dd><span class="pill ready">Watching</span></dd>
           <dt>Speech to text</dt><dd><span class="pill ready">Ready</span></dd>
@@ -926,6 +933,10 @@ $("#toast-undo").addEventListener("click", () => { if (undo) { undo(); undo = nu
 $("#menu-btn").addEventListener("click", () => { const open = $("#nav").classList.toggle("open"); $("#menu-btn").setAttribute("aria-expanded", String(open)); });
 $("#reset-btn").addEventListener("click", () => { clearTimeout(timer); S = fresh(); location.hash = "welcome"; render(); });
 window.addEventListener("hashchange", navigate);
+// Original line icons, shared with the project page (icons.py).
+const ICON = {"ask": "<circle cx=\"11\" cy=\"11\" r=\"6.5\"/><path d=\"M16 16l4 4\"/>", "bars": "<path d=\"M4 20h16M7 20v-6M12 20V8M17 20v-9\"/>", "calendar": "<rect x=\"4\" y=\"5\" width=\"16\" height=\"15\" rx=\"2\"/><path d=\"M4 9.5h16M8.5 3v4M15.5 3v4M8 13h3M8 16.5h6\"/>", "cite": "<path d=\"M8 4.5H5v15h3M16 4.5h3v15h-3\"/><path class=\"acc-line\" d=\"M9 10h6\"/><path d=\"M9 14h4\"/>", "company": "<path d=\"M4 20V6.5l8-3V20M12 9h8v11\"/><path d=\"M7 9h2M7 12.5h2M7 16h2M15 12.5h2M15 16h2M3 20h18\"/>", "doc": "<rect class=\"acc\" x=\"7.4\" y=\"10.7\" width=\"9.2\" height=\"2.6\" rx=\"1\" stroke=\"none\"/><rect x=\"5\" y=\"3\" width=\"14\" height=\"18\" rx=\"2\"/><path d=\"M8.5 7.8h7M8.5 12h7M8.5 16.2h4\"/>", "flag": "<path d=\"M5 21V4M5 4h11l-2 4 2 4H5\"/>", "gauge": "<path d=\"M4 16a8 8 0 1 1 16 0\"/><path class=\"acc-line\" d=\"M12 16l4-5\"/><path d=\"M3 19.5h18\"/>", "inbox": "<path d=\"M4 13l2.5-7.5h11L20 13v5.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5z\"/><path d=\"M4 13h4.5l1.2 2.5h4.6l1.2-2.5H20\"/>", "ladder": "<path d=\"M4 20h16\"/><rect x=\"5\" y=\"15\" width=\"3\" height=\"5\"/><rect x=\"10.5\" y=\"11\" width=\"3\" height=\"9\"/><rect class=\"acc\" x=\"16\" y=\"6\" width=\"3\" height=\"14\"/>", "list": "<path d=\"M9 6h11M9 12h11M9 18h11\"/><circle cx=\"5\" cy=\"6\" r=\"1.1\" fill=\"currentColor\"/><circle cx=\"5\" cy=\"12\" r=\"1.1\" fill=\"currentColor\"/><circle cx=\"5\" cy=\"18\" r=\"1.1\" fill=\"currentColor\"/>", "people": "<circle cx=\"9\" cy=\"8.5\" r=\"3.2\"/><path d=\"M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5\"/><circle cx=\"16.5\" cy=\"9.5\" r=\"2.6\"/><path d=\"M15.6 14.6c2.6.1 4.4 1.8 4.9 4.9\"/>", "pulse": "<path d=\"M3 12h4l2.5-6 5 12 2.5-6h4\"/>", "scale": "<path d=\"M12 4v16M7 20h10M5 8h14\"/><path d=\"M5 8l-2.5 6a2.5 2.5 0 0 0 5 0zM19 8l-2.5 6a2.5 2.5 0 0 0 5 0z\"/>", "shield": "<path d=\"M12 3l7 3v5c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6z\"/><path d=\"M8.8 12.2l2.2 2.2 4.4-4.6\"/>", "signals": "<path d=\"M3 17l5.5-5.5 4 4L21 7\"/><path d=\"M15 7h6v6\"/>", "sliders": "<path d=\"M5 4v16M12 4v16M19 4v16\"/><circle cx=\"5\" cy=\"9\" r=\"2.1\" fill=\"currentColor\"/><circle cx=\"12\" cy=\"15\" r=\"2.1\" fill=\"currentColor\"/><circle cx=\"19\" cy=\"7.5\" r=\"2.1\" fill=\"currentColor\"/>", "today": "<rect x=\"4\" y=\"5\" width=\"16\" height=\"15\" rx=\"2\"/><path d=\"M4 9.5h16M8.5 3v4M15.5 3v4\"/><circle class=\"acc\" cx=\"12\" cy=\"14.6\" r=\"1.8\" stroke=\"none\"/>", "upload": "<path d=\"M12 15V4M8 8l4-4 4 4\"/><path d=\"M4.5 14.5V18a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3.5\"/>", "wave": "<path d=\"M3.5 12h1.2M6.8 8.5v7M10 5.5v13M13.2 9v6M16.4 6.5v11M19.6 10.2v3.6\"/>"};
+document.querySelectorAll("[data-icon]").forEach(el => el.insertAdjacentHTML("afterbegin",
+  `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[el.dataset.icon]}</svg>`));
 S = fresh();
 render();
 setTimeout(spotlight, 60);
