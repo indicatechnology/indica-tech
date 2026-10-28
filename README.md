@@ -19,6 +19,24 @@ A modern, responsive consulting website for Indica Tech software consulting serv
 
 ---
 
+## Site look: the Board Room look (default) or the classic look
+
+- `styles.css` is the classic look: warm paper, ink and terminal green, IBM Plex.
+- `look.css` loads after it on every page and turns it into the Board Room look: navy and brass, Montserrat and Inter (in `fonts/`). It is light by default, and the sun/moon button in the nav switches to dark. The choice is saved in the visitor's browser (`indica-theme`) and the Board Room guided sample reads the same choice.
+- `look.js` picks the look before the page paints. **To put every visitor back on the classic look**, change `var LOOK = "board";` to `var LOOK = "classic";` in `look.js` and deploy. Nothing else needs to change.
+- To try either look in your own browser only, add `?look=classic` or `?look=board` to any page's address. It is remembered until you open a page with `?look=default`.
+- The site as it was before the Board Room look is tagged `classic-look` in git.
+- A new page needs these two lines at the end of its `<head>`, with the same relative path as its `styles.css`:
+
+  ```html
+  <link rel="stylesheet" href="look.css" id="look-css">
+  <script src="look.js"></script>
+  ```
+
+- Not covered: the checklists (their own styles, from `checklists/build_checklists.py`), the two guided samples under `work/*/sample/` (their own designs), `index-print.html` and `linkedin-banner.html`. The diagrams at the top of each blog post keep their classic colours.
+
+---
+
 ## 📦 Deploying to GitHub Pages (Step-by-Step)
 
 ### Step 1: Create a GitHub Account (if you don't have one)

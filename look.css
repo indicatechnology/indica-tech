@@ -1,0 +1,178 @@
+/* =========================================================
+   INDICA TECH: the Board Room look (the default)
+   Loaded after styles.css on every page. It redefines the
+   site's own tokens and a handful of rules, so styles.css is
+   still the classic paper-and-green look underneath. look.js
+   picks the look (LOOK) and light or dark before first paint.
+   Light is the default; the sun/moon switch in the nav picks
+   dark, saved in the browser as indica-theme.
+   ========================================================= */
+
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 600; font-display: swap; src: url("fonts/montserrat-semibold.ttf") format("truetype"); }
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 700; font-display: swap; src: url("fonts/montserrat-bold.ttf") format("truetype"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("fonts/inter-normal-latin.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("fonts/jetbrains-mono-normal-latin.woff2") format("woff2"); }
+
+/* ---------- light (the Board Room sample's palette), the default ---------- */
+:root {
+  color-scheme: light;
+  --paper: #f3f5f9; --paper-2: #e7ecf3; --paper-3: #dde4ee;
+  --surface: #ffffff; --tile: #f6f8fb;
+  --ink: #0f1c2e; --ink-2: #1b2a40; --ink-mute: #566375; --ink-faint: #5f6b7c;
+  --rule: #dce2ea; --rule-2: #c3ccd8;
+  --signal: #b9802a; --signal-ink: #1a1305; --signal-soft: #f7ecd6; --brass-ink: #7a520f;
+  --warn: #a44a14;
+  /* panels that stay dark in both themes: the terminal, the flagship offer, the numbers band, the form */
+  --deep: #0f1c2e; --deep-2: #16263d; --deep-line: #26374f; --on-deep: #f2f5f9; --deep-mute: #c6d0de; --deep-faint: #93a0b4; --deep-accent: #e2a94c;
+  --shadow: 0 1px 2px rgba(15, 28, 46, .05), 0 8px 28px rgba(15, 28, 46, .06);
+  --shadow-md: 0 14px 44px rgba(15, 28, 46, .14);
+  --card-border: rgba(15, 28, 46, .05); --glow: transparent; --doc: #fffdf8;
+  --radius: 18px; --radius-sm: 12px;
+  --display: "Montserrat", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* ---------- dark, when the visitor picks it: near-black with brass ---------- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0b0e13; --paper-2: #10141b; --paper-3: #19202a;
+  --surface: #131820; --tile: #19202a;
+  --ink: #f2f5f9; --ink-2: #e6ebf2; --ink-mute: #a3adbd; --ink-faint: #8792a3;
+  --rule: #232b36; --rule-2: #313b48;
+  --signal: #e2a94c; --signal-ink: #1a1305; --signal-soft: rgba(226, 169, 76, .14); --brass-ink: #f1c47c;
+  --warn: #f39257;
+  --deep: #131820; --deep-2: #19202a; --deep-line: #262e3a; --on-deep: #f2f5f9; --deep-mute: #c2cad6; --deep-faint: #8792a3; --deep-accent: #e2a94c;
+  --shadow: inset 0 1px 0 rgba(255, 255, 255, .035), 0 12px 32px rgba(0, 0, 0, .45);
+  --shadow-md: 0 20px 60px rgba(0, 0, 0, .6);
+  --card-border: #1f2732; --glow: rgba(226, 169, 76, .09); --doc: #17140f;
+}
+
+/* ---------- type: Montserrat headlines, Inter body, mono only for small labels ---------- */
+body { font-family: var(--sans); font-feature-settings: normal; }
+body::before { display: none; }
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 700; letter-spacing: -.025em; line-height: 1.1; }
+h3, h4 { font-weight: 600; letter-spacing: -.01em; }
+/* Montserrat is wider than IBM Plex, so the big sizes come down a step to keep the same line breaks. */
+h1 { font-size: clamp(2.3rem, 4.6vw, 4.1rem); letter-spacing: -.035em; line-height: 1.04; }
+h2 { font-size: clamp(1.8rem, 3.5vw, 3rem); }
+.about-side h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); }
+.proof-cell .num { font-family: var(--display); font-weight: 700; letter-spacing: -.03em; }
+.kicker { color: var(--brass-ink); }
+.kicker::before { background: var(--signal); }
+::selection { background: var(--signal); color: var(--signal-ink); }
+
+/* ---------- nav and buttons: sans, sentence case, pills ---------- */
+.nav { background: color-mix(in srgb, var(--paper) 86%, transparent); }
+.brand { font-family: var(--display); font-weight: 700; text-transform: none; letter-spacing: -.01em; font-size: 1.05rem; }
+.brand em { font-family: var(--sans); font-weight: 500; font-size: .85rem; letter-spacing: 0; }
+.brand-mark circle, .footer svg circle { fill: var(--signal); }
+.nav-links a { font-family: var(--sans); text-transform: none; letter-spacing: 0; font-size: .93rem; font-weight: 500; }
+.nav-links a:hover { border-color: var(--signal); }
+.nav-cta, .btn { font-family: var(--sans); text-transform: none; letter-spacing: 0; font-weight: 600; font-size: .95rem; border-radius: 999px; }
+.nav-cta { background: var(--ink); color: var(--paper); }
+.nav-cta:hover, .btn-primary:hover { background: var(--signal); border-color: var(--signal); color: var(--signal-ink); }
+.btn-ghost { border-width: 1.5px; }
+.btn-ghost:hover { background: var(--tile); color: var(--ink); }
+.region-switch { border-radius: 999px; overflow: hidden; }
+.theme-btn { width: 38px; height: 38px; flex: 0 0 38px; border-radius: 50%; display: inline-grid; place-items: center; border: 1.5px solid var(--rule); background: var(--surface); color: var(--ink); cursor: pointer; transition: border-color .15s; }
+.theme-btn:hover { border-color: var(--signal); }
+.theme-btn svg { width: 18px; height: 18px; }
+
+/* ---------- hero: the second line in brass, as on the sample ---------- */
+.hero h1 .signal { color: var(--signal); }
+.hero h1 .signal::after { color: var(--signal); }
+.hero h1 .strike::after { background: var(--warn); height: 5px; border-radius: 3px; }
+
+/* ---------- cards instead of ruled grids ---------- */
+.diag-grid, .offer-grid, .steps { border: 0; gap: 16px; }
+.diag-cell, .offer, .step { border: 1px solid var(--card-border); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+.diag-cell.bad { background: var(--tile); }
+.offer:hover { background: var(--surface); box-shadow: var(--shadow-md); }
+.offer .num .tag { background: var(--signal-soft); color: var(--brass-ink); border-radius: 999px; padding: 3px 10px; }
+.terminal, .reel, .form { border-radius: var(--radius); overflow: hidden; }
+.reel-caption { border-radius: 0 0 var(--radius) var(--radius); }
+.case:hover { background: color-mix(in srgb, var(--surface) 70%, transparent); }
+.credo .hl { background: var(--signal-soft); color: var(--ink); box-shadow: inset 0 -3px 0 var(--signal); padding: 0 4px; border-radius: 4px; }
+.faq details, .faq-item { border-color: var(--rule); }
+
+/* ---------- panels that stay dark in both themes ---------- */
+.terminal, .offer.flag, .proof, .reel, .reel-poster, .contact, .prose-body pre, .bp-ask blockquote, .bp-card-v, .bp-flow-step.is-box, .ep-learn {
+  --ink: var(--deep); --ink-2: var(--deep-2); --paper: var(--on-deep);
+  --ink-mute: var(--deep-mute); --ink-faint: var(--deep-faint); --rule: var(--deep-line); --rule-2: var(--deep-line);
+  --signal: var(--deep-accent);
+}
+.offer.flag { background: var(--deep); box-shadow: var(--shadow-md); border-color: var(--flag-border, transparent); }
+:root[data-theme="dark"] { --flag-border: rgba(226, 169, 76, .45); }
+.social-tile, a.short { border-radius: 999px; }
+.offer.flag:hover { background: var(--deep-2); }
+.offer.flag p, .offer.flag li { color: var(--deep-mute); }
+.offer.flag .num { color: var(--deep-faint); border-bottom-color: var(--deep-line); }
+.terminal { color: var(--deep-mute); box-shadow: var(--shadow-md); }
+.terminal-bar { background: var(--deep-2); border-bottom-color: var(--deep-line); }
+.terminal-bar span.dot { background: var(--deep-line); }
+.terminal-bar .title, .term-line .out { color: var(--deep-faint); }
+.term-line .cmd { color: var(--on-deep); }
+.term-line .warn { color: #eeb655; }
+.term-line .fail { color: #f2766d; }
+.proof { background: var(--deep); background-image: radial-gradient(90% 60% at 80% 0%, rgba(226, 169, 76, .10), transparent 60%); }
+.proof .kicker, .contact-side .kicker { color: var(--deep-accent); }
+.proof .kicker::before, .contact-side .kicker::before { background: var(--deep-accent); }
+.proof-cell, .proof-grid, .proof-grid .proof-cell:nth-child(3), .proof-grid .proof-cell:nth-child(4) { border-color: var(--deep-line) !important; }
+.proof-cell .lbl, .proof-text p { color: var(--deep-mute); }
+.reel-poster { background: radial-gradient(120% 80% at 50% 0%, rgba(226, 169, 76, .12) 0%, transparent 55%), linear-gradient(180deg, #16263d 0%, #0f1c2e 100%); }
+.reel-poster:hover { background: radial-gradient(140% 90% at 50% 0%, rgba(226, 169, 76, .2) 0%, transparent 60%), linear-gradient(180deg, #1b2d47 0%, #0f1c2e 100%); }
+.reel-poster::before, .reel-poster-cta { border-color: rgba(233, 238, 246, .12); }
+.contact { background: var(--deep); background-image: radial-gradient(80% 60% at 0% 0%, rgba(226, 169, 76, .08), transparent 60%); }
+.contact-side p { color: var(--deep-mute); }
+.contact-points, .trust-row, .trust-row > *, .field input, .field select, .field textarea { border-color: var(--deep-line) !important; }
+.contact-point .k, .field label, .field label .opt { color: var(--deep-faint); }
+.form { background: var(--deep-2); border-color: var(--deep-line); }
+.btn-book, .form .btn, .form button[type="submit"] { border-radius: 999px; }
+:root[data-theme="dark"] .contact, :root[data-theme="dark"] .proof { border-top: 1px solid var(--deep-line); border-bottom: 1px solid var(--deep-line); }
+
+/* ---------- the Board Room project page ---------- */
+.bp-seats, .bp-value { border: 0; gap: 14px; }
+.bp-seats li, .bp-value > div, .bp-flow-step { border: 1px solid var(--card-border); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+/* --signal-ink is the text colour on a brass fill; plain text in brass uses --brass-ink, which reads in both themes. */
+.bp-flow-step .n, .case-link a:hover, .advice .when, .bp-value .n, .bp-seats .pillar, .ep-toc .n, .ep-card-cell .n, .step .n, .diag-cell .n { color: var(--brass-ink); }
+.bp-flow-step.is-box { background: var(--deep); }
+.advice, .bp-card { background: var(--doc); border-color: var(--rule); border-radius: var(--radius-sm); box-shadow: var(--shadow); }
+.bp-card-v { background: var(--deep); border-color: var(--deep); box-shadow: var(--shadow-md); }
+.bp-card-v .bp-card-k, .bp-card-f, .bench th, .bp-method { color: var(--deep-faint); }
+.bench { color: var(--deep-mute); }
+.bench-scroll, .bench th, .bench td { border-color: var(--deep-line); }
+.bp-ask blockquote { color: var(--deep-mute); border-radius: var(--radius-sm); }
+.bp-ask blockquote p { color: var(--deep-mute); }
+.bp-flow-step.is-box span:last-child { color: var(--deep-mute); }
+.bp-brand svg rect { fill: #0f1c2e; }
+.bp-brand svg ellipse, .bp-brand svg circle { stroke: #e2a94c; }
+
+/* ---------- the Work hub ---------- */
+.wk-products { border: 0; gap: 16px; }
+.wk-card { border: 1px solid var(--card-border); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+.wk-ico { border-radius: 12px; border-color: var(--rule); background: var(--tile); }
+.wk-tags span { border: 0; border-radius: 999px; background: var(--signal-soft); color: var(--brass-ink); font-family: var(--sans); text-transform: none; letter-spacing: 0; font-size: .8rem; font-weight: 600; padding: 4px 11px; }
+
+/* ---------- phones: the nav gets one more button, so the tagline goes ---------- */
+@media (max-width: 640px) {
+  .brand em { display: none; }
+  .nav-inner { gap: 10px; }
+  .nav-cta { white-space: nowrap; padding: 8px 12px; font-size: .85rem; }
+  .theme-btn { width: 34px; height: 34px; flex-basis: 34px; }
+}
+/* Below 420px the bar can't hold the name too (today's bar already pushes the menu button off screen). */
+@media (max-width: 420px) {
+  .brand > span { display: none; }
+  .nav-inner { padding-left: 16px; padding-right: 16px; gap: 8px; }
+}
+
+/* ---------- the pointer glow on cards in dark, as on the sample ---------- */
+.diag-cell, .offer, .step { position: relative; }
+.diag-cell::after, .offer::after, .step::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), var(--glow), transparent 60%); }
+
+
+/* ---------- blog code blocks and the reel captions ---------- */
+.prose-body pre { color: var(--deep-mute); border-radius: var(--radius-sm); }
+.reel-caption .reel-num { color: #566375; }
+.contact .trust-row span, .contact .form-note { color: var(--deep-mute); }
