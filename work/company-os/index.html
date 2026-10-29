@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Region detection. Runs before first paint so the correct currency is
+     the first thing painted — never a flash of the wrong price. Order:
+     ?region= → saved choice → browser timezone → language → GBP. -->
+<script>
+(function () {
+  var OK = ['uk', 'us', 'eu'], r, p, tz, l;
+  try {
+    p = new URLSearchParams(location.search).get('region');
+    if (p && OK.indexOf(p) > -1) { r = p; try { localStorage.setItem('indica_region', r); } catch (e) {} }
+    if (!r) { try { r = localStorage.getItem('indica_region'); } catch (e) {} }
+    if (!r) {
+      tz = (Intl.DateTimeFormat().resolvedOptions().timeZone) || '';
+      if (/^America\//.test(tz)) r = 'us';
+      else if (tz === 'Europe/London') r = 'uk';
+      else if (/^Europe\//.test(tz)) r = 'eu';
+    }
+    if (!r) {
+      l = (navigator.language || '').toLowerCase();
+      if (l === 'en-us') r = 'us';
+      else if (/^(de|fr|nl|es|it|pt|pl|sv|da|fi|cs|el|ro|hu)/.test(l)) r = 'eu';
+    }
+  } catch (e) {}
+  document.documentElement.setAttribute('data-region', OK.indexOf(r) > -1 ? r : 'uk');
+})();
+</script>
+<meta name="description" content="Company OS, an Indica Technology product: one founder runs an online shop with AI agents doing the work and nothing leaving the building without the founder's passkey or a rule they signed. Input, output, where the value is, fourteen measured benchmarks, how it scales, and where it is going.">
+<meta name="robots" content="index, follow">
+<title>Company OS: agents run the shop, you approve · Indica Tech</title>
+<link rel="canonical" href="https://indica-tech.com/work/company-os/">
+<meta property="og:title" content="Company OS: agents run the shop, you approve · Indica Tech">
+<meta property="og:description" content="Orders, shipments and customer messages in. Replies sent, batches held, one queue and a 07:30 brief out. Every outside action approved by you or a rule you signed. Fourteen benchmarks, all passed.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://indica-tech.com/work/company-os/">
+<link rel="stylesheet" href="/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Company OS",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "macOS, Linux (Docker)",
+  "description": "One founder runs an online shop with AI agents doing the work, and nothing leaves the building without the founder's passkey or a rule they signed. Safety runs with every model off.",
+  "creator": {"@type": "Organization", "name": "Indica Technology Ltd", "url": "https://indica-tech.com"},
+  "url": "https://indica-tech.com/work/company-os/"
+}
+</script>
+<style>
+/* Company OS project page: the site's tokens, plus the few pieces this page needs. */
+.co-hero { padding: clamp(64px, 9vw, 120px) 0 0; border-bottom: 1px solid var(--rule); }
+.co-hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 56px; align-items: center; padding-bottom: clamp(40px, 5vw, 64px); }
+.co-lockup { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+.co-lockup svg { width: 38px; height: 38px; flex: none; }
+.co-lockup b { display: block; font-size: 1.05rem; color: var(--ink); }
+.co-lockup .kicker { margin: 2px 0 0; }
+.co-lockup .kicker::before { display: none; }
+.co-hero h1 { font-size: clamp(2.2rem, 4.6vw, 3.9rem); line-height: 1.04; margin-bottom: 18px; }
+.co-hero .lead { font-size: clamp(1.05rem, 1.4vw, 1.25rem); color: var(--ink-mute); line-height: 1.6; max-width: 62ch; }
+.co-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 22px; font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
+.co-meta span::before { content: "/ "; color: var(--rule-2); }
+.co-ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+
+/* The hero mock: your queue on a Thursday morning. */
+.co-mock { position: relative; margin: 0; border: 1px solid var(--ink); background: #FFFDF8; padding: 18px 20px 16px; box-shadow: 10px 10px 0 var(--paper-3); }
+.co-mock-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 4px; }
+.co-mock-tag { flex: none; background: var(--paper-2); border: 1px solid var(--rule); color: var(--ink-faint); padding: 3px 8px; font-size: 0.62rem; letter-spacing: 0.04em; text-transform: none; white-space: nowrap; }
+.co-q-item { padding: 13px 0 11px; }
+.co-q-item + .co-q-item { border-top: 1px dashed var(--rule); }
+.co-q-item.is-you { background: var(--signal-soft); margin: 0 -10px; padding: 13px 10px 11px; border-top: 1px dashed var(--rule); }
+.co-q-k { display: flex; justify-content: space-between; gap: 10px; font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 4px; }
+.co-q-item.is-you .co-q-k { color: var(--signal-ink); font-weight: 600; }
+.co-q-msg { font-size: 0.98rem; color: var(--ink); margin: 4px 0 8px; line-height: 1.45; font-style: italic; }
+.co-q-line { font-size: 0.85rem; color: var(--ink-mute); line-height: 1.5; padding-left: 14px; position: relative; }
+.co-q-line::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 7px; height: 1px; background: var(--ink-faint); }
+.co-q-ok { font-family: var(--mono); font-size: 0.72rem; color: var(--signal-ink); margin: 8px 0 10px; }
+.co-passkey { display: inline-block; font-family: var(--mono); font-size: 0.74rem; font-weight: 600; letter-spacing: 0.04em; background: var(--ink); color: var(--paper); padding: 6px 12px; }
+
+/* What goes in, what the product does, what comes out. */
+.co-flow { display: grid; grid-template-columns: 1fr auto 1.15fr auto 1fr; align-items: stretch; gap: 14px; padding-bottom: clamp(56px, 7vw, 96px); }
+.co-flow-step { border: 1px solid var(--ink); background: var(--paper); padding: 22px 22px 24px; display: flex; flex-direction: column; gap: 8px; }
+.co-flow-step .n { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); }
+.co-flow-step b { font-size: 1.15rem; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
+.co-flow-step span:last-child { font-size: 0.95rem; color: var(--ink-mute); line-height: 1.5; }
+.co-flow-step.is-box { background: var(--ink); border-color: var(--ink); }
+.co-flow-step.is-box .n { color: var(--signal); }
+.co-flow-step.is-box b { color: var(--paper); }
+.co-flow-step.is-box span:last-child { color: #C2BDB2; }
+.co-flow-arrow { align-self: center; font-family: var(--mono); font-size: 1.4rem; color: var(--ink-faint); }
+
+/* The notice aside, as Board Room's. */
+.bp-notice-wrap { padding-bottom: clamp(48px, 6vw, 80px); border-bottom: 1px solid var(--rule); }
+.bp-notice { max-width: 860px; padding: 24px 28px; background: var(--paper-2); border: 1px solid var(--rule); border-left: 4px solid var(--warn); }
+.bp-notice h2 { font-size: 1.05rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-bottom: 10px; }
+.bp-notice p { font-size: 1rem; color: var(--ink-2); }
+.bp-notice p + p { margin-top: 10px; }
+
+/* A plain numbered section, as Board Room's. */
+.bp-sec { padding: clamp(64px, 9vw, 120px) 0; border-bottom: 1px solid var(--rule); }
+.bp-sec .section-head { margin-bottom: 48px; }
+
+/* Icons: original line icons in a square tile; the accent is the site's green. */
+.ico { width: 22px; height: 22px; display: block; }
+.ico .acc { fill: var(--signal); }
+.ico .acc-line { stroke: var(--signal); }
+.co-ico { display: inline-grid; place-items: center; width: 46px; height: 46px; border: 1px solid var(--ink); background: var(--paper); color: var(--ink); margin-bottom: 20px; }
+.step .co-ico { margin-bottom: 18px; }
+
+/* Input, output, value — and today, built in, next. */
+.co-iov { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
+.co-iov .diag-cell { position: relative; }
+.co-iov .diag-cell:not(:last-child)::after { content: "→"; position: absolute; right: -15px; top: 44px; z-index: 2; width: 30px; height: 30px; display: grid; place-items: center; background: var(--ink); color: var(--paper); border-radius: 50%; font-size: 0.9rem; }
+.co-iov .label.in::before { background: var(--ink-faint); }
+.co-iov .label.out::before { background: var(--ink); }
+.co-iov ul { list-style: none; margin: 0; padding: 0; }
+.co-iov li { padding: 10px 0 10px 22px; border-top: 1px solid var(--rule); color: var(--ink-mute); font-size: 0.98rem; line-height: 1.5; position: relative; }
+.co-iov li::before { content: ""; position: absolute; left: 0; top: 18px; width: 10px; height: 1px; background: var(--ink); }
+.co-iov .good { background: var(--paper-2); }
+
+/* A lede under a section head, and a plain sub-head. */
+.co-lede { max-width: 70ch; font-size: clamp(1.05rem, 1.3vw, 1.2rem); color: var(--ink-mute); line-height: 1.6; }
+.co-sub { font-size: 1.2rem; margin: 56px 0 18px; }
+
+/* Where the value is: a table on a desktop, stacked cards on a phone. */
+.co-val-wrap { overflow-x: auto; border-top: 1px solid var(--ink); margin-top: 44px; }
+.co-val { width: 100%; min-width: 800px; border-collapse: collapse; }
+.co-val th { text-align: left; font-family: var(--mono); font-weight: 500; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); padding: 14px 10px 12px 0; border-bottom: 1px solid var(--ink); }
+.co-val td { padding: 15px 12px 15px 0; border-bottom: 1px solid var(--rule); vertical-align: top; font-size: 0.95rem; color: var(--ink-mute); line-height: 1.55; }
+.co-val td:first-child { color: var(--ink); font-weight: 500; width: 17%; }
+.co-val th:last-child, .co-val td:last-child { padding-right: 0; }
+.co-under { margin-top: 26px; max-width: 82ch; }
+.co-under p { font-size: 1rem; color: var(--ink-mute); line-height: 1.65; }
+.co-under b { color: var(--ink); }
+.co-under p + p { margin-top: 10px; }
+@media (max-width: 800px) {
+  .co-val { min-width: 0; }
+  .co-val thead { display: none; }
+  .co-val tbody tr { display: block; padding: 14px 0; border-bottom: 1px solid var(--ink); }
+  .co-val td { display: block; width: auto; padding: 6px 0; border-bottom: 0; }
+  .co-val td::before { content: attr(data-label); display: block; font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 2px; }
+}
+
+/* The note under the journey, and the line with the sample link. */
+.co-note { display: flex; gap: 14px; align-items: flex-start; margin-top: 28px; padding: 18px 20px; border: 1px solid var(--rule-2); background: var(--paper-2); max-width: 880px; }
+.co-note .ico { flex: none; margin-top: 2px; }
+.co-note p { margin: 0; font-size: 0.96rem; }
+.co-after { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 32px; }
+.co-after p { font-size: 0.95rem; margin: 0; }
+
+/* The ladder: one row per level, the level code large on the left. */
+.co-ladder { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+.co-ladder li { display: grid; grid-template-columns: 110px 180px minmax(0, 1fr); gap: 24px; padding: 20px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+.co-ladder .lv { font-family: var(--mono); font-size: 2rem; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
+.co-ladder .nm { font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--signal-ink); }
+.co-ladder .ds { margin: 0; font-size: 0.98rem; color: var(--ink-mute); line-height: 1.5; }
+.co-moves { list-style: none; max-width: 860px; border-top: 1px solid var(--rule); }
+.co-moves li { padding: 14px 0; border-bottom: 1px solid var(--rule); font-size: 1rem; color: var(--ink-mute); line-height: 1.6; }
+.co-moves b { color: var(--ink); font-weight: 600; }
+
+/* Benchmarks: the table and the footnote, as Board Room's. */
+.proof .lbl br { display: block; }
+.co-proof-sub { font-family: var(--mono); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.06em; color: #8A857D; font-weight: 500; margin: 64px 0 18px; }
+.bench-scroll { overflow-x: auto; border-top: 1px solid #2A2A26; }
+.bench { width: 100%; min-width: 760px; border-collapse: collapse; font-family: var(--mono); font-size: 0.8rem; color: #C2BDB2; }
+.bench th { text-align: left; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.7rem; color: #8A857D; padding: 14px 10px 12px 0; border-bottom: 1px solid #2A2A26; }
+.bench td { padding: 12px 10px 12px 0; border-bottom: 1px solid #2A2A26; vertical-align: top; }
+.bench td:first-child { color: var(--paper); white-space: nowrap; }
+.co-misses { list-style: none; max-width: 80ch; border-top: 1px solid #2A2A26; }
+.co-misses li { padding: 12px 0 12px 24px; border-bottom: 1px solid #2A2A26; color: #C2BDB2; font-size: 1rem; line-height: 1.6; position: relative; }
+.co-misses li::before { content: ""; position: absolute; left: 2px; top: 22px; width: 10px; height: 1px; background: #8A857D; }
+.co-method { margin-top: 28px; font-size: 0.9rem; color: #8A857D; max-width: 80ch; line-height: 1.65; }
+
+/* The dream: three stages, as Evidence Plane's. */
+.co-cards { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
+.co-card-cell { padding: 32px 28px 36px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); background: var(--paper); display: flex; flex-direction: column; }
+.co-card-cell .n { font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.06em; color: var(--signal); margin-bottom: 14px; }
+.co-card-cell h3 { font-size: 1.2rem; margin-bottom: 10px; line-height: 1.25; }
+.co-card-cell p { font-size: 0.96rem; }
+.co-card-cell .when { margin-top: auto; padding-top: 18px; font-family: var(--mono); font-size: 0.72rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* Trade-offs, as Board Room's. */
+.co-trade { list-style: none; max-width: 860px; border-top: 1px solid var(--rule); }
+.co-trade li { padding: 16px 0; border-bottom: 1px solid var(--rule); font-size: 1.02rem; color: var(--ink-mute); line-height: 1.6; }
+.co-trade b { color: var(--ink); font-weight: 600; }
+
+/* Closing call to action, as Board Room's. */
+.bp-cta { padding: 0 0 clamp(64px, 9vw, 120px); }
+.bp-cta .prose-cta { max-width: 860px; }
+.bp-cta .prose-cta h3 { font-size: clamp(1.3rem, 2.2vw, 1.7rem); line-height: 1.25; margin-bottom: 12px; }
+.bp-cta .btn + .btn { margin-left: 10px; }
+/* styles.css drops a button's bottom border inside .prose-cta (it hides link underlines); the ghost button needs it back */
+.bp-cta .prose-cta a.btn-ghost { border-bottom: 1px solid var(--ink) !important; }
+
+/* The journey runs to five steps. */
+.steps.five { grid-template-columns: repeat(5, 1fr); }
+
+@media (max-width: 960px) {
+  .co-hero-grid { grid-template-columns: 1fr; gap: 36px; }
+  .co-flow { grid-template-columns: 1fr; }
+  .co-flow-arrow { transform: rotate(90deg); justify-self: center; }
+  .co-iov, .co-cards { grid-template-columns: 1fr; }
+  .co-iov .diag-cell:not(:last-child)::after { content: "↓"; right: auto; left: 28px; top: auto; bottom: -15px; }
+  .steps.five { grid-template-columns: repeat(2, 1fr); }
+  .co-ladder li { grid-template-columns: 90px 150px minmax(0, 1fr); gap: 16px; }
+}
+@media (max-width: 640px) {
+  :root { --gutter: 16px; }
+  .steps.five { grid-template-columns: 1fr; }
+  .co-ladder li { grid-template-columns: 1fr; gap: 4px; }
+  .bp-cta .btn + .btn { margin-left: 0; margin-top: 10px; }
+}
+</style>
+<link rel="stylesheet" href="../../look.css" id="look-css">
+<script src="../../look.js"></script>
+</head>
+<body>
+
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+        <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+        <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+        <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+      </svg>
+      <span>Indica Tech <em>/ demo → prod</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#problem">The gap</a></li>
+      <li><a href="/#offers">Engagements</a></li>
+      <li><a href="/#proof">Proof</a></li>
+      <li><a href="/work/">Work</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+    </ul>
+    <div class="region-switch" role="group" aria-label="Show prices in">
+      <button type="button" data-region-set="uk" aria-pressed="false">GBP</button>
+      <button type="button" data-region-set="us" aria-pressed="false">USD</button>
+      <button type="button" data-region-set="eu" aria-pressed="false">EUR</button>
+    </div>
+    <a href="/#contact" class="nav-cta">Book a call <span class="arrow">→</span></a>
+    <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main>
+<section class="co-hero">
+  <div class="container">
+    <div class="co-hero-grid">
+      <div>
+        <div class="co-lockup"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0B0B0A"/><circle cx="9.5" cy="16" r="3.2" fill="#00C46A"/><rect x="15.2" y="6" width="2.6" height="20" rx="1.3" fill="#F7F4ED"/><rect x="20.5" y="10" width="8" height="2.4" rx="1.2" fill="#F7F4ED"/><rect x="20.5" y="14.8" width="8" height="2.4" rx="1.2" fill="#00C46A"/><rect x="20.5" y="19.6" width="8" height="2.4" rx="1.2" fill="#F7F4ED"/></svg><div><b>Company OS</b><div class="kicker">Selected work / 07 · In-house product</div></div></div>
+        <h1>Agents run the shop. Nothing goes out until you say yes.</h1>
+        <p class="lead">An online shop runs on orders, deliveries and customer messages, all day. Company OS reads them, does the work that repeats, and puts every decision that needs you in one queue. Nothing reaches a customer or a supplier until your passkey, or a rule you signed, says yes. Safety work never waits for a model.</p>
+        <div class="co-meta"><span>Built and run by Indica Technology</span><span>Runs on one machine</span><span>14 of 14 benchmarks passed</span><span>Safety runs with every model off</span></div>
+        <div class="co-ctas"><a href="sample/" class="btn btn-primary">Try the guided sample <span class="arrow">→</span></a><a href="#value" class="btn btn-ghost">See where the value is <span class="arrow">↓</span></a></div>
+      </div>
+      <figure class="co-mock" aria-label="Your queue on a Thursday morning: a safety report handled, one reply waiting for your passkey, fourteen replies sent by your rule, and the 07:30 brief">
+        <div class="co-mock-top"><span>Your queue, Thursday 07:30</span><span class="co-mock-tag">Sample data, made up for this page</span></div>
+        <div class="co-q-item">
+          <p class="co-q-k"><span>Safety · reaction report</span></p>
+          <p class="co-q-msg">&ldquo;I came out in a rash after the second day of the magnesium.&rdquo;</p>
+          <p class="co-q-line">Recorded and acknowledged in 1 second</p>
+          <p class="co-q-line">You and the pharmacist were told</p>
+          <p class="co-q-line">First report on this batch in 30 days (a second holds it)</p>
+        </div>
+        <div class="co-q-item is-you">
+          <p class="co-q-k"><span>Needs you · product question</span></p>
+          <p class="co-q-msg">&ldquo;How many do I take a day?&rdquo;</p>
+          <p class="co-q-line">Draft from your approved answer: &ldquo;Take one capsule a day with food, as it says on the label.&rdquo;</p>
+          <p class="co-q-ok">Claims check passed · Second model passed</p>
+          <span class="co-passkey">Approve with your passkey</span>
+        </div>
+        <div class="co-q-item">
+          <p class="co-q-k"><span>Done by your rule · 14 order-status replies</span></p>
+          <p class="co-q-line">Sent at level L2</p>
+          <p class="co-q-line">Yours to review after</p>
+        </div>
+        <div class="co-q-item">
+          <p class="co-q-k"><span>Brief ready at 07:26</span></p>
+          <p class="co-q-line">8 sections</p>
+          <p class="co-q-line">No model wrote it</p>
+        </div>
+      </figure>
+    </div>
+    <div class="co-flow" aria-label="What goes in and what comes out">
+      <div class="co-flow-step"><span class="n">In</span><b>Your shop&#x27;s day</b><span>Orders, shipments, customer messages, and the rules you set.</span></div>
+      <span class="co-flow-arrow" aria-hidden="true">→</span>
+      <div class="co-flow-step is-box"><span class="n">Company OS</span><b>Agents draft, rules check, you approve</b><span>One queue for you, one way out for everything else.</span></div>
+      <span class="co-flow-arrow" aria-hidden="true">→</span>
+      <div class="co-flow-step"><span class="n">Out</span><b>Work done, on the record</b><span>Replies sent, batches held, a brief by 07:30, and proof of every action.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="bp-notice-wrap">
+  <div class="container">
+    <aside class="bp-notice" role="note" aria-labelledby="shop-h">
+      <h2 id="shop-h">About the shop on this page</h2>
+      <p>The shop is a reference business we built to test Company OS: a small UK company selling food supplements on Shopify, with a warehouse and a helpdesk. Its customers, warehouse, store and helpdesk are simulators, and every order, message and person on this page is made up. Company OS has served no real customer and handled no real payment, and it is not deployed. That is deliberate: it is built to be proven on simulators first.</p>
+    </aside>
+  </div>
+</section>
+
+<section class="diag" id="value">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">Value / 01</div>
+      <h2>Your shop&#x27;s day in. Work done, and one queue for you, out.</h2>
+    </div>
+    <div class="co-iov reveal">
+      <div class="diag-cell">
+        <span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v3M8.5 20.5h7"/></svg></span>
+        <div class="label in">Input</div>
+        <h3>What it takes in</h3>
+        <ul>
+          <li>Orders, customers and products from Shopify</li>
+          <li>Shipments and batch status from the warehouse</li>
+          <li>Customer messages from the helpdesk</li>
+          <li>Your rules: the policy you sign, the answers you approve, the money models may spend</li>
+        </ul>
+      </div>
+      <div class="diag-cell">
+        <span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect class="acc" x="7.4" y="10.7" width="9.2" height="2.6" rx="1" stroke="none"/><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8.5 7.8h7M8.5 12h7M8.5 16.2h4"/></svg></span>
+        <div class="label out">Output</div>
+        <h3>What comes back</h3>
+        <ul>
+          <li>Replies sent: order updates from a template, product answers from your approved text</li>
+          <li>Protective steps taken at once: a batch held at the warehouse, the product taken off sale, you and the pharmacist told</li>
+          <li>One queue for whatever needs you, safety first, and a brief in your inbox by 07:30</li>
+          <li>A record of every action, chained and sealed in write-once storage</li>
+        </ul>
+      </div>
+      <div class="diag-cell good">
+        <span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><circle class="acc" cx="12" cy="12" r="1.7" stroke="none"/></svg></span>
+        <div class="label">Value</div>
+        <h3>What it is worth</h3>
+        <ul>
+          <li>The work that repeats gets done without you, and never twice</li>
+          <li>Nothing reaches a customer or a supplier without your yes, or a rule you signed</li>
+          <li>A safety report is handled in seconds, even with every model down</li>
+          <li>You can prove what happened, months later, to a regulator or to yourself</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="diag" id="jobs">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">Where the value is / 02</div>
+      <h2>Agents do the work. Rules check it. You say yes.</h2>
+    </div>
+    <p class="co-lede reveal">Value sits where the same job comes back every day. Each job has someone who does it, something that checks it, and someone who says yes. Here is who that is for each one.</p>
+    <div class="co-val-wrap reveal">
+      <table class="co-val">
+        <thead>
+          <tr><th>The job</th><th>Who does it</th><th>What checks it</th><th>Who says yes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td data-label="The job">&ldquo;Where is my order?&rdquo;</td><td data-label="Who does it">A template filled from the order record. No model.</td><td data-label="What checks it">The reply is rebuilt and matched letter for letter before it goes</td><td data-label="Who says yes">You, until 99 replies in a row were right. Then a rule you signed, and you review each one after</td></tr>
+          <tr><td data-label="The job">A question about a product</td><td data-label="Who does it">An agent picks one of the answers you approved</td><td data-label="What checks it">Fixed checks: only your approved text, with no symptom, medicine or health claim slotted in; then a second agent, on a different provider, that can only say no</td><td data-label="Who says yes">You, every time, with your passkey</td></tr>
+          <tr><td data-label="The job">A reply only you can write</td><td data-label="Who does it">You</td><td data-label="What checks it">You, reading the exact text you sign</td><td data-label="Who says yes">You, with your passkey</td></tr>
+          <tr><td data-label="The job">A customer reports a reaction</td><td data-label="Who does it">Rules, with no model anywhere in the path</td><td data-label="What checks it">Nothing waits: the steps are protective</td><td data-label="Who says yes">No one needs to: the customer is acknowledged, and you and the pharmacist are told</td></tr>
+          <tr><td data-label="The job">Two reports on one batch in 30 days</td><td data-label="Who does it">Rules</td><td data-label="What checks it">The batch&#x27;s record</td><td data-label="Who says yes">No one needs to: the batch is held at the warehouse and the product comes off sale</td></tr>
+          <tr><td data-label="The job">Your morning</td><td data-label="Who does it">The system, from its own records. No model.</td><td data-label="What checks it">Rebuilt from the record, it gives the same brief</td><td data-label="Who says yes">Nothing to approve: you read it</td></tr>
+          <tr><td data-label="The job">Spending on models</td><td data-label="Who does it">Caps: £10 a day, £150 a month</td><td data-label="What checks it">A breaker stops only the model work when a cap is hit</td><td data-label="Who says yes">You, if you raise a cap</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="co-under reveal">
+      <p><b>Your attention, budgeted.</b> Company OS plans for 20 minutes of your attention a day, and aims to need no more than 12 of them for anything but safety. Over a simulated week it needed 10 a day.</p>
+      <p><b>Every yes, echoed.</b> Before any action you approved, or a rule approved, goes out, you get it by email in full.</p>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="journey">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">The journey / 03</div>
+      <h2>From a customer&#x27;s message to a sent reply, in five steps.</h2>
+    </div>
+    <div class="steps five reveal">
+      <div class="step"><span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4a5.5 5.5 0 0 1 5.5 5.5c0 1.9 0 3.7 1.5 5.5H5c1.5-1.8 1.5-3.6 1.5-5.5A5.5 5.5 0 0 1 12 4z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span><div class="n">01</div><h3>Notice, then fetch.</h3><p>The helpdesk says a message arrived. Company OS treats that as a notice only, checks its signature, and fetches the facts itself. If a notice is lost, a poller finds the message within minutes.</p><div class="when">Never trusts the notice</div></div>
+      <div class="step"><span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6z"/><path d="M8.8 12.2l2.2 2.2 4.4-4.6"/></svg></span><div class="n">02</div><h3>Safety first.</h3><p>Before anything else, rules read the message for a reaction or a safety word. A match is handled on its own track at once, with no model, and nothing else can slow it down.</p><div class="when">No model in the path</div></div>
+      <div class="step"><span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8.5 7.8h7M8.5 12h7M8.5 16.2h4"/><path class="acc-line" d="M14.5 16.2l1.6 1.6 3-3.2"/></svg></span><div class="n">03</div><h3>Draft and check.</h3><p>An agent drafts the reply from the answers you approved. Fixed checks make sure it uses only that text, with no symptom, medicine or health claim slotted in. A second agent, from a different provider, can only reject it.</p><div class="when">Checked twice</div></div>
+      <div class="step"><span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="3.5"/><path d="M11.5 12h8.5"/><path d="M17 12v3"/><path d="M20 12v2"/></svg></span><div class="n">04</div><h3>You decide.</h3><p>The draft waits in your queue. You approve it with your passkey, and what you approve is exactly what is sent: change one letter and the approval no longer counts.</p><div class="when">What you see is what you sign</div></div>
+      <div class="step"><span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4.5h5.5v15H14"/><path d="M3 12h10.5"/><path d="M10.5 8l4 4-4 4"/></svg></span><div class="n">05</div><h3>One way out.</h3><p>Only one service can write to Shopify, the warehouse or the helpdesk. It checks what you signed once more, then sends the reply exactly once, even if it is restarted halfway.</p><div class="when">Exactly once</div></div>
+    </div>
+    <div class="co-note reveal"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6z"/><path d="M8.8 12.2l2.2 2.2 4.4-4.6"/></svg><p>Nothing leaves before step 04. Pull the kill switch and every send stops within a second, except the steps that protect a customer.</p></div>
+    <div class="co-after reveal">
+      <a href="sample/" class="btn btn-ghost">Walk through it in the guided sample <span class="arrow">→</span></a>
+      <p>It runs in your browser with made-up data. Nothing to install, nothing saved.</p>
+    </div>
+  </div>
+</section>
+
+<section class="diag" id="ladder">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">The ladder / 04</div>
+      <h2>Trust is earned, one kind of work at a time.</h2>
+    </div>
+    <p class="co-lede reveal">Every kind of work starts at the bottom, where you approve each one. It climbs only with your passkey and a record of clean results, and falls the moment it makes a serious mistake.</p>
+    <ul class="co-ladder reveal">
+      <li><span class="lv">L1</span><span class="nm">Draft</span><p class="ds">It drafts. You approve each one.</p></li>
+      <li><span class="lv">L2</span><span class="nm">Act</span><p class="ds">It acts by a rule you signed. You review each one afterwards.</p></li>
+      <li><span class="lv">L3</span><span class="nm">Sample</span><p class="ds">It acts. You review one in ten.</p></li>
+      <li><span class="lv">L4</span><span class="nm">Monitor</span><p class="ds">It acts. You watch the numbers.</p></li>
+    </ul>
+    <h3 class="co-sub">How it moves</h3>
+    <ul class="co-moves reveal">
+      <li><b>Up, one level at a time,</b> only with your passkey, and only after enough clean results to prove it. For low-risk work, that is 99 in a row.</li>
+      <li><b>Down at once.</b> One serious mistake sends it back to L1. In the benchmark, that took half a second.</li>
+      <li><b>Back to the start after a change.</b> A new model, template or route sends that work back to L1. Trust does not carry over to a version you have not seen.</li>
+      <li><b>Some work never climbs.</b> In this version, order updates can reach L3. Anything a model drafted stays at L1, so you approve every one.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="proof" id="benchmarks">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">Benchmarks / 05</div>
+      <h2>Fourteen benchmarks, measured, all passed.</h2>
+    </div>
+    <div class="proof-grid reveal">
+      <div class="proof-cell"><div class="num">1.3<span class="unit"> s</span></div><div class="lbl">Slowest safety report recorded<br>with every model switched off</div></div>
+      <div class="proof-cell"><div class="num">5,991</div><div class="lbl">Deliveries applied exactly once<br>500 orders, with faults injected</div></div>
+      <div class="proof-cell"><div class="num">287<span class="unit"> ms</span></div><div class="lbl">Slowest kill-switch stop<br>against a 10-second bar</div></div>
+      <div class="proof-cell"><div class="num">59 / 59</div><div class="lbl">Non-compliant drafts stopped<br>and 101 of 101 good ones passed</div></div>
+    </div>
+    <div class="proof-body reveal">
+      <h3>What else we checked</h3>
+      <div class="proof-text">
+        <p><strong>Forged and lost messages.</strong> 121 messages with a bad signature stored nothing. 339 dropped notices were all found by the pollers, the slowest in 201 seconds against a 300-second bar.</p>
+        <p><strong>A crash mid-send.</strong> The sending service was killed halfway through 20 replies. All 20 settled, and none went twice.</p>
+        <p><strong>Your time.</strong> Over a simulated week, the decisions that needed you took 10 minutes a day, against a bar of 12.</p>
+        <p><strong>Attacks in the message.</strong> 31 prompt-injection attempts, of 9 kinds, produced no unsafe reply.</p>
+        <p><strong>Personal data where it should not be.</strong> We planted it, then swept 583 database columns and the logs of the four services that handle it. None turned up where it should not.</p>
+        <p><strong>The record.</strong> An edited audit row was caught at its own number, and the record was sealed at most 301 seconds behind, against a 360-second bar.</p>
+        <p><strong>A full restore.</strong> In the recovery drill, 58.6 seconds of data were lost (bar 15 minutes) and the system was back in 62 seconds (bar 20 minutes).</p>
+      </div>
+    </div>
+    <h3 class="co-proof-sub">Every benchmark, its bar and its result</h3>
+    <div class="bench-scroll reveal">
+      <table class="bench">
+        <thead><tr><th></th><th>What it proves</th><th>The bar</th><th>Measured</th></tr></thead>
+        <tbody>
+          <tr><td>MB-01</td><td>Every order update applied exactly once</td><td>No missing or doubled updates; lost notices found in 300 s; the store&#x27;s notices answered in under 2 s</td><td>0 differences; slowest found in 201 s; 10 ms (p99)</td></tr>
+          <tr><td>MB-02</td><td>One way out</td><td>Every outside write matches an approved intent and its record</td><td>Passed</td></tr>
+          <tr><td>MB-03</td><td>Only a person approves</td><td>Forged, replayed or revoked approvals refused</td><td>Passed</td></tr>
+          <tr><td>MB-04</td><td>No double sends</td><td>A restart mid-send sends nothing twice</td><td>20 of 20 settled once</td></tr>
+          <tr><td>MB-05</td><td>Safety with every model off</td><td>Recorded and paged within 60 s; acknowledged within 5 min</td><td>1.3 s, 0.9 s, 0.9 s</td></tr>
+          <tr><td>MB-06</td><td>No health claims slip through</td><td>All bad drafts stopped; 95% of good ones pass</td><td>59 of 59; 101 of 101</td></tr>
+          <tr><td>MB-07</td><td>The kill switch</td><td>Seen within 10 s; nothing sent after</td><td>287 ms; 0 sent</td></tr>
+          <tr><td>MB-08</td><td>The brief, rebuilt</td><td>Ready by 07:30, winter, summer and the clock change; rebuilds the same</td><td>Passed</td></tr>
+          <tr><td>MB-09</td><td>Recovery</td><td>Lose under 15 min; back within 20 min</td><td>58.6 s lost; 62 s</td></tr>
+          <tr><td>MB-10</td><td>Your time and the bill</td><td>12 minutes a day; under both spend caps</td><td>10 minutes; under both</td></tr>
+          <tr><td>MB-11</td><td>The ladder</td><td>Promotion at exactly 99 clean; demotion at once</td><td>Passed; 0.55 s</td></tr>
+          <tr><td>MB-12</td><td>Prompt injection</td><td>At least 30 attacks, none succeeds</td><td>31 attacks, 0 succeeded</td></tr>
+          <tr><td>MB-13</td><td>Privacy</td><td>No planted personal data anywhere it should not be</td><td>583 columns, none found</td></tr>
+          <tr><td>MB-14</td><td>The audit record</td><td>Sealed within 360 s; any edit detected</td><td>301 s; edit found</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3 class="co-proof-sub">What it missed, counted</h3>
+    <ul class="co-misses reveal">
+      <li>The test suites are slower than their own budgets. The fast suite takes 13 minutes 23 seconds against 5, and the full journeys take 1 hour 19 minutes against 15.</li>
+      <li>The first benchmark run failed one check, a spend-cap case. It was fixed, and the second run passed all 39 benchmark tests.</li>
+      <li>No real model has been called yet. Every result here uses a fake model provider, so the next step is to repeat the model checks on real providers.</li>
+    </ul>
+    <p class="co-method">Measured on 29 October 2026 on one MacBook Pro (Apple M5 Max, 128 GB), on simulators with synthetic data and a fake model provider; the recovery drill on 26 October. The same day, the full suites passed: 10,745 unit, database and API tests, 120 end-to-end journeys, 438 browser and accessibility tests, and 39 benchmark tests. Every one of the 367 requirements is traced to its tests, 5,560 of them.</p>
+  </div>
+</section>
+
+<section class="diag" id="scale">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">Scale / 06</div>
+      <h2>Sized for one founder&#x27;s shop today. Laid out for more.</h2>
+    </div>
+    <div class="co-iov reveal">
+      <div class="diag-cell">
+        <span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 8h13l-1.2 12.5H6.7z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg></span>
+        <div class="label">Today</div>
+        <h3>What it carries</h3>
+        <ul>
+          <li>A launch week of 20 orders and 2 customer messages a day</li>
+          <li>Tested at 500 orders with up to five updates each: 5,991 deliveries, with duplicates, drops, delays and forgeries thrown in</li>
+          <li>Answers the store&#x27;s notices in 10 milliseconds at the 99th percentile</li>
+          <li>One company, on one machine</li>
+        </ul>
+      </div>
+      <div class="diag-cell">
+        <span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l9 5-9 5-9-5 9-5z"/><path d="M3.5 12.5L12 17l8.5-4.5"/><path d="M3.5 16.5L12 21l8.5-4.5"/></svg></span>
+        <div class="label">Built in</div>
+        <h3>Why it grows without a rewrite</h3>
+        <ul>
+          <li>Four separate tracks of work that share no process, so a model outage slows only the model work, never safety or orders</li>
+          <li>Safety always has at least two workers of its own</li>
+          <li>A work queue in the database, with leases and heartbeats, so a crashed worker&#x27;s job is picked up, never lost or doubled</li>
+          <li>One runtime image, many small services, each with its own database role and only the rights it needs</li>
+        </ul>
+      </div>
+      <div class="diag-cell">
+        <span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 17.5l6-6 4 4 7-8"/><path d="M15 7.5h5.5V13"/></svg></span>
+        <div class="label">Next</div>
+        <h3>What changes to grow</h3>
+        <ul>
+          <li>More companies on one install: the records already carry a company and a market</li>
+          <li>Hosting, once real customers and real data are approved</li>
+          <li>Two known hot spots, on the queue page and in the audit check, to fix before the volumes grow</li>
+          <li>It claims no more than its benchmarks: past 500 orders is untested</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="dream">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">The dream / 07</div>
+      <h2>From one founder&#x27;s shop to a company that runs on evidence.</h2>
+    </div>
+    <div class="co-cards reveal">
+      <div class="co-card-cell"><span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 9.5h15v9a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 18.5z"/><path d="M8.5 9.5V8a3.5 3.5 0 0 1 7 0v1.5"/><path d="M9.5 13.5h5"/></svg></span><div class="n">01 · One founder, a full shop</div><h3>The work that repeats runs itself</h3><p>Orders, replies, safety and the morning brief are handled. You spend your minutes on the calls only you can make, and every one of them is on the record.</p><div class="when">Minutes a day, not hours</div></div>
+      <div class="co-card-cell"><span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2.6"/><circle cx="4.5" cy="5.5" r="2"/><circle cx="19.5" cy="5.5" r="2"/><circle cx="4.5" cy="18.5" r="2"/><circle cx="19.5" cy="18.5" r="2"/><path d="M6.3 6.8l4.8 3.6M17.7 6.8l-4.8 3.6M6.3 17.2l4.8-3.6M17.7 17.2l-4.8-3.6"/></svg></span><div class="n">02 · One hub</div><h3>Evidence and advice, in one place</h3><p>Company OS becomes the hub of our three products. Evidence Plane brings in what your partners said, cited and graded. The Board Room argues your hardest decisions. Company OS keeps the record and is the only place anything happens. Nothing a feeder sends can approve, act or skip a check.</p><div class="when">Three products, one record</div></div>
+      <div class="co-card-cell"><span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="11.5" rx="1.5"/><path d="M9 20.5h6M12 16.5v4"/></svg></span><div class="n">03 · An AI-run company, on your own machine</div><h3>The same promise, for other companies</h3><p>The same three, set up for other small companies on their own machines: agents do the work, evidence backs the decisions, and the owner keeps the only key.</p><div class="when">Local-first, owner-approved</div></div>
+    </div>
+    <div class="co-after reveal">
+      <a href="/work/evidence-plane/" class="btn btn-ghost">See Evidence Plane <span class="arrow">→</span></a>
+      <a href="/work/board-room/" class="btn btn-ghost">See the Board Room <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="bp-sec" id="tradeoffs">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">Trade-offs / 08</div>
+      <h2>What it is not.</h2>
+    </div>
+    <ul class="co-trade reveal">
+      <li><b>It is a prototype.</b> It runs on simulators with made-up data, has served no real customer, and is not deployed.</li>
+      <li><b>Every number on this page came from a fake model provider.</b> Real models have not been tested yet, and they will be slower, cost money and make mistakes the fake does not.</li>
+      <li><b>It does not decide for you.</b> Anything a model drafts waits for your passkey, and only order updates can earn a rule.</li>
+      <li><b>It does not do everything yet.</b> Refunds, purchase orders, the books, subscriptions and marketing campaigns are out of scope for this version.</li>
+      <li><b>One company, one machine, one founder.</b> It is built for a founder, not a team of fifty.</li>
+      <li><b>Its starting content is made up.</b> The approved answers and the health-claim lists need a regulatory review before a real shop could use them.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="bp-cta">
+  <div class="container">
+    <div class="prose-cta">
+      <h3>Which part of your business would you trust to an agent first?</h3>
+      <p>We build AI like this for other companies: it runs where your data lives, a person approves what goes out, and its failures are counted rather than hidden. If you have work like that in mind, or want to see Company OS run a morning, tell us.</p>
+      <a href="/#contact" class="btn btn-primary">Book a call <span class="arrow">→</span></a>
+      <a href="/work/" class="btn btn-ghost">More selected work</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="brand">
+          <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+            <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+            <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+            <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+          </svg>
+          <span>Indica Tech</span>
+        </a>
+        <p>Founder-led AI engineering. Demo to production, under NDA, in regulated industries, on fixed scope.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Engagements</h4>
+        <ul>
+          <li><a href="/services/audit.html">Production Audit</a></li>
+          <li><a href="/services/fractional.html">Fractional AI Lead</a></li>
+          <li><a href="/services/build-sprint.html">Build Sprint</a></li>
+          <li><a href="/services/governance.html">Governance</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/checklists/">Checklists</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/about.html">About Nitish</a></li>
+          <li><a href="/#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/company/indica-technology/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://instagram.com/demotoprod" target="_blank" rel="noopener">@demotoprod</a></li>
+          <li><a href="mailto:hello@indica-tech.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span class="year">2026</span> Indica Technology Ltd · Registered in England · VAT No. GB 517 173 008</span>
+      <span class="footer-legal">
+        <a href="/privacy.html">Privacy</a> ·
+        <a href="/terms.html">Terms</a> ·
+        <a href="/cookies.html">Cookies</a>
+      </span>
+      <span class="status">Taking new projects · Q2 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/script.js"></script>
+</body>
+</html>

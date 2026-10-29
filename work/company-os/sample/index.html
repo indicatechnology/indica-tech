@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>One Man Army · a guided sample</title>
+<title>Company OS · a guided sample</title>
 <meta name="description" content="Walk one week inside the operating system for a one-person company: the 06:45 evidence pull, the 07:30 brief, one decision taken to the advisory board, the gate that acts on it, and the verdict that returns for calibration. Replayed in your browser, with the project's own ids and numbers.">
-<meta property="og:title" content="One Man Army · a guided sample">
+<meta property="og:title" content="Company OS · a guided sample">
 <meta property="og:description" content="Evidence in, a decision to the board, one gate for every action. One week, replayed in your browser.">
 <meta property="og:type" content="website">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230f1c2e'/%3E%3Ccircle cx='9.5' cy='16' r='3.2' fill='%23d9a441'/%3E%3Crect x='15.2' y='6' width='2.6' height='20' rx='1.3' fill='%23f7f9fc'/%3E%3Crect x='20.5' y='10' width='8' height='2.4' rx='1.2' fill='%23f7f9fc'/%3E%3Crect x='20.5' y='14.8' width='8' height='2.4' rx='1.2' fill='%23d9a441'/%3E%3Crect x='20.5' y='19.6' width='8' height='2.4' rx='1.2' fill='%23f7f9fc'/%3E%3C/svg%3E">
@@ -473,9 +473,9 @@ table.plain tr:last-child td { border-bottom: 0; }
 
 <header class="head">
   <div class="head-inner">
-    <a class="logo" href="#welcome" aria-label="One Man Army, start">
+    <a class="logo" href="#welcome" aria-label="Company OS, start">
       <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0f1c2e"/><circle cx="9.5" cy="16" r="3.2" fill="#d9a441"/><rect x="15.2" y="6" width="2.6" height="20" rx="1.3" fill="#f7f9fc"/><rect x="20.5" y="10" width="8" height="2.4" rx="1.2" fill="#f7f9fc"/><rect x="20.5" y="14.8" width="8" height="2.4" rx="1.2" fill="#d9a441"/><rect x="20.5" y="19.6" width="8" height="2.4" rx="1.2" fill="#f7f9fc"/></svg>
-      <span>One Man <em>Army</em></span>
+      <span>Company <em>OS</em></span>
     </a>
     <nav class="nav" id="nav" aria-label="The week, step by step">
       <a href="#brief" data-route="brief" data-icon="today"><span class="tick"></span>The brief</a>
@@ -692,8 +692,8 @@ table.plain tr:last-child td { border-bottom: 0; }
         <section class="card" aria-labelledby="h-quotes"><div class="card-head"><h2 id="h-quotes" data-icon="shield">Planted unsafe drafts, rejected</h2></div><div class="stat-big" id="claims-stat"></div><p class="muted" style="margin:6px 0 12px;font-size:.9rem">Every planted unsafe draft blocked; 101 of 101 good drafts passed. One square, one planted case.</p><div class="waffle brass" id="waffle-claims" aria-hidden="true"></div></section>
       </div>
       <div class="grid3" style="margin-top:16px">
-        <section class="card" aria-labelledby="h-mb1"><div class="card-head"><h2 id="h-mb1" data-icon="clock">Intake, under abuse</h2></div><div class="stat-big">13<small>ms p99</small></div><p class="muted" style="font-size:.9rem;margin-top:6px">Webhook acknowledgements under duplicates, reordering, drops and bad signatures; the slowest dropped webhook was found in 210 s, against a 300 s bound (MB-01).</p></section>
-        <section class="card" aria-labelledby="h-mb7"><div class="card-head"><h2 id="h-mb7" data-icon="bolt">The kill switch</h2></div><div class="stat-big">621<small>ms</small></div><p class="muted" style="font-size:.9rem;margin-top:6px">Observed under load, against a 10-second target; resume needs the hardware key (MB-07). The safety line answered every message with every provider down — worst case 2.42 s (MB-05).</p></section>
+        <section class="card" aria-labelledby="h-mb1"><div class="card-head"><h2 id="h-mb1" data-icon="clock">Intake, under abuse</h2></div><div class="stat-big">10<small>ms p99</small></div><p class="muted" style="font-size:.9rem;margin-top:6px">Webhook acknowledgements under duplicates, reordering, drops and bad signatures; the slowest dropped webhook was found in 201 s, against a 300 s bound (MB-01).</p></section>
+        <section class="card" aria-labelledby="h-mb7"><div class="card-head"><h2 id="h-mb7" data-icon="bolt">The kill switch</h2></div><div class="stat-big">287<small>ms</small></div><p class="muted" style="font-size:.9rem;margin-top:6px">Observed under load, against a 10-second target; resume needs the hardware key (MB-07). The safety line answered every message with every provider down — worst case 1.3 s (MB-05).</p></section>
         <section class="card" aria-labelledby="h-mb11"><div class="card-head"><h2 id="h-mb11" data-icon="ladder">The ladder boundary</h2></div><div class="stat-big">99<small>, not 98</small></div><p class="muted" style="font-size:.9rem;margin-top:6px">A class becomes eligible at exactly 99 clean reviewed actions, and demotes on a severe error (MB-11). Autonomy is counted, never granted.</p></section>
       </div>
       <section class="card" style="margin-top:16px" aria-labelledby="h-runs"><div class="card-head"><h2 id="h-runs" data-icon="list">Every benchmark that has run</h2><span class="pill">reports/MB-xx.json</span></div><div class="scroll"><table class="runs" id="runs"></table></div><p class="muted" style="font-size:.86rem;margin-top:12px" id="method"></p></section>
@@ -853,19 +853,19 @@ const DATA = {
     { n: "≤12", t: "non-safety min a day, target" },
   ],
   bench: {
-    suite: 10686,
+    suite: 10745,
     rows: [
-      { mb: "MB-01", what: "Intake exactly once, under duplicates, reordering, drops and bad signatures", bar: "ack p99 < 2 s; drops found < 300 s", got: "p99 13 ms; slowest drop 210 s" },
+      { mb: "MB-01", what: "Intake exactly once, under duplicates, reordering, drops and bad signatures", bar: "ack p99 < 2 s; drops found < 300 s", got: "p99 10 ms; slowest found 201 s" },
       { mb: "MB-04", what: "Replay-safe: one reply per operation with the executor killed", bar: "every effect settles, none doubled", got: "20 of 20 settled, 0 duplicates" },
-      { mb: "MB-05", what: "The safety line with every provider failing", bar: "record and page < 60 s; acknowledge < 300 s", got: "worst case 2.42 s" },
+      { mb: "MB-05", what: "The safety line with every provider failing", bar: "record and page < 60 s; acknowledge < 300 s", got: "1.3 s, 0.9 s, 0.9 s" },
       { mb: "MB-06", what: "Claims-safe drafts from approved answers", bar: "every planted case rejected; ≥95% of good drafts pass", got: "59 of 59 rejected; 101 of 101 passed" },
-      { mb: "MB-07", what: "The kill switch under load", bar: "no paused send after commit; effect < 10 s", got: "observed 621 ms; resumes 0.52 s and 1.06 s" },
-      { mb: "MB-09", what: "The recovery drill", bar: "≤15 min lost; restored < 4 h; zero duplicates", got: "58.7 s lost; 61.9 s runbook; 0 duplicates" },
+      { mb: "MB-07", what: "The kill switch under load", bar: "no paused send after commit; effect < 10 s", got: "observed 287 ms; resumes 0.52 s and 1.06 s" },
+      { mb: "MB-09", what: "The recovery drill", bar: "≤15 min lost; restored < 4 h; zero duplicates", got: "58.6 s lost; 62 s runbook; 0 duplicates" },
       { mb: "MB-11", what: "The autonomy ladder promotes on evidence", bar: "eligible at exactly 99 clean outcomes", got: "eligible at 99, not 98; demotes on a severe error" },
       { mb: "MB-12", what: "Injection: only approved text reaches a draft", bar: "every case ends safe", got: "31 of 31 ended safe" },
-      { mb: "MB-14", what: "The audit anchor: tamper-evident, versioned, restorable", bar: "tampering caught; lag ≤ 360 s", got: "caught at the edited row; lag 300.19 s" },
+      { mb: "MB-14", what: "The audit anchor: tamper-evident, versioned, restorable", bar: "tampering caught; lag ≤ 360 s", got: "caught at the edited row; lag 301 s" },
     ],
-    stats: { tests: 10686, traced: 5452, ids: 367, problems: 0, planted: 59, good: 101, injection: 31 },
+    stats: { tests: 10745, traced: 5560, ids: 367, problems: 0, planted: 59, good: 101, injection: 31 },
   },
   arch: [
     { n: "01", b: "Leadership", p: "Objectives, limits, RED decisions; signed with a hardware key.", c: "—" },
@@ -1003,7 +1003,7 @@ const STEPS = [
   { id: "numbers", route: "numbers", title: "Check the numbers", text: "Every benchmark that has run, with its bar. The misses are on the page too." },
   { id: "architecture", route: "architecture", title: "See the design", text: "The thirteen steps of Architecture A and the ten building blocks — the same drawing the meeting pack opens live." },
 ];
-const KEY = "one-man-army-sample-v1";
+const KEY = "company-os-sample-v1";
 let state = { done: {}, seen: {}, feed: "live", scrubOpen: false, answer: null, call: null, boardPlayed: false, gateRan: false, conds: {}, tourOpen: true, tourStep: 0 };
 try { const saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) state = { ...state, ...saved }; } catch (e) { /* private mode: the sample still works, it just forgets */ }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* see above */ } }
@@ -1046,10 +1046,10 @@ function renderWelcome() {
   $("#media-tour").innerHTML = miniWeek();
   $("#media-decide").innerHTML = miniDecide();
   $("#welcome-tiles").innerHTML = [
-    ["10,686", "Tests in the main suite", "0 failed; none calls a real model"],
-    ["621<small>ms</small>", "The kill switch, observed", "its target is 10 seconds"],
+    ["10,745", "Tests in the main suite", "0 failed; none calls a real model"],
+    ["287<small>ms</small>", "The kill switch, observed", "its target is 10 seconds"],
     ["59<small>/59</small>", "Planted unsafe drafts rejected", "101 of 101 good drafts passed"],
-    ["0", "Traceability problems", "367 requirement IDs mapped to 5,452 tests"],
+    ["0", "Traceability problems", "367 requirement IDs mapped to 5,560 tests"],
   ].map(([b, t, d]) => `<div class="tile"><div class="big">${b}</div><b>${t}</b><span>${d}</span></div>`).join("");
 }
 
@@ -1349,8 +1349,8 @@ function renderWeek() {
 /* ---------- numbers ---------- */
 function renderNumbers() {
   const b = DATA.bench, s = b.stats;
-  $("#numbers-intro").textContent = "Every figure below is counted from the build's own gate runs on 27–28 October 2026: a local MVP on simulators, synthetic data, and a fake model in every test. The business targets — books by 07:00, an order at the warehouse in five minutes, the founder's hours — are design targets (A10, A7, A2), and this page never confuses the two.";
-  $("#hook-numbers").textContent = "9 of 14 benchmarks have run; the page shows the ones with measured numbers. The rest are listed as not run.";
+  $("#numbers-intro").textContent = "Every figure below is counted from the build's own gate runs on 29 October 2026: a local MVP on simulators, synthetic data, and a fake model in every test. The business targets — books by 07:00, an order at the warehouse in five minutes, the founder's hours — are design targets (A10, A7, A2), and this page never confuses the two.";
+  $("#hook-numbers").textContent = "14 of 14 benchmarks have run; the page shows the ones with measured numbers. The rest pass on structural bars.";
   $("#suite-stat").innerHTML = `${s.tests.toLocaleString("en-GB")}<small> passed</small>`;
   $("#waffle-suite").innerHTML = Array.from({ length: 100 }, (_, i) => `<i class="on" title="${i === 0 ? "one square ≈ 107 tests, all green" : ""}"></i>`).join("");
   $("#claims-stat").innerHTML = `${s.planted}<small>/${s.planted}</small>`;
