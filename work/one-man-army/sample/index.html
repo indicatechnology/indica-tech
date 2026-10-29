@@ -1,0 +1,1515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One Man Army · a guided sample</title>
+<meta name="description" content="Walk one week inside the operating system for a one-person company: the 06:45 evidence pull, the 07:30 brief, one decision taken to the advisory board, the gate that acts on it, and the verdict that returns for calibration. Replayed in your browser, with the project's own ids and numbers.">
+<meta property="og:title" content="One Man Army · a guided sample">
+<meta property="og:description" content="Evidence in, a decision to the board, one gate for every action. One week, replayed in your browser.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230f1c2e'/%3E%3Ccircle cx='9.5' cy='16' r='3.2' fill='%23d9a441'/%3E%3Crect x='15.2' y='6' width='2.6' height='20' rx='1.3' fill='%23f7f9fc'/%3E%3Crect x='20.5' y='10' width='8' height='2.4' rx='1.2' fill='%23f7f9fc'/%3E%3Crect x='20.5' y='14.8' width='8' height='2.4' rx='1.2' fill='%23d9a441'/%3E%3Crect x='20.5' y='19.6' width='8' height='2.4' rx='1.2' fill='%23f7f9fc'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script>
+// Theme before first paint: a saved choice wins, otherwise the page opens light (the site's own samples do the same).
+(function () { var t = null; try { t = localStorage.getItem("indica-theme"); } catch (e) {} if (t === "dark") document.documentElement.setAttribute("data-theme", "dark"); })();
+</script>
+<style>
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 600; font-display: swap; src: url("fonts/montserrat-semibold.ttf") format("truetype"); }
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 700; font-display: swap; src: url("fonts/montserrat-bold.ttf") format("truetype"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("fonts/inter-normal-latin.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("fonts/jetbrains-mono-normal-latin.woff2") format("woff2"); }
+:root {
+  color-scheme: light;
+  --page: #f3f5f9; --band: #e7ecf3; --surface: #ffffff; --tile: #f6f8fb; --track: #e3e8ef;
+  --ink: #0f1c2e; --ink-text: #f7f9fc; --text: #0f1c2e; --muted: #566375; --line: #dce2ea; --edge: #8794a6;
+  --brass: #b9802a; --brass-ink: #7a520f; --brass-soft: #f7ecd6; --on-brass: #ffffff; --brass-hover: #a46f1f;
+  --go: #1d6f49; --go-soft: #dcefe4; --cond: #7f5600; --cond-soft: #f7ebcf; --reshape: #a44a14; --reshape-soft: #f9e2d2; --dont: #a3241e; --dont-soft: #f6dfdb;
+  --ok: #1d6f49; --ok-soft: #dcefe4; --warn: #7f5600; --warn-soft: #f7ebcf; --bad: #a3241e; --bad-soft: #f6dfdb;
+  --green: #1d6f49; --green-soft: #dcefe4;
+  --shadow: 0 1px 2px rgba(15, 28, 46, .05), 0 8px 28px rgba(15, 28, 46, .06);
+  --shadow-md: 0 14px 44px rgba(15, 28, 46, .14);
+  --card-border: rgba(15, 28, 46, .04); --head-bg: rgba(255, 255, 255, .92); --btn-hover: #1d3150; --glow: transparent;
+  --strong-bg: #0f1c2e; --strong-text: #f7f9fc; --strong-muted: #c6d0de;
+  --doc-bg: #fffdf8; --doc-line: #efe6d3; --doc-inset: #fbf6ea;
+  --media-1: #eef2f8; --media-2: #e4eaf3;
+  --table-1: #ffffff; --table-2: #eef2f8; --table-stroke: #d3dbe6; --table-inner: #e3e8ef; --table-shadow: rgba(15, 28, 46, .14);
+  --chart-grid: #e3e8ef; --chart-text: #8794a6; --chart-label: #566375; --heat-rgb: 15, 28, 46; --heat-hi: #ffffff;
+  --miss-bg: #f6dfdb; --miss-text: #5c1813;
+  --strip-bg: #0f1c2e; --strip-text: #e9eef6; --strip-hover: #e7b85e; --logo-bg: #0f1c2e;
+  --radius: 18px; --radius-sm: 12px;
+  --display: "Montserrat", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0b0e13; --band: #10141b; --surface: #131820; --tile: #19202a; --track: #262e3a;
+  --ink: #f2f5f9; --ink-text: #0b0e13; --text: #e6ebf2; --muted: #96a1b2; --line: #232b36; --edge: #6d7889;
+  --brass: #e2a94c; --brass-ink: #f1c47c; --brass-soft: rgba(226, 169, 76, .14); --on-brass: #1a1305; --brass-hover: #f1c47c;
+  --go: #5ccf97; --go-soft: rgba(92, 207, 151, .13); --cond: #eeb655; --cond-soft: rgba(238, 182, 85, .13); --reshape: #f39257; --reshape-soft: rgba(243, 146, 87, .13); --dont: #f2766d; --dont-soft: rgba(242, 118, 109, .13);
+  --ok: #5ccf97; --ok-soft: rgba(92, 207, 151, .13); --warn: #eeb655; --warn-soft: rgba(238, 182, 85, .13); --bad: #f2766d; --bad-soft: rgba(242, 118, 109, .13);
+  --green: #5ccf97; --green-soft: rgba(92, 207, 151, .13);
+  --shadow: inset 0 1px 0 rgba(255, 255, 255, .035), 0 12px 32px rgba(0, 0, 0, .45);
+  --shadow-md: 0 20px 60px rgba(0, 0, 0, .6);
+  --card-border: #1f2732; --head-bg: rgba(11, 14, 19, .8); --btn-hover: #ffffff; --glow: rgba(226, 169, 76, .09);
+  --strong-bg: #1f1a12; --strong-text: #f7f1e6; --strong-muted: #cdbfa6;
+  --doc-bg: #17140f; --doc-line: #3a3122; --doc-inset: #1d1912;
+  --media-1: #121822; --media-2: #0e131a;
+  --table-1: #1c2430; --table-2: #121821; --table-stroke: #2c3542; --table-inner: #283140; --table-shadow: rgba(0, 0, 0, .6);
+  --chart-grid: #232b36; --chart-text: #6d7889; --chart-label: #96a1b2; --heat-rgb: 230, 236, 244; --heat-hi: #0b0e13;
+  --miss-bg: rgba(242, 118, 109, .12); --miss-text: #f6c3be;
+  --strip-bg: #07090d; --strip-text: #c9d2de; --strip-hover: #f1c47c; --logo-bg: #1e2836;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--page); color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.6; overflow-wrap: break-word; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+img, svg { display: block; max-width: 100%; }
+h1, h2, h3 { font-family: var(--display); letter-spacing: -.02em; line-height: 1.12; margin: 0; color: var(--ink); }
+p { margin: 0; }
+.muted { color: var(--muted); }
+.skip { position: absolute; left: -999px; top: 8px; z-index: 90; background: var(--ink); color: var(--ink-text); padding: 10px 14px; border-radius: 999px; text-decoration: none; font-weight: 600; }
+.skip:focus { left: 12px; }
+:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; border-radius: 6px; }
+
+/* ---------- the strip back to the site, as on the other samples ---------- */
+.site-strip { background: var(--strip-bg); color: var(--strip-text); font-size: .8rem; }
+.site-strip-in { max-width: 1320px; margin: 0 auto; padding: .35rem 20px; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.site-strip a { color: var(--strip-text); text-decoration: none; display: inline-flex; align-items: center; gap: .45rem; min-height: 30px; }
+.site-strip a:hover { color: var(--strip-hover); }
+.site-strip a:focus-visible { outline-color: var(--strip-hover); }
+.site-strip-right { display: inline-flex; align-items: center; gap: 1.2rem; }
+.site-strip .indica { font-weight: 600; }
+@media (max-width: 640px) { .site-strip-in { padding: .3rem 16px; } .site-strip .hide-sm { display: none; } }
+
+/* ---------- head ---------- */
+.head { position: sticky; top: 0; z-index: 40; background: var(--head-bg); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.head-inner { max-width: 1320px; margin: 0 auto; display: flex; align-items: center; gap: 18px; padding: 10px 20px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 700; font-size: 1.08rem; letter-spacing: -.01em; white-space: nowrap; }
+.logo svg { width: 30px; height: 30px; }
+.logo svg rect { fill: var(--logo-bg); }
+.logo em { font-style: normal; color: var(--brass-ink); }
+.nav { display: flex; gap: 2px; flex: 1 1 auto; justify-content: center; flex-wrap: wrap; }
+.nav a { display: inline-flex; align-items: center; gap: 7px; padding: 8px 11px; border-radius: 999px; text-decoration: none; font-size: .92rem; color: var(--muted); white-space: nowrap; }
+.nav a:hover { color: var(--ink); background: var(--tile); }
+.nav a[aria-current="page"] { color: var(--ink-text); background: var(--ink); }
+.nav a .ico { width: 16px; height: 16px; }
+.nav a .tick { display: none; width: 7px; height: 7px; border-radius: 50%; background: var(--brass); }
+.nav a.done .tick { display: inline-block; }
+.head-right { display: flex; align-items: center; gap: 8px; }
+.theme-btn { width: 38px; height: 38px; border-radius: 50%; display: inline-grid; place-items: center; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; transition: border-color .15s, background .15s; }
+.theme-btn:hover { border-color: var(--brass); }
+.theme-btn svg { width: 18px; height: 18px; }
+.call-pill { display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--ink); border-radius: 999px; padding: 6px 12px; font-weight: 600; font-size: .88rem; text-decoration: none; white-space: nowrap; }
+.call-pill .state { font-family: var(--mono); font-size: .74rem; font-weight: 500; padding: 2px 8px; border-radius: 999px; background: var(--brass-soft); color: var(--brass-ink); }
+.call-pill.made .state { background: var(--go-soft); color: var(--go); }
+.head .menu-btn { display: none; }
+
+/* ---------- shell ---------- */
+.shell { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 28px; padding: 0 20px; }
+.shell.tour-closed { grid-template-columns: minmax(0, 1fr); }
+main { min-width: 0; padding: 34px 0 60px; outline: none; }
+main:focus, main:focus-visible { outline: none; }
+.route[hidden] { display: none !important; }
+.intro { max-width: 820px; margin-bottom: 26px; }
+.intro .kicker { font-family: var(--mono); font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--brass-ink); margin-bottom: 10px; display: block; }
+.intro h1 { font-size: clamp(2rem, 4.2vw, 3.1rem); margin-bottom: 12px; }
+.intro p { font-size: 1.08rem; color: var(--muted); max-width: 68ch; }
+.hook { display: inline-flex; align-items: center; gap: 10px; margin-top: 16px; background: var(--brass-soft); color: var(--brass-ink); border-radius: 999px; padding: 7px 14px; font-weight: 600; font-size: .95rem; }
+.hook .ico { width: 18px; height: 18px; }
+
+/* ---------- primitives ---------- */
+.card { position: relative; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px 24px; border: 1px solid var(--card-border); }
+.card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), var(--glow), transparent 62%); opacity: 0; transition: opacity .3s; }
+.card:hover::after { opacity: 1; }
+.card + .card { margin-top: 16px; }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.card h2 { font-size: 1.12rem; display: flex; align-items: center; gap: 9px; }
+.card h2 .ico { width: 19px; height: 19px; color: var(--brass); }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.grid2 > .card + .card, .grid3 > .card + .card { margin-top: 0; }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 3px 10px; font-size: .78rem; font-weight: 600; background: var(--tile); color: var(--muted); white-space: nowrap; }
+.pill.info { background: var(--brass-soft); color: var(--brass-ink); }
+.pill.go { background: var(--go-soft); color: var(--go); }
+.pill.cond { background: var(--cond-soft); color: var(--cond); }
+.pill.no { background: var(--dont-soft); color: var(--dont); }
+.pill.ink { background: var(--ink); color: var(--ink-text); }
+.pill.grade { font-family: var(--mono); font-weight: 500; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; padding: 11px 20px; font-weight: 600; font-size: .95rem; cursor: pointer; text-decoration: none; border: 1.5px solid var(--ink); transition: transform .15s, background .15s, color .15s; }
+.btn.primary { background: var(--ink); color: var(--ink-text); }
+.btn.primary:hover { background: var(--btn-hover); }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn.ghost:hover { background: var(--tile); }
+.btn.brass { background: var(--brass); border-color: var(--brass); color: var(--on-brass); }
+.btn.small { padding: 7px 14px; font-size: .86rem; }
+.btn.wide { width: 100%; }
+.btn:active { transform: translateY(1px); }
+.btn .ico { width: 16px; height: 16px; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+.next-link { margin-top: 26px; display: flex; justify-content: flex-end; }
+.ico { display: inline-block; flex: none; }
+
+/* discs and ids, shared across the sample */
+.disc { --c: #8794a6; display: inline-grid; place-items: center; flex: none; width: 38px; height: 38px; border-radius: 50%; background: var(--c); color: #fff; font-family: var(--display); font-weight: 700; font-size: .82rem; letter-spacing: .02em; box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px color-mix(in srgb, var(--c) 45%, transparent); }
+.disc.sm { width: 28px; height: 28px; font-size: .66rem; }
+.seat-line { display: flex; align-items: center; gap: 11px; }
+.seat-line b { display: block; font-size: .98rem; }
+.seat-line span.sub { display: block; font-size: .82rem; color: var(--muted); }
+.mono { font-family: var(--mono); font-size: .86em; }
+.scroll { overflow-x: auto; }
+table.plain { width: 100%; border-collapse: collapse; font-size: .9rem; }
+table.plain th { text-align: left; font-weight: 600; color: var(--muted); font-size: .76rem; text-transform: uppercase; letter-spacing: .06em; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+table.plain td { padding: 10px 10px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.plain tr:last-child td { border-bottom: 0; }
+
+/* ---------- welcome ---------- */
+.hero { text-align: center; max-width: 920px; margin: 10px auto 26px; }
+.hero h1 { font-size: clamp(2.3rem, 5.6vw, 4.2rem); line-height: 1.04; letter-spacing: -.035em; }
+.hero h1 span { color: var(--brass); }
+.hero p { margin: 16px auto 0; max-width: 62ch; font-size: 1.12rem; color: var(--muted); }
+.week-figure { margin: 0 auto; max-width: 820px; }
+.week-figure figcaption { text-align: center; font-size: .86rem; color: var(--muted); margin-top: 6px; }
+.paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 26px; }
+.path { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+.path .media { background: linear-gradient(135deg, var(--media-1), var(--media-2)); display: grid; place-items: center; padding: 14px 18px; min-height: 172px; }
+.path .media svg { width: 100%; max-width: 330px; height: auto; max-height: 200px; }
+.path .body { padding: 18px 22px 22px; display: flex; flex-direction: column; flex: 1; }
+.path .tag { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.path h2 { font-size: 1.4rem; margin-bottom: 6px; }
+.path .actions { margin-top: auto; padding-top: 16px; }
+.band { background: var(--band); border-radius: 26px; padding: 34px 28px 30px; margin-top: 26px; text-align: center; }
+.band h2 { font-size: clamp(1.7rem, 3.2vw, 2.4rem); }
+.band > p { color: var(--muted); margin: 8px auto 0; max-width: 64ch; }
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 22px 0 18px; text-align: left; }
+.tile { background: var(--surface); border-radius: var(--radius-sm); padding: 16px 18px; box-shadow: var(--shadow); }
+.tile .big { font-family: var(--display); font-weight: 700; font-size: 2rem; letter-spacing: -.03em; line-height: 1.05; }
+.tile .big small { font-size: 1.1rem; color: var(--brass); }
+.tile b { display: block; margin-top: 6px; font-size: .95rem; }
+.tile span { display: block; font-size: .84rem; color: var(--muted); }
+.status-strip { display: flex; gap: 16px; align-items: flex-start; margin-top: 22px; background: var(--surface); border-radius: var(--radius); padding: 18px 22px; border-left: 4px solid var(--brass); box-shadow: var(--shadow); }
+.status-strip .ico { width: 26px; height: 26px; color: var(--brass); margin-top: 2px; }
+.status-strip p { font-size: .95rem; color: var(--muted); }
+.status-strip b { color: var(--ink); }
+
+/* ---------- step 1: the brief ---------- */
+.brief-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.brief-sec { border-top: 1px solid var(--line); padding: 12px 0; }
+.brief-sec:first-child { border-top: 0; padding-top: 0; }
+.brief-sec h3 { font-size: .74rem; font-family: var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.brief-sec h3 .pill { margin-left: auto; }
+.brief-item { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; border-radius: 10px; font-size: .93rem; }
+.brief-item:hover { background: var(--tile); }
+.brief-item .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--edge); margin-top: 8px; flex: none; }
+.brief-item .dot.ok { background: var(--green); }
+.brief-item .dot.warn { background: var(--brass); }
+.brief-item .dot.bad { background: var(--bad); }
+.brief-item b { font-weight: 600; }
+.brief-item .mono { color: var(--muted); font-size: .8rem; }
+.feed-state { display: grid; gap: 10px; }
+.feed-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; font-size: .9rem; background: var(--tile); }
+.feed-row b { font-family: var(--mono); font-weight: 600; font-size: .8rem; }
+.feed-note { font-size: .84rem; color: var(--muted); }
+
+/* ---------- step 2: the evidence ---------- */
+.ev-item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--tile); }
+.ev-item + .ev-item { margin-top: 10px; }
+.ev-item .eid { font-family: var(--mono); font-weight: 600; font-size: .82rem; color: var(--ink); }
+.ev-item .stmt { font-size: .95rem; grid-column: 2; }
+.ev-item .stmt.null { color: var(--muted); font-style: italic; }
+.ev-item .meta { grid-column: 2; font-family: var(--mono); font-size: .74rem; color: var(--muted); }
+.ev-item .side { grid-row: 1 / span 3; grid-column: 3; display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+.pull-line { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-family: var(--mono); font-size: .8rem; color: var(--muted); }
+.pull-line .sep { color: var(--edge); }
+.scrub-diff { border: 1px dashed var(--edge); border-radius: 14px; padding: 14px 16px; font-size: .92rem; background: var(--surface); }
+.scrub-diff .del { background: var(--bad-soft); color: var(--bad); text-decoration: line-through; border-radius: 4px; padding: 0 3px; }
+.scrub-diff .ins { background: var(--go-soft); color: var(--go); border-radius: 4px; padding: 0 3px; }
+
+/* ---------- step 3: the position ---------- */
+.prob { display: grid; gap: .9rem; }
+.prob label { display: grid; grid-template-columns: 2rem minmax(0, 1fr) 3.4rem; gap: .15rem .8rem; align-items: center; font-weight: 600; }
+.prob .letter { grid-row: 1 / span 2; width: 2rem; height: 2rem; border-radius: 9px; display: grid; place-items: center; background: var(--track); font-weight: 700; font-size: .85rem; }
+.prob .opt { grid-column: 2; }
+.prob input[type="range"] { grid-column: 2; width: 100%; min-height: 28px; accent-color: var(--ink); padding: 0; border: 0; background: none; }
+.prob output { grid-column: 3; grid-row: 1 / span 2; font-family: var(--mono); text-align: right; }
+.sum { font-size: .84rem; color: var(--muted); margin: .6rem 0 .2rem; }
+.seal { width: 124px; height: 124px; border-radius: 50%; border: 2px solid var(--warn); color: var(--warn); display: grid; place-content: center; text-align: center; box-shadow: inset 0 0 0 5px var(--surface), inset 0 0 0 6.5px var(--warn); padding: .8rem; }
+.seal b { display: block; font-family: var(--display); font-size: 1.3rem; font-weight: 700; letter-spacing: -.01em; line-height: 1; }
+.seal small { display: block; font-size: .6rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-top: .3rem; line-height: 1.3; }
+.seal.backed { border-color: var(--ok); color: var(--ok); box-shadow: inset 0 0 0 5px var(--surface), inset 0 0 0 6.5px var(--ok); }
+.position-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: start; }
+.position-head .q { font-family: var(--display); font-weight: 700; font-size: clamp(1.3rem, 2.4vw, 1.8rem); line-height: 1.15; letter-spacing: -.02em; margin: 4px 0 10px; }
+.eyebrow { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 .35rem; }
+.rules-mini { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; font-size: .88rem; }
+.rules-mini li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .6rem; align-items: center; }
+.rules-mini .pill { justify-self: start; }
+
+/* ---------- step 4: the board ---------- */
+.stage { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; align-items: stretch; }
+.stage .card { display: flex; flex-direction: column; }
+.now-speaking { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.now-speaking .say { font-size: 1.06rem; line-height: 1.5; color: var(--ink); min-height: 4.5em; }
+.now-speaking .say .caret { display: inline-block; width: 2px; height: 1.1em; background: var(--brass); vertical-align: -3px; margin-left: 2px; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.progress { height: 6px; background: var(--track); border-radius: 999px; overflow: hidden; margin-top: auto; }
+.progress span { display: block; height: 100%; width: 0; background: var(--brass); transition: width .35s; }
+.seat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 16px; }
+.seat-card { padding: 18px 20px; transition: opacity .35s, transform .35s; }
+.seat-card.pending { opacity: .5; transform: translateY(6px); }
+.seat-card .top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.seat-card .call { font-size: .98rem; color: var(--ink); font-weight: 500; }
+.seat-card .q { font-size: .88rem; color: var(--muted); margin-top: 8px; }
+.seat-card .q b { color: var(--ink); font-weight: 600; }
+.mini-scores { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 12px; }
+.mini-scores div { font-family: var(--mono); font-size: .74rem; color: var(--muted); }
+.mini-scores .bar { height: 6px; border-radius: 999px; background: var(--track); margin-top: 3px; overflow: hidden; }
+.mini-scores .bar span { display: block; height: 100%; background: var(--edge); }
+.mini-scores .top-opt .bar span { background: var(--brass); }
+.mini-scores .lean-opt { color: var(--brass-ink); }
+.doc { background: var(--doc-bg); border: 1px solid var(--doc-line); border-radius: 16px; padding: 22px 26px; box-shadow: inset 0 0 0 6px var(--doc-inset); }
+.doc .doc-k { font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--brass-ink); }
+.doc p.rec { font-size: 1.05rem; margin: 10px 0 14px; color: var(--ink); }
+.doc ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: .92rem; color: var(--muted); }
+.votes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.vote { border-radius: 14px; background: var(--tile); padding: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+.vote .score { font-family: var(--display); font-weight: 700; font-size: 1.3rem; }
+.vote .score small { font-size: .8rem; color: var(--muted); font-weight: 600; }
+.tally { display: flex; height: 14px; border-radius: 999px; overflow: hidden; margin: 6px 0 10px; }
+.tally span { display: block; height: 100%; }
+.amend { display: grid; gap: 12px; }
+.amend div { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: flex-start; font-size: .92rem; }
+.verdict-hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: start; }
+.stamp { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 132px; height: 132px; border-radius: 50%; border: 3px solid var(--cond); color: var(--cond); text-align: center; font-family: var(--display); font-weight: 700; font-size: .74rem; line-height: 1.15; letter-spacing: .03em; transform: rotate(-8deg); background: var(--cond-soft); box-shadow: inset 0 0 0 5px var(--surface), inset 0 0 0 7px var(--cond); padding: 12px; }
+.stamp.go { border-color: var(--go); color: var(--go); background: var(--go-soft); box-shadow: inset 0 0 0 5px var(--surface), inset 0 0 0 7px var(--go); }
+.stamp .opt { font-size: 1.9rem; letter-spacing: 0; }
+.pick-label { font-family: var(--mono); font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brass-ink); }
+.call-big { font-family: var(--display); font-weight: 600; font-size: clamp(1.2rem, 2.2vw, 1.55rem); line-height: 1.3; margin-top: 8px; letter-spacing: -.015em; }
+.opts-bars { display: grid; gap: 10px; margin-top: 20px; }
+.ob { display: grid; grid-template-columns: 30px minmax(0, 1fr) 44px; gap: 12px; align-items: center; }
+.ob .id { font-family: var(--display); font-weight: 700; }
+.ob .lbl { font-size: .92rem; }
+.ob .bar { height: 10px; border-radius: 999px; background: var(--track); margin-top: 5px; overflow: hidden; }
+.ob .bar span { display: block; height: 100%; background: var(--edge); border-radius: 999px; }
+.ob.top .bar span { background: var(--brass); }
+.ob.top .lbl { font-weight: 600; }
+.ob .sc { font-family: var(--mono); font-weight: 500; text-align: right; }
+.ob .leanflag { font-family: var(--mono); font-size: .68rem; color: var(--brass-ink); margin-left: 8px; text-transform: uppercase; letter-spacing: .06em; }
+.figs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+.figs div { background: var(--tile); border-radius: 12px; padding: 10px 12px; }
+.figs dt { font-size: .76rem; color: var(--muted); }
+.figs dd { margin: 2px 0 0; font-family: var(--display); font-weight: 700; font-size: 1.15rem; }
+.why { display: grid; gap: 12px; }
+.why div { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: flex-start; font-size: .94rem; }
+.watchout { border-left: 4px solid var(--brass); padding: 4px 0 4px 16px; }
+.watchout q { display: block; font-family: var(--display); font-weight: 600; font-size: 1.1rem; line-height: 1.4; color: var(--ink); quotes: "\201C" "\201D"; }
+.watchout .by { display: flex; gap: 10px; align-items: center; margin-top: 10px; font-size: .88rem; color: var(--muted); }
+.checks { display: grid; gap: 8px; }
+.checks label { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: flex-start; font-size: .93rem; cursor: pointer; padding: 8px 10px; border-radius: 10px; }
+.checks label:hover { background: var(--tile); }
+.checks input { width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--ink); }
+.checks input:checked + span { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--edge); }
+.timeline { position: relative; display: grid; gap: 14px; padding-left: 26px; }
+.timeline::before { content: ""; position: absolute; left: 8px; top: 6px; bottom: 6px; width: 2px; background: var(--line); }
+.timeline div { position: relative; font-size: .93rem; }
+.timeline div::before { content: ""; position: absolute; left: -24px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--surface); border: 3px solid var(--brass); }
+.timeline b { display: block; font-family: var(--mono); font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; color: var(--brass-ink); }
+
+/* ---------- step 5: the gate ---------- */
+.gate-flow { display: grid; gap: 0; }
+.gstep { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; align-items: start; padding: 16px 0; border-bottom: 1px solid var(--line); opacity: .38; transition: opacity .3s; }
+.gstep.on { opacity: 1; }
+.gstep:last-child { border-bottom: 0; }
+.gstep .gn { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--track); color: var(--kind-text, var(--muted)); font-family: var(--mono); font-weight: 700; font-size: .82rem; }
+.gstep.on .gn { background: var(--ink); color: var(--ink-text); }
+.gstep b { display: block; font-size: 1rem; }
+.gstep p { font-size: .9rem; color: var(--muted); margin-top: 3px; }
+.gstep .res { font-family: var(--mono); font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; padding: 4px 10px; border-radius: 999px; background: var(--tile); color: var(--muted); white-space: nowrap; }
+.gstep.on .res.pass { background: var(--go-soft); color: var(--go); }
+.gstep.on .res.warn { background: var(--warn-soft); color: var(--warn); }
+.ledger { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.ledger span { font-family: var(--mono); font-size: .7rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); border: 1px solid var(--line); padding: 3px 9px; border-radius: 999px; transition: all .3s; }
+.ledger span.on { background: var(--ink); color: var(--ink-text); border-color: var(--ink); }
+.stop-echo { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start; background: var(--strong-bg); color: var(--strong-text); border-radius: 14px; padding: 14px 16px; font-size: .92rem; }
+.stop-echo .ico { width: 20px; height: 20px; color: var(--brass); margin-top: 2px; }
+.stop-echo b { color: var(--strong-text); }
+.stop-echo .mono { color: var(--strong-muted); }
+
+/* ---------- step 6: the week ---------- */
+.ladder { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ladder li { display: grid; grid-template-columns: 5.2rem minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 12px; background: var(--tile); font-size: .92rem; }
+.ladder .lv { font-family: var(--mono); font-weight: 700; font-size: .82rem; }
+.ladder small { color: var(--muted); display: block; font-size: .8rem; }
+.ladder .need { font-family: var(--mono); font-size: .74rem; color: var(--muted); }
+.export-box { border: 1.5px dashed var(--edge); border-radius: 14px; padding: 16px 18px; font-family: var(--mono); font-size: .8rem; background: var(--surface); }
+.export-box .k { color: var(--muted); }
+.export-box .v { color: var(--ink); }
+.minutes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.minutes div { background: var(--tile); border-radius: 12px; padding: 12px 14px; text-align: center; }
+.minutes b { display: block; font-family: var(--display); font-size: 1.6rem; letter-spacing: -.02em; }
+.minutes span { font-size: .78rem; color: var(--muted); }
+.yourcall { background: var(--strong-bg); color: var(--strong-text); border: 1px solid color-mix(in srgb, var(--brass) 30%, transparent); }
+.yourcall h2 { color: var(--strong-text); }
+.yourcall h2 .ico { color: var(--brass); }
+.yourcall p { color: var(--strong-muted); }
+.yourcall .btn.ghost { color: var(--strong-text); border-color: color-mix(in srgb, var(--strong-text) 50%, transparent); }
+.yourcall .btn.ghost:hover { background: rgba(255,255,255,.08); }
+.yourcall .btn.brass:hover { background: var(--brass-hover); border-color: var(--brass-hover); }
+.call-done { margin-top: 16px; background: rgba(255,255,255,.07); border-radius: 14px; padding: 14px 16px; display: none; }
+.call-done.on { display: block; }
+.call-done b { color: var(--strong-text); }
+
+/* ---------- numbers ---------- */
+.waffle { display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 3px; }
+.waffle i { aspect-ratio: 1; border-radius: 3px; background: var(--track); }
+.waffle i.on { background: var(--ink); }
+.waffle.brass i.on { background: var(--brass); }
+.stat-big { font-family: var(--display); font-weight: 700; font-size: 2.2rem; letter-spacing: -.03em; line-height: 1; }
+.stat-big small { font-size: 1.1rem; color: var(--muted); font-weight: 600; }
+.runs { width: 100%; border-collapse: collapse; font-size: .86rem; }
+.runs th { text-align: left; font-weight: 600; color: var(--muted); font-size: .78rem; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.runs td { padding: 9px 10px 9px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.runs td.n { font-family: var(--mono); white-space: nowrap; }
+.miss { display: flex; gap: 12px; align-items: flex-start; background: var(--miss-bg); color: var(--miss-text); border-radius: 14px; padding: 14px 16px; font-size: .93rem; }
+.miss .ico { width: 20px; height: 20px; color: var(--dont); margin-top: 2px; }
+
+/* ---------- architecture ---------- */
+.arch-map { overflow-x: auto; }
+.arch-map svg { min-width: 700px; width: 100%; height: auto; }
+.blocks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.block { border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; background: var(--tile); display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; align-items: start; }
+.block .bn { font-family: var(--mono); font-weight: 700; font-size: .8rem; color: var(--brass-ink); }
+.block b { font-size: .95rem; }
+.block p { grid-column: 2; font-size: .84rem; color: var(--muted); }
+.block .tag { grid-row: 1 / span 2; grid-column: 3; font-family: var(--mono); font-size: .68rem; text-transform: uppercase; letter-spacing: .05em; padding: 3px 8px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.block .tag.built { background: var(--ink); color: var(--ink-text); border-color: var(--ink); }
+.rungs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.rung { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; background: var(--surface); }
+.rung b { font-family: var(--mono); font-size: .8rem; }
+.rung span { display: block; font-size: .84rem; color: var(--muted); margin-top: 4px; }
+
+/* ---------- rules ---------- */
+.rule-card { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: baseline; padding: 14px 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--tile); font-size: .95rem; }
+.rule-card .rn { font-family: var(--mono); font-weight: 700; font-size: .8rem; color: var(--brass-ink); }
+.rule-list { display: grid; gap: 10px; }
+
+/* ---------- tour ---------- */
+.tour { position: sticky; top: 74px; align-self: start; margin-top: 34px; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 18px 18px 16px; max-height: calc(100vh - 96px); overflow: auto; }
+.shell.tour-closed .tour { display: none; }
+.tour-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.tour-head h2 { font-size: 1.1rem; }
+.tour ol { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 4px; }
+.tour li button { width: 100%; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: center; text-align: left; background: none; border: 0; border-radius: 10px; padding: 7px 8px; cursor: pointer; font-size: .9rem; color: var(--muted); }
+.tour li button:hover { background: var(--tile); }
+.tour li .n { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-family: var(--mono); font-size: .72rem; border: 1.5px solid var(--line); background: var(--surface); }
+.tour li.done .n { background: var(--ink); border-color: var(--ink); color: var(--ink-text); }
+.tour li.cur button { background: var(--brass-soft); color: var(--ink); font-weight: 600; }
+.tour li.cur .n { border-color: var(--brass); }
+.step-text { margin-top: 14px; background: var(--tile); border-radius: 14px; padding: 14px 15px; font-size: .92rem; }
+.step-text b { display: block; font-family: var(--display); font-size: 1rem; margin-bottom: 4px; }
+.tour .actions { margin-top: 12px; }
+.tour .actions .btn { flex: 1; }
+.reopen-tour { position: fixed; right: 18px; bottom: 18px; z-index: 30; box-shadow: var(--shadow-md); }
+.reopen-tour[hidden] { display: none; }
+.toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: var(--ink); color: var(--ink-text); border-radius: 999px; padding: 10px 18px; font-size: .92rem; z-index: 60; box-shadow: var(--shadow-md); }
+.toast[hidden] { display: none; }
+
+.foot { margin-top: 34px; font-size: .84rem; color: var(--muted); }
+.byline { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: .86rem; color: var(--muted); }
+.byline a { color: var(--ink); }
+.byline .indica { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: none; }
+.textlink { background: none; border: 0; padding: 0; color: var(--ink); text-decoration: underline; cursor: pointer; font-size: inherit; }
+
+@media (max-width: 1320px) { .nav a .ico { display: none; } .nav a { padding: 8px 9px; } }
+@media (max-width: 1180px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .tour { position: fixed; right: 14px; bottom: 14px; top: auto; width: min(360px, calc(100vw - 28px)); max-height: 72vh; z-index: 35; margin: 0; }
+}
+@media (max-width: 960px) {
+  .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border-bottom: 1px solid var(--line); padding: 10px 14px 14px; flex-direction: column; align-items: stretch; }
+  .nav.open { display: flex; }
+  .nav a { border-radius: 12px; }
+  .head .menu-btn { display: inline-flex; }
+  .paths, .grid2, .grid3, .stage, .brief-grid, .position-head, .verdict-hero { grid-template-columns: minmax(0, 1fr); }
+  .tiles, .figs, .minutes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .verdict-hero .stamp { justify-self: start; }
+  .seat-grid, .blocks { grid-template-columns: minmax(0, 1fr); }
+  .rungs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .head-inner { padding: 8px 14px; gap: 10px; }
+  .logo span { font-size: .98rem; }
+  .call-pill .lbl { display: none; }
+  .shell { padding: 0 16px; }
+  main { padding-top: 22px; }
+  .votes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card { padding: 18px 16px; }
+  .band { padding: 26px 16px 22px; border-radius: 20px; }
+  .waffle { grid-template-columns: repeat(15, minmax(0, 1fr)); }
+  .ev-item { grid-template-columns: minmax(0, 1fr); }
+  .ev-item .side { grid-row: auto; grid-column: 1; flex-direction: row; align-items: center; }
+  .tour { left: 10px; right: 10px; bottom: 10px; width: auto; padding: 12px 14px; max-height: 46vh; }
+  .tour > p.muted, .tour ol { display: none; }
+  .tour .step-text { margin-top: 8px; padding: 10px 12px; font-size: .86rem; }
+  .tour .actions { margin-top: 8px; }
+  main { padding-bottom: 230px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="site-strip" aria-label="Indica Tech">
+  <div class="site-strip-in">
+    <a href="../"><span aria-hidden="true">←</span> Back to the project</a>
+    <span class="site-strip-right"><a class="hide-sm" href="https://indica-tech.com/work/">All work</a><a class="indica" href="https://indica-tech.com/"><svg viewBox="0 0 100 100" width="18" height="18" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00C46A"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg><span>Indica Tech</span></a></span>
+  </div>
+</nav>
+
+<header class="head">
+  <div class="head-inner">
+    <a class="logo" href="#welcome" aria-label="One Man Army, start">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0f1c2e"/><circle cx="9.5" cy="16" r="3.2" fill="#d9a441"/><rect x="15.2" y="6" width="2.6" height="20" rx="1.3" fill="#f7f9fc"/><rect x="20.5" y="10" width="8" height="2.4" rx="1.2" fill="#f7f9fc"/><rect x="20.5" y="14.8" width="8" height="2.4" rx="1.2" fill="#d9a441"/><rect x="20.5" y="19.6" width="8" height="2.4" rx="1.2" fill="#f7f9fc"/></svg>
+      <span>One Man <em>Army</em></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="The week, step by step">
+      <a href="#brief" data-route="brief" data-icon="today"><span class="tick"></span>The brief</a>
+      <a href="#evidence" data-route="evidence" data-icon="signals"><span class="tick"></span>Evidence</a>
+      <a href="#position" data-route="position" data-icon="scale"><span class="tick"></span>Decision</a>
+      <a href="#board" data-route="board" data-icon="table"><span class="tick"></span>The board</a>
+      <a href="#gate" data-route="gate" data-icon="gate"><span class="tick"></span>The gate</a>
+      <a href="#week" data-route="week" data-icon="repeat"><span class="tick"></span>The week</a>
+      <a href="#numbers" data-route="numbers" data-icon="gauge"><span class="tick"></span>Numbers</a>
+      <a href="#architecture" data-route="architecture" data-icon="grid"><span class="tick"></span>Architecture</a>
+      <a href="#rules" data-route="rules" data-icon="list"><span class="tick"></span>Rules</a>
+    </nav>
+    <div class="head-right">
+      <button type="button" class="theme-btn" id="theme-btn" aria-label="Switch to the dark theme"></button>
+      <a class="call-pill" id="call-pill" href="#gate"><span class="lbl">Your call</span><span class="state" id="call-state">not made</span></a>
+      <button type="button" class="btn ghost small menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
+    </div>
+  </div>
+</header>
+
+<div class="shell" id="shell">
+  <main id="main" tabindex="-1">
+
+    <!-- welcome -->
+    <section class="route" data-route="welcome" aria-labelledby="h-welcome">
+      <div class="hero">
+        <h1 id="h-welcome">The routine runs itself. <span>Every action answers for itself.</span></h1>
+        <p>One week inside the operating system for a one-person company. Evidence arrives overnight, the brief lands at 07:30, one decision goes to the advisory board, and the gate that acts on it is the same gate everything passes. Below is the week, replayed in your browser — with the project's own ids, rules and numbers.</p>
+      </div>
+      <figure class="week-figure" id="week-figure" aria-label="The week at a glance: the pull, the brief, the board, the gate, the export"></figure>
+      <div class="paths">
+        <article class="card path">
+          <div class="media" aria-hidden="true" id="media-tour"></div>
+          <div class="body">
+            <div class="tag"><span class="pill info" id="pill-minutes">About 6 minutes</span><span class="pill">One week, start to finish</span></div>
+            <h2>Walk one week</h2>
+            <p class="muted">The 06:45 evidence pull, the 07:30 brief, the position that needs you, the board session, the gate, and the export that closes the loop. Each stop ticks when it has happened.</p>
+            <div class="actions"><a class="btn primary wide" href="#brief" data-start-tour>Start the week</a></div>
+          </div>
+        </article>
+        <article class="card path">
+          <div class="media" aria-hidden="true" id="media-decide"></div>
+          <div class="body">
+            <div class="tag"><span class="pill info">One screen</span><span class="pill">Advice, not authority</span></div>
+            <h2>Skip to the decision</h2>
+            <p class="muted">The position the week points to, the evidence behind it, and the gate it must pass — then you make the call the founder would make.</p>
+            <div class="actions"><a class="btn ghost wide" href="#position">Show the decision</a></div>
+          </div>
+        </article>
+      </div>
+      <section class="band" aria-labelledby="h-measured">
+        <h2 id="h-measured">Measured, not claimed.</h2>
+        <p>What the build is held to today, on simulators with synthetic data. A miss is shown as a miss.</p>
+        <div class="tiles" id="welcome-tiles"></div>
+        <a class="btn ghost" href="#numbers">See the numbers</a>
+      </section>
+      <div class="status-strip"><span data-icon="flag"></span><p><b>Shown honestly.</b> The design is complete and twice reviewed; the build is 28 of 32 work packages in and runs locally on synthetic data. Nothing here pretends to be a live business: the week below is a walkthrough of the system as designed, and every figure marked a target is a target.</p></div>
+    </section>
+
+    <!-- step 1: the brief -->
+    <section class="route" data-route="brief" aria-labelledby="h-brief" hidden>
+      <div class="intro"><span class="kicker">Step 1 of 6 · Monday, 07:30</span><h1 id="h-brief">One brief. Never a dashboard to babysit.</h1><p>The brief is a projection over the records, rebuilt exactly every morning, and it makes no model call. Since the evidence-plane reader landed, it has one more section — and the feed's state is always visible, so "absent" never reads as "nothing happened".</p><span class="hook"><span data-icon="flag"></span><span id="hook-brief"></span></span></div>
+      <div class="brief-grid">
+        <section class="card" aria-labelledby="h-briefdoc">
+          <div class="card-head"><h2 id="h-briefdoc" data-icon="today">The brief · Monday</h2><span class="pill">rebuilt exactly · no model call</span></div>
+          <div id="brief-body"></div>
+        </section>
+        <div class="stack">
+          <section class="card" aria-labelledby="h-feed">
+            <div class="card-head"><h2 id="h-feed" data-icon="signals">The feed, at 07:25</h2><span class="pill info">Link C · c/1</span></div>
+            <div class="feed-state" id="feed-state"></div>
+            <div class="actions" id="feed-actions"></div>
+            <p class="feed-note" id="feed-note" style="margin-top:10px"></p>
+          </section>
+          <section class="card" aria-labelledby="h-queue">
+            <div class="card-head"><h2 id="h-queue" data-icon="list">The queue</h2><span class="pill" id="queue-pill"></span></div>
+            <div id="queue-body"></div>
+          </section>
+        </div>
+      </div>
+      <div class="next-link"><a class="btn primary" href="#evidence">Next: where the evidence came from <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- step 2: the evidence -->
+    <section class="route" data-route="evidence" aria-labelledby="h-evidence" hidden>
+      <div class="intro"><span class="kicker">Step 2 of 6 · Monday, 06:45</span><h1 id="h-evidence">What the partners said, graded on its way in.</h1><p>Overnight, one job pulled the evidence plane's read-only view: partner calls from last week, each reduced to an item with an id, a grade and a hash. The hub scrubs it again at the border — names it is told become <span class="mono">statement: null</span>, digit runs raise a finding — and only then may the board ever see it.</p><span class="hook"><span data-icon="flag"></span><span id="hook-evidence"></span></span></div>
+      <section class="card" aria-labelledby="h-pull">
+        <div class="card-head"><h2 id="h-pull" data-icon="pulse">The pull · pull_evidence</h2><span class="pill">lane bulk · claimed by evidence-reader</span></div>
+        <div class="pull-line" id="pull-line"></div>
+        <p class="muted" style="font-size:.88rem;margin-top:10px" id="pull-note"></p>
+      </section>
+      <section class="card" style="margin-top:16px" aria-labelledby="h-items">
+        <div class="card-head"><h2 id="h-items" data-icon="cite">What arrived · the E-nn items</h2><span class="pill info">class P · frozen by value for the board</span></div>
+        <div id="ev-items"></div>
+      </section>
+      <div class="grid2" style="margin-top:16px">
+        <section class="card" aria-labelledby="h-scrub">
+          <div class="card-head"><h2 id="h-scrub" data-icon="shield">The scrubber, on one item</h2><span class="pill">IV-20 · words are never orders</span></div>
+          <div class="scrub-diff" id="scrub-diff"></div>
+          <p class="muted" style="font-size:.86rem;margin-top:10px">The evidence plane already dropped names it knows (its IV-E-12 projection, counted in <span class="mono">dropped_text</span>). The hub scrubs again at ingest: a digit run of six or more becomes <span class="mono">█</span> and raises <span class="mono">evidence_text_scrubbed</span> — a finding, not a silent drop.</p>
+        </section>
+        <section class="card" aria-labelledby="h-maturity">
+          <div class="card-head"><h2 id="h-maturity" data-icon="ladder">How a signal earns its stage</h2><span class="pill">rules, never the model</span></div>
+          <ul class="rules-mini">
+            <li><span class="pill cond">Candidate</span><span>One learning at E2 or above.</span></li>
+            <li><span class="pill info">Emerging</span><span>Three learnings at E2+, from two calls, within 90 days.</span></li>
+            <li><span class="pill go">Validated</span><span>Two learnings at E4+, from two calls, within 180 days.</span></li>
+            <li><span class="pill no">Fading</span><span>Its newest support has aged. Nothing is deleted.</span></li>
+          </ul>
+          <p class="muted" style="font-size:.86rem;margin-top:12px">Grades say how solid a statement is — E2 names a number, a date or a name; E3 states an effect; E5 is a signed commitment. Outcomes the hub exports back never count towards maturity: calibration is not proof.</p>
+        </section>
+      </div>
+      <p class="foot">One thing never travels this path: a partner mentions a quality complaint on a call — that goes into the hub's own lot and safety flows, raised by the founder. Evidence is never a safety source.</p>
+      <div class="next-link"><a class="btn primary" href="#position">Next: the decision it points to <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- step 3: the position -->
+    <section class="route" data-route="position" aria-labelledby="h-position" hidden>
+      <div class="intro"><span class="kicker">Step 3 of 6 · Monday, 08:05</span><h1 id="h-position">The evidence drafts the question. You still answer it.</h1><p>An open position is drafted from what the week said — never decided by it. You give each option a probability and argue against yourself; the label reads <strong>Backed</strong> only while a signal behind it is at least Emerging.</p><span class="hook"><span data-icon="flag"></span><span id="hook-position"></span></span></div>
+      <section class="card" aria-labelledby="h-pos">
+        <div class="position-head"><div><p class="eyebrow">Position · drafted from E-01, E-03, E-04, E-05</p><h2 class="q" id="h-pos">Do we reorder the active lot six weeks early to cover the November peak?</h2><div id="position-body"></div></div><div id="pos-seal"></div></div>
+      </section>
+      <div class="grid2" style="margin-top:16px">
+        <section class="card" aria-labelledby="h-pevid">
+          <div class="card-head"><h2 id="h-pevid" data-icon="cite">The evidence behind it</h2></div>
+          <div id="pos-evidence"></div>
+        </section>
+        <section class="card" aria-labelledby="h-plabel">
+          <div class="card-head"><h2 id="h-plabel" data-icon="scale">Backed or guess</h2></div>
+          <div id="pos-label"></div>
+        </section>
+      </div>
+      <div class="next-link"><a class="btn primary" href="#board">Next: take it to the board <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- step 4: the board -->
+    <section class="route" data-route="board" aria-labelledby="h-board" hidden>
+      <div class="intro"><span class="kicker">Step 4 of 6 · Monday, 09:10</span><h1 id="h-board">Eight seats argue it. The code keeps the score.</h1><p>The advisory board replaces the missing leadership team's debate, not the founder's decision. The brief carries the position's question, its options — and the evidence, frozen as at most twenty E-nn items. Every number in the verdict is computed here; a seat's money or percentage must cite a measures snapshot id, or it is marked "not in the pack".</p><span class="hook"><span data-icon="flag"></span><span id="hook-board"></span></span></div>
+      <div class="stage">
+        <section class="card" aria-labelledby="h-table"><div class="card-head"><h2 id="h-table" data-icon="table">The session · W-15</h2><button type="button" class="btn primary small" id="play-board"><span data-icon="play"></span>Run the session</button></div><div id="board-stage"></div></section>
+        <section class="card" aria-labelledby="h-now"><div class="card-head"><h2 id="h-now" data-icon="pen">Now speaking</h2><span class="pill" id="board-count">not started</span></div><div class="now-speaking"><div class="seat-line" id="board-who"></div><p class="say" id="board-say">Press run to watch the seats write alone, argue and vote.</p><div class="progress"><span id="board-bar"></span></div></div></section>
+      </div>
+      <div class="seat-grid" id="board-cards"></div>
+      <section class="card" style="margin-top:16px" aria-labelledby="h-verdict" id="verdict-card" hidden>
+        <div class="verdict-hero"><div><span class="pick-label" id="pick-label"></span><h2 class="call-big" id="verdict-call"></h2></div><div class="stamp" id="stamp"></div></div>
+        <div class="opts-bars" id="verdict-bars"></div>
+        <dl class="figs" id="verdict-figs"></dl>
+      </section>
+      <div class="grid2" id="verdict-cols" hidden>
+        <section class="card" aria-labelledby="h-watch"><div class="card-head"><h2 id="h-watch" data-icon="quote">"Watch out" — kept on purpose</h2><span class="pill info">the strongest objection</span></div><div class="watchout" id="watchout"></div></section>
+        <section class="card" aria-labelledby="h-amends"><div class="card-head"><h2 id="h-amends" data-icon="pen">What they asked to change</h2></div><div class="amend" id="amends"></div></section>
+      </div>
+      <p class="foot" id="board-foot">The board has no authority: it writes only its own tables, one session runs at a time, and never while the kill switch is engaged. Its verdict is advice the founder may overrule — with a written reason, so a later review can test it.</p>
+      <div class="next-link"><a class="btn primary" href="#gate">Next: the gate it must pass <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- step 5: the gate -->
+    <section class="route" data-route="gate" aria-labelledby="h-gate" hidden>
+      <div class="intro"><span class="kicker">Step 5 of 6 · Monday, 09:24</span><h1 id="h-gate">Advice is not an effect. The gate decides that.</h1><p>The founder approved the board's plan — signed with the hardware key, bound to exactly what was on screen. What follows is the same six steps every action takes, whether it is a £12 refund or a £4,000 reorder. Money actions echo to the founder and hold for ten minutes, so they can be stopped.</p><span class="hook"><span data-icon="flag"></span><span id="hook-gate"></span></span></div>
+      <div class="grid2">
+        <section class="card" aria-labelledby="h-gflow">
+          <div class="card-head"><h2 id="h-gflow" data-icon="gate">One proposal, six steps</h2><button type="button" class="btn primary small" id="play-gate"><span data-icon="play"></span>Run it through the gate</button></div>
+          <div class="gate-flow" id="gate-flow"></div>
+        </section>
+        <div class="stack">
+          <section class="card" aria-labelledby="h-ledger">
+            <div class="card-head"><h2 id="h-ledger" data-icon="list">The ledger</h2><span class="pill">intent before, outcome after</span></div>
+            <div class="ledger" id="ledger"></div>
+            <p class="muted" style="font-size:.86rem;margin-top:12px" id="ledger-note">Every effect runs once — the operation id comes from the business action, so a retry never doubles it. An unknown outcome settles within the hour, or it joins the queue.</p>
+          </section>
+          <section class="card yourcall" aria-labelledby="h-yourcall">
+            <div class="card-head"><h2 id="h-yourcall" data-icon="gavel">Your call</h2></div>
+            <p>The board advised. The founder decides — and in the room this is where the decision is recorded, with a date to come back and test it. The gate is waiting on you.</p>
+            <div class="actions" id="call-actions">
+              <button type="button" class="btn brass" data-call="approve">Approve, on the board's conditions</button>
+              <button type="button" class="btn ghost" data-call="hold">Hold the second half</button>
+              <button type="button" class="btn ghost" data-call="overrule">Overrule it</button>
+            </div>
+            <div class="call-done" id="call-done" role="status" aria-live="polite"></div>
+          </section>
+        </div>
+      </div>
+      <div class="next-link"><a class="btn primary" href="#week">Next: the week closes <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- step 6: the week -->
+    <section class="route" data-route="week" aria-labelledby="h-week" hidden>
+      <div class="intro"><span class="kicker">Step 6 of 6 · Friday, 17:00</span><h1 id="h-week">The loop closes. Nothing validates itself.</h1><p>On Friday the verdict goes back to the evidence plane — an export the founder approved, verdicts as ids and amounts, no names, no message text. It is used to calibrate predictions only: an outcome never counts towards a signal's maturity, so a board can never mark its own advice as proven.</p><span class="hook"><span data-icon="flag"></span><span id="hook-week"></span></span></div>
+      <div class="grid2">
+        <section class="card" aria-labelledby="h-export">
+          <div class="card-head"><h2 id="h-export" data-icon="doc">The Link B export</h2><span class="pill">approved · downloads once · no push</span></div>
+          <div class="export-box" id="export-box"></div>
+          <p class="muted" style="font-size:.86rem;margin-top:12px">A push would be a new way out of the hub — Architecture B's relay, by trigger only. So the founder downloads it and uploads it by hand. It is stored, visible and citable on the other side, and excluded from every metric.</p>
+        </section>
+        <section class="card" aria-labelledby="h-ladder">
+          <div class="card-head"><h2 id="h-ladder" data-icon="ladder">The ladder this week</h2><span class="pill">autonomy is earned</span></div>
+          <ol class="ladder" id="ladder"></ol>
+          <p class="muted" style="font-size:.86rem;margin-top:12px">A class climbs one level at a time, only on counted clean actions — 99 for low-impact, 299 for medium, 598 for higher, exact binomial bounds at 95% confidence — and a severe error drops it straight back to L1.</p>
+        </section>
+      </div>
+      <section class="card" style="margin-top:16px" aria-labelledby="h-minutes">
+        <div class="card-head"><h2 id="h-minutes" data-icon="clock">The founder's minutes, this week</h2><span class="pill">the headline measure</span></div>
+        <div class="minutes" id="minutes"></div>
+        <p class="muted" style="font-size:.88rem;margin-top:14px">The system's job is to drive the founder's minutes per £1M of revenue down, stage by stage, without giving up control. This week: two decisions, one board session, one export — the routine never queued once.</p>
+      </section>
+      <div class="next-link"><a class="btn primary" href="#numbers">Next: the numbers <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- numbers -->
+    <section class="route" data-route="numbers" aria-labelledby="h-numbers" hidden>
+      <div class="intro"><span class="kicker">Benchmarks</span><h1 id="h-numbers">Measured, not claimed.</h1><p id="numbers-intro"></p><span class="hook"><span data-icon="flag"></span><span id="hook-numbers"></span></span></div>
+      <div class="grid2">
+        <section class="card" aria-labelledby="h-cards-stat"><div class="card-head"><h2 id="h-cards-stat" data-icon="check">The suite, at a glance</h2></div><div class="stat-big" id="suite-stat"></div><p class="muted" style="margin:6px 0 12px;font-size:.9rem">Tests in the main suite, 0 failed, 2 deselected — and none of them calls a real model.</p><div class="waffle" id="waffle-suite" aria-hidden="true"></div></section>
+        <section class="card" aria-labelledby="h-quotes"><div class="card-head"><h2 id="h-quotes" data-icon="shield">Planted unsafe drafts, rejected</h2></div><div class="stat-big" id="claims-stat"></div><p class="muted" style="margin:6px 0 12px;font-size:.9rem">Every planted unsafe draft blocked; 101 of 101 good drafts passed. One square, one planted case.</p><div class="waffle brass" id="waffle-claims" aria-hidden="true"></div></section>
+      </div>
+      <div class="grid3" style="margin-top:16px">
+        <section class="card" aria-labelledby="h-mb1"><div class="card-head"><h2 id="h-mb1" data-icon="clock">Intake, under abuse</h2></div><div class="stat-big">13<small>ms p99</small></div><p class="muted" style="font-size:.9rem;margin-top:6px">Webhook acknowledgements under duplicates, reordering, drops and bad signatures; the slowest dropped webhook was found in 210 s, against a 300 s bound (MB-01).</p></section>
+        <section class="card" aria-labelledby="h-mb7"><div class="card-head"><h2 id="h-mb7" data-icon="bolt">The kill switch</h2></div><div class="stat-big">621<small>ms</small></div><p class="muted" style="font-size:.9rem;margin-top:6px">Observed under load, against a 10-second target; resume needs the hardware key (MB-07). The safety line answered every message with every provider down — worst case 2.42 s (MB-05).</p></section>
+        <section class="card" aria-labelledby="h-mb11"><div class="card-head"><h2 id="h-mb11" data-icon="ladder">The ladder boundary</h2></div><div class="stat-big">99<small>, not 98</small></div><p class="muted" style="font-size:.9rem;margin-top:6px">A class becomes eligible at exactly 99 clean reviewed actions, and demotes on a severe error (MB-11). Autonomy is counted, never granted.</p></section>
+      </div>
+      <section class="card" style="margin-top:16px" aria-labelledby="h-runs"><div class="card-head"><h2 id="h-runs" data-icon="list">Every benchmark that has run</h2><span class="pill">reports/MB-xx.json</span></div><div class="scroll"><table class="runs" id="runs"></table></div><p class="muted" style="font-size:.86rem;margin-top:12px" id="method"></p></section>
+      <section class="card" style="margin-top:16px" aria-labelledby="h-miss"><div class="card-head"><h2 id="h-miss" data-icon="alert">A miss is a miss</h2></div><div class="miss"><span data-icon="alert"></span><p id="miss-text"></p></div></section>
+    </section>
+
+    <!-- architecture -->
+    <section class="route" data-route="architecture" aria-labelledby="h-arch" hidden>
+      <div class="intro"><span class="kicker">The design · v1 and v2</span><h1 id="h-arch">Thirteen steps. One way out.</h1><p>Architecture A is the minimum complete company operating system: forty-six components, drawn as thirteen numbered steps. Architecture B is the same company with every at-scale part switched on — each waits for its own measured trigger behind an interface A already has, so nothing is thrown away.</p></div>
+      <section class="card" aria-labelledby="h-amap"><div class="card-head"><h2 id="h-amap" data-icon="grid">Architecture A, at a glance</h2><span class="pill">46 components · A01–A46</span></div><div class="arch-map" id="arch-map"></div><p class="muted" style="font-size:.88rem;margin-top:12px">Work comes in through one front door (02–05), is planned and done in the middle (06–09), and leaves through one gate (10); every result comes back as a record (12). Learning (13) is how anything changes. The full pages, master and build, open live in a meeting — these are the same thirteen steps, redrawn small.</p></section>
+      <section class="card" style="margin-top:16px" aria-labelledby="h-blocks"><div class="card-head"><h2 id="h-blocks" data-icon="list">The ten building blocks</h2><span class="pill">what each is, and who builds it</span></div><div class="blocks" id="blocks"></div></section>
+      <section class="card" style="margin-top:16px" aria-labelledby="h-rungs"><div class="card-head"><h2 id="h-rungs" data-icon="trend">Growth by rungs, not rebuilds</h2><span class="pill">design targets, tested at each gate</span></div><div class="rungs" id="rungs"></div><p class="muted" style="font-size:.88rem;margin-top:14px">A alone carries the company to rung 3 — about 10,000 orders a day. Every B part then switches on only when its trigger fires: the event bus beyond rung 3, agent pools when a queue breaks its service level, a second region with a second market. The eight rules never change.</p></section>
+    </section>
+
+    <!-- rules -->
+    <section class="route" data-route="rules" aria-labelledby="h-rules" hidden>
+      <div class="intro"><span class="kicker">The rules</span><h1 id="h-rules">What holds at every scale.</h1><p>Eight rules, presented outside the company; twenty-two invariants (IV-01 to IV-22) in the specification, changeable only by the founder's explicit decision. And ten hub rules that keep the feeders feeders.</p></div>
+      <section class="card" aria-labelledby="h-eight"><div class="card-head"><h2 id="h-eight" data-icon="list">The eight rules that never change</h2></div><div class="rule-list" id="rule-list"></div></section>
+      <div class="grid2" style="margin-top:16px">
+        <section class="card" aria-labelledby="h-inv"><div class="card-head"><h2 id="h-inv" data-icon="shield">Five invariants, in the spec's words</h2><span class="pill">change only by decision</span></div><div id="inv-list"></div></section>
+        <section class="card" aria-labelledby="h-hub"><div class="card-head"><h2 id="h-hub" data-icon="signals">The ten hub rules</h2><span class="pill">identical text in all three repos</span></div><div id="hub-list"></div></section>
+      </div>
+    </section>
+
+    <p class="foot">Every partner call and company in this sample is made up; the ids, rules, contracts and numbers are the project's own. Nothing you click here leaves your browser.</p>
+    <p class="byline">A project by <a class="indica" href="https://indica-tech.com/" target="_blank" rel="noopener"><svg viewBox="0 0 100 100" width="18" height="18" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00C46A"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg><span>Indica Technology</span></a><span aria-hidden="true">·</span><a href="https://indica-tech.com/" target="_blank" rel="noopener">indica-tech.com</a><span aria-hidden="true">·</span><a href="https://www.linkedin.com/company/indica-technology/" target="_blank" rel="noopener">LinkedIn</a><span aria-hidden="true">·</span><a href="#architecture">The architecture</a><span aria-hidden="true">·</span><a href="../">About the project</a><span aria-hidden="true">·</span><button type="button" class="textlink" id="reset-btn">Start the week again</button></p>
+  </main>
+
+  <aside class="tour" id="tour" aria-labelledby="h-tour">
+    <div class="tour-head"><h2 id="h-tour">The week <span class="muted" id="tour-progress" style="font-weight:500;font-size:.88rem;font-family:var(--sans)"></span></h2><button type="button" class="btn ghost small" id="tour-close">Close</button></div>
+    <p class="muted" style="font-size:.82rem;margin-top:6px">A stop ticks when the thing has happened, not when you click Next.</p>
+    <ol id="tour-steps"></ol>
+    <div class="step-text" id="tour-text"></div>
+    <div class="actions"><button type="button" class="btn ghost small" id="tour-back">Back</button><button type="button" class="btn primary small" id="tour-next">Next</button></div>
+  </aside>
+</div>
+<button type="button" class="btn primary reopen-tour" id="tour-open" hidden>Open the tour</button>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+"use strict";
+/* ---------- the data: every id, rule and number is the project's own ---------- */
+const DATA = {
+  seats: [
+    { key: "growth", name: "Growth", initials: "GR", color: "#d94a6a", question: "Where does the demand come from, and can we say it within the claims allowlist?" },
+    { key: "support", name: "Customer support", initials: "CS", color: "#3d8bfd", question: "What will customers write in about, and can every message still be read in time?" },
+    { key: "operations", name: "Operations", initials: "OP", color: "#1fa67a", question: "Can stock, the 3PL and the carriers deliver this without exceptions piling up?" },
+    { key: "quality", name: "Quality", initials: "QU", color: "#22b8cf", question: "Does every lot stay released, traceable and recallable?" },
+    { key: "finance", name: "Finance", initials: "FI", color: "#4c6a92", question: "What does it do to cash, margin and the kill rule?" },
+    { key: "compliance", name: "Compliance", initials: "CO", color: "#9b5de5", question: "Which obligations does it trigger, and who signs them off?" },
+    { key: "people", name: "People", initials: "PE", color: "#e8a33d", question: "Who does the work, and what does it cost the founder's hours?" },
+    { key: "technology", name: "Technology", initials: "TE", color: "#f06b3f", question: "Can the operating layer run it, and at what cost per correct outcome?" },
+  ],
+  weights: { growth: 2, support: 1, operations: 3, quality: 2, finance: 3, compliance: 1, people: 1, technology: 1 },
+  evidence: [
+    { id: "E-01", kind: "signal", stmt: "The manufacturer quoted a four-week lead time on the active formula from a confirmed PO.", grade: 2, maturity: "candidate", sources: 1, asOf: "Fri 16:20", hash: "sha256:b675…73b9", signal: "Early stock cover is needed for the November peak" },
+    { id: "E-02", kind: "signal", stmt: "The week-45 production slot is the manufacturer's last before their maintenance window.", grade: 2, maturity: "candidate", sources: 1, asOf: "Fri 16:20", hash: "sha256:41cc…9e02", signal: "Early stock cover is needed for the November peak" },
+    { id: "E-03", kind: "signal", stmt: "The 3PL reads pallet capacity at 85% through November.", grade: 2, maturity: "candidate", sources: 1, asOf: "Thu 11:05", hash: "sha256:7a10…c4d1", signal: "Early stock cover is needed for the November peak" },
+    { id: "E-04", kind: "signal", stmt: "Peak-season carrier surcharges add about £1.10 an order in December.", grade: 3, maturity: "candidate", sources: 1, asOf: "Thu 11:05", hash: "sha256:0f9b…61aa", signal: "Early stock cover is needed for the November peak" },
+    { id: "E-05", kind: "signal", stmt: "PO 4471 is signed and confirmed: 12,000 units, delivery week 45.", grade: 5, maturity: "candidate", sources: 1, asOf: "Wed 09:40", hash: "sha256:dd21…8842", signal: null },
+    { id: "E-06", kind: "learning", stmt: "The solicitor flagged that the new label wording needs the consultancy's sign-off before it ships.", grade: 2, maturity: "candidate", sources: 1, asOf: "Tue 14:15", hash: "sha256:38af…c07e", signal: null },
+    { id: "E-07", kind: "signal", stmt: null, grade: 2, maturity: "candidate", sources: 1, asOf: "Fri 10:30", hash: "sha256:51be…f291", signal: null, dropped: true },
+  ],
+  signalName: "Early stock cover is needed for the November peak",
+  position: {
+    question: "Do we reorder the active lot six weeks early to cover the November peak?",
+    options: [
+      { id: "A", label: "Reorder the full amount now, within the £4,000 cap", lean: true },
+      { id: "B", label: "Split it: half now, half once the week-45 slot is confirmed", lean: false },
+      { id: "C", label: "Keep the routine reorder cadence", lean: false },
+    ],
+    evidenceIds: ["E-01", "E-03", "E-04", "E-05"],
+  },
+  board: {
+    session: "W-15 · convened from UI-106, \"Take to the board\"",
+    brief: "The founder leans towards A: stockouts in November cost more than cash tied up early. The system always adds the option to do nothing.",
+    r1: {
+      growth: { scores: { A: 8, B: 6, C: 3 }, call: "Reorder in full now. A November stockout is unrecoverable attention: ads we cannot fulfil are money burned and reviews we cannot unwrite.", q: "What is the measured peak demand, and which number would prove it wrong?" },
+      support: { scores: { A: 6, B: 7, C: 4 }, call: "Either early plan is supportable; the status page writes itself from lot events. But a split halves the 'where is my order' spike if the carrier slips.", q: "Can every delayed order still be answered from approved answers alone?" },
+      operations: { scores: { A: 5, B: 8, C: 4 }, call: "Split it. Half now covers the base, half stays flexible while the 3PL's capacity reading is only 85%. Exceptions are what bury a one-person operation.", q: "What is the 3PL's capacity reading two weeks from now, and who checks it?" },
+      quality: { scores: { A: 5, B: 8, C: 5 }, call: "Either way, only the released lot ships and lots stay traceable. Favour the option that keeps returns low — overstock invites expiry-date pressure.", q: "Does the earlier reorder shorten remaining shelf life anywhere?" },
+      finance: { scores: { A: 4, B: 7, C: 5 }, call: "Cautious yes to a split. The kill rule needs contribution at 1.5× acquisition cost in the low-retention case; cash committed to stock ahead of measured demand weakens it.", q: "What is the cash at risk if the peak under-delivers by a third?" },
+      compliance: { scores: { A: 6, B: 8, C: 6 }, call: "Both early options trigger the supplier terms check; neither touches the claims allowlist. Put the written confirmation condition in either way.", q: "Which supplier terms change when we order off-cycle?" },
+      people: { scores: { A: 5, B: 7, C: 5 }, call: "The founder's minutes are the constraint. Either plan adds one approval and one weekly check — pick the one with fewer ways to need the founder mid-week.", q: "How many of the founder's minutes a week does each option cost to supervise?" },
+      technology: { scores: { A: 5, B: 9, C: 3 }, call: "Split, cleanly. Half-now is the reorder class we have already run at L2; the full amount is a new profile with new checks. Change less, prove more.", q: "Can the second half run under the same rule version, or is it a new class?" },
+    },
+    r2: {
+      growth: { target: "operations", line: "You call the spike avoidable; I call a stockout a marketing debt we repay for a year. I still say full — but I will take the split if the release trigger is written in advance, not decided by inbox." },
+      finance: { target: "growth", line: "Demand we cannot measure is demand we cannot spend against. I vote against the full reorder, and I ask to cap cash at risk until the week-45 slot is confirmed in writing." },
+      operations: { target: "growth", line: "The 85% capacity reading is data, not fear. Split, with the release rule: two weeks above 95% releases the rest early; below 70% cancels it." },
+    },
+    r3: {
+      growth: { vote: "against", amendment: "" },
+      support: { vote: "for", amendment: "" },
+      operations: { vote: "for", amendment: "Add the release rule as a kill criterion: capacity above 95% two weeks running releases the second half early; below 70% cancels it." },
+      quality: { vote: "for", amendment: "" },
+      finance: { vote: "abstain", amendment: "Cap cash at risk at £2,000 until the week-45 production slot is confirmed in writing." },
+      compliance: { vote: "for", amendment: "" },
+      people: { vote: "for", amendment: "" },
+      technology: { vote: "for", amendment: "" },
+    },
+    final: {
+      scores: { A: 4.7, B: 6.5, C: 3.8 },
+      confidence: 8,
+      support: 6.5,
+      spread: 1.3,
+      votes: "6 for, 1 against, 1 abstain",
+      call: "Split the reorder: commit half now within the £4,000 cap, hold the second half until the week-45 slot is confirmed in writing — then re-run this board with the numbers.",
+      watchout: { seat: "finance", quote: "Contribution must reach 1.5 times acquisition cost in the low-retention case. This reorder spends cash ahead of measured November demand — if the peak under-delivers, the kill rule meets a warehouse full of stock." },
+      conditions: [
+        "Commit half the reorder now, inside the £4,000 cap and the signed rule's limits.",
+        "Hold the second half until PO 4471's week-45 production slot is confirmed in writing.",
+        "Read the 3PL capacity figure weekly: above 95% two weeks running releases the rest early; below 70% cancels it.",
+        "The founder confirms no penalty clause binds the early commit.",
+      ],
+      next: [
+        { when: "Day 1", action: "Approve the half reorder at the gate; the signed rule carries it within limits." },
+        { when: "Day 2", action: "Ask the manufacturer to confirm the week-45 slot in writing; file it against the position." },
+        { when: "Each Monday", action: "The brief carries the 3PL capacity reading; the release rule decides, not the inbox." },
+        { when: "Week 6", action: "Re-run the board with the measured peak before releasing the second half." },
+      ],
+      test: "The half reorder: it proves the carrier and the 3PL under peak-shaped volumes at half the cash at risk.",
+      kill: "Capacity below 70% two weeks running, or the week-45 slot lost: cancel the second half and let the routine cadence carry December.",
+      revisit: "Revisit when the measured peak differs from plan by a third in either direction, or when the capacity reading breaks its band.",
+    },
+  },
+  gate: {
+    proposal: "Reorder 2,400 units of lot L-014, not over £2,000, to the 3PL, supplier ref 8841202.",
+    steps: [
+      { n: 1, b: "A scoped run", p: "A short-lived token gives the task only its tools, its records, a budget and a time limit. It cannot reach anything else.", res: "90s token" },
+      { n: 2, b: "A typed proposal", p: "The output must match the schema; every field is marked trusted or untrusted. The supplier's ref is data, never an instruction.", res: "valid" },
+      { n: 3, b: "Enforcement builds the decision input", p: "Who, which class of action, how much, to whom, and what content. This is where rule 5 lives: words are never orders.", res: "built" },
+      { n: 4, b: "The policy decision", p: "A versioned, key-signed policy returns PASS, WARNING, FLAG, BLOCK or ESCALATE, with obligations. It runs in the database, not in a model.", res: "PASS + obligations" },
+      { n: 5, b: "Approval, bound to what was seen", p: "The founder's key signs the exact content: one use, bound to the content hash, the record version and an expiry. Money actions echo to the founder and hold for ten minutes.", res: "signed", hold: true },
+      { n: 6, b: "The effect, once", p: "The executor re-checks the authorisation before it acts — the signature, or the signed rule version — and the ledger records the intent before and the outcome after.", res: "sent → confirmed" },
+    ],
+    ledger: ["intended", "held", "sent", "confirmed", "reconciled"],
+  },
+  export: {
+    schema_version: 1,
+    kind: "link_b",
+    source_system: "company-os",
+    approved_by: "founder",
+    privacy_class: "P",
+    items: [{ session: "W-15", label: "GO WITH CONDITIONS", carried: true, option_index: 1, evidence_items: 5 }],
+    note: "Board verdicts only. No names, no message text. Calibration only — excluded from every metric on arrival.",
+  },
+  ladder: [
+    { cls: "Order-status replies", level: "L3", name: "Sampled", need: "acts alone · a 10% sample reviewed", at: "sampled" },
+    { cls: "Approved-answer replies", level: "L2", name: "Supervised", need: "212 of 299 clean towards L3", at: "l2" },
+    { cls: "Refunds within limit", level: "L1", name: "Draft", need: "a person approves every item", at: "l1" },
+  ],
+  minutes: [
+    { n: "2", t: "decisions · 6 min" },
+    { n: "9", t: "in the queue today" },
+    { n: "47", t: "minutes this week" },
+    { n: "≤12", t: "non-safety min a day, target" },
+  ],
+  bench: {
+    suite: 10686,
+    rows: [
+      { mb: "MB-01", what: "Intake exactly once, under duplicates, reordering, drops and bad signatures", bar: "ack p99 < 2 s; drops found < 300 s", got: "p99 13 ms; slowest drop 210 s" },
+      { mb: "MB-04", what: "Replay-safe: one reply per operation with the executor killed", bar: "every effect settles, none doubled", got: "20 of 20 settled, 0 duplicates" },
+      { mb: "MB-05", what: "The safety line with every provider failing", bar: "record and page < 60 s; acknowledge < 300 s", got: "worst case 2.42 s" },
+      { mb: "MB-06", what: "Claims-safe drafts from approved answers", bar: "every planted case rejected; ≥95% of good drafts pass", got: "59 of 59 rejected; 101 of 101 passed" },
+      { mb: "MB-07", what: "The kill switch under load", bar: "no paused send after commit; effect < 10 s", got: "observed 621 ms; resumes 0.52 s and 1.06 s" },
+      { mb: "MB-09", what: "The recovery drill", bar: "≤15 min lost; restored < 4 h; zero duplicates", got: "58.7 s lost; 61.9 s runbook; 0 duplicates" },
+      { mb: "MB-11", what: "The autonomy ladder promotes on evidence", bar: "eligible at exactly 99 clean outcomes", got: "eligible at 99, not 98; demotes on a severe error" },
+      { mb: "MB-12", what: "Injection: only approved text reaches a draft", bar: "every case ends safe", got: "31 of 31 ended safe" },
+      { mb: "MB-14", what: "The audit anchor: tamper-evident, versioned, restorable", bar: "tampering caught; lag ≤ 360 s", got: "caught at the edited row; lag 300.19 s" },
+    ],
+    stats: { tests: 10686, traced: 5452, ids: 367, problems: 0, planted: 59, good: 101, injection: 31 },
+  },
+  arch: [
+    { n: "01", b: "Leadership", p: "Objectives, limits, RED decisions; signed with a hardware key.", c: "—" },
+    { n: "02–03", b: "Channels + adapter", p: "Every channel becomes one normalised command; authority is computed, never asserted.", c: "A01, A02" },
+    { n: "04", b: "Extraction", p: "Files are parsed in a one-off sandbox into inert, untrusted records.", c: "A03" },
+    { n: "05", b: "Command gateway", p: "Rules sort commands into a closed set of intents. It approves nothing.", c: "A04" },
+    { n: "06", b: "The control plane", p: "Objective, proposal, policy and approval engines; the registries; the kernel with its packs.", c: "A05–A10" },
+    { n: "07", b: "Orchestration", p: "The workflow runner — state machines in PostgreSQL, four lanes — and the capability router.", c: "A11, A12" },
+    { n: "08", b: "The seats", p: "Four executive agents at the first sale: they may propose, hold or refuse.", c: "A13" },
+    { n: "09", b: "The agent runtime", p: "Scoped run tokens, read tools only; the model router; retrieval of approved answers first.", c: "A14–A16" },
+    { n: "10", b: "The gate", p: "The tool gateway and effects executor: the only holder of vendor write credentials.", c: "A17–A19", gate: true },
+    { n: "11", b: "Outside systems", p: "Storefront, payments, the 3PL, helpdesk, accounting, advertising — bought, and kept.", c: "—" },
+    { n: "12", b: "Events, state, the return path", p: "Event intake, the safety path, reconciliation, and the queue, brief and attention budget.", c: "A20–A23" },
+    { n: "13", b: "Learning", p: "Evaluation sets, the CI gate, staging journeys, canary releases, one-step rollback.", c: "A24" },
+  ],
+  blocks: [
+    { n: 1, b: "Leadership", p: "The founder sets objectives, limits and who may approve what.", t: "people" },
+    { n: 2, b: "One front door", p: "Every request becomes one standard command. Documents are read into records, never obeyed.", t: "built" },
+    { n: 3, b: "Control centre", p: "Objectives become plans and budgets; the rulebook of what may run alone.", t: "built" },
+    { n: 4, b: "Routine engine", p: "Rules run orders, stock, the books and reorders, with no AI. Only exceptions become tasks.", t: "built" },
+    { n: 5, b: "Departments", p: "Eight teams of agents draft and propose. People approve.", t: "built on AI providers" },
+    { n: 6, b: "The gate", p: "The one way out. Checked against authority and recorded before it runs.", t: "built · no substitute" },
+    { n: 7, b: "Platforms and partners", p: "Storefront, payments, warehouse, helpdesk, accounting, advertising.", t: "bought, and kept" },
+    { n: 8, b: "The record", p: "One source of truth, stored before anything runs, in a history no one can quietly change.", t: "built" },
+    { n: 9, b: "Safety line", p: "A report of a problem goes by rule straight to a person. Works with every model off.", t: "built" },
+    { n: 10, b: "Checks and learning", p: "Checkers on a different provider review work; autonomy is earned; one switch stops everything.", t: "built" },
+  ],
+  rungs: [
+    { b: "Rung 1", p: "Under 100 orders a day — up to about £1M a year" },
+    { b: "Rung 2", p: "Under 1,000 a day — parts split by trigger" },
+    { b: "Rung 3", p: "Under 10,000 a day — about £120M a year, on A alone" },
+    { b: "Rung 4", p: "Beyond — B parts on: stage H, up to 100,000 a day" },
+  ],
+  rules8: [
+    "Only a person approves. No AI approves anything; agents draft, propose and check.",
+    "One gate for every action. Checked against authority and recorded before it runs; nothing is paid or shipped twice.",
+    "Safety and money never wait on AI. Both paths work with every model switched off.",
+    "The record is the truth. Every event is stored before anything happens; everything else derives from it.",
+    "Words are never orders. What a customer, a supplier or a document says is information, never an instruction.",
+    "Every change to the AI is a release: versioned, tested against agreed cases, approved, and reversible.",
+    "Checkers are independent. They run on a different AI provider, and report to people, never to agents.",
+    "Attention is budgeted — and safety work is never held back to save it.",
+  ],
+  invariants: [
+    { b: "Approval", p: "Only a person, or a rule a person set, approves. No agent approves anything." },
+    { b: "The way out", p: "One gateway carries every effect; the executor re-checks each authorisation before acting." },
+    { b: "Safety", p: "The safety paths contain no model, and a person reads every free-text message." },
+    { b: "Records", p: "Records are the truth. Every record carries company, market, entity and pack ids from day one, so nothing ever migrates." },
+    { b: "AI changes", p: "Every AI change is a release: versioned, evaluated, approved and reversible." },
+  ],
+  hubRules: [
+    "Spokes never talk to each other. Evidence reaches the board only through the hub.",
+    "Nothing a feeder sends can approve anything, act, or skip a check. Feeder data is untrusted data, scrubbed at ingest, class P at most.",
+    "The hub alone acts, and keeps the record of decisions.",
+    "The producer owns each contract; the consumer vendors pinned fixtures and ignores fields it does not know.",
+    "Each system starts and passes its tests with the others down — absent, refused, version mismatch and stale are visible states, and none blocks anything else.",
+    "What crosses into the hub carries no person's name and no customer conversation, and is never a safety source.",
+    "Evidence reaches only local models.",
+    "Names are the evidence plane's job; the hub scrubs again at ingest and raises a finding on any change it makes.",
+    "Each repo keeps its own decision log; cross-repo decisions cite the others with a prefix.",
+    "The hub pulls; feeders never push. No webhooks anywhere in the system.",
+  ],
+  week: [
+    { t: "Mon 06:45", b: "pull_evidence", p: "Link C snapshot pulled, pinned and stored — or the feed says why not." },
+    { t: "Mon 07:30", b: "the brief", p: "What happened, what is at risk, what needs you — with the evidence section." },
+    { t: "Mon 08:05", b: "the position", p: "One question drafted from the evidence, waiting in the queue." },
+    { t: "Mon 09:10", b: "the board", p: "Eight seats argue the position; the code keeps the score." },
+    { t: "Mon 09:24", b: "the approval", p: "The founder signs with the key; money actions hold ten minutes." },
+    { t: "Mon 09:34", b: "the effect", p: "The gate re-checks, sends once, records the outcome." },
+    { t: "Fri 17:00", b: "the export", p: "The verdict returns to the evidence plane — for calibration only." },
+  ],
+};
+
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+const SEAT = Object.fromEntries(DATA.seats.map((s) => [s.key, s]));
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const PALETTE = ["ink", "ink-text", "text", "muted", "line", "tile", "edge", "track", "surface", "brass", "brass-ink", "brass-soft", "on-brass", "go", "cond", "cond-soft", "reshape", "dont", "ok", "warn", "bad", "strong-bg", "strong-text", "table-1", "table-2", "table-stroke", "table-inner", "table-shadow", "chart-grid", "chart-text", "chart-label", "heat-rgb", "heat-hi"];
+let P = {};
+function readPalette() { const cs = getComputedStyle(document.documentElement); P = Object.fromEntries(PALETTE.map((k) => [k.replace(/-(\w)/g, (_, c) => c.toUpperCase()), cs.getPropertyValue("--" + k).trim()])); }
+
+/* ---------- icons (stroke, 24px grid) ---------- */
+const ICONS = {
+  today: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9.5h16M8.5 3v4M15.5 3v4"/><circle cx="12" cy="14.6" r="1.8"/>',
+  signals: '<path d="M3 17l5.5-5.5 4 4L21 7"/><path d="M15 7h6v6"/>',
+  scale: '<path d="M12 4v16"/><path d="M5 20h14"/><path d="M5 8h14"/><path d="M5 8l-3 6h6l-3-6zM19 8l-3 6h6l-3-6z"/>',
+  table: '<ellipse cx="12" cy="13" rx="8" ry="5"/><circle cx="12" cy="4.5" r="1.5"/><circle cx="3" cy="9" r="1.2"/><circle cx="21" cy="9" r="1.2"/>',
+  gate: '<path d="M5 21V8l7-5 7 5v13"/><path d="M5 21h14M9.5 21v-6h5v6"/>',
+  repeat: '<path d="M4 9a7 7 0 0112-3l2 2"/><path d="M18 4v4h-4"/><path d="M20 15a7 7 0 01-12 3l-2-2"/><path d="M6 20v-4h4"/>',
+  gauge: '<path d="M4 18a8 8 0 1116 0"/><path d="M12 18l4-6"/>',
+  grid: '<path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/>',
+  list: '<path d="M8 6h12M8 12h12M8 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/>',
+  flag: '<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>',
+  arrow: '<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>',
+  play: '<path d="M7 5l12 7-12 7V5z"/>',
+  pulse: '<path d="M3 12h4l2.5-6 5 12 2.5-6h4"/>',
+  cite: '<path d="M8 4.5H5v15h3M16 4.5h3v15h-3"/><path d="M9 10h6"/><path d="M9 14h4"/>',
+  shield: '<path d="M12 3l7 3v5c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6z"/><path d="M8.8 12.2l2.2 2.2 4.4-4.6"/>',
+  ladder: '<path d="M4 20h16"/><rect x="5" y="15" width="3" height="5"/><rect x="10.5" y="11" width="3" height="9"/><rect x="16" y="6" width="3" height="14"/>',
+  pen: '<path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M14 6l4 4"/>',
+  quote: '<path d="M7 7h4v4c0 3-1.5 5-4 6"/><path d="M15 7h4v4c0 3-1.5 5-4 6"/>',
+  doc: '<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 12h7M9 16h7"/>',
+  check: '<path d="M4 12l5 5L20 6"/>',
+  clock: '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',
+  alert: '<path d="M12 4l9 16H3L12 4z"/><path d="M12 10v4M12 17h.01"/>',
+  gavel: '<path d="M14 4l6 6-3 3-6-6 3-3z"/><path d="M11 7l-7 7 3 3 7-7"/><path d="M4 21h9"/>',
+  trend: '<path d="M4 17l6-6 4 4 6-7"/><path d="M15 8h5v5"/>',
+  bolt: '<path d="M13 3L5 14h6l-1 7 8-11h-6l1-7z"/>',
+};
+function icon(name, cls = "ico") { return `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ""}</svg>`; }
+function paintIcons(root = document) {
+  $$("[data-icon]", root).forEach((el) => {
+    if (el.dataset.painted) return;
+    el.dataset.painted = "1";
+    if (el.tagName === "SPAN" && !el.textContent.trim()) el.outerHTML = icon(el.dataset.icon);
+    else el.insertAdjacentHTML("afterbegin", icon(el.dataset.icon));
+  });
+}
+function disc(key, size = "") { const s = SEAT[key]; return `<span class="disc ${size}" style="--c:${s.color}" title="${esc(s.name)} seat">${esc(s.initials)}</span>`; }
+function seatLine(key, sub) { const s = SEAT[key]; return `<div class="seat-line">${disc(key)}<div><b>${esc(s.name)} seat</b><span class="sub">${esc(sub ?? s.question)}</span></div></div>`; }
+function gradePill(g) { return `<span class="pill grade ink" title="E${g}">E${g}</span>`; }
+function maturityPill(m) { const cls = { candidate: "cond", emerging: "info", validated: "go", fading: "no" }[m]; const label = m[0].toUpperCase() + m.slice(1); return `<span class="pill ${cls}">${label}</span>`; }
+
+/* ---------- state ---------- */
+const STEPS = [
+  { id: "brief", route: "brief", title: "Read the brief", text: "Start where the founder starts: one page at 07:30, with the feed's state visible. Try stopping the evidence plane — the brief says absent, never zero." },
+  { id: "evidence", route: "evidence", title: "Check the evidence", text: "The E-nn items the pull stored overnight: each with a grade, a maturity and a hash. Open the scrubber to see what the border removed — and that it is counted, never silent." },
+  { id: "position", route: "position", title: "Weigh the decision", text: "Give each option a probability and argue against yourself. The label reads Backed only while a signal behind it is at least Emerging." },
+  { id: "board", route: "board", title: "Run the board", text: "Press Run the session. Eight seats write alone, argue, then vote — and the code, not any seat, computes the verdict." },
+  { id: "gate", route: "gate", title: "Run the gate", text: "The six steps every action takes. Watch the money hold: ten minutes where the founder can stop it from a phone." },
+  { id: "call", route: "gate", title: "Make your call", text: "Scroll to Your call: approve on the board's conditions, hold the second half, or overrule it — in the room you would write down why." },
+  { id: "week", route: "week", title: "Close the loop", text: "The Link B export returns the verdict for calibration only — an outcome can never validate itself." },
+  { id: "numbers", route: "numbers", title: "Check the numbers", text: "Every benchmark that has run, with its bar. The misses are on the page too." },
+  { id: "architecture", route: "architecture", title: "See the design", text: "The thirteen steps of Architecture A and the ten building blocks — the same drawing the meeting pack opens live." },
+];
+const KEY = "one-man-army-sample-v1";
+let state = { done: {}, seen: {}, feed: "live", scrubOpen: false, answer: null, call: null, boardPlayed: false, gateRan: false, conds: {}, tourOpen: true, tourStep: 0 };
+try { const saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) state = { ...state, ...saved }; } catch (e) { /* private mode: the sample still works, it just forgets */ }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* see above */ } }
+function tick(id) { if (state.done[id]) return; state.done[id] = true; save(); renderTour(); renderNavTicks(); }
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (t.hidden = true), 3200); }
+
+/* ---------- welcome ---------- */
+function weekSvg() {
+  const items = DATA.week, w = 960, rowH = 46, top = 30, h = top + items.length * rowH + 26;
+  const cx = 190, x1 = 470, x2 = 760;
+  let out = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="The week at a glance: pull, brief, position, board, approval, effect, export">`;
+  out += `<line x1="${cx}" x2="${cx}" y1="${top - 6}" y2="${h - 26}" stroke="${P.chartGrid}" stroke-width="2"/>`;
+  items.forEach((it, i) => {
+    const y = top + i * rowH + rowH / 2;
+    const isGate = it.b === "the approval" || it.b === "the effect";
+    out += `<circle cx="${cx}" cy="${y}" r="7" fill="${isGate ? P.brass : P.ink}"/>`;
+    out += `<text x="${cx - 18}" y="${y + 4}" text-anchor="end" fill="${P.brassInk}" font-family="JetBrains Mono, monospace" font-size="11.5" font-weight="600">${esc(it.t)}</text>`;
+    out += `<text x="${cx + 18}" y="${y - 2}" fill="${P.ink}" font-family="Inter, sans-serif" font-size="13" font-weight="600">${esc(it.b)}</text>`;
+    out += `<text x="${cx + 18}" y="${y + 14}" fill="${P.muted}" font-family="Inter, sans-serif" font-size="11.5">${esc(it.p)}</text>`;
+  });
+  out += `<rect x="${x2}" y="${top + rowH * 2.4}" width="176" height="118" rx="14" fill="${P.strongBg || "#0f1c2e"}"/>`;
+  out += `<text x="${x2 + 16}" y="${top + rowH * 2.4 + 26}" fill="${P.brass}" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="1.5">THE LOOP</text>`;
+  out += `<text x="${x2 + 16}" y="${top + rowH * 2.4 + 48}" fill="${P.inkText || "#f7f9fc"}" font-family="Inter, sans-serif" font-size="12">said → graded → decided</text>`;
+  out += `<text x="${x2 + 16}" y="${top + rowH * 2.4 + 66}" fill="${P.inkText || "#f7f9fc"}" font-family="Inter, sans-serif" font-size="12">→ acted → recorded</text>`;
+  out += `<text x="${x2 + 16}" y="${top + rowH * 2.4 + 92}" fill="${P.muted}" font-family="Inter, sans-serif" font-size="11">advice never approves;</text>`;
+  out += `<text x="${x2 + 16}" y="${top + rowH * 2.4 + 108}" fill="${P.muted}" font-family="Inter, sans-serif" font-size="11">outcomes never prove</text>`;
+  return out + `</svg>`;
+}
+function miniWeek() {
+  const rows = ["pull_evidence · 06:45", "the brief · 07:30", "the board · 09:10"].map((t, i) => `<rect x="14" y="${18 + i * 30}" width="10" height="10" rx="5" fill="${P.brass}"/><text x="34" y="${27 + i * 30}" fill="${P.ink}" font-family="Inter, sans-serif" font-size="12" font-weight="600">${esc(t)}</text>`).join("");
+  return `<svg width="300" height="130" viewBox="0 0 300 130" fill="none">${rows}<rect x="14" y="112" width="272" height="2" rx="1" fill="${P.track}"/><rect x="14" y="112" width="196" height="2" rx="1" fill="${P.brass}"/></svg>`;
+}
+function miniDecide() {
+  const opts = [["A", 47], ["B", 65], ["C", 38]];
+  const bars = opts.map(([k, v], i) => `<text x="16" y="${46 + i * 34}" fill="${P.ink}" font-family="Montserrat, sans-serif" font-weight="700" font-size="13">${k}</text><rect x="36" y="${36 + i * 34}" width="150" height="10" rx="5" fill="${P.track}"/><rect x="36" y="${36 + i * 34}" width="${(v / 100) * 150}" height="10" rx="5" fill="${k === "B" ? P.brass : P.edge}"/>`).join("");
+  return `<svg width="300" height="140" viewBox="0 0 300 140" fill="none">${bars}<circle cx="252" cy="70" r="38" fill="${P.condSoft}" stroke="${P.cond}" stroke-width="2.5"/><text x="252" y="66" text-anchor="middle" fill="${P.cond}" font-family="Montserrat, sans-serif" font-weight="700" font-size="9">GO WITH</text><text x="252" y="78" text-anchor="middle" fill="${P.cond}" font-family="Montserrat, sans-serif" font-weight="700" font-size="9">CONDITIONS</text></svg>`;
+}
+function renderWelcome() {
+  $("#week-figure").innerHTML = weekSvg() + `<figcaption>One week: evidence in on Monday, one decision through the board, the gate acting once, the loop closing on Friday.</figcaption>`;
+  $("#media-tour").innerHTML = miniWeek();
+  $("#media-decide").innerHTML = miniDecide();
+  $("#welcome-tiles").innerHTML = [
+    ["10,686", "Tests in the main suite", "0 failed; none calls a real model"],
+    ["621<small>ms</small>", "The kill switch, observed", "its target is 10 seconds"],
+    ["59<small>/59</small>", "Planted unsafe drafts rejected", "101 of 101 good drafts passed"],
+    ["0", "Traceability problems", "367 requirement IDs mapped to 5,452 tests"],
+  ].map(([b, t, d]) => `<div class="tile"><div class="big">${b}</div><b>${t}</b><span>${d}</span></div>`).join("");
+}
+
+/* ---------- step 1: the brief ---------- */
+function feedRows() {
+  const live = state.feed === "live";
+  const mismatch = state.feed === "mismatch";
+  const pill = live ? `<span class="pill go">LIVE · pulled 06:45</span>` : mismatch ? `<span class="pill cond">MISMATCH</span>` : `<span class="pill no">ABSENT</span>`;
+  const rows = [
+    ["Evidence plane · Link C", pill],
+    ["Last successful pull", live ? "<span class='mono'>today 06:45 · 188 items</span>" : mismatch ? "<span class='mono'>yesterday 06:45</span>" : "<span class='mono'>—</span>"],
+    ["Pins · contract / tenant / instance", mismatch ? "<span class='mono'>c/1 · cos-1 · <b style='color:var(--bad)'>changed</b></span>" : "<span class='mono'>c/1 · cos-1 · i-77af…</span>"],
+    ["Reader", "<span class='mono'>evidence-reader · lane bulk</span>"],
+  ];
+  return rows.map(([k, v]) => `<div class="feed-row"><span>${k}</span>${v}</div>`).join("");
+}
+function renderBrief() {
+  const absent = state.feed !== "live";
+  $("#hook-brief").textContent = absent
+    ? state.feed === "mismatch" ? "The feed's pins changed overnight — the pull stopped, loudly, and the brief says so." : "The evidence plane is down — and every other section still works. Absent never reads as zero."
+    : "Three numbers, two decisions, one new section — and the feed's state on the page, never assumed.";
+  $("#brief-body").innerHTML = `
+    <div class="brief-sec"><h3>What moved <span class="pill">overnight</span></h3>
+      <div class="brief-item"><span class="dot ok"></span><span><b>82 orders</b> sent to the 3PL, tracked and delivered. <span class="mono">0 reached you.</span></span></div>
+      <div class="brief-item"><span class="dot ok"></span><span><b>6 replies</b> sent from approved answers, each one approved or rule-carried. <span class="mono">all within the hour</span></span></div>
+      <div class="brief-item"><span class="dot ok"></span><span><b>Books reconcile by 07:00</b> — a design target (A10), checked every day once live.</span></div>
+    </div>
+    <div class="brief-sec"><h3>What is at risk</h3>
+      <div class="brief-item"><span class="dot warn"></span><span><b>November capacity.</b> The 3PL reads 85%; the carrier adds peak surcharges. See the evidence.</span></div>
+    </div>
+    <div class="brief-sec"><h3>Evidence <span class="pill info">Link C · the new section</span></h3>
+      ${absent
+        ? `<div class="brief-item"><span class="dot ${state.feed === "mismatch" ? "warn" : "bad"}"></span><span><b>${state.feed === "mismatch" ? "evidence_mismatch — the instance id changed; the pull stopped rather than guess." : "The feed is absent."}</b> The brief never shows this as zero. <a href="#evidence">See the pull</a></span></div>`
+        : `<div class="brief-item"><span class="dot ok"></span><span><b>3 new items</b> since Friday, grades E2 to E5. One position drafted: <a href="#position">reorder early for the peak?</a></span></div>
+           <div class="brief-item"><span class="dot ok"></span><span><b>1 signal moved:</b> "Early stock cover is needed for the November peak" is now Emerging.</span></div>`}
+    </div>
+    <div class="brief-sec"><h3>Needs you <span class="pill">2 decisions</span></h3>
+      <div class="brief-item"><span class="dot bad"></span><span><b>The peak reorder</b> — a position, drafted with its evidence. <a href="#position">Open it</a></span></div>
+      <div class="brief-item"><span class="dot warn"></span><span><b>One flagged draft</b> — a reply the judge on the other provider flagged; approve with a written reason or refuse.</span></div>
+    </div>`;
+  $("#feed-state").innerHTML = feedRows();
+  $("#feed-actions").innerHTML = state.feed === "live"
+    ? `<button type="button" class="btn ghost small" data-feed="absent">Stop the evidence plane</button><button type="button" class="btn ghost small" data-feed="mismatch">Change its instance id</button>`
+    : `<button type="button" class="btn primary small" data-feed="live">Bring it back</button>`;
+  $("#feed-note").textContent = state.feed === "live"
+    ? "In the hub plan's own guards: stop the evidence plane and the hub says absent while every other page works; change its instance id and the pull stops with evidence_mismatch. Try both."
+    : state.feed === "mismatch"
+      ? "evidence_mismatch is a notice, not a crash: the reader stops, keeps yesterday's snapshot visible by age, and tells you once. Nothing is silently stale."
+      : "The pull runs daily at 06:45 — after the evidence plane's 06:00 refresh, before this brief's 07:25 cut-off. Absence is a state, never a zero.";
+  $("#queue-pill").textContent = "priority order · safety first";
+  $("#queue-body").innerHTML = `
+    <div class="brief-item"><span class="dot bad"></span><span><b>Safety:</b> nothing waiting. <span class="mono">the line works with every model off</span></span></div>
+    <div class="brief-item"><span class="dot warn"></span><span><b>Approvals due:</b> the peak reorder, the flagged draft.</span></div>
+    <div class="brief-item"><span class="dot ok"></span><span><b>Drafts:</b> two routine reorders inside the signed rule — they will not wait for you.</span></div>
+    <p class="muted" style="font-size:.84rem;margin-top:8px">The queue runs safety, stuck orders, approvals due, deadlines, then drafts. It is a projection over the records, never a store of its own (A23) — rebuild it and it is identical.</p>`;
+}
+
+/* ---------- step 2: the evidence ---------- */
+function renderEvidence() {
+  $("#hook-evidence").textContent = "5 items the board may see, 1 the scrubber emptied, 0 lost silently.";
+  $("#pull-line").innerHTML = [
+    "GET /v1/link-c/version", `<span class="pill go">c/1</span>`, "cos-1", "i-77af…",
+    `<span class="sep">→</span>`, "snapshot_hash 9d02…", "188 items", `<span class="sep">→</span>`, "stored in ops.evidence_pull", `<span class="pill">06:45 Europe/London</span>`,
+  ].join(" ");
+  $("#pull-note").textContent = "One job, claimed only by the evidence-reader role. No retries and a 30-second timeout: a feeder that misbehaves waits, it is never chased. Pages of 200; if the snapshot hash changes mid-pull, the reader restarts at page one. A 429 answers with Retry-After and the next pull is tomorrow.";
+  $("#ev-items").innerHTML = DATA.evidence.map((e) => `
+    <div class="ev-item">
+      <span class="eid">${e.id}</span>
+      <span class="stmt${e.dropped ? " null" : ""}">${e.dropped ? "— statement withheld —" : esc(e.stmt)}</span>
+      <span class="meta">${e.hash} · ${esc(e.asOf)} · ${e.sources} source${e.sources === 1 ? "" : "s"}${e.signal ? ` · supports “${esc(e.signal)}”` : ""}</span>
+      <span class="side">${gradePill(e.grade)}${maturityPill(e.maturity)}${e.dropped ? '<span class="pill no">dropped_text 1</span>' : ""}</span>
+    </div>`).join("");
+  $("#scrub-diff").innerHTML = state.scrubOpen
+    ? `<p class="eyebrow">Raw, as the call summary phrased it</p>
+       <p>PO 447911 ships 12,000 units, delivery window w/c 10 November — their ref <span class="del">8841202</span>.</p>
+       <p style="margin-top:10px" class="eyebrow">What the hub stored, and told you about</p>
+       <p>PO 447911 ships 12,000 units, delivery window w/c 10 November — their ref <span class="ins">█</span>.</p>
+       <p class="muted" style="margin-size:.84rem;margin-top:10px;font-size:.84rem">A digit run of six or more is <span class="mono">evidence_text_scrubbed</span> — a finding you can audit, not a silent edit. And on the item where the supplier's contact was named: the statement arrived <span class="mono">null</span> from the evidence plane's own projection (<span class="mono">dropped_text: 1</span>). It still counts by hash; it is never offered to the board.</p>`
+    : `<p class="muted">One item carried a digit run the hub never lets a model see. Open the diff to watch the border work — it stores the scrubbed text and raises a finding, because a silent drop would lose evidence.</p>
+       <div class="actions"><button type="button" class="btn primary small" data-scrub>Open the diff</button></div>`;
+}
+
+/* ---------- step 3: the position ---------- */
+const MATURITY = "emerging"; // the peak signal is Emerging: three E2+ learnings from two calls in 90 days
+function updateSum() {
+  const el = $("#prob-sum");
+  if (!el) return;
+  const sum = $$("[data-prob]").reduce((a, x) => a + Number(x.value), 0);
+  el.textContent = sum === 100 ? "Adds up to 100%." : `Adds up to ${sum}%. Most people aim for 100.`;
+}
+function renderPosition() {
+  const backed = MATURITY === "emerging" || MATURITY === "validated";
+  const p = state.answer ? state.answer.p.map(Number) : [60, 25, 15];
+  $("#hook-position").textContent = state.answer
+    ? "Recorded. If the evidence changes, the label changes with it — and the board can be re-run with the numbers."
+    : backed
+      ? "The evidence backs this one: the peak signal is Emerging. Now say what would prove you wrong."
+      : "It reads Guess until a signal behind it is at least Emerging.";
+  $("#pos-seal").innerHTML = `<div class="seal${backed ? " backed" : ""}"><b>${backed ? "Backed" : "Guess"}</b><small>${backed ? "by an Emerging signal" : "until a signal emerges"}</small></div>`;
+  $("#position-body").innerHTML = state.answer
+    ? `<div class="opts-bars">${DATA.position.options.map((o, i) => `<div class="ob${o.id === "B" ? " top" : ""}"><span class="id">${o.id}</span><div><span class="lbl">${esc(o.label)}</span><div class="bar"><span style="width:${p[i]}%"></span></div></div><span class="sc">${p[i]}%</span></div>`).join("")}</div>
+       <p style="margin-top:12px"><strong>Against myself:</strong> ${esc(state.answer.r)}</p><div class="actions"><button type="button" class="btn ghost small" data-reopen>Change my answer</button></div>`
+    : `<form class="form" id="position-form" style="display:grid;gap:.8rem"><div class="prob">${DATA.position.options.map((o, i) => `<label><span class="letter" aria-hidden="true">${o.id}</span><span class="opt">${esc(o.label)}${o.lean ? ' <span class="mono" style="font-size:.72rem;color:var(--brass-ink)">your lean</span>' : ""}</span><input type="range" min="0" max="100" step="5" name="p${i}" value="${p[i]}" data-prob="${i}"><output id="out-${i}">${p[i]}%</output></label>`).join("")}</div>
+       <p class="sum" id="prob-sum" aria-live="polite"></p>
+       <label style="display:grid;gap:.3rem;font-size:.9rem;font-weight:600">Argue against yourself <span style="font-weight:400;color:var(--muted);font-size:.82rem">Required. What would make this wrong?</span><textarea name="r" required rows="2" style="font:inherit;border:1px solid var(--edge);border-radius:12px;padding:.6rem .8rem;background:var(--surface);color:var(--text)">${state.answer ? esc(state.answer.r) : ""}</textarea></label>
+       <div class="actions"><button class="btn primary">Record the position</button></div></form>`;
+  updateSum();
+  $("#pos-evidence").innerHTML = DATA.evidence.filter((e) => DATA.position.evidenceIds.includes(e.id)).map((e) => `
+    <div class="ev-item"><span class="eid">${e.id}</span><span class="stmt">${esc(e.stmt)}</span><span class="meta">${e.hash} · ${esc(e.asOf)}</span><span class="side">${gradePill(e.grade)}</span></div>`).join("");
+  $("#pos-label").innerHTML = `<p>${backed ? "Backed: the signal behind this position is <strong>Emerging</strong> — three learnings at E2+ from two calls in 90 days." : "Guess: its evidence sits in Candidate signals."}</p>
+    <p class="muted" style="font-size:.88rem;margin-top:10px">${backed ? "The label is computed from the signal's stage. If the support ages out, it reads Guess again — and the board sees the label, not your confidence." : "Evidence earns its stage by rules over grades, calls and dates — never on the model's say-so."}</p>
+    <p class="muted" style="font-size:.88rem;margin-top:10px">This position is <strong>AMBER</strong>: a versioned policy can cap it, an agent may concur, hold or refuse — and never approves.</p>`;
+}
+
+/* ---------- step 4: the board ---------- */
+function weighted(scores) {
+  let sum = 0, w = 0;
+  for (const k of Object.keys(scores)) { sum += scores[k] * DATA.weights[k]; w += DATA.weights[k]; }
+  return Math.round((sum / w) * 10) / 10;
+}
+function labelFor(score10) {
+  const s = score10 * 10;
+  if (s >= 75) return { label: "GO", cls: "go" };
+  if (s >= 60) return { label: "GO WITH CONDITIONS", cls: "cond" };
+  if (s >= 45) return { label: "RESHAPE", cls: "reshape" };
+  return { label: "DON'T DO IT", cls: "no" };
+}
+const VOTE = { for: { label: "For", bg: "go" }, against: { label: "Against", bg: "dont" }, abstain: { label: "Abstain", bg: "brass" } };
+function renderBoard() {
+  const f = DATA.board;
+  const counts = Object.values(f.r3).reduce((m, v) => ((m[v.vote] = (m[v.vote] || 0) + 1), m), {});
+  $("#hook-board").textContent = state.boardPlayed
+    ? `${counts.for || 0} for, ${counts.against || 0} against, ${counts.abstain || 0} abstained. The code computed the label; no seat set a number.`
+    : "The founder leans towards A. Watch what eight seats do with that.";
+  const played = state.boardPlayed;
+  $("#board-stage").innerHTML = boardStageSvg(played);
+  $("#board-cards").innerHTML = DATA.seats.map((s) => {
+    const c = f.r1[s.key];
+    const top = Object.entries(c.scores).sort((a, b) => b[1] - a[1])[0][0];
+    return `<article class="card seat-card${played ? "" : " pending"}" data-seat="${s.key}"><div class="top">${seatLine(s.key)}</div><p class="call">${esc(c.call)}</p>
+      <div class="mini-scores">${DATA.position.options.map((o) => `<div class="${o.id === top ? "top-opt" : ""} ${o.id === "A" ? "lean-opt" : ""}">${o.id} ${c.scores[o.id]}<div class="bar"><span style="width:${c.scores[o.id] * 10}%"></span></div></div>`).join("")}</div>
+      <p class="q"><b>Its question for the founder:</b> ${esc(c.q)}</p></article>`;
+  }).join("");
+  if (played) { renderVerdict(); }
+}
+function boardStageSvg(played) {
+  const w = 560, h = 190, cx = 90, cy = 95, r = 62;
+  let out = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="The session's three rounds">`;
+  out += `<circle cx="${cx}" cy="${cy}" r="34" fill="${P.brass}"/><text x="${cx}" y="${cy + 1}" text-anchor="middle" fill="${P.onBrass}" font-family="Montserrat, sans-serif" font-weight="700" font-size="10.5">YOU</text><text x="${cx}" y="${cy - 44}" text-anchor="middle" fill="${P.muted}" font-family="Inter, sans-serif" font-size="11">you chair it</text>`;
+  DATA.seats.forEach((s, i) => {
+    const a = (-90 + (360 / 8) * i) * (Math.PI / 180);
+    const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+    out += `<circle cx="${x}" cy="${y}" r="15" fill="${s.color}" stroke="${P.surface}" stroke-width="3"/><text x="${x}" y="${y + 3.5}" text-anchor="middle" fill="#fff" font-family="Montserrat, sans-serif" font-weight="700" font-size="7.5">${s.initials}</text>`;
+  });
+  const rounds = [["1", "Opening blinds", "each seat writes alone"], ["2", "The debate", "the Chair names what splits them"], ["3", "The vote", "for, against or abstain"]];
+  rounds.forEach(([n, t, d], i) => {
+    const y = 52 + i * 46, on = played || i === 0;
+    out += `<rect x="250" y="${y - 20}" width="286" height="38" rx="12" fill="${played ? P.brassSoft : P.tile}" stroke="${played ? P.brass : P.line}" stroke-width="1.4"/>`;
+    out += `<circle cx="272" cy="${y - 1}" r="12" fill="${on ? P.ink : P.track}"/><text x="272" y="${y + 3}" text-anchor="middle" fill="${on ? P.inkText : P.muted}" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700">${n}</text>`;
+    out += `<text x="294" y="${y - 3}" fill="${P.ink}" font-family="Inter, sans-serif" font-size="12.5" font-weight="600">${t}</text><text x="294" y="${y + 13}" fill="${P.muted}" font-family="Inter, sans-serif" font-size="11">${d}</text>`;
+  });
+  return out + `</svg>`;
+}
+function renderVerdict() {
+  const f = DATA.board, v = f.final;
+  const label = labelFor(v.scores.B);
+  $("#verdict-card").hidden = false;
+  $("#verdict-cols").hidden = false;
+  $("#pick-label").textContent = "Option B: split the reorder — carried " + v.votes;
+  $("#verdict-call").textContent = v.call;
+  $("#stamp").className = `stamp${label.cls === "go" ? " go" : ""}`;
+  $("#stamp").innerHTML = `<span class="opt">B</span>${label.label}`;
+  $("#verdict-bars").innerHTML = DATA.position.options.map((o) => `<div class="ob${o.id === "B" ? " top" : ""}"><span class="id">${o.id}</span><div><span class="lbl">${esc(o.label)}</span>${o.lean ? '<span class="leanflag">the lean</span>' : ""}<div class="bar"><span style="width:${v.scores[o.id] * 10}%"></span></div></div><span class="sc">${v.scores[o.id]}</span></div>`).join("");
+  $("#verdict-figs").innerHTML = [["Weighted score", `${v.scores.B}<small style="font-size:.7rem">/10 · band ${Math.round(v.scores.B * 10)}</small>`], ["Confidence", `${v.confidence}/10`], ["Support for the plan", `${v.support}/10`], ["Spread on the pick", `${v.spread} pts`]].map(([k, x]) => `<div><dt>${k}</dt><dd>${x}</dd></div>`).join("");
+  $("#watchout").innerHTML = `<q>${esc(v.watchout.quote)}</q><div class="by">${disc(v.watchout.seat, "sm")}<span>${esc(SEAT[v.watchout.seat].name)} seat — kept because those words appear in its own card</span></div>`;
+  $("#amends").innerHTML = Object.entries(f.r3).filter(([, x]) => x.amendment).map(([k, x]) => `<div>${disc(k, "sm")}<span><b>${esc(SEAT[k].name)} seat${x.vote === "for" ? " (voted for, and added)" : ""}:</b> ${esc(x.amendment)}</span></div>`).join("");
+}
+let boardPlaying = false;
+async function playBoard() {
+  if (boardPlaying) return;
+  boardPlaying = true;
+  const btn = $("#play-board");
+  btn.disabled = true;
+  const cards = $$("#board-cards .seat-card");
+  cards.forEach((el) => el.classList.add("pending"));
+  const seq = [];
+  DATA.seats.forEach((s) => seq.push({ seat: s.key, round: 1, text: DATA.board.r1[s.key].call }));
+  Object.entries(DATA.board.r2).forEach(([k, r]) => seq.push({ seat: k, round: 2, text: r.line }));
+  DATA.seats.forEach((s) => seq.push({ seat: s.key, round: 3, text: voteLine(s.key) }));
+  let n = 0;
+  for (const step of seq) {
+    n++;
+    $("#board-count").textContent = step.round === 1 ? `Round 1 · seat ${n} of ${DATA.seats.length}` : step.round === 2 ? `Round 2 · the debate` : "Round 3 · the vote";
+    $("#board-bar").style.width = `${(n / seq.length) * 100}%`;
+    $("#board-who").innerHTML = seatLine(step.seat, step.round === 1 ? "writing alone" : step.round === 2 ? "round two" : "final vote");
+    await typeOut($("#board-say"), step.text);
+    const card = $(`#board-cards .seat-card[data-seat="${step.seat}"]`);
+    if (card) card.classList.remove("pending");
+    if (step.round === 1 && n === DATA.seats.length) toast("Round 1 was unanimous on B. Unanimous means someone argues the other side next — watch the debate.");
+    await wait(reduced ? 0 : 420);
+  }
+  $("#board-count").textContent = "carried · 6 for, 1 against, 1 abstain";
+  $("#board-say").textContent = "The Chair drafts the resolution; every amendment is adopted or answered. The verdict is computed here, in the hub — not by any seat.";
+  $("#board-bar").style.width = "100%";
+  state.boardPlayed = true;
+  btn.disabled = false;
+  btn.innerHTML = icon("play") + "Run it again";
+  renderBoard();
+  tick("board");
+  boardPlaying = false;
+}
+function voteLine(k) {
+  const v = DATA.board.r3[k];
+  return `${VOTE[v.vote].label}${v.amendment ? " — and files: " + v.amendment : "."}`;
+}
+
+/* ---------- step 5: the gate ---------- */
+function renderGate() {
+  $("#hook-gate").textContent = state.gateRan ? "Every step ran in the database; the only key use is yours." : "Six steps. No shortcuts, no second path for trusted senders.";
+  $("#gate-flow").innerHTML = DATA.gate.steps.map((s, i) => `
+    <div class="gstep${state.gateRan ? " on" : ""}" data-gstep="${i}">
+      <span class="gn">${s.n}</span>
+      <div><b>${esc(s.b)}</b><p>${esc(s.p)}</p></div>
+      <span class="res ${s.res.startsWith("PASS") ? "pass" : ""} ${s.hold ? "warn" : ""}">${esc(s.res)}</span>
+    </div>`).join("");
+  $("#ledger").innerHTML = DATA.gate.ledger.map((l, i) => `<span class="${state.gateRan && i <= (state.call === "hold" ? 1 : 4) ? "on" : ""}">${l}</span>`).join("");
+  renderCall();
+}
+let gatePlaying = false;
+async function playGate() {
+  if (gatePlaying) return;
+  gatePlaying = true;
+  const btn = $("#play-gate");
+  btn.disabled = true;
+  state.gateRan = false;
+  renderGate();
+  $$("#gate-flow .gstep").forEach((el) => el.classList.remove("on"));
+  $$("#ledger span").forEach((el) => el.classList.remove("on"));
+  $("#ledger-note").textContent = "Every effect runs once — the operation id comes from the business action, so a retry never doubles it.";
+  const steps = $$("#gate-flow .gstep");
+  for (let i = 0; i < steps.length; i++) {
+    steps[i].classList.add("on");
+    steps[i].scrollIntoView({ block: "nearest", behavior: reduced ? "auto" : "smooth" });
+    const led = $("#ledger span");
+    if (i === 0) led[0].classList.add("on");
+    if (i === 4) {
+      led[1].classList.add("on");
+      $("#ledger-note").innerHTML = `<span class="stop-echo" style="margin-top:0">${icon("alert")}<span><b>Echoed to the founder, 09:24:</b> "Reorder 2,400 units, £2,000 — holding 10 minutes. <span class="mono">STOP</span> to refuse." Money actions hold; resume needs the hardware key.</span></span>`;
+      await wait(reduced ? 0 : 1400);
+    }
+    if (i === 5) {
+      led[2].classList.add("on");
+      await wait(reduced ? 0 : 700);
+      led[3].classList.add("on");
+      await wait(reduced ? 0 : 500);
+      led[4].classList.add("on");
+      $("#ledger-note").textContent = "Confirmed by the 3PL, reconciled overnight. The chain head matches the anchor shipped at 09:25 — no one running this system can rewrite that copy.";
+    }
+    await wait(reduced ? 0 : i === 5 ? 0 : 1050);
+  }
+  state.gateRan = true;
+  btn.disabled = false;
+  btn.innerHTML = icon("play") + "Run it again";
+  renderGate();
+  tick("gate");
+  gatePlaying = false;
+}
+const CALLS = {
+  approve: "You approved: the half reorder runs on the board's conditions — signed with the key, bound to the content hash, with a date to re-run the board in week 6.",
+  hold: "You held the second half: the first half stays inside the cap; the position stays open with a written reason, so week 6's board can test it.",
+  overrule: "You overruled it: in the room you would write down why. The board's verdict stays on record, so a later review can score the advice against the outcome.",
+};
+function renderCall() {
+  const done = $("#call-done");
+  if (!state.call) { done.classList.remove("on"); $("#call-state").textContent = "not made"; $("#call-pill").classList.remove("made"); return; }
+  done.innerHTML = `<b>Recorded.</b> ${esc(CALLS[state.call])} <span style="opacity:.7">(In this sample it only lives in your browser.)</span>`;
+  done.classList.add("on");
+  $("#call-state").textContent = { approve: "approved", hold: "held", overrule: "overruled" }[state.call];
+  $("#call-pill").classList.add("made");
+  $$("#call-actions .btn").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.call === state.call)));
+}
+
+/* ---------- step 6: the week ---------- */
+function renderWeek() {
+  $("#hook-week").textContent = state.call ? "Recorded. In week 6 the board re-runs with the numbers — advice gets scored against outcomes." : "The export waits on your call at the gate.";
+  const e = DATA.export;
+  $("#export-box").innerHTML = [
+    `<span class="k">schema_version</span> <span class="v">${e.schema_version}</span> · <span class="k">kind</span> <span class="v">${e.kind}</span>`,
+    `<span class="k">source_system</span> <span class="v">${e.source_system}</span> · <span class="k">approved_by</span> <span class="v">${e.approved_by}</span> · <span class="k">privacy_class</span> <span class="v">${e.privacy_class}</span>`,
+    `<span class="k">items</span> <span class="v">[{ session: "W-15", label: "GO WITH CONDITIONS", carried: true, option_index: 1, evidence_items: 5 }]</span>`,
+    `<span class="k">excluded_on_arrival</span> <span class="v">maturity · signals · positions · labels · KPIs · Link C</span>`,
+  ].map((l) => `<div>${l}</div>`).join("");
+  $("#ladder").innerHTML = DATA.ladder.map((l) => `<li><span class="lv">${l.level}</span><span><b>${esc(l.name)}</b> — ${esc(l.cls)}<small>${esc(l.need)}</small></span><span class="need">${l.at === "sampled" ? "earned" : l.at === "l2" ? "counting" : "proving"}</span></li>`).join("");
+  $("#minutes").innerHTML = DATA.minutes.map((m) => `<div><b>${m.n}</b><span>${esc(m.t)}</span></div>`).join("");
+}
+
+/* ---------- numbers ---------- */
+function renderNumbers() {
+  const b = DATA.bench, s = b.stats;
+  $("#numbers-intro").textContent = "Every figure below is counted from the build's own gate runs on 27–28 October 2026: a local MVP on simulators, synthetic data, and a fake model in every test. The business targets — books by 07:00, an order at the warehouse in five minutes, the founder's hours — are design targets (A10, A7, A2), and this page never confuses the two.";
+  $("#hook-numbers").textContent = "9 of 14 benchmarks have run; the page shows the ones with measured numbers. The rest are listed as not run.";
+  $("#suite-stat").innerHTML = `${s.tests.toLocaleString("en-GB")}<small> passed</small>`;
+  $("#waffle-suite").innerHTML = Array.from({ length: 100 }, (_, i) => `<i class="on" title="${i === 0 ? "one square ≈ 107 tests, all green" : ""}"></i>`).join("");
+  $("#claims-stat").innerHTML = `${s.planted}<small>/${s.planted}</small>`;
+  $("#waffle-claims").innerHTML = Array.from({ length: s.planted }, (_, i) => `<i class="${i < s.planted ? "on" : ""}"></i>`).join("");
+  $("#runs").innerHTML = `<thead><tr><th>Benchmark</th><th>What it proves</th><th>Its bar</th><th>Measured</th></tr></thead><tbody>${b.rows.map((r) => `<tr><td class="n">${r.mb}</td><td>${esc(r.what)}</td><td>${esc(r.bar)}</td><td>${esc(r.got)}</td></tr>`).join("")}</tbody>`;
+  $("#method").textContent = "Every benchmark writes a JSON report (reports/MB-xx.json); every run is reproducible from the records. MB-02 (one way out), MB-03 (only a person approves), MB-08 (the brief), MB-10 (attention and cost) and MB-13 (privacy) also pass — their bars are structural, so this table shows the ones with a measured number worth quoting.";
+  $("#miss-text").innerHTML = `<b>The founder's holdout set has never been run</b> — the builder never sees it, and its first run waits for the founder. The live evaluation waits for the checker model, chosen in the next phase. One defect is carried: an enrolment token starting with "-" fails about once in 64. And the integration gate has flaked on two marginal timeouts under full-suite load — recorded as flakes, not fixed silently. Each of these is an entry in the project's own progress log, not a confession extracted later.`;
+}
+
+/* ---------- architecture ---------- */
+function renderArch() {
+  const w = 980, cols = [16, 258, 500, 742], rowH = 66, top = 18;
+  const cells = [[0, 1, 2], [3, 4, 5, 6], [7, 8, 9], [10, 11]];
+  const maxRows = Math.max(...cells.map((l) => l.length));
+  const h = top + 16 + maxRows * rowH + 34;
+  let out = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Architecture A: thirteen steps from leadership to learning, with the gate as the only way out">`;
+  const colTitle = ["in", "planned & done", "one way out", "back as a record"];
+  cols.forEach((x, i) => { out += `<text x="${x + 100}" y="12" text-anchor="middle" fill="${P.chartText}" font-family="JetBrains Mono, monospace" font-size="10.5" letter-spacing="1.5">${colTitle[i].toUpperCase()}</text>`; });
+  cells.forEach((list, ci) => {
+    list.forEach((ai, j) => {
+      const a = DATA.arch[ai];
+      const x = cols[ci], y = top + 10 + j * rowH;
+      const gate = a.gate;
+      out += `<rect x="${x}" y="${y}" width="200" height="56" rx="12" fill="${gate ? P.ink : P.surface}" stroke="${gate ? P.ink : P.line}" stroke-width="1.4"/>`;
+      out += `<text x="${x + 12}" y="${y + 19}" fill="${gate ? P.brass : P.brassInk}" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700">${a.n}</text>`;
+      out += `<text x="${x + 12}" y="${y + 35}" fill="${gate ? P.inkText : P.ink}" font-family="Inter, sans-serif" font-size="11.5" font-weight="700">${esc(a.b)}</text>`;
+      out += `<text x="${x + 12}" y="${y + 49}" fill="${gate ? "#8A857D" : P.muted}" font-family="Inter, sans-serif" font-size="9.5">${esc(a.c)}</text>`;
+    });
+  });
+  const arrowY = top + 10 + 1.5 * rowH;
+  out += `<path d="M232 ${arrowY} L240 ${arrowY}" stroke="${P.edge}" stroke-width="2"/>`;
+  out += `<path d="M474 ${arrowY} L482 ${arrowY}" stroke="${P.edge}" stroke-width="2"/>`;
+  out += `<path d="M716 ${arrowY} L724 ${arrowY}" stroke="${P.edge}" stroke-width="2"/>`;
+  out += `<text x="490" y="${h - 14}" text-anchor="middle" fill="${P.muted}" font-family="Inter, sans-serif" font-size="11">plus the rails: data A25–A32 · governance A33–A37 · observability A38–A40 · platform A41–A46</text>`;
+  $("#arch-map").innerHTML = out + `</svg>`;
+  $("#blocks").innerHTML = DATA.blocks.map((b) => `<div class="block"><span class="bn">${String(b.n).padStart(2, "0")}</span><b>${esc(b.b)}</b><span class="tag${["built", "people"].includes(b.t.split(" ")[0]) || b.t.startsWith("built") ? " built" : ""}">${esc(b.t)}</span><p>${esc(b.p)}</p></div>`).join("");
+  $("#rungs").innerHTML = DATA.rungs.map((r) => `<div class="rung"><b>${esc(r.b)}</b><span>${esc(r.p)}</span></div>`).join("");
+}
+
+/* ---------- rules ---------- */
+function renderRules() {
+  $("#rule-list").innerHTML = DATA.rules8.map((r, i) => `<div class="rule-card"><span class="rn">${String(i + 1).padStart(2, "0")}</span><p>${esc(r)}</p></div>`).join("");
+  $("#inv-list").innerHTML = DATA.invariants.map((r) => `<div class="rule-card" style="margin-bottom:10px"><span class="rn">IV</span><p><strong>${esc(r.b)}.</strong> ${esc(r.p)}</p></div>`).join("");
+  $("#hub-list").innerHTML = DATA.hubRules.map((r, i) => `<div class="rule-card" style="margin-bottom:10px"><span class="rn">${String(i + 1).padStart(2, "0")}</span><p>${esc(r)}</p></div>`).join("");
+}
+
+/* ---------- tour ---------- */
+function renderTour() {
+  const doneCount = STEPS.filter((s) => state.done[s.id]).length;
+  $("#tour-progress").textContent = `${doneCount} of ${STEPS.length}`;
+  $("#tour-steps").innerHTML = STEPS.map((s, i) => `<li class="${state.done[s.id] ? "done" : ""}${i === state.tourStep ? " cur" : ""}"><button type="button" data-step="${i}"><span class="n">${state.done[s.id] ? "✓" : i + 1}</span><span>${esc(s.title)}</span></button></li>`).join("");
+  const st = STEPS[state.tourStep];
+  $("#tour-text").innerHTML = `<b>${esc(st.title)}</b>${esc(st.text)}`;
+  $("#tour-back").disabled = state.tourStep === 0;
+  $("#tour-next").textContent = state.tourStep === STEPS.length - 1 ? "Finish" : "Next";
+  $("#shell").classList.toggle("tour-closed", !state.tourOpen);
+  $("#tour-open").hidden = state.tourOpen;
+}
+function goStep(i) { state.tourStep = Math.max(0, Math.min(STEPS.length - 1, i)); save(); renderTour(); location.hash = STEPS[state.tourStep].route; if (STEPS[state.tourStep].id === "call") setTimeout(() => $("#h-yourcall")?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" }), 60); }
+function renderNavTicks() {
+  const map = { brief: "brief", evidence: "evidence", position: "position", board: "board", gate: "gate", week: "week", numbers: "numbers", architecture: "architecture", rules: "rules" };
+  $$("#nav a").forEach((a) => a.classList.toggle("done", Boolean(state.done[map[a.dataset.route]])));
+}
+
+/* ---------- router ---------- */
+const ROUTES = ["welcome", "brief", "evidence", "position", "board", "gate", "week", "numbers", "architecture", "rules"];
+const TITLES = { welcome: "Welcome", brief: "The brief", evidence: "The evidence", position: "The decision", board: "The board", gate: "The gate", week: "The week", numbers: "The numbers", architecture: "The architecture", rules: "The rules" };
+const AUTO_TICK = { brief: "brief", evidence: "evidence", week: "week", numbers: "numbers", architecture: "architecture", rules: "rules" };
+function route() {
+  const r = ROUTES.includes(location.hash.slice(1)) ? location.hash.slice(1) : "welcome";
+  $$(".route").forEach((s) => (s.hidden = s.dataset.route !== r));
+  $$("#nav a").forEach((a) => (a.dataset.route === r ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current")));
+  $("#nav").classList.remove("open");
+  $("#menu-btn").setAttribute("aria-expanded", "false");
+  state.seen[r] = true;
+  const here = STEPS.map((s, i) => [s, i]).filter(([s]) => s.route === r);
+  const pick = (here.find(([s]) => !state.done[s.id]) || here[0])?.[1];
+  if (pick != null) { state.tourStep = pick; save(); }
+  if (AUTO_TICK[r]) tick(AUTO_TICK[r]);
+  if (r === "gate" && state.call) tick("call");
+  if (r === "position" && state.answer) tick("position");
+  renderTour();
+  window.scrollTo({ top: 0, behavior: "auto" });
+  $("#main").focus({ preventScroll: true });
+}
+
+/* ---------- theme ---------- */
+const themeNow = () => document.documentElement.getAttribute("data-theme") || "light";
+const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+const MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/></svg>';
+function paintThemeBtn() { const dark = themeNow() === "dark"; const b = $("#theme-btn"); b.innerHTML = dark ? SUN : MOON; b.setAttribute("aria-label", dark ? "Switch to the light theme" : "Switch to the dark theme"); b.title = b.getAttribute("aria-label"); }
+function drawAll() { readPalette(); renderWelcome(); renderBrief(); renderEvidence(); renderPosition(); renderBoard(); renderGate(); renderWeek(); renderNumbers(); renderArch(); renderRules(); paintIcons(); }
+function setTheme(t) {
+  document.documentElement.setAttribute("data-theme", t);
+  try { localStorage.setItem("indica-theme", t); } catch (e) { /* private mode: the switch still works for this visit */ }
+  if (!boardPlaying && !gatePlaying) drawAll();
+  paintThemeBtn();
+}
+
+/* ---------- wiring ---------- */
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+async function typeOut(el, text) {
+  if (reduced) { el.textContent = text; return; }
+  el.innerHTML = '<span class="t"></span><span class="caret"></span>';
+  const t = $(".t", el), step = Math.max(1, Math.round(text.length / 60));
+  for (let i = 0; i <= text.length; i += step) { t.textContent = text.slice(0, i); await wait(16); }
+  t.textContent = text;
+}
+function renderAll() { drawAll(); }
+function init() {
+  readPalette();
+  renderAll();
+  renderTour();
+  renderNavTicks();
+  $("#play-board").addEventListener("click", playBoard);
+  $("#play-gate").addEventListener("click", playGate);
+  $("#menu-btn").addEventListener("click", () => { const open = $("#nav").classList.toggle("open"); $("#menu-btn").setAttribute("aria-expanded", String(open)); });
+  $("#tour-steps").addEventListener("click", (e) => { const b = e.target.closest("[data-step]"); if (b) goStep(Number(b.dataset.step)); });
+  $("#tour-back").addEventListener("click", () => goStep(state.tourStep - 1));
+  $("#tour-next").addEventListener("click", () => { if (state.tourStep === STEPS.length - 1) { state.tourOpen = false; save(); renderTour(); toast("Tour closed. Open it again from the button at the bottom right."); } else goStep(state.tourStep + 1); });
+  $("#tour-close").addEventListener("click", () => { state.tourOpen = false; save(); renderTour(); });
+  $("#tour-open").addEventListener("click", () => { state.tourOpen = true; save(); renderTour(); });
+  $$("[data-start-tour]").forEach((a) => a.addEventListener("click", () => { state.tourOpen = true; state.tourStep = 0; save(); renderTour(); }));
+  $("#call-actions").addEventListener("click", (e) => { const b = e.target.closest("[data-call]"); if (!b) return; state.call = b.dataset.call; save(); renderGate(); tick("call"); toast("Recorded. The review will test this against the outcome."); });
+  $("#reset-btn").addEventListener("click", () => { state = { done: {}, seen: {}, feed: "live", scrubOpen: false, answer: null, call: null, boardPlayed: false, gateRan: false, conds: {}, tourOpen: true, tourStep: 0 }; save(); drawAll(); renderTour(); renderNavTicks(); location.hash = "welcome"; toast("The week starts again."); });
+  $("#theme-btn").addEventListener("click", () => setTheme(themeNow() === "dark" ? "light" : "dark"));
+  document.addEventListener("pointermove", (e) => { const c = e.target.closest?.(".card"); if (!c) return; const r = c.getBoundingClientRect(); c.style.setProperty("--mx", `${e.clientX - r.left}px`); c.style.setProperty("--my", `${e.clientY - r.top}px`); }, { passive: true });
+  document.addEventListener("click", (e) => {
+    const feed = e.target.closest("[data-feed]");
+    if (feed) { state.feed = feed.dataset.feed; save(); drawOne("brief"); drawOne("evidence"); toast(state.feed === "live" ? "The feed is back; the 06:45 pull will store today's snapshot." : state.feed === "mismatch" ? "The instance id no longer matches the pin — the pull stops with evidence_mismatch." : "The evidence plane is down. The hub says absent; everything else works."); return; }
+    if (e.target.closest("[data-scrub]")) { state.scrubOpen = true; save(); drawOne("evidence"); tick("evidence"); return; }
+    if (e.target.closest("[data-reopen]")) { state.answer = null; save(); drawOne("position"); return; }
+  });
+  document.addEventListener("input", (e) => {
+    const i = e.target.dataset ? e.target.dataset.prob : undefined;
+    if (i === undefined) return;
+    $("#out-" + i).textContent = `${e.target.value}%`;
+    updateSum();
+  });
+  document.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (e.target.id === "position-form") {
+      const data = new FormData(e.target);
+      if (!String(data.get("r")).trim()) return;
+      state.answer = { p: [0, 1, 2].map((i) => data.get("p" + i)), r: data.get("r") };
+      save(); drawOne("position"); tick("position");
+      toast("Position recorded. The board sees the label, not your confidence.");
+    }
+  });
+  window.addEventListener("hashchange", route);
+  paintThemeBtn();
+  route();
+}
+function drawOne(r) {
+  readPalette();
+  ({ brief: renderBrief, evidence: renderEvidence, position: renderPosition, board: renderBoard, gate: renderGate, week: renderWeek, numbers: renderNumbers, architecture: renderArch, rules: renderRules }[r] || (() => {}))();
+}
+init.rerender = () => { readPalette(); renderBoard(); renderGate(); paintIcons(); renderTour(); renderNavTicks(); };
+init();
+</script>
+</body>
+</html>

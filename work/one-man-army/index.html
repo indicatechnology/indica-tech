@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Region detection. Runs before first paint so the correct currency is
+     the first thing painted — never a flash of the wrong price. Order:
+     ?region= → saved choice → browser timezone → language → GBP. -->
+<script>
+(function () {
+  var OK = ['uk', 'us', 'eu'], r, p, tz, l;
+  try {
+    p = new URLSearchParams(location.search).get('region');
+    if (p && OK.indexOf(p) > -1) { r = p; try { localStorage.setItem('indica_region', r); } catch (e) {} }
+    if (!r) { try { r = localStorage.getItem('indica_region'); } catch (e) {} }
+    if (!r) {
+      tz = (Intl.DateTimeFormat().resolvedOptions().timeZone) || '';
+      if (/^America\//.test(tz)) r = 'us';
+      else if (tz === 'Europe/London') r = 'uk';
+      else if (/^Europe\//.test(tz)) r = 'eu';
+    }
+    if (!r) {
+      l = (navigator.language || '').toLowerCase();
+      if (l === 'en-us') r = 'us';
+      else if (/^(de|fr|nl|es|it|pt|pl|sv|da|fi|cs|el|ro|hu)/.test(l)) r = 'eu';
+    }
+  } catch (e) {}
+  document.documentElement.setAttribute('data-region', OK.indexOf(r) > -1 ? r : 'uk');
+})();
+</script>
+<meta name="description" content="One Man Army, an in-house Indica Technology product: the operating system for a company run end to end by one accountable person. Rules run the routine, AI agents draft and propose, and every action passes one controlled gate and is recorded. The hub that the Evidence Plane feeds and the Board Room advises.">
+<meta name="robots" content="index, follow">
+<title>One Man Army: the operating system for a one-person company · Indica Tech</title>
+<link rel="canonical" href="https://indica-tech.com/work/one-man-army/">
+<meta property="og:title" content="One Man Army: the operating system for a one-person company · Indica Tech">
+<meta property="og:description" content="Rules run the routine, AI agents draft and propose, and one accountable person makes the calls. Every action passes one gate and is recorded. Built in the open, measured as it grows.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://indica-tech.com/work/one-man-army/">
+<link rel="stylesheet" href="/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "One Man Army",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "macOS, Linux (Docker)",
+  "description": "The operating system for a company run end to end by one accountable person: rules run the routine, AI agents draft and propose, one gate carries every action, and the record is the truth.",
+  "creator": {"@type": "Organization", "name": "Indica Technology Ltd", "url": "https://indica-tech.com"}
+}
+</script>
+<style>
+/* Page parts for this project page only. Colours and type are the site's tokens from styles.css. */
+.om-hero { padding: clamp(64px, 9vw, 120px) 0 clamp(40px, 5vw, 64px); }
+.om-hero .kicker { margin-bottom: 20px; }
+.om-hero h1 { font-size: clamp(2.4rem, 6vw, 4.6rem); margin-bottom: 18px; }
+.om-hero .lead { font-size: clamp(1.05rem, 1.4vw, 1.25rem); color: var(--ink-mute); line-height: 1.6; max-width: 62ch; }
+.om-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 22px; font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
+.om-meta span::before { content: "/ "; color: var(--rule-2); }
+
+.om-flow { display: grid; grid-template-columns: 1fr auto 1.15fr auto 1fr; align-items: stretch; gap: 14px; margin-top: 48px; }
+.om-flow-step { border: 1px solid var(--ink); background: var(--paper); padding: 22px 22px 24px; display: flex; flex-direction: column; gap: 8px; }
+.om-flow-step .n { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--signal-ink); }
+.om-flow-step b { font-size: 1.15rem; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
+.om-flow-step span:last-child { font-size: 0.95rem; color: var(--ink-mute); line-height: 1.5; }
+.om-flow-step.is-box { background: var(--ink); border-color: var(--ink); }
+.om-flow-step.is-box .n { color: var(--signal); }
+.om-flow-step.is-box b { color: var(--paper); }
+.om-flow-step.is-box span:last-child { color: #C2BDB2; }
+.om-flow-arrow { align-self: center; font-family: var(--mono); font-size: 1.4rem; color: var(--ink-faint); }
+
+.om-notice-wrap { padding-bottom: clamp(48px, 6vw, 80px); border-bottom: 1px solid var(--rule); }
+.om-notice { max-width: 860px; padding: 24px 28px; background: var(--paper-2); border: 1px solid var(--rule); border-left: 4px solid var(--warn); }
+.om-notice h2 { font-size: 1.05rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-bottom: 10px; }
+.om-notice p { font-size: 1rem; color: var(--ink-2); }
+.om-notice p + p { margin-top: 10px; }
+
+.om-sec { padding: clamp(64px, 9vw, 120px) 0; border-bottom: 1px solid var(--rule); }
+.om-sec .section-head { margin-bottom: 48px; }
+.om-intro { max-width: 70ch; margin-bottom: 28px; }
+.om-sub { font-size: 1.2rem; margin: 56px 0 18px; }
+
+/* The hero's three cards: the brief, the gate, the one way out. */
+.om-hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+.om-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+.om-brand svg { width: 38px; height: 38px; flex: none; }
+.om-brand b { display: block; font-size: 1.05rem; color: var(--ink); }
+.om-brand .kicker { margin: 2px 0 0; }
+.om-brand .kicker::before { display: none; }
+.om-hero h1 { font-size: clamp(2.2rem, 4.6vw, 3.9rem); line-height: 1.04; }
+.om-hero-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.om-stack { position: relative; margin: 0; min-height: 452px; }
+.om-card { position: absolute; width: 86%; border: 1px solid var(--ink); background: #FFFDF8; padding: 16px 18px; box-shadow: 10px 10px 0 var(--paper-3); }
+.om-card-k { display: flex; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 10px; }
+.om-card p { font-size: 0.95rem; color: var(--ink-2); line-height: 1.5; }
+.om-rows { display: grid; gap: 6px; margin-top: 8px; }
+.om-rows div { display: flex; justify-content: space-between; gap: 12px; font-size: 0.88rem; color: var(--ink-mute); border-top: 1px dashed var(--rule); padding-top: 6px; }
+.om-rows b { font-family: var(--mono); font-weight: 600; color: var(--ink); }
+.om-chip { display: inline-block; font-family: var(--mono); font-size: 0.72rem !important; text-transform: uppercase; letter-spacing: 0.06em; background: #F7E7C8; color: #6B4A10 !important; padding: 2px 8px; }
+.om-card-b { top: 0; left: 0; }
+.om-card-g { top: 148px; left: 9%; }
+.om-steps { display: grid; gap: 7px; margin-top: 4px; }
+.om-step { display: grid; grid-template-columns: minmax(0, 1.2fr) auto; gap: 10px; align-items: center; font-size: 0.86rem; color: var(--ink-mute); }
+.om-step b { font-family: var(--mono); font-weight: 600; color: var(--ink); margin-right: 4px; }
+.om-step .st { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--signal-ink); }
+.om-card-o { top: 306px; left: 14%; background: var(--ink); border-color: var(--ink); box-shadow: 10px 10px 0 #CFC6B4; }
+.om-card-o .om-card-k { color: #8A857D; }
+.om-card-o p { color: var(--paper); font-size: 1.02rem; }
+.om-ledger { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+.om-ledger span { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: #8A857D; border: 1px solid #3A3A35; padding: 2px 7px; }
+@media (max-width: 960px) {
+  .om-hero-grid { grid-template-columns: 1fr; gap: 36px; }
+  .om-stack { min-height: 0; display: grid; gap: 14px; }
+  .om-card { position: static; width: auto; box-shadow: 6px 6px 0 var(--paper-3); }
+  .om-card-o { box-shadow: 6px 6px 0 #CFC6B4; }
+}
+
+/* What it is: the three failures, then the answer. */
+.om-why { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
+.om-why > div { padding: 28px 24px 32px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.om-why .n { display: block; font-family: var(--mono); font-size: 0.78rem; color: var(--signal-ink); margin-bottom: 16px; }
+.om-why h3 { font-size: 1.15rem; line-height: 1.25; margin-bottom: 10px; }
+.om-why p { font-size: 0.95rem; }
+.om-answer { max-width: 860px; margin-top: 40px; padding: 24px 28px; background: var(--paper-2); border: 1px solid var(--rule); }
+.om-answer p { font-size: 1.02rem; color: var(--ink-2); }
+.om-answer p + p { margin-top: 10px; }
+
+/* The three systems: hub and feeders. */
+.om-sys { display: grid; grid-template-columns: 1.2fr 1fr 1fr; border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
+.om-sys > article { padding: 28px 24px 32px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); display: flex; flex-direction: column; gap: 10px; }
+.om-sys .role { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--signal-ink); }
+.om-sys h3 { font-size: 1.15rem; line-height: 1.25; }
+.om-sys p { font-size: 0.95rem; }
+.om-sys .does { margin-top: auto; padding-top: 14px; border-top: 1px dashed var(--rule); display: grid; gap: 6px; }
+.om-sys .does span { font-size: 0.88rem; color: var(--ink-mute); }
+.om-sys .does b { color: var(--ink); font-weight: 600; }
+.om-sys .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.om-sys .tags i { font-style: normal; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.04em; border: 1px solid var(--rule-2); padding: 3px 8px; color: var(--ink-faint); }
+.om-links { list-style: none; margin-top: 44px; border-top: 1px solid var(--ink); }
+.om-links li { display: grid; grid-template-columns: 200px 1fr auto; gap: 20px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--rule); }
+.om-links .cid { font-family: var(--mono); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; color: var(--ink); }
+.om-links p { font-size: 0.96rem; color: var(--ink-mute); }
+.om-links .arrow { font-family: var(--mono); color: var(--ink-faint); }
+
+/* The rules that never change. */
+.om-rules { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
+.om-rules li { padding: 20px 22px 24px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); display: flex; gap: 14px; align-items: baseline; }
+.om-rules .rn { font-family: var(--mono); font-size: 0.78rem; font-weight: 600; color: var(--signal-ink); flex: none; }
+.om-rules p { font-size: 0.98rem; color: var(--ink-2); line-height: 1.55; }
+
+/* Status and proof. */
+.proof .lbl br { display: block; }
+.bench-scroll { margin-top: 48px; overflow-x: auto; border-top: 1px solid #2A2A26; }
+.bench { width: 100%; min-width: 720px; border-collapse: collapse; font-family: var(--mono); font-size: 0.8rem; color: #C2BDB2; }
+.bench th { text-align: left; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.7rem; color: #8A857D; padding: 14px 10px 12px 0; border-bottom: 1px solid #2A2A26; }
+.bench td { padding: 12px 10px 12px 0; border-bottom: 1px solid #2A2A26; vertical-align: top; }
+.bench td:first-child { color: var(--paper); }
+.bench .pass { color: var(--signal); }
+.om-method { margin-top: 28px; font-size: 0.9rem; color: #8A857D; max-width: 80ch; line-height: 1.65; }
+.om-status { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: start; }
+.om-status h3 { font-size: 1.05rem; margin-bottom: 10px; }
+.om-status ul { list-style: none; border-top: 1px solid var(--rule); }
+.om-status li { padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 0.98rem; color: var(--ink-2); }
+.om-status li b { color: var(--ink); font-weight: 600; }
+
+.om-trade { list-style: none; max-width: 860px; border-top: 1px solid var(--rule); }
+.om-trade li { padding: 16px 0; border-bottom: 1px solid var(--rule); font-size: 1.02rem; color: var(--ink-mute); line-height: 1.6; }
+.om-trade b { color: var(--ink); font-weight: 600; }
+
+.om-cta { padding: 0 0 clamp(64px, 9vw, 120px); }
+.om-cta .prose-cta { max-width: 860px; }
+.om-cta .prose-cta h3 { font-size: clamp(1.3rem, 2.2vw, 1.7rem); line-height: 1.25; margin-bottom: 12px; }
+.om-cta .btn + .btn { margin-left: 10px; }
+/* styles.css drops a button's bottom border inside .prose-cta (it hides link underlines); the ghost button needs it back */
+.om-cta .prose-cta a.btn-ghost { border-bottom: 1px solid var(--ink) !important; }
+
+@media (max-width: 960px) {
+  .om-flow { grid-template-columns: 1fr; }
+  .om-flow-arrow { transform: rotate(90deg); justify-self: center; }
+  .om-why, .om-rules { grid-template-columns: 1fr; }
+  .om-sys { grid-template-columns: 1fr; }
+  .om-status { grid-template-columns: 1fr; }
+  .om-links li { grid-template-columns: 1fr; gap: 6px; }
+  .om-links .arrow { display: none; }
+}
+@media (max-width: 640px) {
+  :root { --gutter: 16px; }
+}
+</style>
+<link rel="stylesheet" href="../../look.css" id="look-css">
+<script src="../../look.js"></script>
+</head>
+<body>
+
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+        <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+        <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+        <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+      </svg>
+      <span>Indica Tech <em>/ demo → prod</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#problem">The gap</a></li>
+      <li><a href="/#offers">Engagements</a></li>
+      <li><a href="/#proof">Proof</a></li>
+      <li><a href="/work/">Work</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+    </ul>
+    <div class="region-switch" role="group" aria-label="Show prices in">
+      <button type="button" data-region-set="uk" aria-pressed="false">GBP</button>
+      <button type="button" data-region-set="us" aria-pressed="false">USD</button>
+      <button type="button" data-region-set="eu" aria-pressed="false">EUR</button>
+    </div>
+    <a href="/#contact" class="nav-cta">Book a call <span class="arrow">→</span></a>
+    <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main>
+<section class="om-hero">
+  <div class="container">
+    <div class="om-hero-grid">
+      <div>
+        <div class="om-brand"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0B0B0A"/><circle cx="9.5" cy="16" r="3.2" fill="#00C46A"/><rect x="15.2" y="6" width="2.6" height="20" rx="1.3" fill="#F7F4ED"/><rect x="20.5" y="10" width="8" height="2.4" rx="1.2" fill="#F7F4ED"/><rect x="20.5" y="14.8" width="8" height="2.4" rx="1.2" fill="#00C46A"/><rect x="20.5" y="19.6" width="8" height="2.4" rx="1.2" fill="#F7F4ED"/></svg><div><b>One Man Army</b><div class="kicker">Selected work / 07 · In-house product</div></div></div>
+        <h1>One person runs the company. The system runs the routine.</h1>
+        <p class="lead">One Man Army is the operating system for a company run end to end by one accountable person. Rules run the routine, AI agents draft and propose, and the founder makes only the decisions that need judgement. Every action the system takes on a customer, a supplier or a platform passes one controlled gate — and is recorded.</p>
+        <div class="om-meta"><span>Built and run by Indica Technology</span><span>Design complete, build in progress</span><span>Runs locally, on synthetic data</span><span>The hub of three systems</span></div>
+        <div class="om-hero-cta"><a href="sample/" class="btn btn-primary">Try the guided sample <span class="arrow">→</span></a><a href="#system" class="btn btn-ghost">See how it works <span class="arrow">↓</span></a></div>
+      </div>
+      <figure class="om-stack" aria-label="One Man Army in three cards: the morning brief, a proposal at the gate, the one way out">
+        <div class="om-card om-card-b"><div class="om-card-k"><span>The brief · 07:30</span><span>no model call</span></div><p>What happened, what is at risk, what needs you — a projection over the records, rebuilt exactly every morning.</p><div class="om-rows"><div><span>Orders answered overnight</span><b>82</b></div><div><span>Safety line</span><b>0 reports</b></div><div><span>New evidence from partner calls</span><b>3 items</b></div><div><span>Needs you</span><b>2 decisions</b></div></div></div>
+        <div class="om-card om-card-g"><div class="om-card-k"><span>The gate · one proposal</span><span>policy v12</span></div><div class="om-steps"><div class="om-step"><span><b>PASS</b> reorder within cap £4,000</span><span class="st">policy</span></div><div class="om-step"><span><b>SIGNED</b> approval bound to the content hash</span><span class="st">your key</span></div><div class="om-step"><span><b>SENT ONCE</b> intent recorded before, outcome after</span><span class="st">ledger</span></div></div></div>
+        <div class="om-card om-card-o"><div class="om-card-k"><span>The one way out</span><span>works with every model off</span></div><p>Every refund, reply and warehouse order takes the same path: checked against authority, recorded, then run once. The few other exits are listed and audited.</p><div class="om-ledger"><span>intended</span><span>held</span><span>sent</span><span>confirmed</span><span>reconciled</span></div></div>
+      </figure>
+    </div>
+    <div class="om-flow" aria-label="What goes in and what comes out">
+      <div class="om-flow-step"><span class="n">In</span><b>Your objectives, limits and rules</b><span>What may run alone, up to what amount — and everything the company hears: orders, messages, invoices, partner calls.</span></div>
+      <div class="om-flow-arrow" aria-hidden="true">→</div>
+      <div class="om-flow-step is-box"><span class="n">One Man Army</span><b>Rules act, agents propose, you decide</b><span>One record holds the truth. One gate carries every action. One brief and one queue reach you each morning.</span></div>
+      <div class="om-flow-arrow" aria-hidden="true">→</div>
+      <div class="om-flow-step"><span class="n">Out</span><b>A company that runs without waiting</b><span>Fulfilled orders, answered customers, clean books by 07:00 — and evidence of who decided what, and why.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="om-notice-wrap">
+  <div class="container">
+    <aside class="om-notice" role="note" aria-labelledby="status-h">
+      <h2 id="status-h">Where it stands, said plainly</h2>
+      <p>The design is complete and has been reviewed twice. The build is real and in progress — twenty-eight of thirty-two work packages are done, and the twenty-ninth is being finished now — but it runs locally, on simulators, with synthetic data. There is no business on it yet, and no figure on this page pretends otherwise: what is measured is the build, and what is a target for the business is labelled a target.</p>
+      <p>It is shown here because the hard part of this product is the discipline, and the discipline can be shown before the launch: every claim on this page traces to a decision, a requirement or a benchmark in the project's own records.</p>
+    </aside>
+  </div>
+</section>
+
+<section class="om-sec" id="system">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">01 / What it is</div>
+      <h2>Attention runs out before work does.</h2>
+    </div>
+    <p class="om-intro">A company has eight jobs that never stop: the founder's office, growth, customer care, operations, quality and compliance, finance, technology, and its people and partners. One person holding them all fails in three ways — and adding AI agents on their own makes each failure faster.</p>
+    <div class="om-why">
+      <div><span class="n">01</span><h3>Attention</h3><p>Every refund, supplier query and advertising change queues behind one inbox. The business grows only as fast as that inbox does.</p></div>
+      <div><span class="n">02</span><h3>Authority</h3><p>Tools and agents can act, but nothing decides which actions they may take, up to what limit, and who answers for them.</p></div>
+      <div><span class="n">03</span><h3>Evidence</h3><p>When something goes wrong there is no trustworthy record of who decided what, and why. A wrong refund and a missed safety report look the same afterwards.</p></div>
+    </div>
+    <div class="om-answer">
+      <p><strong>The answer is a governed system, not a person with a stack of tools.</strong> Rules run the routine with no AI at all. Agents draft and propose; checkers on a different provider can only reject. Only a person — or a rule a person signed — approves, and every action passes one gate that re-checks the authority before it runs and records it afterwards.</p>
+      <p>The design is proven against the hardest case its founder could pick: a regulated UK consumer-health brand sold direct online, where a customer's safety report must reach a person within minutes and every advert must stay inside the claims allowlist. What holds there, the design argues, holds for any retailer.</p>
+    </div>
+  </div>
+</section>
+
+<section class="om-sec" id="three">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">02 / How it fits the other two</div>
+      <h2>The hub. Two feeders. No side doors.</h2>
+    </div>
+    <p class="om-intro">One Man Army is the third of three systems built here, and the one the others feed. It is the only one that keeps the company's record and the only one that acts. The other two are its memory and its second opinion — joined by narrow contracts that can never make it act.</p>
+    <div class="om-sys">
+      <article>
+        <span class="role">The hub · runs the company</span>
+        <h3>One Man Army (Company OS)</h3>
+        <p>Stores every record as its own, decides what needs a person, and acts through one gate. The advisory board that debates a decision is built inside it.</p>
+        <div class="does"><span><b>Only it acts:</b> replies, refunds and warehouse orders leave through the one gate, each with an approval or a signed rule behind it.</span><span><b>Only it keeps the record:</b> the audit chain is anchored to storage no one running the system can rewrite.</span></div>
+        <div class="tags"><i>WP-01…32 of 32</i><i>A01…A46</i><i>IV-01…22</i></div>
+      </article>
+      <article>
+        <span class="role">A feeder · what was said</span>
+        <h3>Evidence Plane</h3>
+        <p>Consented partner calls — the manufacturer, the 3PL, the consultancy, the solicitor — become learnings graded E0 to E5, signals and positions.</p>
+        <div class="does"><span><b>Link C, read-only:</b> Company OS pulls a class-P view each morning at 06:45. Items cite a snapshot id and hash; words are never orders.</span><span><b>Never a customer channel:</b> nothing it sends can act, approve, or touch the safety line.</span></div>
+        <div class="tags"><i>Link C · c/1</i><i>WP-34</i><i>EPLN-001…006</i></div>
+      </article>
+      <article>
+        <span class="role">A feeder · a second opinion</span>
+        <h3>Board Room</h3>
+        <p>Eight advisors argue a decision and return scored advice: the pick, the dissent, the conditions, the cheapest test and the point to walk away.</p>
+        <div class="does"><span><b>The contract is the tests:</b> board-engine passes Company OS's own scoring vectors; no live calls, no data passes.</span><span><b>Advice, never authority:</b> the hub re-computes every number itself before it believes a verdict.</span></div>
+        <div class="tags"><i>Contract A · a/1.2</i><i>BORD-001…015</i><i>J-19</i></div>
+      </article>
+    </div>
+    <h3 class="om-sub">The three links, and the loop they close</h3>
+    <ul class="om-links">
+      <li><span class="cid">LINK C</span><p>Evidence reaches the hub read-only: signals, positions and short statements, class P, each with an id, a grade and a hash. A board paper can be reproduced after a re-grade.</p><span class="arrow">evidence plane → hub</span></li>
+      <li><span class="cid">LINK B</span><p>Outcomes come back as an export the founder approves: verdicts as ids and amounts, no names, no message text. The evidence plane uses them to calibrate its predictions only — never as proof, so the system can never validate its own advice.</p><span class="arrow">hub → evidence plane</span></li>
+      <li><span class="cid">VECTORS</span><p>The board's scoring rules are owned by the hub and published as test fixtures. The Board Room product, run for other firms, must keep passing them.</p><span class="arrow">shared at build time</span></li>
+    </ul>
+    <p class="om-intro" style="margin-top:28px">The loop: a partner says something that matters → the evidence plane grades it → it reaches the morning brief as evidence → a decision that needs judgement goes to the board → the founder approves in the hub → the gateway acts → the verdict returns to the evidence plane as an outcome, for calibration only. Each system can be stopped, and the others carry on; the spokes never talk to each other.</p>
+  </div>
+</section>
+
+<section class="om-sec" id="rules">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">03 / The rules that never change</div>
+      <h2>Eight rules, held at every scale.</h2>
+    </div>
+    <ol class="om-rules">
+      <li><span class="rn">01</span><p><strong>Only a person approves.</strong> No AI approves anything; agents draft, propose and check. The founder, a delegate, or a rule a person set can authorise an action.</p></li>
+      <li><span class="rn">02</span><p><strong>One gate for every action.</strong> Every refund, order, message or advert takes one path, checked against authority and recorded before it runs. Nothing is paid or shipped twice.</p></li>
+      <li><span class="rn">03</span><p><strong>Safety and money never wait on AI.</strong> Both paths work with every model switched off.</p></li>
+      <li><span class="rn">04</span><p><strong>The record is the truth.</strong> Every event is stored before anything happens; everything else derives from it and can be rebuilt.</p></li>
+      <li><span class="rn">05</span><p><strong>Words are never orders.</strong> What a customer, a supplier or a document says is information. It can never instruct the system.</p></li>
+      <li><span class="rn">06</span><p><strong>Every change to the AI is a release.</strong> Versioned, tested against agreed cases, approved, and reversible.</p></li>
+      <li><span class="rn">07</span><p><strong>Checkers are independent.</strong> They run on a different AI provider from the agents whose work they check, and they report to people, never to agents.</p></li>
+      <li><span class="rn">08</span><p><strong>Attention is budgeted.</strong> Each approver's time is a budget the system enforces — and safety work is never held back to save it.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="proof" id="measured">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">04 / Measured on the build</div>
+      <h2>Measured, not claimed.</h2>
+    </div>
+    <div class="proof-grid">
+      <div class="proof-cell"><div class="num">10,686</div><div class="lbl">Tests pass in the main suite<br>0 failed, 2 deselected</div></div>
+      <div class="proof-cell"><div class="num">5,452</div><div class="lbl">Tests traced to 367 requirement IDs<br>0 traceability problems</div></div>
+      <div class="proof-cell"><div class="num">621<span class="unit">ms</span></div><div class="lbl">The kill switch observed, under load<br>its target is 10 seconds</div></div>
+      <div class="proof-cell"><div class="num">2.42<span class="unit">s</span></div><div class="lbl">Worst case on the safety line<br>targets are 60s to page, 300s to acknowledge</div></div>
+    </div>
+    <div class="proof-body">
+      <h3>What else was checked, and what missed</h3>
+      <div class="proof-text">
+        <p><strong>Every benchmark that has run, with its number.</strong> Intake answers webhooks in a 13 ms p99, and a dropped webhook is found in 210 s against a 300 s bound (MB-01). The safety line handled 100 messages with every provider failing (MB-05). The replay test settled 20 of 20 effects with the executor killed, zero duplicates (MB-04).</p>
+        <p><strong>Autonomy is earned on counted evidence, not vibes:</strong> a class of work is promoted only at exactly 99, 299 or 598 clean reviewed actions by binomial bounds at 95% confidence — the ladder test was verified at the exact boundary, and demotes on a severe error (MB-11).</p>
+        <p><strong>Claims-safe drafting:</strong> 59 of 59 planted unsafe drafts were rejected and 101 of 101 good drafts passed (MB-06); all 31 injection cases ended in a safe outcome (MB-12). The restore drill lost 58.7 s of records against a 15-minute bound, ran in 61.9 s against a 4-hour one, and produced zero duplicates (MB-09). The audit anchor's lag measured 300.19 s against a 360 s limit, and tampering was caught (MB-14).</p>
+        <p><strong>The misses, on the page:</strong> the founder's holdout evaluation set has never been run; the checker model that the live evaluation waits for is chosen in the next phase; one defect is carried — an enrolment token starting with "-" fails about once in 64; and two integration tests flake under full-suite load, recorded as flakes rather than fixed silently. A miss is shown as a miss.</p>
+      </div>
+    </div>
+    <div class="bench-scroll"><table class="bench"><thead><tr><th>Benchmark</th><th>What it proves</th><th>Its bar</th><th>Measured</th><th>Result</th></tr></thead><tbody>
+      <tr><td>MB-01</td><td>Intake exactly once, under duplicates, reordering, drops and bad signatures</td><td>ack p99 &lt; 2 s; drops found &lt; 300 s</td><td>p99 13 ms; slowest drop 210 s</td><td class="pass">pass</td></tr>
+      <tr><td>MB-04</td><td>Replay-safe: one reply per operation with the executor killed</td><td>every effect settles, none doubled</td><td>20 of 20 settled, 0 duplicates</td><td class="pass">pass</td></tr>
+      <tr><td>MB-05</td><td>The safety line with every provider failing</td><td>record and page &lt; 60 s; acknowledge &lt; 300 s</td><td>worst case 2.42 s</td><td class="pass">pass</td></tr>
+      <tr><td>MB-06</td><td>Claims-safe drafts from approved answers</td><td>every planted case rejected; ≥95% of good drafts pass</td><td>59 of 59 rejected; 101 of 101 passed</td><td class="pass">pass</td></tr>
+      <tr><td>MB-07</td><td>The kill switch under load</td><td>no paused send after commit; effect &lt; 10 s</td><td>observed 621 ms; resumes 0.52 s and 1.06 s</td><td class="pass">pass</td></tr>
+      <tr><td>MB-09</td><td>The recovery drill</td><td>≤15 min lost; restored &lt; 4 h; zero duplicates</td><td>58.7 s lost; 61.9 s runbook; 0 duplicates</td><td class="pass">pass</td></tr>
+      <tr><td>MB-11</td><td>The autonomy ladder promotes on evidence</td><td>eligible at exactly 99 clean outcomes</td><td>eligible at 99, not 98; demotes on a severe error</td><td class="pass">pass</td></tr>
+      <tr><td>MB-12</td><td>Injection: only approved text reaches a draft</td><td>every case ends safe</td><td>31 of 31 ended safe</td><td class="pass">pass</td></tr>
+      <tr><td>MB-14</td><td>The audit anchor: tamper-evident, versioned, restorable</td><td>tampering caught; lag ≤ 360 s</td><td>caught at the edited row; lag 300.19 s</td><td class="pass">pass</td></tr>
+    </tbody></table></div>
+    <p class="om-method">Measured on the MVP as it stands on 28 October 2026: a local build on simulators with synthetic data, no model provider called by any test. Every work package runs a gate — unit, integration, end-to-end and benchmark suites, a traceability check over 367 requirement IDs, lint, types and a dependency and secrets audit — and none of its 10,686 tests calls a real model. Figures marked A1–A11 elsewhere in the project are design targets for the business, not measurements, and this page keeps the two apart.</p>
+  </div>
+</section>
+
+<section class="om-sec" id="limits">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">05 / What it is not</div>
+      <h2>The honest limits.</h2>
+    </div>
+    <ul class="om-trade">
+      <li><b>It is not a business yet.</b> The design is complete and twice reviewed; the build is 28 of 32 work packages in, running locally on synthetic data. There are no customers, and no launch date is promised.</li>
+      <li><b>The billion is a stress test, not a forecast.</b> The design is walked to £1B — about 82,192 orders a day, at most one order in 2,000 reaching the founder — to prove it never needs a rebuild. A profitable plateau at £1M–£3M a year counts as success by default.</li>
+      <li><b>Accountability stays with a person.</b> The law puts it on a named director. The system can delegate work, never the accountability.</li>
+      <li><b>Some judgements need qualified people.</b> Regulatory sign-off, product safety and tax sit with contracted specialists who approve inside their authority. AI never clears a safety report.</li>
+      <li><b>Attention is the real ceiling.</b> Growth spends the founder's hours faster than steady running does. The system tracks the hours weekly and forces the decision before they run out: full-time, more help, or a plateau.</li>
+      <li><b>It is built to be grilled.</b> The next design stage exists to shrink Architecture A — merge parts, cut the founder's upkeep towards two hours a week, and take the open decisions. Nothing here is declared finished.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="om-cta">
+  <div class="container">
+    <div class="prose-cta">
+      <h3>See the week this system is built around.</h3>
+      <p>The guided sample walks one week end to end, in your browser: the 06:45 evidence pull, the 07:30 brief, one decision taken to the advisory board, the gate that acts on it, and the verdict that comes back for calibration. Every id in it is the project's own.</p>
+      <a href="sample/" class="btn btn-primary">Open the guided sample <span class="arrow">→</span></a>
+      <a href="/work/" class="btn btn-ghost">More selected work</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="brand">
+          <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+            <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+            <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+            <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+          </svg>
+          <span>Indica Tech</span>
+        </a>
+        <p>Founder-led AI engineering. Demo to production, under NDA, in regulated industries, on fixed scope.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Engagements</h4>
+        <ul>
+          <li><a href="/services/audit.html">Production Audit</a></li>
+          <li><a href="/services/fractional.html">Fractional AI Lead</a></li>
+          <li><a href="/services/build-sprint.html">Build Sprint</a></li>
+          <li><a href="/services/governance.html">Governance</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/checklists/">Checklists</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/about.html">About Nitish</a></li>
+          <li><a href="/#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/company/indica-technology/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://instagram.com/demotoprod" target="_blank" rel="noopener">@demotoprod</a></li>
+          <li><a href="mailto:hello@indica-tech.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span class="year">2026</span> Indica Technology Ltd · Registered in England · VAT No. GB 517 173 008</span>
+      <span class="footer-legal">
+        <a href="/privacy.html">Privacy</a> ·
+        <a href="/terms.html">Terms</a> ·
+        <a href="/cookies.html">Cookies</a>
+      </span>
+      <span class="status">Taking new projects · Q2 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/script.js"></script>
+</body>
+</html>
