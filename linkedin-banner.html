@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Indica Tech — LinkedIn Banner</title>
+<meta name="viewport" content="width=1700">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -37,18 +38,40 @@
     background: #1a1a16;
   }
   .lede strong { color: var(--signal); }
+  .lede code {
+    background: #0d0d0a; padding: 1px 6px; border: 1px solid #333; color: var(--paper);
+    font-size: 0.86em;
+  }
 
   .variant {
     display: flex; flex-direction: column; gap: 14px;
   }
   .variant .label {
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
     font-family: var(--mono);
     font-size: 0.72rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: #a8a298;
   }
+  .variant .label .left { display: inline-flex; align-items: center; gap: 12px; }
   .variant .label strong { color: var(--signal); }
+  .dl-btn {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--signal);
+    background: transparent;
+    border: 1px solid var(--signal);
+    padding: 8px 14px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: background 120ms ease, color 120ms ease;
+  }
+  .dl-btn:hover { background: var(--signal); color: var(--signal-ink); }
+  .dl-btn[disabled] { opacity: 0.5; cursor: wait; }
+  .dl-btn .arrow { font-size: 1rem; line-height: 1; }
 
   .banner {
     width: 1584px;
@@ -63,9 +86,7 @@
   }
 
   /* ========================================================= Variant A — Editorial split */
-  .banner.a {
-    grid-template-columns: 460px 1fr;
-  }
+  .banner.a { grid-template-columns: 460px 1fr; }
   .a .left {
     background: var(--paper);
     color: var(--ink);
@@ -74,16 +95,9 @@
     border-right: 1px solid var(--ink);
     position: relative;
   }
-  .a .logo-lockup {
-    display: flex; align-items: center; gap: 18px;
-  }
+  .a .logo-lockup { display: flex; align-items: center; gap: 18px; }
   .a .mark-svg { width: 72px; height: 72px; flex-shrink: 0; }
-  .a .wordmark .name {
-    font-weight: 600;
-    font-size: 2.2rem;
-    letter-spacing: -0.035em;
-    line-height: 1;
-  }
+  .a .wordmark .name { font-weight: 600; font-size: 2.2rem; letter-spacing: -0.035em; line-height: 1; }
   .a .wordmark .sub {
     margin-top: 6px;
     font-family: var(--mono);
@@ -117,13 +131,7 @@
     margin-bottom: 14px;
   }
   .a .kicker::before { content: ""; width: 24px; height: 1px; background: #a8a298; }
-  .a h1 {
-    font-size: 3.1rem;
-    font-weight: 600;
-    letter-spacing: -0.035em;
-    line-height: 1.02;
-    margin-bottom: 18px;
-  }
+  .a h1 { font-size: 3.1rem; font-weight: 600; letter-spacing: -0.035em; line-height: 1.02; margin-bottom: 18px; }
   .a h1 em { font-style: normal; color: var(--signal); }
   .a .roles {
     font-family: var(--mono);
@@ -133,11 +141,7 @@
     margin-bottom: 20px;
   }
   .a .roles .sep { color: var(--rule); margin: 0 10px; }
-  .a .domains {
-    display: flex; flex-wrap: wrap; gap: 0;
-    border-top: 1px solid var(--rule);
-    padding-top: 16px;
-  }
+  .a .domains { display: flex; flex-wrap: wrap; gap: 0; border-top: 1px solid var(--rule); padding-top: 16px; }
   .a .domain {
     font-family: var(--mono);
     font-size: 0.78rem;
@@ -168,12 +172,9 @@
     0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,196,106,0.4); }
     50% { opacity: .6; box-shadow: 0 0 0 6px rgba(0,196,106,0); }
   }
-
-  /* Circuit backdrop, subtle */
   .a .right::before {
     content: "";
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background-image:
       linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
@@ -189,10 +190,8 @@
   }
   .b::before {
     content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(circle at 25% 20%, rgba(0,196,106,0.08) 0%, transparent 40%);
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 25% 20%, rgba(0,196,106,0.08) 0%, transparent 40%);
     pointer-events: none;
   }
   .b .terminal-head {
@@ -217,13 +216,7 @@
     width: 8px; height: 8px; background: var(--signal); border-radius: 50%;
     animation: pulse 2s infinite;
   }
-  .b h1 {
-    font-size: 3.4rem;
-    font-weight: 600;
-    letter-spacing: -0.035em;
-    line-height: 1.02;
-    margin-bottom: 8px;
-  }
+  .b h1 { font-size: 3.4rem; font-weight: 600; letter-spacing: -0.035em; line-height: 1.02; margin-bottom: 8px; }
   .b h1 .demo { color: #a8a298; }
   .b h1 .arrow { color: var(--signal); margin: 0 16px; }
   .b h1 .prod { color: var(--paper); }
@@ -243,9 +236,7 @@
     padding-top: 20px;
     border-top: 1px solid var(--rule);
   }
-  .b .domains {
-    display: flex; flex-wrap: wrap; gap: 0;
-  }
+  .b .domains { display: flex; flex-wrap: wrap; gap: 0; }
   .b .domains .d {
     font-family: var(--mono);
     font-size: 0.82rem;
@@ -263,7 +254,11 @@
     font-size: 0.82rem;
     color: #a8a298;
     line-height: 1.7;
+    min-width: 160px;
+    flex-shrink: 0;
+    display: flex; flex-direction: column;
   }
+  .b .contact .site, .b .contact .handle { display: block; white-space: nowrap; }
   .b .contact .site { color: var(--paper); }
   .b .contact .handle { color: var(--signal); }
 
@@ -273,18 +268,10 @@
     padding: 56px 72px;
     display: flex; flex-direction: column; justify-content: space-between;
   }
-  .c .top-row {
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .c .logo-lockup {
-    display: flex; align-items: center; gap: 16px;
-  }
+  .c .top-row { display: flex; justify-content: space-between; align-items: center; }
+  .c .logo-lockup { display: flex; align-items: center; gap: 16px; }
   .c .logo-lockup .mark-svg { width: 48px; height: 48px; }
-  .c .logo-lockup .name {
-    font-size: 1.4rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-  }
+  .c .logo-lockup .name { font-size: 1.4rem; font-weight: 600; letter-spacing: -0.02em; }
   .c .logo-lockup .sub {
     font-family: var(--mono);
     font-size: 0.72rem;
@@ -303,17 +290,9 @@
   }
   .c .top-meta .signal { color: var(--signal); }
   .c .middle h1 {
-    font-size: 4.2rem;
-    font-weight: 600;
-    letter-spacing: -0.04em;
-    line-height: 0.98;
-    max-width: 17ch;
+    font-size: 4.2rem; font-weight: 600; letter-spacing: -0.04em; line-height: 0.98; max-width: 17ch;
   }
-  .c .middle h1 .hl {
-    background: var(--signal);
-    color: var(--signal-ink);
-    padding: 0 10px;
-  }
+  .c .middle h1 .hl { background: var(--signal); color: var(--signal-ink); padding: 0 10px; }
   .c .bottom {
     display: grid;
     grid-template-columns: 1fr 1fr auto;
@@ -347,7 +326,391 @@
     padding: 10px 18px;
   }
 
-  /* Credits */
+  /* ========================================================= Variant D — @demotoprod */
+  .banner.d {
+    grid-template-columns: 1fr;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 0;
+    overflow: hidden;
+  }
+  .d-grid { display: grid; grid-template-columns: 1.05fr 1fr; height: 100%; }
+  .d-left {
+    padding: 44px 56px 40px;
+    background: var(--paper);
+    color: var(--ink);
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative;
+    border-right: 1px dashed #BFB9AD;
+  }
+  .d-left::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(11,11,10,0.08) 1px, transparent 0);
+    background-size: 14px 14px;
+    -webkit-mask-image: radial-gradient(ellipse at 30% 50%, black 30%, transparent 80%);
+            mask-image: radial-gradient(ellipse at 30% 50%, black 30%, transparent 80%);
+    pointer-events: none;
+  }
+  .d-left > * { position: relative; }
+  .d-handle {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-family: var(--mono);
+    font-size: 1.2rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .d-handle .at { color: var(--signal); font-weight: 600; font-size: 1.4rem; }
+  .d-handle .name { font-weight: 600; }
+  .d-handle .verified {
+    width: 22px; height: 22px;
+    background: var(--signal);
+    color: var(--signal-ink);
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+  .d h1 {
+    font-size: 3.4rem; font-weight: 600; letter-spacing: -0.04em; line-height: 0.98;
+    margin-top: 18px; margin-bottom: 14px;
+  }
+  .d h1 .em { background: var(--signal); color: var(--signal-ink); padding: 0 10px; margin: 0 -2px; }
+  .d-tagline {
+    font-family: var(--mono);
+    font-size: 0.94rem;
+    color: #5E5B55;
+    letter-spacing: 0.01em;
+    margin-bottom: 22px;
+    max-width: 38ch;
+    line-height: 1.5;
+  }
+  .d-channels { display: flex; flex-wrap: wrap; gap: 0; border-top: 1px solid var(--ink); padding-top: 14px; }
+  .d-channels .ch {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+    padding: 2px 14px 2px 0;
+    border-right: 1px solid #BFB9AD;
+    margin-right: 14px;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .d-channels .ch:last-child { border-right: 0; margin-right: 0; }
+  .d-channels .ch .sig { color: var(--signal); font-weight: 600; }
+
+  .d-right {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 44px 56px 40px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .d-right::before {
+    content: "";
+    position: absolute;
+    right: -10%; top: -20%;
+    width: 80%; height: 80%;
+    background: radial-gradient(circle, rgba(0,196,106,0.12), transparent 60%);
+    filter: blur(60px);
+    pointer-events: none;
+  }
+  .d-right > * { position: relative; }
+  .d-by {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #a8a298;
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-bottom: 18px;
+  }
+  .d-by::before { content: ""; width: 22px; height: 1px; background: #a8a298; }
+  .d-byline { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+  .d-byline .mark-svg { width: 36px; height: 36px; color: var(--paper); flex-shrink: 0; }
+  .d-byline .by-text { font-family: var(--sans); font-size: 1.15rem; font-weight: 500; letter-spacing: -0.015em; }
+  .d-byline .by-text .sub {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    font-weight: 400;
+    color: #a8a298;
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+  .d-pitch { font-size: 1.08rem; line-height: 1.45; color: #d9d3c6; margin-bottom: 24px; max-width: 38ch; }
+  .d-pitch strong { color: var(--paper); font-weight: 500; }
+  .d-pitch .sig { color: var(--signal); font-weight: 500; }
+  .d-funnel {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0;
+    padding-top: 18px; border-top: 1px solid var(--rule);
+  }
+  .d-funnel .stage { padding-right: 16px; border-right: 1px solid var(--rule); margin-right: 16px; font-family: var(--mono); }
+  .d-funnel .stage:last-child { border-right: 0; padding-right: 0; margin-right: 0; }
+  .d-funnel .stage .k {
+    font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #888278; margin-bottom: 4px;
+  }
+  .d-funnel .stage .v {
+    font-family: var(--sans); font-size: 0.92rem; color: var(--paper);
+    font-weight: 500; line-height: 1.3; letter-spacing: -0.01em;
+  }
+  .d-funnel .stage:nth-child(2) .k,
+  .d-funnel .stage:nth-child(2) .v { color: var(--signal); }
+
+  .d-industries { display: flex; flex-wrap: wrap; padding-top: 16px; border-top: 1px solid var(--rule); gap: 0; }
+  .d-industries .di {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--signal);
+    padding: 2px 12px 2px 0;
+    border-right: 1px solid var(--rule);
+    margin-right: 12px;
+  }
+  .d-industries .di:last-child { border-right: 0; margin-right: 0; }
+  .d-industries .di:nth-child(even) { color: #d9d3c6; }
+
+  /* ========================================================= Variant E — Identity + Terminal split */
+  .banner.e { grid-template-columns: 480px 1fr; }
+  .e .e-left {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 36px 36px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    border-right: 1px solid var(--ink);
+  }
+  .e .e-left .lockup { display: flex; align-items: center; gap: 16px; }
+  .e .e-left .mark-svg { width: 56px; height: 56px; flex-shrink: 0; }
+  .e .e-left .name { font-weight: 600; font-size: 1.85rem; letter-spacing: -0.03em; line-height: 1; }
+  .e .e-left .sub {
+    margin-top: 4px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: #5E5B55;
+    letter-spacing: 0.04em;
+  }
+  .e .e-left .meta {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+    color: #5E5B55;
+    line-height: 1.8;
+  }
+  .e .e-left .meta .row { display: flex; gap: 10px; align-items: center; }
+  .e .e-left .meta .dot { width: 6px; height: 6px; background: var(--signal); border-radius: 50%; }
+  .e .e-left .meta .pipes { color: var(--ink); letter-spacing: 0.04em; }
+  .e .e-left .meta .pipes span.sep { color: #BFB9AD; padding: 0 6px; }
+  .e .e-left .meta .links { color: var(--ink); }
+  .e .e-left .meta .links .at { color: var(--signal); }
+
+  .e .e-right {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 32px 44px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .e .e-right::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 80% 10%, rgba(0,196,106,0.10) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  .e .e-right > * { position: relative; }
+  .e .term {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: #a8a298;
+    letter-spacing: 0.02em;
+  }
+  .e .term .user { color: #cfc9be; }
+  .e .term .colon, .e .term .dollar { color: #555; }
+  .e .term .path { color: var(--signal); }
+  .e .term .cmd { color: var(--paper); }
+  .e .term .status {
+    margin-left: auto;
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--signal);
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+  }
+  .e .term .status .pulse {
+    width: 8px; height: 8px; background: var(--signal); border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  .e h1 { font-size: 2.9rem; font-weight: 600; letter-spacing: -0.035em; line-height: 1.0; margin-top: 4px; }
+  .e h1 .demo { color: #a8a298; }
+  .e h1 .arrow { color: var(--signal); margin: 0 12px; }
+  .e h1 .prod { color: var(--paper); }
+  .e .e-sub {
+    font-family: var(--mono);
+    font-size: 0.86rem;
+    color: #c9c4ba;
+    line-height: 1.55;
+    max-width: 70ch;
+  }
+  .e .e-sub strong { color: var(--paper); font-weight: 500; }
+  .e .e-bottom {
+    display: flex; align-items: end; justify-content: space-between; gap: 20px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+  }
+  .e .e-domains { display: flex; flex-wrap: wrap; gap: 0; }
+  .e .e-domains .d {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--signal);
+    padding: 2px 12px 2px 0;
+    border-right: 1px solid var(--rule);
+    margin-right: 12px;
+  }
+  .e .e-domains .d:last-child { border-right: 0; margin-right: 0; }
+  .e .e-contact {
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: #a8a298;
+    flex-shrink: 0;
+    min-width: 150px;
+    display: flex; flex-direction: column;
+  }
+  .e .e-contact .site, .e .e-contact .handle { display: block; white-space: nowrap; }
+  .e .e-contact .site { color: var(--paper); }
+  .e .e-contact .handle { color: var(--signal); }
+
+  /* ========================================================= Variant F — Index card */
+  .banner.f {
+    grid-template-columns: 1fr;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 36px 56px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative;
+  }
+  .banner.f::before {
+    content: "";
+    position: absolute; left: 0; right: 0; top: 96px;
+    height: 1px; background: #BFB9AD;
+  }
+  .f .f-top { display: flex; align-items: center; justify-content: space-between; }
+  .f .f-lockup { display: flex; align-items: center; gap: 14px; }
+  .f .f-lockup .mark-svg { width: 44px; height: 44px; color: var(--ink); }
+  .f .f-lockup .name { font-weight: 600; font-size: 1.5rem; letter-spacing: -0.02em; }
+  .f .f-lockup .sub {
+    font-family: var(--mono); font-size: 0.74rem; color: #5E5B55;
+    letter-spacing: 0.04em; margin-top: 2px;
+  }
+  .f .f-stamp {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--signal);
+    border: 1px solid var(--signal);
+    padding: 6px 12px;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .f .f-stamp .pulse {
+    width: 6px; height: 6px; background: var(--signal); border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  .f .f-mid h1 {
+    font-size: 3.6rem; font-weight: 600; letter-spacing: -0.04em; line-height: 1;
+    max-width: 18ch;
+  }
+  .f .f-mid h1 em { font-style: normal; color: var(--signal); }
+  .f .f-bottom {
+    display: grid; grid-template-columns: auto 1fr auto;
+    gap: 28px; align-items: end;
+    padding-top: 16px; border-top: 1px solid var(--ink);
+  }
+  .f .f-roles {
+    font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.06em;
+    color: var(--ink); text-transform: uppercase;
+  }
+  .f .f-industries {
+    display: flex; flex-wrap: wrap; gap: 0;
+    font-family: var(--mono); font-size: 0.72rem;
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .f .f-industries .fi {
+    padding: 2px 10px 2px 0;
+    border-right: 1px solid #BFB9AD;
+    margin-right: 10px;
+    color: var(--ink);
+  }
+  .f .f-industries .fi:nth-child(odd) { color: var(--signal); }
+  .f .f-industries .fi:last-child { border-right: 0; margin-right: 0; }
+  .f .f-handles {
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    min-width: 150px;
+    flex-shrink: 0;
+    display: flex; flex-direction: column;
+  }
+  .f .f-handles .site, .f .f-handles .handle { display: block; white-space: nowrap; }
+  .f .f-handles .site { color: var(--ink); }
+  .f .f-handles .handle { color: var(--signal); }
+
+  /* ========================================================= Variant G — Type-led ticker */
+  .banner.g {
+    grid-template-columns: 1fr;
+    padding: 0;
+    background: var(--ink);
+    color: var(--paper);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    overflow: hidden;
+  }
+  .g .g-strip {
+    background: var(--signal);
+    color: var(--signal-ink);
+    padding: 8px 32px;
+    display: flex; align-items: center; gap: 24px;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+    overflow: hidden; white-space: nowrap;
+  }
+  .g .g-strip .sep { opacity: 0.5; }
+  .g .g-mid {
+    padding: 28px 56px 28px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center; gap: 28px;
+  }
+  .g .g-mid .mark-svg { width: 96px; height: 96px; color: var(--paper); flex-shrink: 0; }
+  .g .g-mid h1 { font-size: 4rem; font-weight: 700; letter-spacing: -0.045em; line-height: 0.95; }
+  .g .g-mid h1 .a { color: var(--paper); }
+  .g .g-mid h1 .b { color: #6f6a60; }
+  .g .g-mid h1 .c { color: var(--signal); }
+  .g .g-foot {
+    padding: 14px 32px;
+    border-top: 1px solid var(--rule);
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    color: #a8a298;
+    letter-spacing: 0.04em;
+  }
+  .g .g-foot .name { color: var(--paper); font-weight: 500; }
+  .g .g-foot .signal { color: var(--signal); }
+  .g .g-foot .pipes { display: inline-flex; gap: 8px; }
+  .g .g-foot .pipes .sep { color: #555; }
+
   .credits {
     max-width: 1584px;
     padding: 12px 20px;
@@ -355,11 +718,25 @@
     font-size: 0.72rem;
     color: #888;
   }
+
+  /* Toast for download status */
+  #toast {
+    position: fixed; right: 20px; bottom: 20px;
+    background: var(--ink); color: var(--paper);
+    border: 1px solid var(--signal);
+    font-family: var(--mono); font-size: 0.78rem;
+    padding: 12px 16px;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 200ms ease, transform 200ms ease;
+    pointer-events: none; z-index: 9999;
+    letter-spacing: 0.02em;
+  }
+  #toast.show { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- Reusable SVG (via <symbol>) -->
+<!-- Reusable mark (referenced via <use>) -->
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;" aria-hidden="true">
   <symbol id="mark" viewBox="0 0 100 100">
     <circle cx="32" cy="26" r="7" fill="#00C46A"/>
@@ -369,13 +746,19 @@
 </svg>
 
 <div class="lede">
-  <strong>3 LinkedIn banner options</strong> &nbsp;·&nbsp; 1584×396 &nbsp;·&nbsp; drop-in-ready. Each carries the full message (CTO / SaaS / AI / LLM · tech strategy · transforming ideas into products · industries), rebuilt in our new Indica Tech design language — A2 slash mark, IBM Plex, paper+ink, signal green. To export: screenshot or right-click → "Save as image" on the one you pick. Signal-green pulse animations will freeze on export, which is fine — the static state still reads.
+  <strong>7 LinkedIn banner options</strong> &nbsp;·&nbsp; 1584×396 &nbsp;·&nbsp; drop-in-ready.
+  <strong>A–C, E–G are for Indica Tech</strong>; <strong>D is for @demotoprod</strong>.
+  All variants carry @demotoprod and the full industries list (Defence · Fintech · MedTech · Climate Tech · Forensics · Critical Infra · GenAI).
+  Click <code>Download PNG</code> on any option to save it at the exact LinkedIn size — Option F and Option G have download buttons highlighted.
 </div>
 
 <!-- ========================================================= A: Editorial split -->
 <div class="variant">
-  <div class="label">Option A <strong>/ Editorial split</strong> &nbsp;·&nbsp; light+dark · most like the website</div>
-  <div class="banner a">
+  <div class="label">
+    <span class="left">Option A <strong>/ Editorial split</strong> &nbsp;·&nbsp; light+dark · most like the website</span>
+    <button class="dl-btn" data-dl="a" data-name="indica-tech-banner-A-editorial-split"><span class="arrow">↓</span> Download PNG</button>
+  </div>
+  <div class="banner a" id="banner-a">
     <div class="left">
       <div class="logo-lockup">
         <svg class="mark-svg" style="color: #0B0B0A;"><use href="#mark"/></svg>
@@ -391,7 +774,7 @@
       </div>
     </div>
     <div class="right">
-      <div class="cta-strip"><span class="pulse"></span>Now taking Q3 engagements</div>
+      <div class="cta-strip"><span class="pulse"></span>Now taking engagements</div>
       <div>
         <div class="kicker">Tech strategy &amp; AI engineering</div>
         <h1>AI that <em>ships.</em><br>Not slideware.</h1>
@@ -399,12 +782,12 @@
       <div>
         <div class="roles">Technology Executive<span class="sep">·</span>Startup Advisor<span class="sep">·</span>Fractional CTO</div>
         <div class="domains">
-          <span class="domain">Energy</span>
-          <span class="domain">Fintech</span>
-          <span class="domain">IoT</span>
           <span class="domain">Defence</span>
-          <span class="domain">SaaS</span>
-          <span class="domain">GIS</span>
+          <span class="domain">Fintech</span>
+          <span class="domain">MedTech</span>
+          <span class="domain">Climate Tech</span>
+          <span class="domain">Forensics</span>
+          <span class="domain">Critical Infra</span>
           <span class="domain">GenAI</span>
         </div>
       </div>
@@ -414,8 +797,11 @@
 
 <!-- ========================================================= B: Terminal-prompt -->
 <div class="variant">
-  <div class="label">Option B <strong>/ Terminal-prompt</strong> &nbsp;·&nbsp; all-ink · most "engineer-coded"</div>
-  <div class="banner b">
+  <div class="label">
+    <span class="left">Option B <strong>/ Terminal-prompt</strong> &nbsp;·&nbsp; all-ink · most "engineer-coded"</span>
+    <button class="dl-btn" data-dl="b" data-name="indica-tech-banner-B-terminal"><span class="arrow">↓</span> Download PNG</button>
+  </div>
+  <div class="banner b" id="banner-b">
     <div class="terminal-head">
       <svg class="mark-svg" style="color: #F5F2EC;"><use href="#mark"/></svg>
       <span style="color:#a8a298;">nitish@indica</span>
@@ -429,12 +815,12 @@
     <div class="sub">Fractional CTO · SaaS · AI · LLM · tech strategy &amp; innovation. <strong>Transforming ideas into market-leading products.</strong></div>
     <div class="bottom">
       <div class="domains">
-        <span class="d">Energy</span>
-        <span class="d">Fintech</span>
-        <span class="d">IoT</span>
         <span class="d">Defence</span>
-        <span class="d">SaaS</span>
-        <span class="d">GIS</span>
+        <span class="d">Fintech</span>
+        <span class="d">MedTech</span>
+        <span class="d">Climate Tech</span>
+        <span class="d">Forensics</span>
+        <span class="d">Critical Infra</span>
         <span class="d">GenAI</span>
       </div>
       <div class="contact">
@@ -447,8 +833,11 @@
 
 <!-- ========================================================= C: Bold statement -->
 <div class="variant">
-  <div class="label">Option C <strong>/ Bold statement</strong> &nbsp;·&nbsp; hero-style · strongest visual impact</div>
-  <div class="banner c">
+  <div class="label">
+    <span class="left">Option C <strong>/ Bold statement</strong> &nbsp;·&nbsp; hero-style · strongest visual impact</span>
+    <button class="dl-btn" data-dl="c" data-name="indica-tech-banner-C-bold-statement"><span class="arrow">↓</span> Download PNG</button>
+  </div>
+  <div class="banner c" id="banner-c">
     <div class="top-row">
       <div class="logo-lockup">
         <svg class="mark-svg" style="color: #F5F2EC;"><use href="#mark"/></svg>
@@ -458,8 +847,8 @@
         </div>
       </div>
       <div class="top-meta">
-        <div><span class="signal">●</span> Taking Q3 engagements</div>
-        <div>UK · US · Remote-first · Est. 2020</div>
+        <div><span class="signal">●</span> Taking engagements</div>
+        <div>UK · US · Remote-first · @demotoprod</div>
       </div>
     </div>
     <div class="middle">
@@ -468,7 +857,7 @@
     <div class="bottom">
       <div>
         <div class="col-label">Industries</div>
-        <div class="val"><span class="sig">Energy</span> · <span class="sig">Fintech</span> · <span class="sig">IoT</span> · <span class="sig">Defence</span> · <span class="sig">SaaS</span> · <span class="sig">GIS</span> · <span class="sig">GenAI</span></div>
+        <div class="val"><span class="sig">Defence</span> · <span class="sig">Fintech</span> · <span class="sig">MedTech</span> · <span class="sig">Climate Tech</span> · <span class="sig">Forensics</span> · <span class="sig">Critical Infra</span> · <span class="sig">GenAI</span></div>
       </div>
       <div>
         <div class="col-label">Proof</div>
@@ -479,9 +868,238 @@
   </div>
 </div>
 
+<!-- ========================================================= D: @demotoprod -->
+<div class="variant">
+  <div class="label">
+    <span class="left">Option D <strong>/ @demotoprod</strong> &nbsp;·&nbsp; the content brand · top of funnel · paper+ink split</span>
+    <button class="dl-btn" data-dl="d" data-name="demotoprod-banner-D"><span class="arrow">↓</span> Download PNG</button>
+  </div>
+  <div class="banner d" id="banner-d">
+    <div class="d-grid">
+      <div class="d-left">
+        <div class="d-handle">
+          <span class="at">@</span><span class="name">demotoprod</span>
+          <span class="verified" aria-label="signal">↗</span>
+        </div>
+        <div>
+          <h1>The receipts<br>behind the <span class="em">demos.</span></h1>
+          <p class="d-tagline">Field notes, debugging diaries and the unglamorous work that turns AI demos into production systems.</p>
+        </div>
+        <div class="d-channels">
+          <span class="ch"><span class="sig">▸</span>YouTube</span>
+          <span class="ch"><span class="sig">▸</span>TikTok</span>
+          <span class="ch"><span class="sig">▸</span>Instagram</span>
+          <span class="ch"><span class="sig">▸</span>LinkedIn</span>
+        </div>
+      </div>
+      <div class="d-right">
+        <div class="d-by">Powered by</div>
+        <div class="d-byline">
+          <svg class="mark-svg"><use href="#mark"/></svg>
+          <div class="by-text">Indica Tech<span class="sub">Founder-led AI engineering · UK</span></div>
+        </div>
+        <div class="d-pitch">
+          <strong>The funnel.</strong> @demotoprod brings you here. <span class="sig">indica-tech.com</span> ships the system. Same hands. Same standard.
+        </div>
+        <div class="d-industries">
+          <span class="di">Defence</span>
+          <span class="di">Fintech</span>
+          <span class="di">MedTech</span>
+          <span class="di">Climate Tech</span>
+          <span class="di">Forensics</span>
+          <span class="di">Critical Infra</span>
+          <span class="di">GenAI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= E: Identity + Terminal split -->
+<div class="variant">
+  <div class="label">
+    <span class="left">Option E <strong>/ Identity + Terminal split</strong> &nbsp;·&nbsp; light identity left · terminal hero right</span>
+    <button class="dl-btn" data-dl="e" data-name="indica-tech-banner-E-identity-terminal"><span class="arrow">↓</span> Download PNG</button>
+  </div>
+  <div class="banner e" id="banner-e">
+    <div class="e-left">
+      <div class="lockup">
+        <svg class="mark-svg" style="color: #0B0B0A;"><use href="#mark"/></svg>
+        <div>
+          <div class="name">Indica Tech</div>
+          <div class="sub">/ demo → prod</div>
+        </div>
+      </div>
+      <div class="meta">
+        <div class="row"><span class="dot"></span>Founder-led · UK · US · Remote-first</div>
+        <div class="row pipes">CTO<span class="sep">|</span>SaaS<span class="sep">|</span>AI<span class="sep">|</span>LLM</div>
+        <div class="row links">indica-tech.com &nbsp;·&nbsp; <span class="at">@</span>demotoprod</div>
+      </div>
+    </div>
+    <div class="e-right">
+      <div class="term">
+        <span class="user">nitish@indica</span><span class="colon">:</span><span class="path">~/production</span><span class="dollar">$</span><span class="cmd">ship --from=demo --to=prod</span>
+        <span class="status"><span class="pulse"></span>200 OK</span>
+      </div>
+      <h1><span class="demo">Demo</span><span class="arrow">→</span><span class="prod">Production.</span></h1>
+      <div class="e-sub">Fractional CTO · SaaS · AI · LLM · tech strategy &amp; innovation. <strong>Transforming ideas into market-leading products.</strong></div>
+      <div class="e-bottom">
+        <div class="e-domains">
+          <span class="d">Defence</span>
+          <span class="d">Fintech</span>
+          <span class="d">MedTech</span>
+          <span class="d">Climate Tech</span>
+          <span class="d">Forensics</span>
+          <span class="d">Critical Infra</span>
+          <span class="d">GenAI</span>
+        </div>
+        <div class="e-contact">
+          <div class="site">indica-tech.com</div>
+          <div class="handle">@demotoprod</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= F: Index card -->
+<div class="variant">
+  <div class="label">
+    <span class="left">Option F <strong>/ Index card</strong> &nbsp;·&nbsp; paper-only · editorial · clean</span>
+    <button class="dl-btn" data-dl="f" data-name="indica-tech-banner-F-index-card"><span class="arrow">↓</span> Download PNG</button>
+  </div>
+  <div class="banner f" id="banner-f">
+    <div class="f-top">
+      <div class="f-lockup">
+        <svg class="mark-svg"><use href="#mark"/></svg>
+        <div>
+          <div class="name">Indica Tech</div>
+          <div class="sub">/ demo → prod</div>
+        </div>
+      </div>
+      <div class="f-stamp"><span class="pulse"></span>Taking engagements · Founder-led · UK · US · Remote-first</div>
+    </div>
+    <div class="f-mid">
+      <h1>From AI demo<br>to <em>production system.</em></h1>
+    </div>
+    <div class="f-bottom">
+      <div class="f-roles">CTO · SaaS · AI · LLM</div>
+      <div class="f-industries">
+        <span class="fi">Defence</span>
+        <span class="fi">Fintech</span>
+        <span class="fi">MedTech</span>
+        <span class="fi">Climate Tech</span>
+        <span class="fi">Forensics</span>
+        <span class="fi">Critical Infra</span>
+        <span class="fi">GenAI</span>
+      </div>
+      <div class="f-handles">
+        <div class="site">indica-tech.com</div>
+        <div class="handle">@demotoprod</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= G: Type-led ticker -->
+<div class="variant">
+  <div class="label">
+    <span class="left">Option G <strong>/ Type-led ticker</strong> &nbsp;·&nbsp; signal-strip header · type-as-hero · loudest</span>
+    <button class="dl-btn" data-dl="g" data-name="indica-tech-banner-G-type-led-ticker"><span class="arrow">↓</span> Download PNG</button>
+  </div>
+  <div class="banner g" id="banner-g">
+    <div class="g-strip">
+      <span>Defence</span><span class="sep">·</span>
+      <span>Fintech</span><span class="sep">·</span>
+      <span>MedTech</span><span class="sep">·</span>
+      <span>Climate Tech</span><span class="sep">·</span>
+      <span>Forensics</span><span class="sep">·</span>
+      <span>Critical Infra</span><span class="sep">·</span>
+      <span>GenAI</span>
+    </div>
+    <div class="g-mid">
+      <svg class="mark-svg"><use href="#mark"/></svg>
+      <h1><span class="a">Demo</span> <span class="b">becomes</span> <span class="c">Production.</span></h1>
+    </div>
+    <div class="g-foot">
+      <span class="name">Indica Tech</span>
+      <span class="pipes">CTO<span class="sep">|</span>SaaS<span class="sep">|</span>AI<span class="sep">|</span>LLM</span>
+      <span>Founder-led · UK · US · Remote-first</span>
+      <span><span class="signal">@demotoprod</span> · indica-tech.com</span>
+    </div>
+  </div>
+</div>
+
 <div class="credits">
   LinkedIn banner spec: 1584×396 px · 4:1. Upload under "Edit background" on your LinkedIn profile.
 </div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- html-to-image: rasterise a DOM node to PNG at exact pixel dimensions -->
+<script src="https://unpkg.com/html-to-image@1.11.13/dist/html-to-image.js" crossorigin="anonymous"></script>
+<script>
+(function () {
+  var BANNER_W = 1584;
+  var BANNER_H = 396;
+  var toast = document.getElementById('toast');
+  var toastTimer;
+
+  function showToast(msg, ms) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove('show'); }, ms || 2400);
+  }
+
+  function downloadPng(variantKey, fileName, btn) {
+    var node = document.getElementById('banner-' + variantKey);
+    if (!node || !window.htmlToImage) {
+      showToast('Renderer not ready — try again.', 3000);
+      return;
+    }
+    btn.disabled = true;
+    var originalLabel = btn.innerHTML;
+    btn.innerHTML = '<span class="arrow">…</span> Rendering';
+    showToast('Rendering ' + fileName + '.png …');
+
+    // Pause the pulse animations during capture so the PNG is deterministic.
+    document.querySelectorAll('.pulse').forEach(function (p) { p.style.animationPlayState = 'paused'; });
+
+    htmlToImage.toPng(node, {
+      width: BANNER_W,
+      height: BANNER_H,
+      pixelRatio: 1,
+      cacheBust: true,
+      backgroundColor: null,
+      style: { transform: 'none' }
+    }).then(function (dataUrl) {
+      var link = document.createElement('a');
+      link.download = fileName + '.png';
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('Saved ' + fileName + '.png (1584×396)');
+    }).catch(function (err) {
+      console.error(err);
+      showToast('Render failed — see console.', 4000);
+    }).finally(function () {
+      document.querySelectorAll('.pulse').forEach(function (p) { p.style.animationPlayState = 'running'; });
+      btn.disabled = false;
+      btn.innerHTML = originalLabel;
+    });
+  }
+
+  document.querySelectorAll('button.dl-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var key = btn.getAttribute('data-dl');
+      var name = btn.getAttribute('data-name') || ('indica-tech-banner-' + key);
+      downloadPng(key, name, btn);
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
