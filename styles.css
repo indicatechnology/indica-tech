@@ -857,7 +857,7 @@ p { color: var(--ink-mute); font-size: 1.0625rem; line-height: 1.65; }
   color: var(--ink-faint);
   margin-right: 4px;
 }
-.reel-follow a {
+.reel-follow a:not(.sticker) {
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -867,10 +867,12 @@ p { color: var(--ink-mute); font-size: 1.0625rem; line-height: 1.65; }
   background: var(--paper);
   transition: background .15s, color .15s;
 }
-.reel-follow a:hover {
+.reel-follow a:not(.sticker):hover {
   background: var(--ink);
   color: var(--paper);
 }
+/* demotoprod lockup sticker — reuses the shared .sticker rules */
+.reel-follow .sticker img { height: 72px; }
 
 @media (max-width: 900px) {
   .reel-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1243,6 +1245,11 @@ a.short.accent:hover .play { background: var(--ink); color: var(--signal); }
   margin-top: 16px;
   color: var(--ink-mute);
 }
+/* demotoprod co-brand sticker — seal under the footer brand */
+.sticker { display: inline-block; line-height: 0; }
+.sticker img { height: 44px; width: auto; display: block; opacity: .92; transition: opacity .15s, transform .15s; }
+.sticker:hover img { opacity: 1; transform: translateY(-1px); }
+.footer-brand .sticker { margin-top: 14px; }
 .footer-col h4 {
   font-family: var(--mono);
   font-size: 0.72rem;
