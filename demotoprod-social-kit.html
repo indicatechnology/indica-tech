@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>@demotoprod — Social Kit</title>
+<meta name="viewport" content="width=2700">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5F2EC;
+    --paper-2: #EDE8DF;
+    --ink: #0B0B0A;
+    --ink-2: #16160F;
+    --ink-mute: #8A857D;
+    --rule: #3A3A32;
+    --signal: #00C46A;
+    --signal-ink: #003B1F;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+    --sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #1a1a16; min-height: 100vh; font-family: var(--sans); color: var(--paper); }
+  body {
+    padding: 48px 24px 96px;
+    display: flex; flex-direction: column; align-items: center; gap: 64px;
+  }
+
+  .lede {
+    max-width: 1280px; width: 100%;
+    color: #cfc9be;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    font-family: var(--mono);
+    padding: 18px 24px;
+    border: 1px solid #444;
+    background: #1a1a16;
+  }
+  .lede strong { color: var(--signal); }
+  .lede code {
+    color: var(--paper); background: #2a2a22;
+    padding: 1px 6px; border-radius: 3px;
+    font-size: 0.86em;
+  }
+
+  .toolbar {
+    max-width: 1280px; width: 100%;
+    display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+    font-family: var(--mono); font-size: 0.78rem; color: #a8a298;
+  }
+  .toolbar .spacer { flex: 1; }
+  .btn {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+    background: transparent;
+    border: 1px solid var(--signal);
+    color: var(--signal);
+  }
+  .btn:hover { background: var(--signal); color: var(--signal-ink); }
+  .btn[disabled] { opacity: 0.55; cursor: wait; }
+  .btn .arrow { font-size: 1rem; line-height: 1; }
+  .btn.primary { background: var(--signal); color: var(--signal-ink); font-weight: 700; }
+  .btn.primary:hover { background: var(--signal-ink); color: var(--signal); border-color: var(--signal); }
+
+  .frame-wrap { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+  .frame-label {
+    display: flex; align-items: center; justify-content: space-between; gap: 32px;
+    width: 100%; min-width: 480px;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #a8a298;
+  }
+  .frame-label .left { display: inline-flex; align-items: center; gap: 12px; }
+  .frame-label strong { color: var(--signal); }
+  .frame-label .px { color: #6f6a60; margin-left: 8px; }
+
+  .frame {
+    background: var(--ink);
+    color: var(--paper);
+    overflow: hidden;
+    position: relative;
+    font-family: var(--sans);
+    box-shadow: 0 0 0 1px #2a2a22, 0 18px 40px rgba(0,0,0,0.4);
+  }
+
+  /* ─────────────────────────────────────── 1. SQUARE LOGO 1080×1080 */
+  .logo {
+    width: 1080px; height: 1080px;
+    background: var(--signal);
+    color: var(--signal-ink);
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: 0;
+  }
+  .logo .stage { position: relative; display: flex; align-items: center; justify-content: center; }
+  .logo .stage::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(0,59,31,0.10) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0,59,31,0.10) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .logo .glyph {
+    position: relative;
+    display: flex; align-items: center; gap: 28px;
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 13rem;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+  .logo .glyph .at { font-size: 14rem; color: var(--signal-ink); font-weight: 700; }
+  .logo .glyph .word {
+    color: var(--signal-ink);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    font-family: var(--sans);
+    font-size: 11rem;
+  }
+  .logo .foot {
+    background: var(--signal-ink);
+    color: var(--signal);
+    padding: 36px 56px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono);
+    font-size: 1.6rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .logo .foot .arrow { color: var(--signal); font-size: 2rem; }
+  .logo .foot .by { font-size: 1.1rem; color: rgba(245,242,236,0.55); letter-spacing: 0.16em; }
+  .logo .foot .by .ind { color: var(--signal); }
+
+  /* Centered square option (alt) */
+  .logo--alt { background: var(--ink); color: var(--paper); }
+  .logo--alt .stage::before { background: none; }
+  .logo--alt .glyph .at { color: var(--signal); }
+  .logo--alt .glyph .word { color: var(--paper); }
+  .logo--alt .foot { background: var(--signal); color: var(--signal-ink); }
+  .logo--alt .foot .arrow { color: var(--signal-ink); font-weight: 700; }
+  .logo--alt .foot .by { color: rgba(0,59,31,0.65); }
+  .logo--alt .foot .by .ind { color: var(--signal-ink); font-weight: 600; }
+
+  /* ─────────────────────────────────────── 2. YOUTUBE BANNER 2560×1440 */
+  .ytb {
+    width: 2560px; height: 1440px;
+    background: var(--ink);
+    color: var(--paper);
+    display: grid;
+    grid-template-columns: 1fr;
+    position: relative;
+  }
+  .ytb::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+  .ytb::after {
+    content: "";
+    position: absolute;
+    right: -10%; top: -20%;
+    width: 70%; height: 100%;
+    background: radial-gradient(circle, rgba(0,196,106,0.18), transparent 55%);
+    filter: blur(80px);
+    pointer-events: none;
+  }
+  .ytb .safe {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1546px; height: 423px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 60px;
+    padding: 0 20px;
+  }
+  .ytb .hero { display: flex; flex-direction: column; gap: 18px; position: relative; }
+  .ytb .hero .kicker {
+    font-family: var(--mono);
+    font-size: 1.05rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--signal);
+    display: inline-flex; align-items: center; gap: 14px;
+  }
+  .ytb .hero .kicker::before { content: ""; width: 28px; height: 1px; background: var(--signal); }
+  .ytb .hero h1 { font-size: 6.5rem; font-weight: 700; letter-spacing: -0.04em; line-height: 0.95; }
+  .ytb .hero h1 .demo { color: #a8a298; }
+  .ytb .hero h1 .arrow { color: var(--signal); margin: 0 18px; }
+  .ytb .hero h1 .prod { color: var(--paper); }
+  .ytb .hero .sub {
+    font-family: var(--mono);
+    font-size: 1.5rem;
+    color: #c9c4ba;
+    letter-spacing: 0.02em;
+  }
+  .ytb .hero .sub strong { color: var(--paper); }
+  .ytb .badge {
+    display: flex; flex-direction: column; align-items: center; gap: 18px;
+    padding: 38px;
+    background: rgba(0,196,106,0.06);
+    border: 1px solid rgba(0,196,106,0.45);
+  }
+  .ytb .badge .at {
+    font-family: var(--mono);
+    font-size: 4.6rem;
+    font-weight: 700;
+    color: var(--signal);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .ytb .badge .name {
+    font-family: var(--sans);
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+  }
+  .ytb .badge .by {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: #888278;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    text-align: center;
+  }
+  .ytb .badge .by .ind { color: var(--signal); }
+
+  .ytb .bleed-strip-l, .ytb .bleed-strip-r {
+    position: absolute; top: 0; bottom: 0;
+    width: 30%;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 60px;
+    font-family: var(--mono);
+    font-size: 1rem;
+    color: #5e5b55;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .ytb .bleed-strip-l { left: 0; }
+  .ytb .bleed-strip-r { right: 0; align-items: flex-end; }
+  .ytb .bleed-strip-l .col, .ytb .bleed-strip-r .col {
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .ytb .bleed-strip-l .col .v, .ytb .bleed-strip-r .col .v { color: var(--paper); font-size: 1.1rem; }
+
+  .ytb .ticker {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: var(--signal);
+    color: var(--signal-ink);
+    padding: 14px 40px;
+    display: flex; gap: 28px; align-items: center;
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    overflow: hidden;
+  }
+  .ytb .ticker .sep { opacity: 0.5; }
+
+  /* ─────────────────────────────────────── 3. INSTAGRAM POST 1080×1080 */
+  .ig {
+    width: 1080px; height: 1080px;
+    background: var(--ink);
+    color: var(--paper);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .ig::before {
+    content: "";
+    position: absolute;
+    right: -20%; top: -30%;
+    width: 80%; height: 80%;
+    background: radial-gradient(circle, rgba(0,196,106,0.20), transparent 55%);
+    filter: blur(70px);
+    pointer-events: none;
+  }
+  .ig .top {
+    padding: 44px 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative;
+  }
+  .ig .handle {
+    font-family: var(--mono);
+    font-size: 1.6rem;
+    font-weight: 600;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .ig .handle .at { color: var(--signal); font-size: 1.8rem; }
+  .ig .handle .name { color: var(--paper); }
+  .ig .live {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--signal);
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .ig .live .pulse {
+    width: 10px; height: 10px; background: var(--signal); border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(0,196,106,0.18);
+  }
+  .ig .mid {
+    padding: 0 56px;
+    display: flex; flex-direction: column; justify-content: center; gap: 32px;
+    position: relative;
+  }
+  .ig .mid .kicker {
+    font-family: var(--mono);
+    font-size: 1.05rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--signal);
+    display: inline-flex; align-items: center; gap: 14px;
+  }
+  .ig .mid .kicker::before { content: ""; width: 28px; height: 1px; background: var(--signal); }
+  .ig .mid h1 {
+    font-size: 6.4rem;
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+  }
+  .ig .mid h1 .num { color: var(--signal); }
+  .ig .mid h1 .alt { color: #a8a298; }
+  .ig .mid h1 .accent {
+    display: inline-block;
+    background: var(--signal);
+    color: var(--signal-ink);
+    padding: 8px 22px 14px;
+    margin-top: 16px;
+    line-height: 1;
+  }
+  .ig .mid .sub {
+    font-family: var(--mono);
+    font-size: 1.4rem;
+    color: #c9c4ba;
+    letter-spacing: 0.02em;
+    max-width: 26ch;
+  }
+  .ig .bottom {
+    padding: 36px 56px;
+    border-top: 1px solid var(--rule);
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative;
+  }
+  .ig .bottom .by {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #a8a298;
+  }
+  .ig .bottom .by .ind { color: var(--signal); font-weight: 600; }
+  .ig .bottom .cta {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    color: var(--signal);
+    border: 1px solid var(--signal);
+    padding: 12px 22px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  /* ─────────────────────────────────────── 4. VERTICAL 9:16 1080×1920 */
+  .nine {
+    width: 1080px; height: 1920px;
+    background: var(--ink);
+    color: var(--paper);
+    display: grid;
+    grid-template-rows: auto 1fr auto auto;
+    position: relative;
+    overflow: hidden;
+  }
+  .nine::before {
+    content: "";
+    position: absolute;
+    left: -30%; top: 30%;
+    width: 100%; height: 70%;
+    background: radial-gradient(circle, rgba(0,196,106,0.16), transparent 55%);
+    filter: blur(80px);
+    pointer-events: none;
+  }
+  .nine .top {
+    padding: 64px 56px 24px;
+    display: flex; flex-direction: column; gap: 22px;
+    position: relative;
+  }
+  .nine .top .row { display: flex; justify-content: space-between; align-items: center; }
+  .nine .top .handle { font-family: var(--mono); font-size: 1.6rem; font-weight: 600; }
+  .nine .top .handle .at { color: var(--signal); font-size: 1.8rem; }
+  .nine .top .live {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--signal);
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .nine .top .live .pulse {
+    width: 10px; height: 10px; background: var(--signal); border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(0,196,106,0.18);
+  }
+  .nine .mid {
+    padding: 0 56px;
+    display: flex; flex-direction: column; justify-content: center; gap: 36px;
+    position: relative;
+  }
+  .nine .mid .kicker {
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--signal);
+    display: inline-flex; align-items: center; gap: 14px;
+  }
+  .nine .mid .kicker::before { content: ""; width: 28px; height: 1px; background: var(--signal); }
+  .nine .mid h1 {
+    font-size: 7.4rem;
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+  }
+  .nine .mid h1 .num { color: var(--signal); }
+  .nine .mid h1 .alt { color: #a8a298; }
+  .nine .mid h1 .accent {
+    display: inline-block;
+    background: var(--signal);
+    color: var(--signal-ink);
+    padding: 8px 22px 14px;
+    margin-top: 18px;
+    line-height: 1;
+  }
+  .nine .mid .sub {
+    font-family: var(--mono);
+    font-size: 1.6rem;
+    color: #c9c4ba;
+    letter-spacing: 0.02em;
+    max-width: 22ch;
+    line-height: 1.45;
+  }
+  .nine .channels { padding: 0 56px; display: flex; flex-wrap: wrap; gap: 0; position: relative; }
+  .nine .channels .ch {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--signal);
+    padding: 4px 18px 4px 0;
+    border-right: 1px solid var(--rule);
+    margin-right: 18px;
+  }
+  .nine .channels .ch:last-child { border-right: 0; margin-right: 0; }
+  .nine .foot {
+    padding: 40px 56px 64px;
+    border-top: 1px solid var(--rule);
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative;
+    margin-top: 26px;
+  }
+  .nine .foot .by {
+    font-family: var(--mono);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #a8a298;
+  }
+  .nine .foot .by .ind { color: var(--signal); font-weight: 600; }
+  .nine .foot .site { font-family: var(--mono); font-size: 1rem; color: var(--paper); }
+
+  .credits {
+    max-width: 1280px; padding: 12px 4px;
+    font-family: var(--mono); font-size: 0.78rem; color: #8c8678; line-height: 1.6;
+  }
+  .credits a { color: var(--signal); }
+
+  #toast {
+    position: fixed; right: 20px; bottom: 20px;
+    background: var(--ink); color: var(--paper);
+    border: 1px solid var(--signal);
+    font-family: var(--mono); font-size: 0.78rem;
+    padding: 12px 16px;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 200ms ease, transform 200ms ease;
+    pointer-events: none; z-index: 9999;
+    letter-spacing: 0.02em; max-width: 360px;
+  }
+  #toast.show { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="lede">
+  <strong>@demotoprod social kit.</strong> Five assets at native platform sizes (logo primary &amp; alt, YouTube banner, Instagram post, 9:16 cover).
+  Click <code>↓ Download PNG</code> on any frame, or hit <strong>Download all</strong> to save the full set as separate PNGs.
+  PNGs are exported at exact pixel dimensions — drop straight into YouTube / Instagram / TikTok.
+</div>
+
+<div class="toolbar">
+  <span>Bulk export →</span>
+  <button class="btn primary" id="dl-all"><span class="arrow">↓↓</span> Download all (5 PNGs)</button>
+  <button class="btn" id="dl-zip"><span class="arrow">⤓</span> Download all as ZIP</button>
+  <span class="spacer"></span>
+  <span>Tip: keep this tab focused while downloading the bulk set so the browser doesn't throttle saves.</span>
+</div>
+
+<!-- 1. SQUARE LOGO PRIMARY 1080×1080 -->
+<div class="frame-wrap">
+  <div class="frame-label">
+    <span class="left">Logo · profile picture <strong>/ 1080 × 1080</strong> <span class="px">YouTube · Instagram · TikTok avatar</span></span>
+    <button class="btn" data-dl="logo-primary" data-w="1080" data-h="1080" data-name="demotoprod-logo-primary"><span class="arrow">↓</span> Download PNG</button>
+  </div>
+  <div class="frame logo" id="frame-logo-primary">
+    <div class="stage">
+      <div class="glyph">
+        <span class="at">@</span><span class="word">demotoprod</span>
+      </div>
+    </div>
+    <div class="foot">
+      <span>AI demo <span class="arrow">→</span> production</span>
+      <span class="by">by <span class="ind">Indica&nbsp;Tech</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- 2. SQUARE LOGO ALT 1080×1080 -->
+<div class="frame-wrap">
+  <div class="frame-label">
+    <span class="left">Logo · alt (dark) <strong>/ 1080 × 1080</strong> <span class="px">use as cover when feed background is light</span></span>
+    <button class="btn" data-dl="logo-alt" data-w="1080" data-h="1080" data-name="demotoprod-logo-alt-dark"><span class="arrow">↓</span> Download PNG</button>
+  </div>
+  <div class="frame logo logo--alt" id="frame-logo-alt">
+    <div class="stage">
+      <div class="glyph">
+        <span class="at">@</span><span class="word">demotoprod</span>
+      </div>
+    </div>
+    <div class="foot">
+      <span>AI demo <span class="arrow">→</span> production</span>
+      <span class="by">by <span class="ind">Indica&nbsp;Tech</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- 3. YOUTUBE BANNER 2560×1440 -->
+<div class="frame-wrap">
+  <div class="frame-label">
+    <span class="left">YouTube channel banner <strong>/ 2560 × 1440</strong> <span class="px">safe area 1546 × 423 — only the centre band shows on phone</span></span>
+    <button class="btn" data-dl="yt-banner" data-w="2560" data-h="1440" data-name="demotoprod-youtube-banner"><span class="arrow">↓</span> Download PNG</button>
+  </div>
+  <div class="frame ytb" id="frame-yt-banner">
+    <div class="bleed-strip-l">
+      <div class="col">
+        <div>Founder-led</div>
+        <div class="v">UK · Europe · US · Remote</div>
+      </div>
+      <div class="col">
+        <div>Subscribe for</div>
+        <div class="v">debugging diaries<br>field notes<br>shipping AI</div>
+      </div>
+    </div>
+    <div class="bleed-strip-r">
+      <div class="col" style="text-align:right;">
+        <div>Topics</div>
+        <div class="v">LLM systems<br>Eval harnesses<br>Prod RAG<br>Agents in the wild</div>
+      </div>
+    </div>
+    <div class="safe">
+      <div class="hero">
+        <div class="kicker">@demotoprod</div>
+        <h1><span class="demo">Demo</span><span class="arrow">→</span><span class="prod">Production.</span></h1>
+        <div class="sub"><strong>AI demo → production.</strong> The unglamorous work behind shipping AI.</div>
+      </div>
+      <div class="badge">
+        <div class="at">@</div>
+        <div class="name">demotoprod</div>
+        <div class="by">by <span class="ind">Indica&nbsp;Tech</span></div>
+      </div>
+    </div>
+    <div class="ticker">
+      <span>Defence</span><span class="sep">·</span>
+      <span>Fintech</span><span class="sep">·</span>
+      <span>MedTech</span><span class="sep">·</span>
+      <span>Climate Tech</span><span class="sep">·</span>
+      <span>Forensics</span><span class="sep">·</span>
+      <span>Critical Infra</span><span class="sep">·</span>
+      <span>GenAI</span>
+    </div>
+  </div>
+</div>
+
+<!-- 4. INSTAGRAM POST 1080×1080 -->
+<div class="frame-wrap">
+  <div class="frame-label">
+    <span class="left">Instagram post <strong>/ 1080 × 1080</strong> <span class="px">grid-style intro / pinned post</span></span>
+    <button class="btn" data-dl="ig-post" data-w="1080" data-h="1080" data-name="demotoprod-instagram-post"><span class="arrow">↓</span> Download PNG</button>
+  </div>
+  <div class="frame ig" id="frame-ig-post">
+    <div class="top">
+      <div class="handle"><span class="at">@</span><span class="name">demotoprod</span></div>
+      <div class="live"><span class="pulse"></span>Now shipping</div>
+    </div>
+    <div class="mid">
+      <div class="kicker">Episode · 001</div>
+      <h1><span class="num">80%</span> of AI <span class="alt">fails.</span><br><span class="accent">Mine ships.</span></h1>
+      <div class="sub">Demos lie.<br>Production tells the truth.</div>
+    </div>
+    <div class="bottom">
+      <div class="by">by <span class="ind">Indica&nbsp;Tech</span> · indica-tech.com</div>
+      <div class="cta">Follow ↗</div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. 9:16 COVER 1080×1920 -->
+<div class="frame-wrap">
+  <div class="frame-label">
+    <span class="left">TikTok / Reel / Story cover <strong>/ 1080 × 1920</strong> <span class="px">first-frame hook · pinned cover · story highlight</span></span>
+    <button class="btn" data-dl="nine-cover" data-w="1080" data-h="1920" data-name="demotoprod-9x16-cover"><span class="arrow">↓</span> Download PNG</button>
+  </div>
+  <div class="frame nine" id="frame-nine-cover">
+    <div class="top">
+      <div class="row">
+        <div class="handle"><span class="at">@</span>demotoprod</div>
+        <div class="live"><span class="pulse"></span>Live</div>
+      </div>
+    </div>
+    <div class="mid">
+      <div class="kicker">Episode · 001</div>
+      <h1><span class="num">80%</span> of AI <span class="alt">fails.</span><br><span class="accent">Mine ships.</span></h1>
+      <div class="sub">Demos lie.<br>Production tells the truth.</div>
+    </div>
+    <div class="channels">
+      <span class="ch">YouTube</span>
+      <span class="ch">TikTok</span>
+      <span class="ch">Instagram</span>
+      <span class="ch">LinkedIn</span>
+    </div>
+    <div class="foot">
+      <div class="by">by <span class="ind">Indica&nbsp;Tech</span></div>
+      <div class="site">indica-tech.com</div>
+    </div>
+  </div>
+</div>
+
+<div class="credits">
+  All five frames render at native pixel size and are exported with <code>html-to-image</code> at <code>pixelRatio: 1</code> so the saved PNGs match the platform spec exactly. Bulk ZIP uses JSZip — both libraries load from unpkg on first download.
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://unpkg.com/html-to-image@1.11.13/dist/html-to-image.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js" crossorigin="anonymous"></script>
+<script>
+(function () {
+  var FRAMES = [
+    { key: 'logo-primary', w: 1080, h: 1080, name: 'demotoprod-logo-primary' },
+    { key: 'logo-alt',     w: 1080, h: 1080, name: 'demotoprod-logo-alt-dark' },
+    { key: 'yt-banner',    w: 2560, h: 1440, name: 'demotoprod-youtube-banner' },
+    { key: 'ig-post',      w: 1080, h: 1080, name: 'demotoprod-instagram-post' },
+    { key: 'nine-cover',   w: 1080, h: 1920, name: 'demotoprod-9x16-cover' }
+  ];
+
+  var toast = document.getElementById('toast');
+  var toastTimer;
+  function showToast(msg, ms) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove('show'); }, ms || 2200);
+  }
+
+  function pausePulses() {
+    document.querySelectorAll('.pulse').forEach(function (p) { p.style.animationPlayState = 'paused'; });
+  }
+  function resumePulses() {
+    document.querySelectorAll('.pulse').forEach(function (p) { p.style.animationPlayState = 'running'; });
+  }
+
+  function renderFrameAsDataUrl(frame) {
+    var node = document.getElementById('frame-' + frame.key);
+    if (!node || !window.htmlToImage) return Promise.reject(new Error('renderer not ready'));
+    return htmlToImage.toPng(node, {
+      width: frame.w,
+      height: frame.h,
+      pixelRatio: 1,
+      cacheBust: true,
+      backgroundColor: null,
+      style: { transform: 'none' }
+    });
+  }
+
+  function dataUrlToBlob(dataUrl) {
+    var parts = dataUrl.split(',');
+    var mime = parts[0].match(/:(.*?);/)[1];
+    var bin = atob(parts[1]);
+    var len = bin.length;
+    var arr = new Uint8Array(len);
+    for (var i = 0; i < len; i++) arr[i] = bin.charCodeAt(i);
+    return new Blob([arr], { type: mime });
+  }
+
+  function downloadDataUrl(dataUrl, fileName) {
+    var link = document.createElement('a');
+    link.download = fileName;
+    link.href = dataUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  function downloadOne(frame, btn) {
+    if (btn) {
+      btn.disabled = true;
+      var orig = btn.innerHTML;
+      btn.innerHTML = '<span class="arrow">…</span> Rendering';
+    }
+    pausePulses();
+    showToast('Rendering ' + frame.name + '.png …');
+    return renderFrameAsDataUrl(frame).then(function (dataUrl) {
+      downloadDataUrl(dataUrl, frame.name + '.png');
+      showToast('Saved ' + frame.name + '.png (' + frame.w + '×' + frame.h + ')');
+    }).catch(function (err) {
+      console.error(err);
+      showToast('Render failed for ' + frame.name + ' — see console.', 4000);
+    }).finally(function () {
+      resumePulses();
+      if (btn) { btn.disabled = false; btn.innerHTML = orig; }
+    });
+  }
+
+  function downloadAllSeparate(btn) {
+    if (btn) {
+      btn.disabled = true;
+      var orig = btn.innerHTML;
+      btn.innerHTML = '<span class="arrow">…</span> Rendering 5';
+    }
+    pausePulses();
+    var i = 0;
+    function next() {
+      if (i >= FRAMES.length) {
+        resumePulses();
+        if (btn) { btn.disabled = false; btn.innerHTML = orig; }
+        showToast('All 5 PNGs saved.', 3200);
+        return;
+      }
+      var frame = FRAMES[i++];
+      showToast('Rendering ' + i + '/' + FRAMES.length + ' · ' + frame.name);
+      renderFrameAsDataUrl(frame).then(function (dataUrl) {
+        downloadDataUrl(dataUrl, frame.name + '.png');
+        // small gap so the browser's download manager doesn't drop entries
+        setTimeout(next, 350);
+      }).catch(function (err) {
+        console.error(err);
+        showToast('Failed: ' + frame.name + ' — continuing.', 2400);
+        setTimeout(next, 350);
+      });
+    }
+    next();
+  }
+
+  function downloadAllZip(btn) {
+    if (!window.JSZip) {
+      showToast('ZIP library not loaded yet — try again.', 3200);
+      return;
+    }
+    if (btn) {
+      btn.disabled = true;
+      var orig = btn.innerHTML;
+      btn.innerHTML = '<span class="arrow">…</span> Building ZIP';
+    }
+    pausePulses();
+    var zip = new JSZip();
+    var i = 0;
+    function next() {
+      if (i >= FRAMES.length) {
+        showToast('Compressing ZIP …');
+        zip.generateAsync({ type: 'blob' }).then(function (blob) {
+          var url = URL.createObjectURL(blob);
+          downloadDataUrl(url, 'demotoprod-social-kit.zip');
+          setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
+          resumePulses();
+          if (btn) { btn.disabled = false; btn.innerHTML = orig; }
+          showToast('Saved demotoprod-social-kit.zip (5 PNGs).', 3200);
+        });
+        return;
+      }
+      var frame = FRAMES[i++];
+      showToast('Rendering ' + i + '/' + FRAMES.length + ' · ' + frame.name);
+      renderFrameAsDataUrl(frame).then(function (dataUrl) {
+        zip.file(frame.name + '.png', dataUrlToBlob(dataUrl));
+        setTimeout(next, 50);
+      }).catch(function (err) {
+        console.error(err);
+        showToast('Skipped ' + frame.name + ' (render error).', 2400);
+        setTimeout(next, 50);
+      });
+    }
+    next();
+  }
+
+  document.querySelectorAll('button[data-dl]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var key = btn.getAttribute('data-dl');
+      var frame = FRAMES.find(function (f) { return f.key === key; });
+      if (frame) downloadOne(frame, btn);
+    });
+  });
+  document.getElementById('dl-all').addEventListener('click', function () {
+    downloadAllSeparate(this);
+  });
+  document.getElementById('dl-zip').addEventListener('click', function () {
+    downloadAllZip(this);
+  });
+})();
+</script>
+
+</body>
+</html>
