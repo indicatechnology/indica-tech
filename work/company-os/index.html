@@ -97,6 +97,35 @@
 .co-flow-step.is-box span:last-child { color: #C2BDB2; }
 .co-flow-arrow { align-self: center; font-family: var(--mono); font-size: 1.4rem; color: var(--ink-faint); }
 
+/* At a glance: the whole workflow in one picture, explain-like-I'm-5 plain. */
+.co-brief { padding: clamp(56px, 7vw, 96px) 0; border-bottom: 1px solid var(--rule); }
+.co-brief-diagram { display: grid; grid-template-columns: 1fr auto 1.45fr auto 1.1fr auto 1.25fr; gap: 14px; align-items: stretch; }
+.co-brief-panel { border: 1px solid var(--ink); background: var(--paper); padding: 20px 20px 18px; display: flex; flex-direction: column; gap: 10px; }
+.co-brief-tag { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); }
+.co-brief-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.co-brief-list li { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px dashed var(--rule); font-size: 0.95rem; color: var(--ink-2); }
+.co-brief-list li:first-child { border-top: 0; }
+.co-brief-list .ico { width: 20px; height: 20px; color: var(--ink); }
+.co-brief-arrow { align-self: center; font-family: var(--mono); font-size: 1.4rem; color: var(--ink-faint); }
+.co-brief-mini { list-style: none; margin: 0; padding: 0; }
+.co-brief-mini li.co-brief-step { display: flex; gap: 12px; align-items: center; padding: 8px 0; }
+.co-brief-mini li.co-brief-step b { font-size: 0.98rem; font-weight: 600; color: var(--ink); }
+.co-brief-mini-a { padding-left: 16px; font-family: var(--mono); font-size: 0.9rem; line-height: 1; color: var(--ink-faint); }
+.co-brief-ic { display: inline-grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--ink); background: var(--paper); flex: none; }
+.co-brief-ic .ico { width: 18px; height: 18px; }
+.co-brief-fast { margin-top: auto; display: flex; align-items: center; gap: 10px; background: var(--signal-soft); color: var(--signal-ink); border: 1px solid color-mix(in srgb, var(--signal) 40%, transparent); padding: 10px 12px; font-family: var(--mono); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.co-brief-fast .ico { width: 16px; height: 16px; }
+:root[data-theme="dark"] .co-brief-fast { background: color-mix(in srgb, var(--signal) 18%, var(--paper)); color: var(--brass-ink); border-color: color-mix(in srgb, var(--signal) 45%, transparent); }
+.co-brief-door { background: var(--ink); border: 1px solid var(--ink); color: var(--paper); padding: 20px 20px 18px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 8px; }
+.co-brief-door .co-brief-tag { color: var(--signal); }
+.co-brief-door .ico { width: 52px; height: 52px; color: var(--paper); }
+.co-brief-door b { font-size: 1.08rem; font-weight: 600; color: var(--paper); letter-spacing: -0.01em; }
+.co-brief-door span { font-size: 0.86rem; line-height: 1.5; color: color-mix(in srgb, var(--paper) 62%, transparent); }
+.co-brief-value { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
+.co-brief-value li { display: flex; align-items: center; gap: 10px; padding: 16px 18px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); background: var(--paper-2); font-weight: 600; font-size: 0.98rem; color: var(--ink); }
+.co-brief-value .ico { width: 18px; height: 18px; color: var(--signal); }
+.co-brief-caption { margin-top: 18px; font-size: 0.95rem; color: var(--ink-faint); max-width: 74ch; line-height: 1.6; }
+
 /* The notice aside, as Board Room's. */
 .bp-notice-wrap { padding-bottom: clamp(48px, 6vw, 80px); border-bottom: 1px solid var(--rule); }
 .bp-notice { max-width: 860px; padding: 24px 28px; background: var(--paper-2); border: 1px solid var(--rule); border-left: 4px solid var(--warn); }
@@ -207,6 +236,9 @@
   .co-hero-grid { grid-template-columns: 1fr; gap: 36px; }
   .co-flow { grid-template-columns: 1fr; }
   .co-flow-arrow { transform: rotate(90deg); justify-self: center; }
+  .co-brief-diagram { grid-template-columns: 1fr; }
+  .co-brief-arrow { transform: rotate(90deg); justify-self: center; }
+  .co-brief-value { grid-template-columns: 1fr; }
   .co-iov, .co-cards { grid-template-columns: 1fr; }
   .co-iov .diag-cell:not(:last-child)::after { content: "↓"; right: auto; left: 28px; top: auto; bottom: -15px; }
   .steps.five { grid-template-columns: repeat(2, 1fr); }
@@ -298,6 +330,61 @@
       <span class="co-flow-arrow" aria-hidden="true">→</span>
       <div class="co-flow-step"><span class="n">Out</span><b>Work done, on the record</b><span>Replies sent, batches held, a brief by 07:30, and proof of every action.</span></div>
     </div>
+  </div>
+</section>
+
+<section class="co-brief" aria-labelledby="at-a-glance-h">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">At a glance</div>
+      <h2 id="at-a-glance-h">A message in. A checked reply out. One door between.</h2>
+    </div>
+    <div class="co-brief-diagram reveal">
+      <div class="co-brief-panel">
+        <span class="co-brief-tag">In</span>
+        <ul class="co-brief-list">
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l8 3.6v8.8L12 19.5l-8-3.6V7.1z"/><path d="M4 7.1l8 3.6 8-3.6"/><path d="M12 10.7v8.8"/></svg>Orders</li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 7h10.5v9H2.5z"/><path d="M13 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.7"/><circle cx="16.5" cy="18" r="1.7"/></svg>Shipments</li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16v10.5H9.5L5 19.5v-3.5H4z"/><circle cx="8.6" cy="10.75" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="10.75" r="0.9" fill="currentColor" stroke="none"/><circle cx="15.4" cy="10.75" r="0.9" fill="currentColor" stroke="none"/></svg>Customer messages</li>
+        </ul>
+      </div>
+      <span class="co-brief-arrow" aria-hidden="true">→</span>
+      <div class="co-brief-panel">
+        <span class="co-brief-tag">The middle</span>
+        <ol class="co-brief-mini">
+          <li class="co-brief-step"><span class="co-brief-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11A8 8 0 0 0 5.6 6.6L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.4 4.4L20 16"/><path d="M20 21v-5h-5"/></svg></span><b>Agents do the work that repeats</b></li>
+          <li class="co-brief-mini-a" aria-hidden="true">↓</li>
+          <li class="co-brief-step"><span class="co-brief-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8.5 7.5h7"/><path d="M9.3 12.4l2 2 3.6-3.9"/></svg></span><b>Rules check it</b></li>
+          <li class="co-brief-mini-a" aria-hidden="true">↓</li>
+          <li class="co-brief-step"><span class="co-brief-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="3.5"/><path d="M11.5 12h8.5"/><path d="M17 12v3"/><path d="M20 12v2"/></svg></span><b>You say yes</b></li>
+        </ol>
+        <p class="co-brief-fast"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2.5L4.5 13.5H11L10 21.5L19.5 10.5H13z"/></svg>Safety first — no model in the path</p>
+      </div>
+      <span class="co-brief-arrow" aria-hidden="true">→</span>
+      <div class="co-brief-door">
+        <span class="co-brief-tag">The door</span>
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 58h48"/><rect x="18" y="8" width="28" height="50" rx="2"/><circle cx="39" cy="30" r="3.4" fill="var(--signal)" stroke="none"/><path d="M39 33v8" stroke="var(--signal)" stroke-width="4"/></svg>
+        <b>One way out</b>
+        <span>Your passkey, or a rule you signed. Only things with a yes pass.</span>
+      </div>
+      <span class="co-brief-arrow" aria-hidden="true">→</span>
+      <div class="co-brief-panel">
+        <span class="co-brief-tag">Out</span>
+        <ul class="co-brief-list">
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3.5L10.5 13.5"/><path d="M21 3.5l-6.8 17-3-7.7-7.7-3z"/></svg>Replies sent</li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l8 3.6v8.8L12 19.5l-8-3.6V7.1z"/><path d="M4 7.1l8 3.6 8-3.6"/><path d="M10.2 11.5v4M13.8 11.5v4"/></svg>Batches held</li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/><circle cx="16" cy="16" r="1.4" fill="currentColor" stroke="none"/></svg>Brief by 07:30</li>
+          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/></svg>Every action on the record</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="co-brief-value reveal">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>Minutes, not hours</li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="3.5"/><path d="M11.5 12h8.5"/><path d="M17 12v3"/><path d="M20 12v2"/></svg>Every yes is yours</li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/></svg>Provable months later</li>
+    </ul>
+    <p class="co-brief-caption">Imagine a shop with one door: every reply, parcel or note must show your yes — or a rule you signed — before it leaves.</p>
+    <p class="visually-hidden">The workflow as a list: orders, shipments and customer messages come in; agents do the work that repeats, rules check it and you say yes, with a safety-first lane that has no model in its path; one door lets anything out only with your passkey or a rule you signed; replies go out, batches are held, the brief is ready by 07:30 and every action lands on the record. The value: minutes rather than hours, every yes stays yours, and the record is provable months later.</p>
   </div>
 </section>
 
