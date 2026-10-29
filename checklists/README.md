@@ -1,8 +1,10 @@
 # Checklists page for indica-tech.com
 
-A hub page, `index.html`, and one page per checklist, `<slug>/index.html`, built from the YAML specs in `specs/`. No server code, no framework, no external script;
-the only network requests are Google Fonts (optional: delete the three `<link>` lines in `<head>` and the page falls back to
-system fonts). Ticked boxes are remembered in the reader's own browser only.
+A hub page, `index.html`, and one page per checklist, `<slug>/index.html`, built from the YAML specs in `specs/`. No server code, no framework. The pages load the site's own
+stylesheets (`/styles.css`, then `/look.css` + `/look.js`, root-absolute) like every other page, so they track the current look — theme switch included; a small inline `<style>`
+in each page covers only the checklist-specific parts (list layout, cards, rail, pager, print), reading the site's design tokens. The only other network requests are Google Fonts
+(they serve the classic look's IBM Plex; delete the three `<link>` lines in `build_checklists.py:render_head` and both looks fall back to system fonts). Ticked boxes are remembered
+in the reader's own browser only.
 
 ## Deploy (static site, as the rest of indica-tech.com)
 
