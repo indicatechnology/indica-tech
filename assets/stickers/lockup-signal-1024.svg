@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="1024" height="1024">
+  <defs><clipPath id="rrect-s17-signal"><rect width="120" height="120" rx="18" ry="18"/></clipPath></defs>
+  <g clip-path="url(#rrect-s17-signal)">
+    <rect width="120" height="120" fill="#00C46A"/>
+    <text x="60" y="50" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="36" font-weight="900" fill="#003B1F" letter-spacing="-2.2">D2P</text>
+    <text x="60" y="66" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7.5" font-weight="600" fill="#003B1F" letter-spacing="2">DEMO·TO·PROD</text>
+    <rect x="4" y="78" width="112" height="30" fill="#003B1F"/>
+    <g transform="translate(20 84) scale(0.20)">
+      <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+      <rect x="25.5" y="40" width="13" height="42" fill="#00C46A"/>
+      <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="#00C46A"/>
+    </g>
+    <text x="78" y="98" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7.5" font-weight="700" fill="#00C46A" letter-spacing="1.8">INDICA TECH</text>
+  </g>
+</svg>
