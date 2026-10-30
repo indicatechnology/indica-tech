@@ -68,6 +68,12 @@
 .wk-sector { font-family: var(--mono); font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); }
 .wk-section { padding: var(--section-y) 0; border-bottom: 1px solid var(--rule); }
 .wk-section .section-head h2 { text-wrap: balance; }
+.wk-card-hub { grid-column: 1 / -1; }
+.wk-branch { grid-column: 1 / -1; position: relative; padding: 20px 34px 22px; background: var(--paper-2); border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); text-align: center; }
+.wk-branch::before { content: ""; position: absolute; top: 0; left: 50%; width: 1px; height: 12px; background: var(--ink); }
+.wk-branch p { max-width: 78ch; margin: 0 auto; font-size: 0.95rem; color: var(--ink-mute); line-height: 1.6; }
+.wk-feed { position: relative; }
+.wk-feed::before { content: ""; position: absolute; top: 0; left: 50%; width: 1px; height: 12px; background: var(--ink); }
 @media (max-width: 900px) {
   .wk-products { grid-template-columns: 1fr; }
   .wk-clients li { grid-template-columns: 1fr; gap: 6px; }
@@ -124,26 +130,29 @@
       <h2>Built here. Open to explore, end to end.</h2>
     </div>
     <div class="wk-products reveal">
-      <article class="wk-card">
+      <article class="wk-card wk-card-hub">
+        <div class="wk-top"><svg class="wk-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0B0B0A"/><circle cx="9.5" cy="16" r="3.2" fill="#00C46A"/><rect x="15.2" y="6" width="2.6" height="20" rx="1.3" fill="#F7F4ED"/><rect x="20.5" y="10" width="8" height="2.4" rx="1.2" fill="#F7F4ED"/><rect x="20.5" y="14.8" width="8" height="2.4" rx="1.2" fill="#00C46A"/><rect x="20.5" y="19.6" width="8" height="2.4" rx="1.2" fill="#F7F4ED"/></svg><span class="wk-kicker">Case 07 · In-house product</span></div>
+        <h2>Company OS</h2>
+        <p>One founder runs an online shop while AI agents do the daily work: order updates, customer replies, safety reports, the morning brief. Nothing reaches a customer or a supplier until the founder&#x27;s passkey, or a rule the founder signed, says yes.</p>
+        <div class="wk-tags"><span>Every action approved</span><span>Safety without a model</span><span>14 benchmarks passed</span></div>
+        <div class="wk-links"><a href="/work/company-os/" class="btn btn-primary">See the project <span class="arrow">→</span></a><a href="/work/company-os/sample/" class="btn btn-ghost">Try the guided sample <span class="arrow">→</span></a></div>
+      </article>
+      <div class="wk-branch">
+        <p>The Board Room argues your hardest decisions; Evidence Plane grades what your partners said. Both plug into Company OS — nothing a feeder sends can act on its own.</p>
+      </div>
+      <article class="wk-card wk-feed">
         <div class="wk-top"><span class="wk-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="16.5" cy="9.5" r="2.6"/><path d="M15.6 14.6c2.6.1 4.4 1.8 4.9 4.9"/></svg></span><span class="wk-kicker">Case 05 · In-house product</span></div>
         <h2>Board Room</h2>
         <p>A founder brings the decision they keep putting off. Eight AI advisors argue it over three rounds, each from a different angle. What comes back is scored advice: what to do, how sure the board is, who disagreed and why.</p>
         <div class="wk-tags"><span>Eight advisors</span><span>Local model</span><span>Measured benchmarks</span></div>
         <div class="wk-links"><a href="/work/board-room/" class="btn btn-primary">See the project <span class="arrow">→</span></a><a href="/work/board-room/sample/" class="btn btn-ghost">Try the guided sample <span class="arrow">→</span></a></div>
       </article>
-      <article class="wk-card">
+      <article class="wk-card wk-feed">
         <div class="wk-top"><svg class="wk-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0B0B0A"/><rect x="7.5" y="9" width="17" height="2.6" rx="1.3" fill="#F7F4ED"/><rect x="7.5" y="14.7" width="11.5" height="2.6" rx="1.3" fill="#00C46A"/><circle cx="22.6" cy="16" r="1.7" fill="#00C46A"/><rect x="7.5" y="20.4" width="14" height="2.6" rx="1.3" fill="#F7F4ED"/></svg><span class="wk-kicker">Case 06 · In-house product</span></div>
         <h2>Evidence Plane</h2>
         <p>Recorded calls go in. Learnings come out, each cited to the sentence it came from and graded E0 to E5 for how solid it is. On your own machine, with consent built in.</p>
         <div class="wk-tags"><span>Local-first</span><span>Consent built in</span><span>Every claim cited</span></div>
         <div class="wk-links"><a href="/work/evidence-plane/" class="btn btn-primary">See the project <span class="arrow">→</span></a><a href="/work/evidence-plane/sample/" class="btn btn-ghost">Try the guided sample <span class="arrow">→</span></a></div>
-      </article>
-      <article class="wk-card">
-        <div class="wk-top"><svg class="wk-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0B0B0A"/><circle cx="9.5" cy="16" r="3.2" fill="#00C46A"/><rect x="15.2" y="6" width="2.6" height="20" rx="1.3" fill="#F7F4ED"/><rect x="20.5" y="10" width="8" height="2.4" rx="1.2" fill="#F7F4ED"/><rect x="20.5" y="14.8" width="8" height="2.4" rx="1.2" fill="#00C46A"/><rect x="20.5" y="19.6" width="8" height="2.4" rx="1.2" fill="#F7F4ED"/></svg><span class="wk-kicker">Case 07 · In-house product</span></div>
-        <h2>Company OS</h2>
-        <p>One founder runs an online shop while AI agents do the daily work: order updates, customer replies, safety reports, the morning brief. Nothing reaches a customer or a supplier until the founder&#x27;s passkey, or a rule the founder signed, says yes.</p>
-        <div class="wk-tags"><span>Every action approved</span><span>Safety without a model</span><span>14 benchmarks passed</span></div>
-        <div class="wk-links"><a href="/work/company-os/" class="btn btn-primary">See the project <span class="arrow">→</span></a><a href="/work/company-os/sample/" class="btn btn-ghost">Try the guided sample <span class="arrow">→</span></a></div>
       </article>
     </div>
   </div>
