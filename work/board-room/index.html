@@ -170,6 +170,20 @@
 /* styles.css drops a button's bottom border inside .prose-cta (it hides link underlines); the ghost button needs it back */
 .bp-cta .prose-cta a.btn-ghost { border-bottom: 1px solid var(--ink) !important; }
 
+/* One ecosystem: the shared cross-link block, the same on all three product pages. */
+.eco-lede { max-width: 74ch; font-size: 1.02rem; color: var(--ink-mute); line-height: 1.65; margin: -24px 0 40px; }
+.eco-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.eco-cell { display: flex; flex-direction: column; gap: 10px; padding: 26px 24px 30px; border: 1px solid var(--card-border, var(--ink)); border-radius: var(--radius, 0); background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); transition: transform .25s, box-shadow .25s; }
+a.eco-cell { color: var(--ink); text-decoration: none; }
+a.eco-cell:hover { transform: translateY(-5px); box-shadow: var(--shadow-md, none); }
+.eco-tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--signal); }
+.eco-cell b { font-size: 1.08rem; font-weight: 600; letter-spacing: -0.01em; }
+.eco-cell p { font-size: 0.93rem; color: var(--ink-mute); line-height: 1.55; }
+.eco-go { margin-top: auto; padding-top: 16px; font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.04em; }
+a.eco-cell:hover .eco-go { color: var(--signal-ink); }
+.eco-cell.is-here { background: var(--signal-soft); border-color: color-mix(in srgb, var(--signal) 45%, transparent); }
+.eco-here { margin-top: auto; padding-top: 16px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--signal-ink); font-weight: 600; }
+
 @media (max-width: 960px) {
   .bp-flow { grid-template-columns: 1fr; }
   .bp-flow-arrow { transform: rotate(90deg); justify-self: center; }
@@ -177,6 +191,7 @@
   .bp-seats { grid-template-columns: repeat(2, 1fr); }
   .bp-value { grid-template-columns: repeat(2, 1fr); }
   .tkr { grid-template-columns: 1fr; }
+  .eco-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
   :root { --gutter: 16px; }
@@ -442,6 +457,36 @@
       <li><b>One meeting at a time, on one machine.</b> It is built for a founder, not a team of fifty.</li>
       <li><b>It only knows what you tell it.</b> Leave out a number and the board has to assume it, and it lists what it assumed.</li>
     </ul>
+  </div>
+</section>
+
+<section class="bp-sec" id="ecosystem">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">07 / One ecosystem</div>
+      <h2>Advice in. Evidence in. Documents in. Only one system acts.</h2>
+    </div>
+    <p class="eco-lede">Three products, one architecture. The Board Room argues your hardest decisions. Evidence Plane grades what your partners said, cited and sealed. openextract turns documents into data. Company OS is the only system that acts — and nothing reaches a customer or a vendor until the founder&#x27;s passkey, or a rule they signed, says yes.</p>
+    <div class="eco-grid">
+      <div class="eco-cell is-here">
+        <span class="eco-tag">Case 05 · The Board Room</span>
+        <b>Advice, argued properly</b>
+        <p>Eight simulated advisors debate your hardest decision over three rounds; the Chair scores the advice.</p>
+        <span class="eco-here">You are here</span>
+      </div>
+      <a class="eco-cell" href="/work/evidence-plane/">
+        <span class="eco-tag">Case 06 · Evidence Plane</span>
+        <b>Evidence, cited and graded</b>
+        <p>Consented calls become evidence you can check, sealed on a machine you control.</p>
+        <span class="eco-go">See the project <span class="arrow">→</span></span>
+      </a>
+      <a class="eco-cell" href="/work/company-os/">
+        <span class="eco-tag">Case 07 · Company OS</span>
+        <b>The kernel. The only system that acts.</b>
+        <p>Agents do the work; every effect waits for the founder&#x27;s passkey or a rule they signed.</p>
+        <span class="eco-go">See the project <span class="arrow">→</span></span>
+      </a>
+    </div>
   </div>
 </section>
 

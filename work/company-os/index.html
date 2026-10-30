@@ -192,6 +192,20 @@
 .co-card-cell p { font-size: 0.96rem; }
 .co-card-cell .when { margin-top: auto; padding-top: 18px; font-family: var(--mono); font-size: 0.72rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.06em; }
 
+/* One ecosystem: the shared cross-link grid, the same block on all three product pages. */
+.eco-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); margin-top: 40px; }
+.eco-cell { display: flex; flex-direction: column; gap: 10px; padding: 26px 24px 30px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); background: var(--paper); }
+a.eco-cell { color: var(--ink); text-decoration: none; }
+a.eco-cell:hover { background: var(--paper-2); }
+.eco-tag { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--signal); }
+.eco-cell b { font-size: 1.08rem; font-weight: 600; letter-spacing: -0.01em; }
+.eco-cell p { font-size: 0.93rem; color: var(--ink-mute); line-height: 1.55; }
+.eco-go { margin-top: auto; padding-top: 16px; font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.04em; }
+a.eco-cell:hover .eco-go { color: var(--signal-ink); }
+.eco-cell.is-here { background: var(--signal-soft); }
+.eco-here { margin-top: auto; padding-top: 16px; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--signal-ink); font-weight: 600; }
+.eco-lede { max-width: 74ch; font-size: 1.02rem; color: var(--ink-mute); line-height: 1.65; margin: -24px 0 40px; }
+
 /* Trade-offs, as Board Room's. */
 .co-trade { list-style: none; max-width: 860px; border-top: 1px solid var(--rule); }
 .co-trade li { padding: 16px 0; border-bottom: 1px solid var(--rule); font-size: 1.02rem; color: var(--ink-mute); line-height: 1.6; }
@@ -212,7 +226,7 @@
   .co-hero-grid { grid-template-columns: 1fr; gap: 36px; }
   .co-flow { grid-template-columns: 1fr; }
   .co-flow-arrow { transform: rotate(90deg); justify-self: center; }
-  .co-iov, .co-cards { grid-template-columns: 1fr; }
+  .co-iov, .co-cards, .eco-grid { grid-template-columns: 1fr; }
   .co-iov .diag-cell:not(:last-child)::after { content: "↓"; right: auto; left: 28px; top: auto; bottom: -15px; }
   .steps.five { grid-template-columns: repeat(2, 1fr); }
   .co-ladder li { grid-template-columns: 90px 150px minmax(0, 1fr); gap: 16px; }
@@ -367,6 +381,12 @@
 .co-cards .co-card-cell:nth-child(2) .co-ico { background: var(--deep-2, transparent); border-color: var(--deep-line, var(--rule-2)); color: var(--on-deep, var(--paper)); }
 .co-cards .co-card-cell .co-ico { transition: transform .25s; }
 .co-cards .co-card-cell:hover .co-ico { transform: rotate(-6deg) scale(1.06); }
+
+/* --- the ecosystem grid takes the board look too --- */
+.eco-grid { border: 0; gap: 16px; }
+.eco-cell { position: relative; overflow: hidden; border: 1px solid var(--card-border, var(--ink)); border-radius: var(--radius, 0); background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); transition: transform .25s, box-shadow .25s; }
+a.eco-cell:hover { background: var(--surface, var(--paper)); transform: translateY(-5px); box-shadow: var(--shadow-md, none); }
+.eco-cell.is-here { border-color: color-mix(in srgb, var(--signal) 45%, transparent); }
 
 /* --- trade-offs: the crosses --- */
 .co-trade li { display: flex; gap: 14px; align-items: baseline; }
@@ -853,7 +873,7 @@
         <div class="label">Next</div>
         <h3>What changes to grow</h3>
         <ul>
-          <li>More companies on one install: the records already carry a company and a market</li>
+          <li>More businesses, each in its own cell: the same code, its own database, secrets and passkeys, with nothing crossing between them</li>
           <li>Hosting, once real customers and real data are approved</li>
           <li>Two known hot spots, on the queue page and in the audit check, to fix before the volumes grow</li>
           <li>It claims no more than its benchmarks: past 500 orders is untested</li>
@@ -871,12 +891,28 @@
     </div>
     <div class="co-cards reveal">
       <div class="co-card-cell"><span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 9.5h15v9a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 18.5z"/><path d="M8.5 9.5V8a3.5 3.5 0 0 1 7 0v1.5"/><path d="M9.5 13.5h5"/></svg></span><div class="n">01 · One founder, a full shop</div><h3>The work that repeats runs itself</h3><p>Orders, replies, safety and the morning brief are handled. You spend your minutes on the calls only you can make, and every one of them is on the record.</p><div class="when">Minutes a day, not hours</div></div>
-      <div class="co-card-cell"><span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2.6"/><circle cx="4.5" cy="5.5" r="2"/><circle cx="19.5" cy="5.5" r="2"/><circle cx="4.5" cy="18.5" r="2"/><circle cx="19.5" cy="18.5" r="2"/><path d="M6.3 6.8l4.8 3.6M17.7 6.8l-4.8 3.6M6.3 17.2l4.8-3.6M17.7 17.2l-4.8-3.6"/></svg></span><div class="n">02 · One hub</div><h3>Evidence and advice, in one place</h3><p>Company OS becomes the hub of our three products. Evidence Plane brings in what your partners said, cited and graded. The Board Room argues your hardest decisions. Company OS keeps the record and is the only place anything happens. Nothing a feeder sends can approve, act or skip a check.</p><div class="when">Three products, one record</div></div>
-      <div class="co-card-cell"><span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="11.5" rx="1.5"/><path d="M9 20.5h6M12 16.5v4"/></svg></span><div class="n">03 · An AI-run company, on your own machine</div><h3>The same promise, for other companies</h3><p>The same three, set up for other small companies on their own machines: agents do the work, evidence backs the decisions, and the owner keeps the only key.</p><div class="when">Local-first, owner-approved</div></div>
+      <div class="co-card-cell"><span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2.6"/><circle cx="4.5" cy="5.5" r="2"/><circle cx="19.5" cy="5.5" r="2"/><circle cx="4.5" cy="18.5" r="2"/><circle cx="19.5" cy="18.5" r="2"/><path d="M6.3 6.8l4.8 3.6M17.7 6.8l-4.8 3.6M6.3 17.2l4.8-3.6M17.7 17.2l-4.8-3.6"/></svg></span><div class="n">02 · One kernel</div><h3>The hub everything feeds</h3><p>Company OS is the kernel: it keeps the record, and it is the only system that acts. The Board Room advises. Evidence Plane grades what was said. openextract turns documents into data. Nothing a feeder sends can approve, act or skip a check.</p><div class="when">Three products, one record</div></div>
+      <div class="co-card-cell"><span class="co-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="11.5" rx="1.5"/><path d="M9 20.5h6M12 16.5v4"/></svg></span><div class="n">03 · One kernel, many businesses</div><h3>Spin up, not rebuild</h3><p>A second brand, a consulting firm, a business you have not named yet: each becomes a new cell from a pack — same code, new connectors, the same gate. The spokes above serve every business through the same contracts, one instance each.</p><div class="when">The plan, written down — not built yet</div></div>
     </div>
-    <div class="co-after reveal">
-      <a href="/work/evidence-plane/" class="btn btn-ghost">See Evidence Plane <span class="arrow">→</span></a>
-      <a href="/work/board-room/" class="btn btn-ghost">See the Board Room <span class="arrow">→</span></a>
+    <div class="eco-grid reveal">
+      <a class="eco-cell" href="/work/board-room/">
+        <span class="eco-tag">Case 05 · The Board Room</span>
+        <b>Advice, argued properly</b>
+        <p>Eight simulated advisors debate your hardest decision over three rounds; the Chair scores the advice.</p>
+        <span class="eco-go">See the project <span class="arrow">→</span></span>
+      </a>
+      <a class="eco-cell" href="/work/evidence-plane/">
+        <span class="eco-tag">Case 06 · Evidence Plane</span>
+        <b>Evidence, cited and graded</b>
+        <p>Consented calls become evidence you can check, sealed on a machine you control.</p>
+        <span class="eco-go">See the project <span class="arrow">→</span></span>
+      </a>
+      <div class="eco-cell is-here">
+        <span class="eco-tag">Case 07 · Company OS</span>
+        <b>The kernel. The only system that acts.</b>
+        <p>Agents do the work; every effect waits for your passkey or a rule you signed.</p>
+        <span class="eco-here">You are here</span>
+      </div>
     </div>
   </div>
 </section>
