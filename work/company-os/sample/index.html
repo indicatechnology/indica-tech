@@ -1,0 +1,1085 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A morning in Company OS · a guided sample</title>
+<meta name="description" content="Walk one morning in Company OS: the brief ready at 07:26 with no model call, the queue with one thing that needs you, one approval with a pretend passkey, the kill switch, and the record behind it all. Replayed in your browser, with made-up data.">
+<meta property="og:title" content="A morning in Company OS · a guided sample">
+<meta property="og:description" content="The 07:30 brief, the queue, one approval with a pretend passkey, the kill switch, and the record behind it all. A morning, replayed in your browser.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230f1c2e'/%3E%3Ccircle cx='9.5' cy='16' r='3.2' fill='%23d9a441'/%3E%3Crect x='15.2' y='6' width='2.6' height='20' rx='1.3' fill='%23f7f9fc'/%3E%3Crect x='20.5' y='10' width='8' height='2.4' rx='1.2' fill='%23f7f9fc'/%3E%3Crect x='20.5' y='14.8' width='8' height='2.4' rx='1.2' fill='%23d9a441'/%3E%3Crect x='20.5' y='19.6' width='8' height='2.4' rx='1.2' fill='%23f7f9fc'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script>
+// Theme before first paint: a saved choice wins, otherwise the page opens light (the site's own samples do the same).
+(function () { var t = null; try { t = localStorage.getItem("indica-theme"); } catch (e) {} if (t === "dark") document.documentElement.setAttribute("data-theme", "dark"); })();
+</script>
+<style>
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 600; font-display: swap; src: url("fonts/montserrat-semibold.ttf") format("truetype"); }
+@font-face { font-family: "Montserrat"; font-style: normal; font-weight: 700; font-display: swap; src: url("fonts/montserrat-bold.ttf") format("truetype"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("fonts/inter-normal-latin.woff2") format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("fonts/jetbrains-mono-normal-latin.woff2") format("woff2"); }
+:root {
+  color-scheme: light;
+  --page: #f3f5f9; --band: #e7ecf3; --surface: #ffffff; --tile: #f6f8fb; --track: #e3e8ef;
+  --ink: #0f1c2e; --ink-text: #f7f9fc; --text: #0f1c2e; --muted: #566375; --line: #dce2ea; --edge: #8794a6;
+  --brass: #b9802a; --brass-ink: #7a520f; --brass-soft: #f7ecd6; --on-brass: #ffffff; --brass-hover: #a46f1f;
+  --go: #1d6f49; --go-soft: #dcefe4; --cond: #7f5600; --cond-soft: #f7ebcf; --reshape: #a44a14; --reshape-soft: #f9e2d2; --dont: #a3241e; --dont-soft: #f6dfdb;
+  --ok: #1d6f49; --ok-soft: #dcefe4; --warn: #7f5600; --warn-soft: #f7ebcf; --bad: #a3241e; --bad-soft: #f6dfdb;
+  --green: #1d6f49; --green-soft: #dcefe4;
+  --shadow: 0 1px 2px rgba(15, 28, 46, .05), 0 8px 28px rgba(15, 28, 46, .06);
+  --shadow-md: 0 14px 44px rgba(15, 28, 46, .14);
+  --card-border: rgba(15, 28, 46, .04); --head-bg: rgba(255, 255, 255, .92); --btn-hover: #1d3150; --glow: transparent;
+  --strong-bg: #0f1c2e; --strong-text: #f7f9fc; --strong-muted: #c6d0de;
+  --doc-bg: #fffdf8; --doc-line: #efe6d3; --doc-inset: #fbf6ea;
+  --media-1: #eef2f8; --media-2: #e4eaf3;
+  --radius: 18px; --radius-sm: 12px;
+  --display: "Montserrat", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0b0e13; --band: #10141b; --surface: #131820; --tile: #19202a; --track: #262e3a;
+  --ink: #f2f5f9; --ink-text: #0b0e13; --text: #e6ebf2; --muted: #96a1b2; --line: #232b36; --edge: #6d7889;
+  --brass: #e2a94c; --brass-ink: #f1c47c; --brass-soft: rgba(226, 169, 76, .14); --on-brass: #1a1305; --brass-hover: #f1c47c;
+  --go: #5ccf97; --go-soft: rgba(92, 207, 151, .13); --cond: #eeb655; --cond-soft: rgba(238, 182, 85, .13); --reshape: #f39257; --reshape-soft: rgba(243, 146, 87, .13); --dont: #f2766d; --dont-soft: rgba(242, 118, 109, .13);
+  --ok: #5ccf97; --ok-soft: rgba(92, 207, 151, .13); --warn: #eeb655; --warn-soft: rgba(238, 182, 85, .13); --bad: #f2766d; --bad-soft: rgba(242, 118, 109, .13);
+  --green: #5ccf97; --green-soft: rgba(92, 207, 151, .13);
+  --shadow: inset 0 1px 0 rgba(255, 255, 255, .035), 0 12px 32px rgba(0, 0, 0, .45);
+  --shadow-md: 0 20px 60px rgba(0, 0, 0, .6);
+  --card-border: #1f2732; --head-bg: rgba(11, 14, 19, .8); --btn-hover: #ffffff; --glow: rgba(226, 169, 76, .09);
+  --strong-bg: #1f1a12; --strong-text: #f7f1e6; --strong-muted: #cdbfa6;
+  --doc-bg: #17140f; --doc-line: #3a3122; --doc-inset: #1d1912;
+  --media-1: #121822; --media-2: #0e131a;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--page); color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.6; overflow-wrap: break-word; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+img, svg { display: block; max-width: 100%; }
+h1, h2, h3 { font-family: var(--display); letter-spacing: -.02em; line-height: 1.12; margin: 0; color: var(--ink); }
+p { margin: 0; }
+.muted { color: var(--muted); }
+.skip { position: absolute; left: -999px; top: 8px; z-index: 90; background: var(--ink); color: var(--ink-text); padding: 10px 14px; border-radius: 999px; text-decoration: none; font-weight: 600; }
+.skip:focus { left: 12px; }
+:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; border-radius: 6px; }
+
+/* ---------- the strip back to the site, as on the other samples ---------- */
+.site-strip { background: var(--strip-bg, #0f1c2e); color: #e9eef6; font-size: .8rem; }
+.site-strip-in { max-width: 1320px; margin: 0 auto; padding: .35rem 20px; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.site-strip a { color: #e9eef6; text-decoration: none; display: inline-flex; align-items: center; gap: .45rem; min-height: 30px; }
+.site-strip a:hover { color: #e7b85e; }
+.site-strip a:focus-visible { outline-color: #e7b85e; }
+.site-strip-right { display: inline-flex; align-items: center; gap: 1.2rem; }
+.site-strip .indica { font-weight: 600; }
+@media (max-width: 640px) { .site-strip-in { padding: .3rem 16px; } .site-strip .hide-sm { display: none; } }
+
+/* ---------- head ---------- */
+.head { position: sticky; top: 0; z-index: 40; background: var(--head-bg); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.head-inner { max-width: 1320px; margin: 0 auto; display: flex; align-items: center; gap: 18px; padding: 10px 20px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 700; font-size: 1.08rem; letter-spacing: -.01em; white-space: nowrap; }
+.logo svg { width: 30px; height: 30px; }
+.logo em { font-style: normal; color: var(--brass-ink); }
+.nav { display: flex; gap: 2px; flex: 1 1 auto; justify-content: center; flex-wrap: wrap; }
+.nav a { display: inline-flex; align-items: center; gap: 7px; padding: 8px 11px; border-radius: 999px; text-decoration: none; font-size: .92rem; color: var(--muted); white-space: nowrap; }
+.nav a:hover { color: var(--ink); background: var(--tile); }
+.nav a[aria-current="page"] { color: var(--ink-text); background: var(--ink); }
+.nav a .ico { width: 16px; height: 16px; }
+.nav a .tick { display: none; width: 7px; height: 7px; border-radius: 50%; background: var(--brass); }
+.nav a.done .tick { display: inline-block; }
+.head-right { display: flex; align-items: center; gap: 8px; }
+.theme-btn { width: 38px; height: 38px; border-radius: 50%; display: inline-grid; place-items: center; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; transition: border-color .15s, background .15s; }
+.theme-btn:hover { border-color: var(--brass); }
+.theme-btn svg { width: 18px; height: 18px; }
+.call-pill { display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--ink); border-radius: 999px; padding: 6px 12px; font-weight: 600; font-size: .88rem; text-decoration: none; white-space: nowrap; }
+.call-pill .state { font-family: var(--mono); font-size: .74rem; font-weight: 500; padding: 2px 8px; border-radius: 999px; background: var(--brass-soft); color: var(--brass-ink); }
+.call-pill.made .state { background: var(--go-soft); color: var(--go); }
+.head .menu-btn { display: none; }
+
+/* ---------- shell ---------- */
+.shell { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 28px; padding: 0 20px; }
+.shell.tour-closed { grid-template-columns: minmax(0, 1fr); }
+main { min-width: 0; padding: 34px 0 60px; outline: none; }
+main:focus, main:focus-visible { outline: none; }
+.route[hidden] { display: none !important; }
+.intro { max-width: 820px; margin-bottom: 26px; }
+.intro .kicker { font-family: var(--mono); font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--brass-ink); margin-bottom: 10px; display: block; }
+.intro h1 { font-size: clamp(2rem, 4.2vw, 3.1rem); margin-bottom: 12px; }
+.intro p { font-size: 1.08rem; color: var(--muted); max-width: 68ch; }
+.hook { display: inline-flex; align-items: center; gap: 10px; margin-top: 16px; background: var(--brass-soft); color: var(--brass-ink); border-radius: 999px; padding: 7px 14px; font-weight: 600; font-size: .95rem; }
+.hook .ico { width: 18px; height: 18px; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.card { position: relative; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px 24px; border: 1px solid var(--card-border); }
+.card + .card { margin-top: 16px; }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.card h2 { font-size: 1.12rem; display: flex; align-items: center; gap: 9px; }
+.card h2 .ico { width: 19px; height: 19px; color: var(--brass); flex: none; }
+.pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 3px 10px; font-size: .78rem; font-weight: 600; background: var(--tile); color: var(--muted); white-space: nowrap; }
+.pill.go { background: var(--go-soft); color: var(--go); }
+.pill.cond { background: var(--cond-soft); color: var(--cond); }
+.pill.no { background: var(--bad-soft); color: var(--bad); }
+.pill.info { background: var(--brass-soft); color: var(--brass-ink); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; padding: 11px 20px; font-weight: 600; font-size: .95rem; cursor: pointer; text-decoration: none; border: 1.5px solid var(--ink); transition: transform .15s, background .15s, color .15s; }
+.btn:hover { transform: translateY(-1px); }
+.btn.primary { background: var(--ink); color: var(--ink-text); }
+.btn.primary:hover { background: var(--btn-hover); border-color: var(--btn-hover); }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn.ghost:hover { background: var(--ink); color: var(--ink-text); }
+.btn.brass { background: var(--brass); border-color: var(--brass); color: var(--on-brass); }
+.btn.brass:hover { background: var(--brass-hover); border-color: var(--brass-hover); }
+.btn.danger { background: var(--dont); border-color: var(--dont); color: #fff; }
+.btn.danger:hover { background: #8c1d18; border-color: #8c1d18; }
+.btn.small { padding: 8px 14px; font-size: .88rem; }
+.btn.wide { width: 100%; }
+.btn[disabled] { opacity: .45; cursor: not-allowed; transform: none; }
+.btn .ico { width: 16px; height: 16px; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+.next-link { margin-top: 26px; display: flex; justify-content: flex-end; }
+.ico { display: inline-block; flex: none; }
+.mono { font-family: var(--mono); font-size: .86em; }
+.scroll { overflow-x: auto; }
+
+/* ---------- welcome ---------- */
+.hero { text-align: center; max-width: 920px; margin: 10px auto 26px; }
+.hero h1 { font-size: clamp(2.3rem, 5.6vw, 4.2rem); line-height: 1.04; letter-spacing: -.035em; }
+.hero h1 span { color: var(--brass); }
+.hero p { margin: 16px auto 0; max-width: 62ch; font-size: 1.12rem; color: var(--muted); }
+.morning-figure { margin: 0 auto; max-width: 860px; }
+.morning-figure figcaption { text-align: center; font-size: .86rem; color: var(--muted); margin-top: 6px; }
+.paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 26px; }
+.path { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+.path .media { background: linear-gradient(135deg, var(--media-1), var(--media-2)); display: grid; place-items: center; padding: 14px 18px; min-height: 172px; }
+.path .media svg { width: 100%; max-width: 360px; height: auto; max-height: 200px; }
+.path .body { padding: 18px 22px 22px; display: flex; flex-direction: column; flex: 1; }
+.path .tag { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.path h2 { font-size: 1.4rem; margin-bottom: 6px; }
+.path .actions { margin-top: auto; padding-top: 16px; }
+.band { background: var(--band); border-radius: 26px; padding: 34px 28px 30px; margin-top: 26px; text-align: center; }
+.band h2 { font-size: clamp(1.7rem, 3.2vw, 2.4rem); }
+.band > p { color: var(--muted); margin: 8px auto 0; max-width: 64ch; }
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 22px 0 18px; text-align: left; }
+.tile { background: var(--surface); border-radius: var(--radius-sm); padding: 16px 18px; box-shadow: var(--shadow); }
+.tile .big { font-family: var(--display); font-weight: 700; font-size: 2rem; letter-spacing: -.03em; line-height: 1.05; }
+.tile .big small { font-size: 1.1rem; color: var(--brass); }
+.tile b { display: block; margin-top: 6px; font-size: .95rem; }
+.tile span { display: block; font-size: .84rem; color: var(--muted); }
+.status-strip { display: flex; gap: 16px; align-items: flex-start; margin-top: 22px; background: var(--surface); border-radius: var(--radius); padding: 18px 22px; border-left: 4px solid var(--brass); box-shadow: var(--shadow); }
+.status-strip .ico { width: 26px; height: 26px; color: var(--brass); margin-top: 2px; }
+.status-strip p { font-size: .95rem; color: var(--muted); }
+.status-strip b { color: var(--ink); }
+
+/* ---------- step 1: the brief ---------- */
+.brief-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.brief-sec { border-top: 1px solid var(--line); padding: 12px 0; }
+.brief-sec:last-child { border-bottom: 1px solid var(--line); }
+.brief-sec h3 { font-size: .74rem; font-family: var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.brief-sec h3 .pill { margin-left: auto; }
+.brief-item { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; border-radius: 10px; font-size: .93rem; }
+.brief-item .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--edge); margin-top: 8px; flex: none; }
+.brief-item .dot.ok { background: var(--green); }
+.brief-item .dot.warn { background: var(--brass); }
+.brief-item .dot.bad { background: var(--bad); }
+.brief-item b { font-weight: 600; }
+.brief-item .mono { color: var(--muted); font-size: .8rem; }
+.doc { background: var(--doc-bg); border: 1px solid var(--doc-line); border-radius: 16px; padding: 22px 26px; box-shadow: inset 0 0 0 6px var(--doc-inset); }
+.doc .doc-k { font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--brass-ink); margin-bottom: 8px; }
+.doc p.rec { font-size: 1.05rem; margin: 0; color: var(--ink); }
+
+/* ---------- step 2: the queue ---------- */
+.q-quote { font-size: 1.02rem; font-style: italic; color: var(--ink); margin: 4px 0 10px; }
+.q-facts { display: grid; gap: 6px; }
+.q-facts div { display: flex; gap: 10px; align-items: flex-start; font-size: .92rem; color: var(--muted); padding-left: 2px; }
+.q-facts .ico { width: 15px; height: 15px; margin-top: 4px; color: var(--go); }
+.q-facts b { color: var(--ink); font-weight: 600; }
+.q-foot { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--line); font-size: .86rem; color: var(--muted); }
+.q-foot b { color: var(--ink); }
+
+/* ---------- step 3: approve ---------- */
+.checks-line { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 16px; }
+.checks-note { font-size: .84rem; color: var(--muted); margin-top: 10px; }
+.draft-label { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.draft-wrap { position: relative; }
+#draft { width: 100%; resize: vertical; min-height: 96px; border: 1.5px solid var(--line); border-radius: 14px; background: var(--doc-bg); color: var(--ink); font-family: var(--sans); font-size: 1.05rem; line-height: 1.55; padding: 16px 18px; transition: border-color .2s, background .2s; }
+#draft:focus { outline: none; border-color: var(--brass); }
+#draft.is-edited { border-color: var(--warn); background: var(--warn-soft); }
+.draft-warn { display: flex; gap: 10px; align-items: flex-start; margin-top: 10px; background: var(--warn-soft); color: var(--cond); border-radius: 12px; padding: 12px 14px; font-size: .9rem; }
+.draft-warn .ico { width: 18px; height: 18px; margin-top: 2px; flex: none; }
+.draft-warn b { color: var(--cond); }
+.void-banner { display: flex; gap: 10px; align-items: flex-start; margin-top: 12px; background: var(--bad-soft); color: var(--bad); border-radius: 12px; padding: 12px 14px; font-size: .92rem; }
+.void-banner .ico { width: 18px; height: 18px; margin-top: 2px; flex: none; }
+.passkey { margin-top: 16px; background: var(--strong-bg); color: var(--strong-text); border-radius: var(--radius); padding: 20px 22px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: center; border: 1px solid color-mix(in srgb, var(--brass) 30%, transparent); }
+.passkey .key-ico { width: 46px; height: 46px; color: var(--brass); }
+.passkey p { color: var(--strong-muted); font-size: .95rem; }
+.passkey b { color: var(--strong-text); }
+.passkey .actions { margin-top: 12px; }
+.approved-box { margin-top: 16px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px; align-items: center; background: var(--go-soft); border: 1px solid color-mix(in srgb, var(--go) 35%, transparent); border-radius: var(--radius); padding: 18px 20px; }
+.stamp { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 118px; height: 118px; border-radius: 50%; border: 3px solid var(--go); color: var(--go); text-align: center; font-family: var(--display); font-weight: 700; font-size: .8rem; line-height: 1.15; letter-spacing: .04em; transform: rotate(-7deg); background: var(--surface); box-shadow: inset 0 0 0 5px var(--surface), inset 0 0 0 7px var(--go); padding: 10px; }
+.stamp small { font-size: .58rem; letter-spacing: .08em; text-transform: uppercase; margin-top: 2px; }
+.approved-box p { font-size: .95rem; color: var(--ink); }
+.approved-box .mono { color: var(--muted); }
+.ledger { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.ledger span { font-family: var(--mono); font-size: .7rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); border: 1px solid var(--line); padding: 3px 9px; border-radius: 999px; }
+.ledger span.on { background: var(--ink); color: var(--ink-text); border-color: var(--ink); }
+
+/* ---------- step 4: the kill switch ---------- */
+.send-log { font-family: var(--mono); font-size: .8rem; background: var(--strong-bg); color: var(--strong-muted); border-radius: 14px; padding: 14px 16px; height: 240px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; }
+.send-log div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.send-log div.stop { color: var(--strong-text); font-weight: 600; }
+.send-log .t { color: var(--brass); }
+.killer-line { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 14px; }
+.kill-time { font-family: var(--display); font-weight: 700; font-size: 1.5rem; letter-spacing: -.02em; color: var(--ink); }
+.kill-time small { font-size: .9rem; color: var(--muted); font-weight: 600; }
+.lane-log { display: grid; gap: 8px; }
+.lane-log div { display: flex; gap: 10px; align-items: flex-start; font-size: .92rem; color: var(--muted); }
+.lane-log .ico { width: 16px; height: 16px; margin-top: 4px; color: var(--go); flex: none; }
+.lane-log b { color: var(--ink); }
+.stop-echo { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: flex-start; background: var(--strong-bg); color: var(--strong-text); border-radius: 14px; padding: 14px 16px; font-size: .92rem; }
+.stop-echo .ico { width: 20px; height: 20px; color: var(--brass); margin-top: 2px; }
+.stop-echo b { color: var(--strong-text); }
+.stop-echo .mono { color: var(--strong-muted); }
+
+/* ---------- step 5: the record ---------- */
+.gate-flow { display: grid; gap: 0; }
+.gstep { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; align-items: start; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.gstep:last-child { border-bottom: 0; }
+.gstep .gn { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--ink-text); font-family: var(--mono); font-weight: 700; font-size: .82rem; }
+.gstep b { display: block; font-size: 1rem; }
+.gstep p { font-size: .9rem; color: var(--muted); margin-top: 3px; }
+.gstep .res { font-family: var(--mono); font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; padding: 4px 10px; border-radius: 999px; background: var(--go-soft); color: var(--go); white-space: nowrap; }
+.gstep .time { display: block; font-family: var(--mono); font-size: .72rem; color: var(--edge); margin-top: 4px; }
+.gstep.is-sealed { background: var(--brass-soft); margin: 8px -14px 0; padding: 16px 14px; border-radius: 14px; }
+.gstep.is-sealed .gn { background: var(--brass); color: var(--on-brass); }
+.audit-row { margin-top: 16px; background: var(--strong-bg); color: var(--strong-text); border-radius: var(--radius); padding: 20px 22px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: center; }
+.audit-row .k { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brass); margin-bottom: 8px; }
+.audit-row dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 18px; font-family: var(--mono); font-size: .82rem; }
+.audit-row dt { color: var(--strong-muted); }
+.audit-row dd { margin: 0; color: var(--strong-text); }
+.seal { width: 104px; height: 104px; border-radius: 50%; border: 2px solid var(--brass); color: var(--brass-ink); display: grid; place-content: center; text-align: center; box-shadow: inset 0 0 0 5px var(--surface), inset 0 0 0 6.5px var(--brass); padding: .8rem; transform: rotate(-7deg); }
+.seal b { display: block; font-family: var(--display); font-size: 1.05rem; font-weight: 700; letter-spacing: -.01em; line-height: 1; color: var(--brass); }
+.seal small { display: block; font-size: .56rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-top: .3rem; line-height: 1.3; }
+
+/* ---------- tour ---------- */
+.tour { position: sticky; top: 74px; align-self: start; margin-top: 34px; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 18px 18px 16px; max-height: calc(100vh - 96px); overflow: auto; }
+.shell.tour-closed .tour { display: none; }
+.tour-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.tour-head h2 { font-size: 1.1rem; }
+.tour ol { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 4px; }
+.tour li button { width: 100%; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; align-items: center; text-align: left; background: none; border: 0; border-radius: 10px; padding: 7px 8px; cursor: pointer; font-size: .9rem; color: var(--muted); }
+.tour li button:hover { background: var(--tile); }
+.tour li .n { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-family: var(--mono); font-size: .72rem; border: 1.5px solid var(--line); background: var(--surface); }
+.tour li.done .n { background: var(--ink); border-color: var(--ink); color: var(--ink-text); }
+.tour li.cur button { background: var(--brass-soft); color: var(--ink); font-weight: 600; }
+.tour li.cur .n { border-color: var(--brass); }
+.step-text { margin-top: 14px; background: var(--tile); border-radius: 14px; padding: 14px 15px; font-size: .92rem; }
+.step-text b { display: block; font-family: var(--display); font-size: 1rem; margin-bottom: 4px; }
+.tour .actions { margin-top: 12px; }
+.tour .actions .btn { flex: 1; }
+.reopen-tour { position: fixed; right: 18px; bottom: 18px; z-index: 30; box-shadow: var(--shadow-md); }
+.reopen-tour[hidden] { display: none; }
+.toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: var(--ink); color: var(--ink-text); border-radius: 999px; padding: 10px 18px; font-size: .92rem; z-index: 60; box-shadow: var(--shadow-md); }
+.toast[hidden] { display: none; }
+
+.foot { margin-top: 34px; font-size: .84rem; color: var(--muted); }
+.byline { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: .86rem; color: var(--muted); }
+.byline a { color: var(--ink); }
+.byline .indica { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; text-decoration: none; }
+.textlink { background: none; border: 0; padding: 0; color: var(--ink); text-decoration: underline; cursor: pointer; font-size: inherit; }
+
+@media (max-width: 1320px) { .nav a .ico { display: none; } .nav a { padding: 8px 9px; } }
+@media (max-width: 1180px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .tour { position: fixed; right: 14px; bottom: 14px; top: auto; width: min(360px, calc(100vw - 28px)); max-height: 72vh; z-index: 35; margin: 0; }
+}
+@media (max-width: 960px) {
+  .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border-bottom: 1px solid var(--line); padding: 10px 14px 14px; flex-direction: column; align-items: stretch; }
+  .nav.open { display: flex; }
+  .nav a { border-radius: 12px; }
+  .head .menu-btn { display: inline-flex; }
+  .paths, .grid2, .grid3, .brief-grid { grid-template-columns: minmax(0, 1fr); }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .head-inner { padding: 8px 14px; gap: 10px; }
+  .logo span { font-size: .98rem; }
+  .call-pill .lbl { display: none; }
+  .shell { padding: 0 16px; }
+  main { padding-top: 22px; }
+  .card { padding: 18px 16px; }
+  .band { padding: 26px 16px 22px; border-radius: 20px; }
+  .audit-row { grid-template-columns: minmax(0, 1fr); }
+  .seal { justify-self: center; }
+  .gstep { grid-template-columns: 34px minmax(0, 1fr); }
+  .gstep .res { grid-column: 2; justify-self: start; }
+  .tour { left: 10px; right: 10px; bottom: 10px; width: auto; padding: 12px 14px; max-height: 46vh; }
+  .tour ol { display: none; }
+  .tour .step-text { margin-top: 8px; padding: 10px 12px; font-size: .86rem; }
+  .tour .actions { margin-top: 8px; }
+  main { padding-bottom: 230px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* ---------- marketing pass: motion, depth and glow ---------- */
+@keyframes smp-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.route:not([hidden]) .intro { animation: smp-rise .45s cubic-bezier(.2,.7,.3,1) backwards; }
+.route:not([hidden]) .card { animation: smp-rise .5s cubic-bezier(.2,.7,.3,1) backwards; }
+.route:not([hidden]) .card:nth-child(2) { animation-delay: .07s; }
+.route:not([hidden]) .card:nth-child(3) { animation-delay: .14s; }
+.route:not([hidden]) .band, .route:not([hidden]) .status-strip { animation: smp-rise .5s .1s backwards; }
+.route:not([hidden]) .next-link { animation: smp-rise .45s .18s backwards; }
+.route:not([hidden]) .gstep { animation: smp-rise .4s backwards; }
+.route:not([hidden]) .gstep:nth-child(2) { animation-delay: .06s; }
+.route:not([hidden]) .gstep:nth-child(3) { animation-delay: .12s; }
+.route:not([hidden]) .audit-row { animation: smp-rise .5s .3s backwards; }
+
+.hero { position: relative; }
+.hero::before { content: ""; position: absolute; inset: -60px -40px -20px; z-index: -1; background: radial-gradient(52% 62% at 50% 0%, color-mix(in srgb, var(--brass) 13%, transparent), transparent 70%); }
+.hero h1 span { background: linear-gradient(100deg, var(--brass) 15%, color-mix(in srgb, var(--brass) 62%, #fff) 50%, var(--brass) 85%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+@supports not (background-clip: text) {
+  .hero h1 span { background: none; color: var(--brass); }
+}
+
+.morning-figure svg circle { transform-box: fill-box; transform-origin: center; animation: smp-pop .45s cubic-bezier(.2,1.4,.4,1) backwards; }
+.morning-figure svg circle:nth-of-type(2) { animation-delay: .1s; }
+.morning-figure svg circle:nth-of-type(3) { animation-delay: .2s; }
+.morning-figure svg circle:nth-of-type(4) { animation-delay: .3s; }
+.morning-figure svg circle:nth-of-type(5) { animation-delay: .4s; }
+@keyframes smp-pop { from { transform: scale(0); } }
+.morning-figure svg line { animation: smp-flow 2.6s linear infinite; }
+@keyframes smp-flow { to { stroke-dashoffset: -28; } }
+.morning-figure figcaption { font-family: var(--mono); font-size: .78rem; letter-spacing: .04em; }
+
+.path { transition: transform .25s, box-shadow .25s; }
+.path:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+.path .media svg { transition: transform .3s ease; }
+.path:hover .media svg { transform: scale(1.05); }
+
+.tile { transition: transform .2s, box-shadow .2s, border-color .2s; border-top: 3px solid transparent; }
+.tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-top-color: var(--brass); }
+.tile .big { font-variant-numeric: tabular-nums; }
+.band { background: radial-gradient(90% 120% at 50% -30%, color-mix(in srgb, var(--brass) 12%, transparent), transparent 60%), var(--band); }
+
+.send-log div { animation: smp-line .3s ease backwards; }
+@keyframes smp-line { from { opacity: 0; transform: translateY(4px); } }
+.send-log::after { content: "▌"; color: var(--brass); animation: smp-blink 1s steps(1) infinite; }
+@keyframes smp-blink { 50% { opacity: 0; } }
+
+.passkey:not([hidden]) .btn.brass { animation: smp-pulse 2.2s ease-out infinite; }
+@keyframes smp-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--brass) 45%, transparent); } 70% { box-shadow: 0 0 0 14px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+.approved-box:not([hidden]) .stamp { animation: smp-stamp .5s cubic-bezier(.2,1.6,.4,1) backwards; }
+@keyframes smp-stamp { from { transform: rotate(-7deg) scale(1.7); opacity: 0; } }
+
+.btn { transition: transform .15s, background .15s, color .15s, border-color .15s, box-shadow .15s; }
+.btn:active { transform: scale(.97); }
+.call-pill .state { transition: background .3s, color .3s; }
+
+.tour-bar { height: 5px; border-radius: 999px; background: var(--track); margin-top: 12px; overflow: hidden; }
+.tour-bar span { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--brass), color-mix(in srgb, var(--brass) 62%, #fff)); transition: width .45s cubic-bezier(.2,.7,.3,1); }
+
+@media (max-width: 640px) {
+  .tour-bar { display: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="site-strip" aria-label="Indica Tech">
+  <div class="site-strip-in">
+    <a href="../"><span aria-hidden="true">←</span> Back to the project</a>
+    <span class="site-strip-right"><a class="hide-sm" href="https://indica-tech.com/work/">All work</a><a class="indica" href="https://indica-tech.com/"><svg viewBox="0 0 100 100" width="18" height="18" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00C46A"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg><span>Indica Tech</span></a></span>
+  </div>
+</nav>
+
+<header class="head">
+  <div class="head-inner">
+    <a class="logo" href="#welcome" aria-label="Company OS, start">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0f1c2e"/><circle cx="9.5" cy="16" r="3.2" fill="#d9a441"/><rect x="15.2" y="6" width="2.6" height="20" rx="1.3" fill="#f7f9fc"/><rect x="20.5" y="10" width="8" height="2.4" rx="1.2" fill="#f7f9fc"/><rect x="20.5" y="14.8" width="8" height="2.4" rx="1.2" fill="#d9a441"/><rect x="20.5" y="19.6" width="8" height="2.4" rx="1.2" fill="#f7f9fc"/></svg>
+      <span>Company <em>OS</em></span>
+    </a>
+    <nav class="nav" id="nav" aria-label="The morning, step by step">
+      <a href="#brief" data-route="brief" data-icon="sun"><span class="tick"></span>The brief</a>
+      <a href="#queue" data-route="queue" data-icon="list"><span class="tick"></span>The queue</a>
+      <a href="#approve" data-route="approve" data-icon="key"><span class="tick"></span>Approve</a>
+      <a href="#killswitch" data-route="killswitch" data-icon="bolt"><span class="tick"></span>Kill switch</a>
+      <a href="#record" data-route="record" data-icon="seal"><span class="tick"></span>The record</a>
+    </nav>
+    <div class="head-right">
+      <button type="button" class="theme-btn" id="theme-btn" aria-label="Switch to the dark theme"></button>
+      <span class="call-pill" id="morning-pill"><span class="lbl">The morning</span><span class="state" id="morning-state">0 / 5</span></span>
+      <button type="button" class="btn ghost small menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
+    </div>
+  </div>
+</header>
+
+<div class="shell" id="shell">
+  <main id="main" tabindex="-1">
+
+    <!-- welcome -->
+    <section class="route" data-route="welcome" aria-labelledby="h-welcome">
+      <div class="hero">
+        <h1 id="h-welcome">The shop ran overnight. <span>The morning is five steps.</span></h1>
+        <p>One morning in Company OS: a safety report handled in about a second, fourteen replies sent by a rule you signed, one question waiting for you. Walk it the way the founder does — the brief, the queue, one approval, the kill switch, and the record behind it all.</p>
+      </div>
+      <figure class="morning-figure" id="morning-figure" aria-label="The morning at a glance: the brief at 07:30, the queue, one approval, the kill switch, and the record"></figure>
+      <div class="paths">
+        <article class="card path">
+          <div class="media" aria-hidden="true" id="media-walk"></div>
+          <div class="body">
+            <div class="tag"><span class="pill info" id="pill-minutes">About 5 minutes</span><span class="pill">Five steps, start to finish</span></div>
+            <h2>Walk the morning</h2>
+            <p class="muted">The brief, the queue, one reply approved with a pretend passkey, the kill switch, and the record it all leaves behind. Each stop ticks when it has happened.</p>
+            <div class="actions"><a class="btn primary wide" href="#brief" data-start-tour>Start the morning</a></div>
+          </div>
+        </article>
+        <article class="card path">
+          <div class="media" aria-hidden="true" id="media-skip"></div>
+          <div class="body">
+            <div class="tag"><span class="pill">One thing needs you</span><span class="pill">Two checks passed</span></div>
+            <h2>Skip to the queue</h2>
+            <p class="muted">Overnight is already handled. One product question is waiting, its draft from your approved answer — see it, then approve it with the pretend passkey.</p>
+            <div class="actions"><a class="btn ghost wide" href="#queue">Show the queue</a></div>
+          </div>
+        </article>
+      </div>
+      <section class="band" aria-labelledby="h-measured">
+        <h2 id="h-measured">Measured, not claimed.</h2>
+        <p>What the morning below is held to — every figure measured on simulators, with a fake model provider.</p>
+        <div class="tiles" id="welcome-tiles"></div>
+        <a class="btn ghost" href="../#benchmarks">See the benchmarks</a>
+      </section>
+      <div class="status-strip"><span data-icon="flag"></span><p><b>Shown honestly.</b> The shop, its customers and every message in this sample are made up. The numbers — 287 milliseconds, about a second, 14 of 14 — are the project's own benchmark results, and the misses are counted on the project page.</p></div>
+    </section>
+
+    <!-- step 1: the brief -->
+    <section class="route" data-route="brief" aria-labelledby="h-brief" hidden>
+      <div class="intro"><span class="kicker">Step 1 of 5 · Thursday, 07:30</span><h1 id="h-brief">The brief, ready before you were.</h1><p>Company OS rebuilds the brief from its own records every morning — nothing generates it, so nothing can dream it. It was ready at 07:26: eight sections, the same brief it would rebuild anywhere, because it is rebuilt from the record rather than remembered.</p><span class="hook"><span data-icon="flag"></span><span id="hook-brief"></span></span></div>
+      <div class="brief-grid">
+        <section class="card" aria-labelledby="h-briefdoc">
+          <div class="card-head"><h2 id="h-briefdoc" data-icon="sun">The morning brief · Thursday</h2><span class="pill">rebuilt exactly · no model wrote it</span></div>
+          <div id="brief-body"></div>
+        </section>
+        <div class="stack">
+          <section class="card" aria-labelledby="h-nomodel">
+            <div class="card-head"><h2 id="h-nomodel" data-icon="check">No model wrote this</h2></div>
+            <p class="muted" style="font-size:.95rem">The brief is a projection over the records: rebuilt, never generated. Read it top to bottom — these eight sections are the whole morning.</p>
+            <p class="muted" style="font-size:.95rem;margin-top:10px">It is ready at 07:26 and it reads the same at 09:00, because it derives from the record, not from whatever a model might say twice.</p>
+          </section>
+          <section class="card" aria-labelledby="h-bnext">
+            <div class="card-head"><h2 id="h-bnext" data-icon="list">Next: the queue</h2></div>
+            <p class="muted" style="font-size:.95rem">Section 3 is the only section that ends with a decision. The queue shows what was done overnight — and the one thing that needs you.</p>
+            <div class="actions"><a class="btn primary" href="#queue">Open the queue <span data-icon="arrow"></span></a></div>
+          </section>
+        </div>
+      </div>
+      <div class="next-link"><a class="btn primary" href="#queue">Next: the queue <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- step 2: the queue -->
+    <section class="route" data-route="queue" aria-labelledby="h-queue" hidden>
+      <div class="intro"><span class="kicker">Step 2 of 5 · Thursday, 07:31</span><h1 id="h-queue">One queue. One thing needs you.</h1><p>Everything that happened overnight lands in one queue, safety first. The first card is already handled, the last was sent by a rule you signed — read what was done, then take the one decision that is yours.</p><span class="hook"><span data-icon="flag"></span><span id="hook-queue"></span></span></div>
+
+      <section class="card" aria-labelledby="h-qsafety">
+        <div class="card-head"><h2 id="h-qsafety" data-icon="shield">Safety · reaction report</h2><span class="pill go">handled · no model in the path</span></div>
+        <p class="q-quote">&ldquo;I came out in a rash after the second day of the magnesium.&rdquo;</p>
+        <div class="q-facts">
+          <div><span data-icon="check"></span><span><b>Recorded and acknowledged in about a second</b> — the slowest this has ever been measured is 1.3&nbsp;s, with every model switched off.</span></div>
+          <div><span data-icon="check"></span><span><b>You and the pharmacist were told</b> — before anything else queued up.</span></div>
+          <div><span data-icon="check"></span><span><b>First report on batch B-1042 in 30 days</b> — a second one holds the batch and takes the product off sale. That part is a rule you signed, not a decision waiting on you.</span></div>
+        </div>
+        <p class="q-foot">Handled at 02:14, while you slept. Nothing about it waited for a model — <b>no model is anywhere in the safety path</b>.</p>
+      </section>
+
+      <section class="card" aria-labelledby="h-qyou" style="border:1.5px solid color-mix(in srgb, var(--brass) 45%, transparent)">
+        <div class="card-head"><h2 id="h-qyou" data-icon="key">Needs you · product question</h2><span class="pill info">waiting for your passkey</span></div>
+        <p class="q-quote">&ldquo;How many do I take a day?&rdquo;</p>
+        <div class="doc">
+          <div class="doc-k">The draft — from your approved answer, word for word</div>
+          <p class="rec">&ldquo;Take one capsule a day with food, as it says on the label.&rdquo;</p>
+        </div>
+        <div class="checks-line"><span class="pill go">Claims check — passed</span><span class="pill go">Second model — passed</span></div>
+        <p class="muted" style="font-size:.88rem">A second agent, on a different provider, read the draft. It cannot edit the text — it can only say no. It didn&rsquo;t.</p>
+        <div class="actions"><a class="btn primary" href="#approve" id="to-approve">Approve with your passkey <span data-icon="arrow"></span></a></div>
+      </section>
+
+      <section class="card" aria-labelledby="h-qrule">
+        <div class="card-head"><h2 id="h-qrule" data-icon="list">Done by your rule · 14 order-status replies</h2><span class="pill go">sent at level L2</span></div>
+        <div class="q-facts">
+          <div><span data-icon="check"></span><span><b>Sent at level L2</b>, by the rule you signed — earned after 99 replies in a row were right, and you review each one afterwards.</span></div>
+          <div><span data-icon="check"></span><span><b>Yours to review after</b> — nothing waited for you overnight.</span></div>
+        </div>
+      </section>
+
+      <div class="next-link"><a class="btn primary" href="#approve">Next: approve the reply <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- step 3: approve -->
+    <section class="route" data-route="approve" aria-labelledby="h-approve" hidden>
+      <div class="intro"><span class="kicker">Step 3 of 5 · Thursday, 07:33</span><h1 id="h-approve">What you sign is exactly what is sent.</h1><p>This is the one decision the morning needs. The draft below is built only from your approved answer and it passed both checks. The passkey signs the exact letters on the screen — change one of them and the approval no longer counts. It is not a warning label; here it works. Try it.</p><span class="hook"><span data-icon="flag"></span><span id="hook-approve"></span></span></div>
+      <div class="grid2">
+        <section class="card" aria-labelledby="h-draft">
+          <div class="card-head"><h2 id="h-draft" data-icon="pen">The reply, waiting for your yes</h2><span class="pill go">both checks passed</span></div>
+          <p class="muted" style="font-size:.92rem">The customer asked: <i>&ldquo;How many do I take a day?&rdquo;</i></p>
+          <div class="checks-line"><span class="pill go">Claims check — passed</span><span class="pill go">Second model — passed</span></div>
+          <p class="checks-note">The second model sits on a different provider and can only reject — it read the draft and stayed silent.</p>
+          <div class="draft-label" style="margin-top:18px">The draft — your approved answer, letter for letter</div>
+          <div class="draft-wrap">
+            <textarea id="draft" rows="3" spellcheck="false">Take one capsule a day with food, as it says on the label.</textarea>
+          </div>
+          <div class="draft-warn" id="draft-warn" hidden><span data-icon="alert"></span><p><b>The approval no longer counts.</b> The passkey signs exactly what is on the screen. This text no longer matches your approved answer — <button type="button" class="textlink" id="draft-restore">restore the approved text</button> to make it approve-able again.</p></div>
+          <div class="void-banner" id="void-banner" hidden><span data-icon="alert"></span><p><b>Approval void.</b> You signed one text and the screen now shows another — the signature no longer matches. Restore the text and approve again.</p></div>
+          <div class="actions"><button type="button" class="btn primary" id="approve-btn">Approve with your passkey</button></div>
+          <div class="passkey" id="passkey" hidden>
+            <span class="key-ico" data-icon="key"></span>
+            <div>
+              <p><b>Your pretend passkey.</b> In the real system this is a hardware key on your desk. Here it is a button — press it to sign the exact text above.</p>
+              <div class="actions"><button type="button" class="btn brass" id="passkey-touch">Touch the passkey</button></div>
+            </div>
+          </div>
+          <div class="approved-box" id="approved-box" hidden>
+            <span class="stamp"><span>APPROVED</span><small>07:33:12</small></span>
+            <div>
+              <p><b>Approved at 07:33:12</b> — bound to this exact text, letter for letter. What you see is what will be sent.</p>
+              <p class="muted" style="font-size:.86rem;margin-top:6px">Now try the promise: change one word in the draft above and watch this approval stop counting.</p>
+              <div class="ledger"><span class="on">intended</span><span class="on">approved</span><span>sent — exactly once</span></div>
+            </div>
+          </div>
+        </section>
+        <div class="stack">
+          <section class="card" aria-labelledby="h-binding">
+            <div class="card-head"><h2 id="h-binding" data-icon="shield">The binding, in one sentence</h2></div>
+            <p class="muted" style="font-size:.95rem">The project page promises: <i>&ldquo;change one letter and the approval no longer counts.&rdquo;</i> The approval is bound to the exact text on the screen when you sign — not to your intentions, not to the draft&rsquo;s id.</p>
+            <p class="muted" style="font-size:.95rem;margin-top:10px">That is why the text box above is editable in this sample: so you can break the binding on purpose and feel it refuse.</p>
+          </section>
+          <section class="card" aria-labelledby="h-then">
+            <div class="card-head"><h2 id="h-then" data-icon="bolt">Then: the kill switch</h2></div>
+            <p class="muted" style="font-size:.95rem">One approval down. Next, the morning&rsquo;s brake: a switch that stops every send — and the one lane it never stops.</p>
+            <div class="actions"><a class="btn ghost" href="#killswitch">Go to the kill switch <span data-icon="arrow"></span></a></div>
+          </section>
+        </div>
+      </div>
+      <div class="next-link"><a class="btn primary" href="#killswitch">Next: pull the kill switch <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- step 4: the kill switch -->
+    <section class="route" data-route="killswitch" aria-labelledby="h-kill" hidden>
+      <div class="intro"><span class="kicker">Step 4 of 5 · Thursday, 07:35</span><h1 id="h-kill">Every send stops. One lane never does.</h1><p>The kill switch is the founder&rsquo;s brake: pull it and every send stops within a second — the benchmark&rsquo;s slowest stop is 287 milliseconds against a 10-second bar. Below, a pretend send stream is running. Pull the switch, then watch the two things that happen: the sends stop, and the safety lane carries on.</p><span class="hook"><span data-icon="flag"></span><span id="hook-kill"></span></span></div>
+      <div class="grid2">
+        <section class="card" aria-labelledby="h-stream">
+          <div class="card-head"><h2 id="h-stream" data-icon="bolt">The one way out, sending</h2><span class="pill" id="send-state">sending&hellip;</span></div>
+          <div class="send-log" id="send-log" aria-live="polite"></div>
+          <div class="killer-line">
+            <button type="button" class="btn danger" id="kill-btn">Pull the kill switch</button>
+            <span class="kill-time" id="kill-time" hidden>0<small> ms</small></span>
+          </div>
+          <p class="muted" style="font-size:.84rem;margin-top:10px">The bar: seen within 10 seconds, nothing sent after. The benchmark&rsquo;s slowest stop: <b>287 ms</b>.</p>
+        </section>
+        <div class="stack">
+          <section class="card" aria-labelledby="h-lane" id="lane-card" hidden>
+            <div class="card-head"><h2 id="h-lane" data-icon="shield">The lane that never stops</h2><span class="pill go">protective · sent</span></div>
+            <div class="lane-log" id="lane-log" aria-live="polite"></div>
+            <p class="muted" style="font-size:.86rem;margin-top:12px">A reaction arrived <b>while the switch was down</b>. The customer was acknowledged and the pharmacist told anyway — protective steps are the one thing the kill switch never pauses.</p>
+          </section>
+          <section class="card" aria-labelledby="h-knote">
+            <div class="card-head"><h2 id="h-knote" data-icon="flag">Why the exception exists</h2></div>
+            <p class="muted" style="font-size:.95rem">Safety work never waits for a model — and it never waits for the switch either. Everything else stops: replies, order updates, warehouse writes. The lane that protects a customer keeps going.</p>
+            <p class="muted" style="font-size:.95rem;margin-top:10px">That is the contrast the project page states as a benchmark: <i>seen within 10 s; nothing sent after — 287 ms; 0 sent.</i></p>
+          </section>
+        </div>
+      </div>
+      <div class="next-link"><a class="btn primary" href="#record">Next: open the record <span data-icon="arrow"></span></a></div>
+    </section>
+
+    <!-- step 5: the record -->
+    <section class="route" data-route="record" aria-labelledby="h-record" hidden>
+      <div class="intro"><span class="kicker">Step 5 of 5 · Thursday, 07:38</span><h1 id="h-record">Proof of every action.</h1><p>Nothing leaves Company OS without joining the record. Follow the reply you approved a minute ago — the customer&rsquo;s message, both checks, your passkey, the send — down to the row the record sealed. Every step below is real in shape; the names are made up for this page.</p><span class="hook"><span data-icon="flag"></span><span id="hook-record"></span></span></div>
+      <section class="card" aria-labelledby="h-trace">
+        <div class="card-head"><h2 id="h-trace" data-icon="seal">One reply, followed to the record</h2><span class="pill">chained · sealed</span></div>
+        <div class="gate-flow" id="trace"></div>
+        <div class="audit-row" id="audit-row" hidden>
+          <div>
+            <div class="k">The sealed audit row</div>
+            <dl>
+              <dt>row</dt><dd>4,221</dd>
+              <dt>reply</dt><dd>#1287 — product question</dd>
+              <dt>message in</dt><dd>07:31:02</dd>
+              <dt>approved</dt><dd>07:33:12 · passkey</dd>
+              <dt>sent</dt><dd>07:33:13 · exactly once</dd>
+              <dt>chained to</dt><dd>row 4,220</dd>
+            </dl>
+          </div>
+          <span class="seal"><b>SEALED</b><small>07:33:13 · write-once</small></span>
+        </div>
+      </section>
+      <section class="band" style="text-align:left" aria-labelledby="h-proof">
+        <h2 id="h-proof" style="font-size:clamp(1.4rem,2.6vw,1.9rem)">That row is the &ldquo;proof of every action.&rdquo;</h2>
+        <p style="margin:10px 0 0;text-align:left">The morning brief you read in step 1 is built from rows like 4,221 — one chained, sealed entry per action. Months later, a regulator, a partner or you can walk the same chain and see exactly what happened, in the order it happened. Nothing edits a sealed row; new events chain after it.</p>
+      </section>
+      <div class="next-link"><a class="btn ghost" href="#welcome">Back to the start</a></div>
+    </section>
+
+    <p class="foot">It runs in your browser with made-up data. Nothing to install, nothing saved.</p>
+    <p class="byline">A project by <a class="indica" href="https://indica-tech.com/" target="_blank" rel="noopener"><svg viewBox="0 0 100 100" width="18" height="18" aria-hidden="true"><circle cx="32" cy="26" r="7" fill="#00C46A"/><rect x="25.5" y="40" width="13" height="42" fill="currentColor"/><path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/></svg><span>Indica Technology</span></a><span aria-hidden="true">·</span><a href="https://indica-tech.com/" target="_blank" rel="noopener">indica-tech.com</a><span aria-hidden="true">·</span><a href="https://www.linkedin.com/company/indica-technology/" target="_blank" rel="noopener">LinkedIn</a><span aria-hidden="true">·</span><a href="../">About the project</a><span aria-hidden="true">·</span><button type="button" class="textlink" id="reset-btn">Start the morning again</button></p>
+  </main>
+
+  <aside class="tour" id="tour" aria-labelledby="h-tour">
+    <div class="tour-head"><h2 id="h-tour">The morning <span class="muted" id="tour-progress" style="font-weight:500;font-size:.88rem;font-family:var(--sans)"></span></h2><button type="button" class="btn ghost small" id="tour-close">Close</button></div>
+    <p class="muted" style="font-size:.82rem;margin-top:6px">A stop ticks when the thing has happened, not when you click Next.</p>
+    <ol id="tour-steps"></ol>
+    <div class="tour-bar" aria-hidden="true"><span id="tour-bar-fill"></span></div>
+    <div class="step-text" id="tour-text"></div>
+    <div class="actions"><button type="button" class="btn ghost small" id="tour-back">Back</button><button type="button" class="btn primary small" id="tour-next">Next</button></div>
+  </aside>
+</div>
+<button type="button" class="btn primary reopen-tour" id="tour-open" hidden>Open the tour</button>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+"use strict";
+/* ---------- the data: every figure is the project's own ---------- */
+const DRAFT_TEXT = "Take one capsule a day with food, as it says on the label.";
+const BRIEF_SECTIONS = [
+  { id: "overnight", title: "1 · Overnight", pill: ["records only", ""], items: [
+    ["ok", "20 orders in — every one acknowledged in under 10 ms at the 99th percentile."],
+    ["warn", "2 customer messages — one was a safety report, section 2."],
+    ["ok", "0 things stuck, 0 things waiting on a model."]
+  ]},
+  { id: "safety", title: "2 · Safety", pill: ["no model in the path", "go"], items: [
+    ["warn", "1 reaction report — batch B-1042 (magnesium): recorded and acknowledged in about a second."],
+    ["ok", "You and the pharmacist were told at once."],
+    ["ok", "First report on this batch in 30 days — a second holds it. A rule you signed decides that part."]
+  ]},
+  { id: "needsyou", title: "3 · Needs you", pill: ["1 item", "info"], items: [
+    ["warn", "A product question waits in the queue: “How many do I take a day?”"],
+    ["ok", "Its draft is your approved answer, word for word — both checks passed."]
+  ]},
+  { id: "byrule", title: "4 · Sent by your rules", pill: ["level L2", ""], items: [
+    ["ok", "14 order-status replies sent at level L2 — 99 right in a row earned that, and you review each one afterwards."],
+    ["ok", "Yours to review after. Nothing waited for you overnight."]
+  ]},
+  { id: "bill", title: "5 · The bill", pill: ["under cap", ""], items: [
+    ["ok", "Model spend yesterday: £3.40 of the £10 daily cap."],
+    ["ok", "If a cap is ever hit, a breaker stops only the model work — never safety, never orders."]
+  ]},
+  { id: "record", title: "6 · The record", pill: ["write-once", ""], items: [
+    ["ok", "The audit chain was sealed at 04:02 — no gaps found overnight."],
+    ["ok", "Everything this brief mentions joins the same chain, row by row."]
+  ]},
+  { id: "watch", title: "7 · The watch list", pill: ["your rule", ""], items: [
+    ["warn", "Batch B-1042: one report so far."],
+    ["ok", "A second report within 30 days holds the batch and takes the product off sale — the rule is signed; no decision needed."]
+  ]},
+  { id: "done", title: "8 · That’s it", pill: ["07:26", ""], items: [
+    ["ok", "Nothing else needs you this morning."]
+  ]}
+];
+const TRACE = [
+  { t: "07:31:02", b: "The message arrived", p: "The helpdesk said a message had arrived. Company OS treated that as a notice only, checked it, and fetched the facts itself.", res: "received" },
+  { t: "07:31:03", b: "Safety rules read it first", p: "No reaction, no safety word — cleared on a lane with no model anywhere in it.", res: "cleared" },
+  { t: "07:31:04", b: "The draft", p: "Written from your approved answer and nothing else — no symptom, medicine or health claim could be slotted in.", res: "drafted" },
+  { t: "07:31:04", b: "Both checks", p: "The claims check passed. A second agent, on a different provider, can only reject — it read the draft and stayed silent.", res: "passed" },
+  { t: "07:33:12", b: "Your passkey", p: "You signed the exact text on the screen — the approval is bound to it, letter for letter.", res: "approved" },
+  { t: "07:33:13", b: "The one way out", p: "The only service that can write outside re-checked the signature, then sent the reply — exactly once.", res: "sent" },
+  { t: "07:33:13", b: "The record", p: "Row 4,221 — the message, the checks, the approval, the send. Sealed, and chained to the row before it. Nothing edits it afterwards.", res: "sealed", sealed: true }
+];
+const STEPS = [
+  { id: "brief", route: "brief", title: "Read the brief", text: "The eight sections, top to bottom. It was ready at 07:26, and no model wrote it." },
+  { id: "queue", route: "queue", title: "Work the queue", text: "A safety report already handled, 14 replies sent by your rule — and one question waiting for you." },
+  { id: "approve", route: "approve", title: "Approve one reply", text: "Both checks passed. Approve with the pretend passkey — then change one word and watch the approval stop counting." },
+  { id: "killswitch", route: "killswitch", title: "Pull the kill switch", text: "Every send stops in under a second. The one lane that keeps going protects a customer." },
+  { id: "record", route: "record", title: "Open the record", text: "Follow one reply from the customer’s message to the sealed audit row." }
+];
+const ROUTES = ["welcome", "brief", "queue", "approve", "killswitch", "record"];
+const SEND_KINDS = ["order status", "order status", "dispatch note", "order status", "review answer"];
+const TILES = [
+  ["14<small> / 14</small>", "Benchmarks passed", "measured on simulators, not promised"],
+  ["287<small> ms</small>", "Slowest kill-switch stop", "against a 10-second bar"],
+  ["1.3<small> s</small>", "Slowest safety report, models off", "recorded and acknowledged"],
+  ["10,745", "Tests, none calls a real model", "the same day as the benchmarks"]
+];
+const KEY = "company-os-morning-v1";
+let state = { done: {}, tourOpen: true, tourStep: 0 };
+try { const saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) state = { ...state, ...saved }; } catch (e) { /* private mode: the sample still works, it just forgets */ }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* see above */ } }
+
+/* ---------- helpers ---------- */
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let toastTimer = null;
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, 2600); }
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+/* ---------- icons ---------- */
+const ICONS = {
+  sun: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5 5l1.7 1.7M17.3 17.3L19 19M19 5l-1.7 1.7M6.7 17.3L5 19"/></svg>',
+  list: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.6" cy="6" r="1.3"/><circle cx="4.6" cy="12" r="1.3"/><circle cx="4.6" cy="18" r="1.3"/></svg>',
+  key: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="3.5"/><path d="M11.5 12h8.5"/><path d="M17 12v3"/><path d="M20 12v2"/></svg>',
+  bolt: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2.5L4.5 13.5H11L10 21.5L19.5 10.5H13z"/></svg>',
+  seal: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.2"/><path d="M12 10.2l.9 1.8 1.8.9-1.8.9-.9 1.8-.9-1.8-1.8-.9 1.8-.9z" fill="currentColor" stroke="none"/></svg>',
+  check: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  alert: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l9.5 16.5H2.5z"/><path d="M12 10v4.2"/><circle cx="12" cy="17" r=".4" fill="currentColor"/></svg>',
+  flag: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4"/><path d="M5 5h13l-2.5 3.5L18 12H5"/></svg>',
+  arrow: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12h14"/><path d="M12.5 6l6 6-6 6"/></svg>',
+  pen: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 5l4.5 4.5L8 20.5H3.5V16z"/><path d="M12.5 7l4.5 4.5"/></svg>',
+  shield: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6z"/><path d="M8.8 12.2l2.2 2.2 4.4-4.6"/></svg>',
+  clock: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
+  doc: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8.5 7.8h7M8.5 12h7M8.5 16.2h4"/></svg>'
+};
+function icon(name, cls) {
+  const raw = ICONS[name] || ICONS.doc;
+  return cls ? raw.replace('class="ico"', 'class="ico ' + cls + '"') : raw;
+}
+function hydrateIcons(root) {
+  $$("[data-icon]", root).forEach((el) => { el.insertAdjacentHTML("afterbegin", icon(el.getAttribute("data-icon"))); el.removeAttribute("data-icon"); });
+}
+
+/* ---------- theme, menu ---------- */
+function applyTheme() {
+  const dark = document.documentElement.getAttribute("data-theme") === "dark";
+  $("#theme-btn").innerHTML = dark
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M4.9 4.9l1.5 1.5M17.6 17.6l1.5 1.5M19.1 4.9l-1.5 1.5M6.4 17.6l-1.5 1.5"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
+  $("#theme-btn").setAttribute("aria-label", dark ? "Switch to the light theme" : "Switch to the dark theme");
+}
+$("#theme-btn").addEventListener("click", () => {
+  const dark = document.documentElement.getAttribute("data-theme") === "dark";
+  if (dark) document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", "dark");
+  try { localStorage.setItem("indica-theme", dark ? "light" : "dark"); } catch (e) {}
+  applyTheme();
+});
+$("#menu-btn").addEventListener("click", () => {
+  const nav = $("#nav"); const open = nav.classList.toggle("open");
+  $("#menu-btn").setAttribute("aria-expanded", open ? "true" : "false");
+});
+
+/* ---------- renderers ---------- */
+function themeColors() {
+  var cs = getComputedStyle(document.documentElement);
+  var v = function (name, fallback) { var val = cs.getPropertyValue(name).trim(); return val || fallback; };
+  return { ink: v("--ink", "#0f1c2e"), page: v("--page", "#f3f5f9"), muted: v("--muted", "#566375"), edge: v("--edge", "#8794a6"), brass: v("--brass", "#b9802a"), doc: v("--doc-bg", "#fffdf8"), docline: v("--doc-line", "#efe6d3"), go: v("--go", "#1d6f49") };
+}
+function morningSvg() {
+  var c = themeColors();
+  var stops = [["07:26", "the brief is rebuilt"], ["07:30", "one queue, safety first"], ["07:33", "one approval, yours"], ["07:35", "the kill switch"], ["07:38", "the record, sealed"]];
+  var w = 860, x0 = 60, dx = (w - 120) / (stops.length - 1), y = 54;
+  var dots = stops.map((s, i) => {
+    const x = x0 + i * dx;
+    return '<circle cx="' + x + '" cy="' + y + '" r="10" fill="' + (i === 2 ? c.brass : c.ink) + '"/><text x="' + x + '" y="' + (y + 4) + '" text-anchor="middle" fill="' + c.page + '" font-family="JetBrains Mono, monospace" font-size="9.5">' + (i + 1) + '</text>'
+      + '<text x="' + x + '" y="' + (y - 22) + '" text-anchor="middle" fill="' + c.ink + '" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">' + s[0] + '</text>'
+      + '<text x="' + x + '" y="' + (y + 30) + '" text-anchor="middle" fill="' + c.muted + '" font-family="Inter, sans-serif" font-size="11">' + s[1] + '</text>';
+  }).join("");
+  return '<svg viewBox="0 0 ' + w + ' 108" role="img" aria-label="The morning: ' + stops.map((s) => s[0] + " " + s[1]).join(", ") + '"><line x1="' + x0 + '" y1="' + y + '" x2="' + (w - 60) + '" y2="' + y + '" stroke="' + c.edge + '" stroke-width="2" stroke-dasharray="1 6" stroke-linecap="round"/>' + dots + "</svg>";
+}
+function miniQueue() {
+  var c = themeColors();
+  return '<svg viewBox="0 0 330 150" role="img" aria-hidden="true"><rect x="8" y="10" width="314" height="34" rx="9" fill="' + c.doc + '" stroke="' + c.brass + '"/><text x="20" y="32" fill="' + c.brass + '" font-family="JetBrains Mono, monospace" font-size="10">SAFETY · handled</text><rect x="8" y="52" width="314" height="34" rx="9" fill="' + c.doc + '" stroke="' + c.brass + '" stroke-width="2"/><text x="20" y="74" fill="' + c.ink + '" font-family="JetBrains Mono, monospace" font-size="10">NEEDS YOU · waiting for you</text><rect x="8" y="94" width="314" height="34" rx="9" fill="' + c.doc + '" stroke="' + c.edge + '"/><text x="20" y="116" fill="' + c.muted + '" font-family="JetBrains Mono, monospace" font-size="10">DONE BY YOUR RULE · 14 sent (L2)</text></svg>';
+}
+function miniApprove() {
+  var c = themeColors();
+  return '<svg viewBox="0 0 330 150" role="img" aria-hidden="true"><rect x="8" y="14" width="220" height="86" rx="10" fill="' + c.doc + '" stroke="' + c.docline + '"/><text x="22" y="44" fill="' + c.ink + '" font-family="Inter, sans-serif" font-size="11">“Take one capsule a day</text><text x="22" y="62" fill="' + c.ink + '" font-family="Inter, sans-serif" font-size="11">with food, as it says on</text><text x="22" y="80" fill="' + c.ink + '" font-family="Inter, sans-serif" font-size="11">the label.”</text><circle cx="272" cy="57" r="34" fill="none" stroke="' + c.go + '" stroke-width="3"/><text x="272" y="54" text-anchor="middle" fill="' + c.go + '" font-family="Montserrat, sans-serif" font-weight="700" font-size="10">APPROVED</text><text x="272" y="68" text-anchor="middle" fill="' + c.go + '" font-family="JetBrains Mono, monospace" font-size="8">07:33:12</text></svg>';
+}
+function renderWelcome() {
+  $("#morning-figure").innerHTML = morningSvg() + "<figcaption>The morning at a glance — five stops, about five minutes.</figcaption>";
+  $("#media-walk").innerHTML = morningSvg();
+  $("#media-skip").innerHTML = miniQueue();
+  $("#welcome-tiles").innerHTML = TILES.map(([b, t, d]) => '<div class="tile"><div class="big">' + b + "</div><b>" + t + "</b><span>" + d + "</span></div>").join("");
+}
+function renderBrief() {
+  $("#brief-body").innerHTML = BRIEF_SECTIONS.map((s) =>
+    '<div class="brief-sec"><h3>' + s.title + '<span class="pill ' + (s.pill[1] || "") + '">' + s.pill[0] + "</span></h3>"
+    + s.items.map(([k, t]) => '<div class="brief-item"><span class="dot ' + k + '"></span><span>' + t + "</span></div>").join("") + "</div>"
+  ).join("");
+  $("#hook-brief").textContent = "ready 07:26 · 8 sections · no model wrote it";
+  tick("brief");
+}
+function renderQueue() {
+  $("#hook-queue").textContent = "1 handled · 14 sent by your rule · 1 needs you";
+  tick("queue");
+}
+/* --- approve --- */
+let approved = false;
+function syncDraft() {
+  const ta = $("#draft");
+  const pristine = ta.value === DRAFT_TEXT;
+  ta.classList.toggle("is-edited", !pristine);
+  $("#draft-warn").hidden = pristine;
+  const btn = $("#approve-btn");
+  btn.disabled = !pristine;
+  if (approved && !pristine) { $("#void-banner").hidden = false; $("#approved-box").hidden = true; }
+  else if (approved) { $("#void-banner").hidden = true; $("#approved-box").hidden = false; }
+}
+let approveBound = false;
+function initApprove() {
+  approved = false;
+  const ta = $("#draft");
+  ta.value = DRAFT_TEXT;
+  $("#passkey").hidden = true;
+  $("#approved-box").hidden = true;
+  $("#void-banner").hidden = true;
+  $("#approve-btn").disabled = false;
+  $("#hook-approve").textContent = "pristine text — the passkey can sign it";
+  if (approveBound) { syncDraft(); return; }
+  approveBound = true;
+  ta.addEventListener("input", () => {
+    if (ta.value === DRAFT_TEXT && approved) { $("#void-banner").hidden = true; $("#approved-box").hidden = false; }
+    syncDraft();
+    if (ta.value !== DRAFT_TEXT) $("#hook-approve").textContent = "text changed — the approval no longer counts";
+    else $("#hook-approve").textContent = approved ? "restored — and already approved" : "pristine text — the passkey can sign it";
+  });
+  $("#draft-restore").addEventListener("click", () => { ta.value = DRAFT_TEXT; ta.dispatchEvent(new Event("input")); toast("The approved text is restored."); });
+  $("#approve-btn").addEventListener("click", () => { if ($("#draft").value !== DRAFT_TEXT) return; $("#passkey").hidden = false; $("#approve-btn").disabled = true; });
+  $("#passkey-touch").addEventListener("click", () => {
+    approved = true;
+    $("#passkey").hidden = true;
+    $("#approved-box").hidden = false;
+    $("#hook-approve").textContent = "approved 07:33:12 — bound to this exact text";
+    tick("approve");
+    toast("Approved — exactly what you signed is what sends.");
+  });
+  syncDraft();
+}
+/* --- kill switch --- */
+let sendTimer = null, sendCount = 1281, sendSec = 4, killed = false, laneTimer = null;
+function pushSend() {
+  const log = $("#send-log");
+  sendCount += 1;
+  sendSec = Math.min(59, sendSec + 1);
+  const stamp = "07:35:" + String(sendSec).padStart(2, "0");
+  const kind = SEND_KINDS[sendCount % SEND_KINDS.length];
+  const line = document.createElement("div");
+  line.innerHTML = '<span class="t">' + stamp + "</span> · reply #" + sendCount + " sent — " + kind;
+  log.appendChild(line);
+  while (log.children.length > 12) log.removeChild(log.firstChild);
+}
+function startStream() {
+  stopStream();
+  if (killed) return;
+  const log = $("#send-log");
+  log.innerHTML = "";
+  for (let i = 0; i < 4; i++) pushSend();
+  sendTimer = setInterval(pushSend, reduced ? 1400 : 650);
+}
+function stopStream() { if (sendTimer) { clearInterval(sendTimer); sendTimer = null; } }
+let killBound = false;
+function initKill() {
+  $("#send-state").textContent = killed ? "sends stopped" : "sending…";
+  $("#send-state").className = "pill " + (killed ? "no" : "info");
+  if (killed) {
+    const log = $("#send-log");
+    log.innerHTML = '<div class="stop"><span class="t">07:35:10</span> — switch pulled · nothing sent after</div>';
+    $("#kill-btn").disabled = true;
+    $("#kill-time").hidden = false; $("#kill-time").innerHTML = '287<small> ms</small>';
+    showLane(true);
+  } else {
+    startStream();
+  }
+  if (killBound) return;
+  killBound = true;
+  $("#kill-btn").addEventListener("click", () => {
+    if (killed) return;
+    killed = true;
+    stopStream();
+    const log = $("#send-log");
+    const stop = document.createElement("div");
+    stop.className = "stop";
+    stop.innerHTML = '<span class="t">07:35:10</span> — switch pulled · nothing sent after';
+    log.appendChild(stop);
+    $("#send-state").textContent = "sends stopped";
+    $("#send-state").className = "pill no";
+    $("#kill-btn").disabled = true;
+    const kt = $("#kill-time");
+    kt.hidden = false;
+    let n = 0;
+    const target = 287, step = reduced ? 287 : 41;
+    const countUp = setInterval(() => {
+      n = Math.min(target, n + step);
+      kt.innerHTML = n + "<small> ms</small>";
+      if (n >= target) { clearInterval(countUp); showLane(false); }
+    }, reduced ? 10 : 70);
+    toast("Every send stopped.");
+  });
+}
+function showLane(instant) {
+  $("#lane-card").hidden = false;
+  const log = $("#lane-log");
+  log.innerHTML = "";
+  const lines = [
+    ["clock", "<b>07:35:10</b> — a pretend reaction report arrives, mid-stop."],
+    ["check", "<b>07:35:11</b> — the customer is acknowledged — <b>sent</b>, switch or no switch."],
+    ["check", "<b>07:35:12</b> — you and the pharmacist are told — <b>sent</b>."]
+  ];
+  if (instant) { log.innerHTML = lines.map(([i, t]) => "<div>" + icon(i) + "<span>" + t + "</span></div>").join(""); finishKill(); return; }
+  let i = 0;
+  laneTimer = setInterval(() => {
+    if (i >= lines.length) { clearInterval(laneTimer); laneTimer = null; finishKill(); return; }
+    const d = document.createElement("div");
+    d.innerHTML = icon(lines[i][0]) + "<span>" + lines[i][1] + "</span>";
+    log.appendChild(d);
+    i += 1;
+  }, reduced ? 60 : 520);
+}
+function finishKill() {
+  $("#hook-kill").textContent = "stopped in 287 ms · the safety ack still went";
+  tick("killswitch");
+}
+/* --- record --- */
+function renderRecord() {
+  $("#trace").innerHTML = TRACE.map((s, i) =>
+    '<div class="gstep' + (s.sealed ? " is-sealed" : "") + '"><span class="gn">' + (i + 1) + "</span><div><b>" + s.b + "</b><p>" + s.p + '</p><span class="time">' + s.t + "</span></div><span class=\"res\">" + s.res + "</span></div>"
+  ).join("");
+  $("#audit-row").hidden = false;
+  $("#hook-record").textContent = "row 4,221 · sealed 07:33:13 · chained";
+  tick("record");
+}
+
+/* ---------- tour + ticks ---------- */
+function tick(id) {
+  if (state.done[id]) return;
+  state.done[id] = true;
+  save();
+  renderTour();
+  renderNavTicks();
+  updatePill();
+}
+function renderNavTicks() {
+  $$("#nav a").forEach((a) => a.classList.toggle("done", !!state.done[a.getAttribute("data-route")]));
+}
+function updatePill() {
+  const n = STEPS.filter((s) => state.done[s.id]).length;
+  $("#morning-state").textContent = n >= STEPS.length ? "complete" : n + " / " + STEPS.length;
+  $("#morning-pill").classList.toggle("made", n >= STEPS.length);
+}
+function renderTour() {
+  $("#tour-steps").innerHTML = STEPS.map((s, i) =>
+    '<li class="' + (state.done[s.id] ? "done" : "") + " " + (i === state.tourStep ? "cur" : "") + '"><button type="button" data-go="' + i + '"><span class="n">' + (state.done[s.id] ? "✓" : i + 1) + "</span><span>" + s.title + "</span></button></li>"
+  ).join("");
+  $$("#tour-steps [data-go]").forEach((b) => b.addEventListener("click", () => { state.tourStep = +b.getAttribute("data-go"); save(); goStep(state.tourStep); }));
+  const cur = STEPS[state.tourStep];
+  if (cur) $("#tour-text").innerHTML = "<b>" + cur.title + ".</b> " + cur.text;
+  const n = STEPS.filter((s) => state.done[s.id]).length;
+  $("#tour-progress").textContent = n + " of " + STEPS.length + " done";
+  $("#shell").classList.toggle("tour-closed", !state.tourOpen);
+  $("#tour-open").hidden = state.tourOpen;
+}
+function goStep(i) {
+  state.tourStep = Math.max(0, Math.min(STEPS.length - 1, i));
+  save();
+  renderTour();
+  location.hash = STEPS[state.tourStep].route;
+}
+$("#tour-next").addEventListener("click", () => goStep(state.tourStep + 1));
+$("#tour-back").addEventListener("click", () => goStep(state.tourStep - 1));
+$("#tour-close").addEventListener("click", () => { state.tourOpen = false; save(); renderTour(); });
+$("#tour-open").addEventListener("click", () => { state.tourOpen = true; save(); renderTour(); });
+$$("[data-start-tour]").forEach((b) => b.addEventListener("click", () => { state.tourOpen = true; save(); renderTour(); }));
+$("#reset-btn").addEventListener("click", () => {
+  state = { done: {}, tourOpen: true, tourStep: 0 };
+  killed = false; approved = false;
+  save();
+  stopStream(); if (laneTimer) { clearInterval(laneTimer); laneTimer = null; }
+  drawAll();
+  renderTour(); renderNavTicks(); updatePill();
+  location.hash = "welcome";
+  toast("The morning starts again.");
+});
+
+/* ---------- router ---------- */
+function route() {
+  const r = ROUTES.includes(location.hash.slice(1)) ? location.hash.slice(1) : "welcome";
+  $$(".route").forEach((sec) => { sec.hidden = sec.getAttribute("data-route") !== r; });
+  $$("#nav a").forEach((a) => { if (a.getAttribute("data-route") === r) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  $("#nav").classList.remove("open");
+  $("#menu-btn").setAttribute("aria-expanded", "false");
+  stopStream(); if (laneTimer) { clearInterval(laneTimer); laneTimer = null; }
+  if (r === "welcome") renderWelcome();
+  if (r === "brief") renderBrief();
+  if (r === "queue") renderQueue();
+  if (r === "approve") { initApprove(); }
+  if (r === "killswitch") { initKill(); }
+  if (r === "record") renderRecord();
+  const idx = STEPS.findIndex((s) => s.route === r);
+  if (idx > -1 && idx !== state.tourStep) { state.tourStep = idx; save(); }
+  renderTour();
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+
+/* ---------- boot ---------- */
+function drawAll() { route(); }
+hydrateIcons(document);
+applyTheme();
+renderNavTicks();
+updatePill();
+renderTour();
+route();
+</script>
+<script>
+/* Marketing pass: count the welcome tiles up, and drive the tour progress bar. */
+(function () {
+  "use strict";
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function countTiles() {
+    document.querySelectorAll("#welcome-tiles .tile .big").forEach(function (el) {
+      var target = el.textContent.trim();
+      var m = target.match(/^([\d,.]+)/);
+      if (!m) return;
+      var num = parseFloat(m[1].replace(/,/g, ""));
+      if (isNaN(num)) return;
+      var dec = (m[1].split(".")[1] || "").length;
+      var comma = m[1].indexOf(",") > -1;
+      var rest = el.innerHTML.slice(m[0].length);
+      if (reduced) return;
+      function fmt(n) {
+        var s = n.toFixed(dec);
+        if (comma) { var p = s.split("."); p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); s = p.join("."); }
+        return s;
+      }
+      el.innerHTML = fmt(0) + rest;
+      var t0 = null, dur = 1200;
+      function step(ts) {
+        if (!t0) t0 = ts;
+        var k = Math.min(1, (ts - t0) / dur);
+        k = 1 - Math.pow(1 - k, 3);
+        el.innerHTML = fmt(num * k) + rest;
+        if (k < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+  if (typeof renderWelcome === "function") {
+    var _rw = renderWelcome;
+    renderWelcome = function () { _rw(); countTiles(); };
+  }
+
+  var fill = document.getElementById("tour-bar-fill");
+  function syncBar() {
+    if (!fill || typeof STEPS === "undefined" || typeof state === "undefined") return;
+    var n = STEPS.filter(function (s) { return state.done[s.id]; }).length;
+    fill.style.width = (n / STEPS.length) * 100 + "%";
+  }
+  if (typeof renderTour === "function") {
+    var _rt = renderTour;
+    renderTour = function () { _rt(); syncBar(); };
+  }
+  syncBar();
+
+  /* re-render the welcome illustrations in the new colours on a theme flip */
+  var themeBtn = document.getElementById("theme-btn");
+  if (themeBtn && typeof renderWelcome === "function") {
+    themeBtn.addEventListener("click", function () {
+      setTimeout(function () {
+        if ((location.hash.slice(1) || "welcome") === "welcome") renderWelcome();
+      }, 0);
+    });
+  }
+})();
+</script>
+</body>
+</html>
