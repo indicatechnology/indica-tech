@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+(function () {
+  var OK = ['uk', 'us', 'eu'], r, p, tz, l;
+  try {
+    p = new URLSearchParams(location.search).get('region');
+    if (p && OK.indexOf(p) > -1) { r = p; try { localStorage.setItem('indica_region', r); } catch (e) {} }
+    if (!r) { try { r = localStorage.getItem('indica_region'); } catch (e) {} }
+    if (!r) {
+      tz = (Intl.DateTimeFormat().resolvedOptions().timeZone) || '';
+      if (/^America\//.test(tz)) r = 'us';
+      else if (tz === 'Europe/London') r = 'uk';
+      else if (/^Europe\//.test(tz)) r = 'eu';
+    }
+    if (!r) {
+      l = (navigator.language || '').toLowerCase();
+      if (l === 'en-us') r = 'us';
+      else if (/^(de|fr|nl|es|it|pt|pl|sv|da|fi|cs|el|ro|hu)/.test(l)) r = 'eu';
+    }
+  } catch (e) {}
+  document.documentElement.setAttribute('data-region', OK.indexOf(r) > -1 ? r : 'uk');
+})();
+</script>
+<meta name="description" content="The business case for Company OS: the founder's measured week (about 50 minutes), the credibility of fourteen passed benchmarks and a counted miss list, an audit log of nineteen kinds of events, and what it costs to run — every figure measured on simulators.">
+<meta name="robots" content="index, follow">
+<title>The business case for Company OS · Indica Tech</title>
+<link rel="canonical" href="https://indica-tech.com/work/company-os/value/">
+<meta property="og:title" content="The business case for Company OS · Indica Tech">
+<meta property="og:description" content="About 50 founder-minutes in a measured launch week. Fourteen benchmarks, misses counted. Nineteen kinds of events on a sealed record. Costs capped at £10 a day and £150 a month.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://indica-tech.com/work/company-os/value/">
+<link rel="stylesheet" href="/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+/* The business case: dashboard cards on the board-room look, with
+   classic-look fallbacks. Every figure is measured and sourced in a
+   comment next to it (MB-xx = benchmark, BOM = the business operating
+   model, RA = the requirements analysis it cites). */
+.cv-hero { position: relative; padding: clamp(56px, 8vw, 104px) 0 clamp(40px, 5vw, 64px); border-bottom: 1px solid var(--rule); overflow: clip; }
+.cv-hero::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(56% 48% at 78% 4%, color-mix(in srgb, var(--signal) 12%, transparent), transparent 70%); }
+.cv-hero .container { position: relative; z-index: 1; }
+.cv-kicker { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brass-ink, var(--signal-ink)); margin-bottom: 18px; }
+.cv-kicker::before { content: ""; width: 22px; height: 2px; background: var(--signal); }
+.cv-hero h1 { font-size: clamp(2.1rem, 4.4vw, 3.7rem); line-height: 1.05; letter-spacing: -.03em; max-width: 21ch; margin-bottom: 16px; }
+.cv-hero h1 em { font-style: normal; color: var(--signal); }
+.cv-hero .lead { font-size: clamp(1.02rem, 1.3vw, 1.2rem); color: var(--ink-mute); line-height: 1.6; max-width: 64ch; }
+.cv-facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.cv-facts span { border-radius: 999px; background: var(--signal-soft); color: var(--brass-ink, var(--signal-ink)); padding: 6px 13px; font-family: var(--sans); font-size: .82rem; font-weight: 600; }
+
+.cv-sec { padding: clamp(52px, 7vw, 92px) 0; border-bottom: 1px solid var(--rule); }
+.cv-head { max-width: 760px; margin-bottom: clamp(28px, 4vw, 44px); }
+.cv-head .k { font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--brass-ink, var(--signal-ink)); margin-bottom: 10px; display: block; }
+.cv-head h2 { font-size: clamp(1.7rem, 3.2vw, 2.6rem); letter-spacing: -.025em; line-height: 1.12; margin-bottom: 10px; }
+.cv-head p { color: var(--ink-mute); font-size: 1.02rem; line-height: 1.6; max-width: 66ch; }
+
+/* the big stat cards */
+.cv-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.cv-stat { position: relative; overflow: hidden; border: 1px solid var(--card-border, var(--ink)); border-radius: var(--radius, 0); background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); padding: 26px 24px 24px; display: flex; flex-direction: column; gap: 8px; }
+.cv-stat::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--signal); }
+.cv-stat .num { font-family: var(--display, var(--mono)); font-weight: 700; font-size: clamp(2.2rem, 3.4vw, 3rem); letter-spacing: -.03em; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+.cv-stat .num small { font-size: .42em; color: var(--brass-ink, var(--signal)); letter-spacing: 0; margin-left: 2px; }
+.cv-stat .lbl { font-weight: 600; font-size: .98rem; color: var(--ink); }
+.cv-stat .sub { font-size: .86rem; color: var(--ink-mute); line-height: 1.5; }
+.cv-stat.is-deep { background: var(--deep, var(--ink)); border-color: var(--deep, var(--ink)); box-shadow: var(--shadow-md, none); }
+.cv-stat.is-deep .num, .cv-stat.is-deep .lbl { color: var(--on-deep, var(--paper)); }
+.cv-stat.is-deep .sub { color: var(--deep-mute, var(--ink-mute)); }
+.cv-stat.is-deep::after { background: var(--deep-accent, var(--signal)); }
+
+/* plan vs measured */
+.cv-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.cv-panel { border: 1px solid var(--card-border, var(--ink)); border-radius: var(--radius, 0); background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); padding: 26px 26px 24px; }
+.cv-panel h3 { display: flex; align-items: center; gap: 10px; font-size: 1.05rem; margin-bottom: 6px; }
+.cv-panel h3 .tag { margin-left: auto; font-family: var(--mono); font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); border: 1px solid var(--rule); border-radius: 999px; padding: 3px 9px; }
+.cv-panel .src { font-size: .8rem; color: var(--ink-faint); margin-bottom: 18px; }
+.cv-rows { display: grid; gap: 0; }
+.cv-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: baseline; padding: 12px 0; border-top: 1px solid var(--rule); font-size: .95rem; color: var(--ink-mute); }
+.cv-row b { color: var(--ink); font-size: 1.06rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cv-panel.is-measured { border-color: color-mix(in srgb, var(--signal) 45%, transparent); background: linear-gradient(color-mix(in srgb, var(--signal) 6%, transparent), color-mix(in srgb, var(--signal) 6%, transparent)), var(--surface, var(--paper)); }
+.cv-panel.is-measured h3 .tag { color: var(--brass-ink, var(--signal-ink)); border-color: color-mix(in srgb, var(--signal) 45%, transparent); background: var(--signal-soft); }
+
+/* the launch week */
+.cv-week { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.cv-day { border: 1px solid var(--card-border, var(--ink)); border-radius: var(--radius-sm, 0); background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; }
+.cv-day::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--rule-2); }
+.cv-day .d { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+.cv-day ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: .85rem; color: var(--ink-mute); }
+.cv-day ul li { display: flex; gap: 8px; align-items: baseline; }
+.cv-day ul li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--signal); flex: none; transform: translateY(-1px); }
+.cv-day .you { margin-top: auto; padding-top: 10px; border-top: 1px dashed var(--rule); font-size: .85rem; font-weight: 600; color: var(--brass-ink, var(--signal-ink)); }
+.cv-night { margin-top: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; border-radius: var(--radius-sm, 0); background: var(--deep, var(--ink)); color: var(--on-deep, var(--paper)); padding: 16px 20px; box-shadow: var(--shadow, none); }
+.cv-night .t { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--deep-accent, var(--signal)); flex: none; }
+.cv-night p { margin: 0; font-size: .95rem; color: var(--deep-mute, var(--ink-mute)); }
+.cv-night b { color: var(--on-deep, var(--paper)); }
+
+/* where the minutes go */
+.cv-costs { display: flex; flex-wrap: wrap; gap: 10px; }
+.cv-cost { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--card-border, var(--ink)); border-radius: 999px; background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); padding: 10px 16px; font-size: .92rem; color: var(--ink-mute); }
+.cv-cost b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.cv-cost.free { border-style: dashed; border-color: color-mix(in srgb, var(--signal) 45%, transparent); background: var(--signal-soft); }
+
+/* benchmark bars */
+.cv-bars { display: grid; gap: 14px; }
+.cv-bar { display: grid; grid-template-columns: 210px minmax(0, 1fr) 130px; gap: 16px; align-items: center; border: 1px solid var(--card-border, var(--ink)); border-radius: var(--radius-sm, 0); background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); padding: 16px 20px; }
+.cv-bar .what { font-size: .92rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
+.cv-bar .what span { display: block; font-weight: 400; font-size: .8rem; color: var(--ink-mute); margin-top: 3px; }
+.cv-bar .track { position: relative; height: 12px; border-radius: 999px; background: var(--track, var(--paper-2)); overflow: hidden; }
+.cv-bar .track i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--signal), color-mix(in srgb, var(--signal) 60%, #fff)); transition: width 1.2s cubic-bezier(.2,.7,.3,1) .15s; }
+.cv-bar .res { text-align: right; font-variant-numeric: tabular-nums; }
+.cv-bar .res b { display: block; font-size: 1.15rem; color: var(--ink); letter-spacing: -.01em; }
+.cv-bar .res span { font-size: .76rem; color: var(--ink-faint); }
+.in .cv-bar .track i { width: var(--w); }
+
+/* the record */
+.cv-record { display: grid; grid-template-columns: 1.25fr 1fr; gap: 16px; align-items: stretch; }
+.cv-kinds { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
+.cv-kinds span { font-family: var(--mono); font-size: .68rem; letter-spacing: .03em; color: var(--ink-mute); border: 1px solid var(--rule); border-radius: 999px; padding: 4px 10px; background: var(--tile, var(--paper-2)); }
+.cv-ledger { border: 1px solid var(--card-border, var(--ink)); border-radius: var(--radius, 0); background: var(--deep, var(--ink)); color: var(--on-deep, var(--paper)); box-shadow: var(--shadow-md, none); padding: 24px 26px; display: flex; flex-direction: column; gap: 14px; }
+.cv-ledger .k { font-family: var(--mono); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--deep-accent, var(--signal)); }
+.cv-ledger dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 20px; font-family: var(--mono); font-size: .84rem; margin: 0; }
+.cv-ledger dt { color: var(--deep-faint, var(--ink-faint)); }
+.cv-ledger dd { margin: 0; color: var(--on-deep, var(--paper)); }
+.cv-seal { margin-top: auto; align-self: flex-end; width: 96px; height: 96px; border-radius: 50%; border: 2px solid var(--deep-accent, var(--signal)); color: var(--deep-accent, var(--signal)); display: grid; place-content: center; text-align: center; transform: rotate(-7deg); box-shadow: inset 0 0 0 5px var(--deep, var(--ink)), inset 0 0 0 6.5px var(--deep-accent, var(--signal)); }
+.cv-seal b { font-family: var(--display, var(--mono)); font-size: 1rem; font-weight: 700; line-height: 1; }
+.cv-seal small { font-size: .54rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-top: .28rem; }
+.cv-proof { display: grid; gap: 12px; }
+.cv-proof .row { display: flex; gap: 12px; align-items: flex-start; border: 1px solid var(--card-border, var(--ink)); border-radius: var(--radius-sm, 0); background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); padding: 14px 16px; font-size: .93rem; color: var(--ink-mute); line-height: 1.5; }
+.cv-proof .row b { color: var(--ink); }
+.cv-proof .ico { width: 18px; height: 18px; color: var(--signal); flex: none; margin-top: 2px; }
+
+/* money */
+.cv-money { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+/* honesty */
+.cv-honest { border: 1px dashed color-mix(in srgb, var(--warn) 55%, transparent); border-left: 4px solid var(--warn); border-radius: var(--radius-sm, 0); background: var(--surface, var(--paper-2)); padding: 22px 26px; }
+.cv-honest h3 { font-size: 1rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--ink); margin-bottom: 10px; }
+.cv-honest ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.cv-honest li { display: flex; gap: 12px; align-items: baseline; font-size: .95rem; color: var(--ink-mute); line-height: 1.55; }
+.cv-honest li::before { content: "—"; color: var(--warn); flex: none; }
+
+.cv-cta { display: flex; flex-wrap: wrap; gap: 10px 12px; margin-top: 30px; }
+.cv-back { margin-bottom: 20px; }
+
+@media (max-width: 960px) {
+  .cv-stats { grid-template-columns: 1fr 1fr; }
+  .cv-compare, .cv-record, .cv-money { grid-template-columns: 1fr; }
+  .cv-week { grid-template-columns: repeat(2, 1fr); }
+  .cv-bar { grid-template-columns: 1fr; gap: 8px; }
+  .cv-bar .res { text-align: left; }
+}
+@media (max-width: 640px) {
+  :root { --gutter: 16px; }
+  .cv-stats { grid-template-columns: 1fr; }
+  .cv-week { grid-template-columns: 1fr; }
+}
+</style>
+<link rel="stylesheet" href="../../../look.css" id="look-css">
+<script src="../../../look.js"></script>
+</head>
+<body>
+
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+        <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+        <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+        <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+      </svg>
+      <span>Indica Tech <em>/ demo → prod</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#problem">The gap</a></li>
+      <li><a href="/#offers">Engagements</a></li>
+      <li><a href="/#proof">Proof</a></li>
+      <li><a href="/work/">Work</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+    </ul>
+    <div class="region-switch" role="group" aria-label="Show prices in">
+      <button type="button" data-region-set="uk" aria-pressed="false">GBP</button>
+      <button type="button" data-region-set="us" aria-pressed="false">USD</button>
+      <button type="button" data-region-set="eu" aria-pressed="false">EUR</button>
+    </div>
+    <a href="/#contact" class="nav-cta">Book a call <span class="arrow">→</span></a>
+    <button class="menu-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main>
+<section class="cv-hero">
+  <div class="container">
+    <p class="cv-back"><a href="../" class="btn btn-ghost btn-small">← Back to the project</a></p>
+    <div class="cv-kicker">The business case · Company OS</div>
+    <h1>What an agent-run shop is worth to the person who <em>still says yes.</em></h1>
+    <p class="lead">Founders do not buy AI to watch it work — they buy the week it gives back, the proof it stands behind, and the record it keeps. Here is all three, with every number measured on simulators rather than promised.</p>
+    <div class="cv-facts">
+      <!-- MB-10 (a): 10 non-safety minutes each of 5 business days -->
+      <span>≈ 50 founder-minutes in a measured launch week</span>
+      <!-- Phase 5 gate -->
+      <span>14 of 14 benchmarks passed</span>
+      <!-- spec/02 audit_event.kind: 19 values -->
+      <span>19 kinds of events on the record</span>
+      <!-- SPEC + Scale: one machine -->
+      <span>Runs on one machine</span>
+    </div>
+  </div>
+</section>
+
+<!-- 1 · THE WEEK -->
+<section class="cv-sec">
+  <div class="container">
+    <div class="cv-head reveal">
+      <span class="k">01 · Your time</span>
+      <h2>The question is not “can it run the shop?” It is “how much of my week does the shop take?”</h2>
+      <p>The business plan behind Company OS gives a one-person company a perimeter of twelve founder-hours a week. The operating layer is measured against that perimeter, not against a demo.</p>
+    </div>
+    <div class="cv-stats reveal">
+      <div class="cv-stat">
+        <!-- MB-10 (a), Phase 5 table -->
+        <div class="num" data-count="10" data-suffix=" min">0 min</div>
+        <div class="lbl">a day, measured</div>
+        <div class="sub">Non-safety decisions in a simulated launch week, each of five business days. The harness acted as the founder.</div>
+      </div>
+      <div class="cv-stat">
+        <!-- MB-10 (a) × 5 days -->
+        <div class="num" data-count="50" data-prefix="≈ " data-suffix=" min">≈ 0 min</div>
+        <div class="lbl">a week, in the queue</div>
+        <div class="sub">The measured daily queue across the five-day launch week — against a 20-minute-a-day budget it never touched.</div>
+      </div>
+      <div class="cv-stat">
+        <!-- BOM line 198: 10–30 min/day estimated at stages C–E -->
+        <div class="num">10–30<small> min</small></div>
+        <div class="lbl">a day, as planned</div>
+        <div class="sub">The operating model's own estimate for “one queue and one brief” at the first-revenue stages. The measurement sits at the bottom of the range.</div>
+      </div>
+      <div class="cv-stat is-deep">
+        <!-- 00-phase-a-proposal B10: 35–45 min/day at 165 orders/day -->
+        <div class="num">35–45<small> min</small></div>
+        <div class="lbl">a day, at real volume</div>
+        <div class="sub">What the plan budgeted for the founder's daily queue at 165 orders a day. Headroom the growth stages will spend first.</div>
+      </div>
+    </div>
+
+    <div class="cv-compare reveal" style="margin-top:16px">
+      <div class="cv-panel">
+        <h3>The plan, in the founder's hours <span class="tag">estimates</span></h3>
+        <p class="src">From the business operating model the build works against.</p>
+        <div class="cv-rows">
+          <!-- BOM line 199 -->
+          <div class="cv-row"><span>The weekly batch: content, payments, scorecards, the growth review</span><b>1–2 h</b></div>
+          <!-- BOM line 133 -->
+          <div class="cv-row"><span>The whole company at a £1M–£3M plateau</span><b>10–12 h / week</b></div>
+          <!-- BOM line 108 -->
+          <div class="cv-row"><span>The founder's weekly perimeter, from the first principles doc</span><b>12 h</b></div>
+        </div>
+      </div>
+      <div class="cv-panel is-measured">
+        <h3>The measurement, at launch volume <span class="tag">measured</span></h3>
+        <p class="src">MB-10: a simulated week, 20 orders and 2 messages a day; the harness acts as the founder.</p>
+        <div class="cv-rows">
+          <!-- MB-10 (a) -->
+          <div class="cv-row"><span>Your minutes in the queue, Monday to Friday</span><b>10 / day</b></div>
+          <!-- WP-21 cost model; safety never held -->
+          <div class="cv-row"><span>What a minute is worth: an approval ≈ 3, a reading ≈ 2, a review ≈ 1</span><b>counted</b></div>
+          <!-- WP-21 / SPEC: readings and safety never held by the budget -->
+          <div class="cv-row"><span>Safety work against the clock</span><b>never held</b></div>
+          <!-- RULE-065 -->
+          <div class="cv-row"><span>The bill, hard-capped</span><b>£10 / £150</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · THE LAUNCH WEEK -->
+<section class="cv-sec">
+  <div class="container">
+    <div class="cv-head reveal">
+      <span class="k">02 · The week, day by day</span>
+      <h2>Five days the shop ran itself, on the record.</h2>
+      <p>Every day of the measured week looked roughly like this — 20 orders in, the routine replies sent by a rule you signed, one brief by 07:30, and the one decision that needed you waiting in the queue.</p>
+    </div>
+    <div class="cv-week reveal">
+      <!-- Day content mirrors MB-10's scenario and the sample's Thursday -->
+      <div class="cv-day"><span class="d">Monday</span><ul><li>20 orders in, acknowledged in milliseconds</li><li>Order-status replies sent at L2</li><li>Brief ready 07:26</li></ul><span class="you">You: ≈ 10 minutes</span></div>
+      <div class="cv-day"><span class="d">Tuesday</span><ul><li>20 orders in, none doubled</li><li>One product question answered</li><li>Brief ready 07:26</li></ul><span class="you">You: ≈ 10 minutes</span></div>
+      <div class="cv-day"><span class="d">Wednesday</span><ul><li>20 orders in</li><li>A reading recorded on the safety case</li><li>Brief ready 07:26</li></ul><span class="you">You: ≈ 10 minutes</span></div>
+      <div class="cv-day"><span class="d">Thursday</span><ul><li>20 orders in</li><li>1 reaction report, handled in about a second</li><li>Brief ready 07:26</li></ul><span class="you">You: ≈ 10 minutes</span></div>
+      <div class="cv-day"><span class="d">Friday</span><ul><li>20 orders in</li><li>Spend under both caps</li><li>Brief ready 07:26</li></ul><span class="you">You: ≈ 10 minutes</span></div>
+    </div>
+    <div class="cv-night reveal">
+      <span class="t">02:14 · while you slept</span>
+      <p>A reaction report came in overnight. It was <b>recorded and acknowledged in about a second</b> — the slowest this has ever been measured is 1.3 s, with <b>every model switched off</b>. You and the pharmacist were told before anything else queued up.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · CREDIBILITY -->
+<section class="cv-sec">
+  <div class="container">
+    <div class="cv-head reveal">
+      <span class="k">03 · Credibility</span>
+      <h2>Proof you can show, not claims you have to repeat.</h2>
+      <p>Marketing says “reliable”. A measured margin says it once. Each bar below is a benchmark's measured result against the bar it had to clear — smaller is better, and every one of them passed.</p>
+    </div>
+    <div class="cv-bars reveal">
+      <!-- MB-07: 287 ms against a 10 s bar -->
+      <div class="cv-bar" style="--w: 2.9%"><div class="what">The kill switch<span>stops every send — bar: 10 seconds</span></div><div class="track"><i></i></div><div class="res"><b>287 ms</b><span>0 sent after</span></div></div>
+      <!-- MB-05: 1.3 s against a 60 s bar -->
+      <div class="cv-bar" style="--w: 2.2%"><div class="what">Safety, models off<span>reaction recorded — bar: 60 seconds</span></div><div class="track"><i></i></div><div class="res"><b>1.3 s</b><span>every model failed</span></div></div>
+      <!-- MB-09: 58.6 s of loss against a 15 min bar -->
+      <div class="cv-bar" style="--w: 6.5%"><div class="what">The restore drill<span>data loss in a recovery — bar: 15 minutes</span></div><div class="track"><i></i></div><div class="res"><b>58.6 s</b><span>back in 62 s</span></div></div>
+      <!-- MB-14: 301 s anchor lag against a 360 s bar -->
+      <div class="cv-bar" style="--w: 84%"><div class="what">The audit anchor<span>how far the record trails — bar: 6 minutes</span></div><div class="track"><i></i></div><div class="res"><b>301 s</b><span>any edit caught</span></div></div>
+    </div>
+    <div class="cv-stats reveal" style="margin-top:16px">
+      <!-- Phase 5 gate + project page method line -->
+      <div class="cv-stat"><div class="num" data-count="10745" data-comma="1">0</div><div class="lbl">tests, none calling a real model</div><div class="sub">Unit, database and API suites, the same day as the benchmarks.</div></div>
+      <div class="cv-stat"><div class="num" data-count="367">0</div><div class="lbl">requirements, every one traced</div><div class="sub">Each traced to its tests — 5,560 of them — in the traceability matrix, zero problems.</div></div>
+      <div class="cv-stat"><div class="num" data-count="3">0</div><div class="lbl">misses, counted in public</div><div class="sub">Slower test suites than their budgets, one failed spend-cap case fixed, no real model called yet. Listed on the project page, not hidden.</div></div>
+      <div class="cv-stat is-deep"><div class="num" data-count="14" data-suffix=" / 14">0</div><div class="lbl">benchmarks passed</div><div class="sub">Fourteen measured checks, from exactly-once delivery to prompt injection — all on simulators, with the misses above.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · THE RECORD -->
+<section class="cv-sec">
+  <div class="container">
+    <div class="cv-head reveal">
+      <span class="k">04 · The audit log of everything</span>
+      <h2>Months later, anyone can ask “what happened?” — and get an answer that can’t be edited.</h2>
+      <p>Every outside action — and the decisions, checks, keys and switches behind it — becomes a row in a chained, sealed, write-once record.</p>
+    </div>
+    <div class="cv-record reveal">
+      <div>
+        <div class="cv-panel" style="height:100%">
+          <h3>Nineteen kinds of events, one chain <span class="tag">spec/02</span></h3>
+          <p class="src">From a paid order to a board session — nothing happens outside the record.</p>
+          <!-- spec/02 audit_event.kind enum -->
+          <div class="cv-kinds"><span>intents</span><span>outcomes</span><span>approvals</span><span>policy decisions</span><span>releases</span><span>findings</span><span>sign-ins</span><span>configuration</span><span>kill-switch events</span><span>promotions</span><span>demotions</span><span>enrolment</span><span>exports</span><span>readings</span><span>reviews</span><span>attention overrides</span><span>lot blocks</span><span>boards convened</span><span>boards finished</span></div>
+        </div>
+      </div>
+      <div class="cv-ledger">
+        <span class="k">A real-shaped row, from the guided sample</span>
+        <!-- The sample's sealed audit row -->
+        <dl>
+          <dt>row</dt><dd>4,221</dd>
+          <dt>reply</dt><dd>#1287 — product question</dd>
+          <dt>message in</dt><dd>07:31:02</dd>
+          <dt>approved</dt><dd>07:33:12 · passkey</dd>
+          <dt>sent</dt><dd>07:33:13 · exactly once</dd>
+          <dt>chained to</dt><dd>row 4,220</dd>
+        </dl>
+        <span class="cv-seal"><b>SEALED</b><small>07:33:13 · write-once</small></span>
+      </div>
+    </div>
+    <div class="cv-proof reveal" style="margin-top:16px">
+      <!-- MB-14 -->
+      <div class="row"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.3-7 10-4-1.7-7-5.4-7-10V6z"/><path d="M8.8 12.2l2.2 2.2 4.4-4.6"/></svg><span><b>Tamper-evidence is tested, not asserted.</b> In the benchmark, an audit row was edited with the triggers off — the verifier failed at that row’s own id.</span></div>
+      <!-- MB-14 (e) + TEST-AUDT-WORM -->
+      <div class="row"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3"/></svg><span><b>Write-once means write-once.</b> An anchored object’s recorded version cannot be deleted or overwritten — tested with the writer’s own credential and as root.</span></div>
+      <!-- SPEC:793 + AUDT export flow -->
+      <div class="row"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="3.5"/><path d="M11.5 12h8.5"/><path d="M17 12v3"/><path d="M20 12v2"/></svg><span><b>Even proof has a door.</b> Before anything you approved goes out, you get the full text by email. Exporting the record itself needs your approval, downloads once, and is itself audited.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · MONEY -->
+<section class="cv-sec">
+  <div class="container">
+    <div class="cv-head reveal">
+      <span class="k">05 · What it costs to run</span>
+      <h2>Cheap like a tool, capped like a policy.</h2>
+      <p>The bill is a governance decision, not a surprise: hard breakers on spend, on one machine, with the safety lane outside the meter entirely.</p>
+    </div>
+    <div class="cv-money reveal">
+      <!-- RULE-065 / DECISIONS -->
+      <div class="cv-stat"><div class="num">£10<small> / day</small></div><div class="lbl">hard daily cap</div><div class="sub">Model-spend caps are breakers, not alerts — when a cap trips, only model work pauses. Safety and orders never stop.</div></div>
+      <div class="cv-stat"><div class="num">£150<small> / month</small></div><div class="lbl">hard monthly cap</div><div class="sub">In the benchmark week, spend stayed under both caps — 1p a day on the fake provider’s prices, 5p in the month.</div></div>
+      <!-- SPEC/Scale: one machine -->
+      <div class="cv-stat is-deep"><div class="num">1<small> machine</small></div><div class="lbl">everything runs on it</div><div class="sub">No cloud bill for the shop’s brain: the simulators, the record and the models’ runtime all live on one box. Hosting waits for real customers to be approved.</div></div>
+    </div>
+    <div class="cv-honest reveal" style="margin-top:16px">
+      <h3>The honest fine print</h3>
+      <ul>
+        <li>The shop is a reference business on simulators; every order, message and person is made up. Company OS has served no real customer and handled no real payment — by design, built to be proven on simulators first.</li>
+        <li>Every figure here is measured with a fake model provider. Real models are the next step, and the page says so.</li>
+        <li>It is a prototype: refunds, purchase orders, the books, subscriptions and marketing campaigns are out of scope for this version.</li>
+      </ul>
+    </div>
+    <div class="cv-cta reveal">
+      <a href="../" class="btn btn-primary">See how it works <span class="arrow">→</span></a>
+      <a href="../sample/" class="btn btn-ghost">Try the guided sample <span class="arrow">→</span></a>
+      <a href="/#contact" class="btn btn-ghost">Book a call <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="brand">
+          <svg class="brand-mark" viewBox="0 0 100 100" width="28" height="28" aria-label="Indica Tech">
+            <circle cx="32" cy="26" r="7" fill="#00C46A"/>
+            <rect x="25.5" y="40" width="13" height="42" fill="currentColor"/>
+            <path d="M58 82 L78 18 L71 18 L51 82 Z" fill="currentColor"/>
+          </svg>
+          <span>Indica Tech</span>
+        </a>
+        <p>Founder-led AI engineering. Demo to production, under NDA, in regulated industries, on fixed scope.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Engagements</h4>
+        <ul>
+          <li><a href="/services/audit.html">Production Audit</a></li>
+          <li><a href="/services/fractional.html">Fractional AI Lead</a></li>
+          <li><a href="/services/build-sprint.html">Build Sprint</a></li>
+          <li><a href="/services/governance.html">Governance</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/checklists/">Checklists</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/about.html">About Nitish</a></li>
+          <li><a href="/#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/company/indica-technology/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://instagram.com/demotoprod" target="_blank" rel="noopener">@demotoprod</a></li>
+          <li><a href="mailto:hello@indica-tech.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span class="year">2026</span> Indica Technology Ltd · Registered in England · VAT No. GB 517 173 008</span>
+      <span class="footer-legal">
+        <a href="/privacy.html">Privacy</a> ·
+        <a href="/terms.html">Terms</a> ·
+        <a href="/cookies.html">Cookies</a>
+      </span>
+      <span class="status">Taking new projects · Q1 2027</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/script.js"></script>
+<script>
+/* Count the big numbers up when they come into view. */
+(function () {
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function fmt(n, dec, comma) {
+    var s = n.toFixed(dec);
+    if (comma) { var p = s.split("."); p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); s = p.join("."); }
+    return s;
+  }
+  document.querySelectorAll("[data-count]").forEach(function (el) {
+    var target = parseFloat(el.getAttribute("data-count"));
+    var dec = parseInt(el.getAttribute("data-decimals") || "0", 10);
+    var comma = el.getAttribute("data-comma") === "1";
+    var prefix = el.getAttribute("data-prefix") || "";
+    var suffix = el.getAttribute("data-suffix") || "";
+    var node = el.childNodes[0];
+    if (isNaN(target) || !node || node.nodeType !== 3) return;
+    var final = prefix + fmt(target, dec, comma) + suffix;
+    if (reduced) { node.textContent = final; return; }
+    node.textContent = prefix + fmt(0, dec, comma) + suffix;
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        obs.unobserve(el);
+        var t0 = null, dur = 1400;
+        function step(ts) {
+          if (!t0) t0 = ts;
+          var k = Math.min(1, (ts - t0) / dur);
+          k = 1 - Math.pow(1 - k, 3);
+          node.textContent = prefix + fmt(target * k, dec, comma) + suffix;
+          if (k < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.4 });
+    obs.observe(el);
+  });
+  /* grow the benchmark bars when their block reveals */
+  var bars = document.querySelector(".cv-bars");
+  if (bars) {
+    new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        bars.classList.add("in");
+        obs.disconnect();
+      });
+    }, { threshold: 0.25 }).observe(bars);
+  }
+})();
+</script>
+</body>
+</html>
