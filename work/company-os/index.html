@@ -99,31 +99,7 @@
 
 /* At a glance: the whole workflow in one picture, explain-like-I'm-5 plain. */
 .co-brief { padding: clamp(56px, 7vw, 96px) 0; border-bottom: 1px solid var(--rule); }
-.co-brief-diagram { display: grid; grid-template-columns: 1fr auto 1.45fr auto 1.1fr auto 1.25fr; gap: 14px; align-items: stretch; }
-.co-brief-panel { border: 1px solid var(--ink); background: var(--paper); padding: 20px 20px 18px; display: flex; flex-direction: column; gap: 10px; }
-.co-brief-tag { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); }
-.co-brief-list { list-style: none; margin: 0; padding: 0; display: grid; }
-.co-brief-list li { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px dashed var(--rule); font-size: 0.95rem; color: var(--ink-2); }
-.co-brief-list li:first-child { border-top: 0; }
-.co-brief-list .ico { width: 20px; height: 20px; color: var(--ink); }
-.co-brief-arrow { align-self: center; font-family: var(--mono); font-size: 1.4rem; color: var(--ink-faint); }
-.co-brief-mini { list-style: none; margin: 0; padding: 0; }
-.co-brief-mini li.co-brief-step { display: flex; gap: 12px; align-items: center; padding: 8px 0; }
-.co-brief-mini li.co-brief-step b { font-size: 0.98rem; font-weight: 600; color: var(--ink); }
-.co-brief-mini-a { padding-left: 16px; font-family: var(--mono); font-size: 0.9rem; line-height: 1; color: var(--ink-faint); }
-.co-brief-ic { display: inline-grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--ink); background: var(--paper); flex: none; }
-.co-brief-ic .ico { width: 18px; height: 18px; }
-.co-brief-fast { margin-top: auto; display: flex; align-items: center; gap: 10px; background: var(--signal-soft); color: var(--signal-ink); border: 1px solid color-mix(in srgb, var(--signal) 40%, transparent); padding: 10px 12px; font-family: var(--mono); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
-.co-brief-fast .ico { width: 16px; height: 16px; }
-:root[data-theme="dark"] .co-brief-fast { background: color-mix(in srgb, var(--signal) 18%, var(--paper)); color: var(--brass-ink); border-color: color-mix(in srgb, var(--signal) 45%, transparent); }
-.co-brief-door { background: var(--ink); border: 1px solid var(--ink); color: var(--paper); padding: 20px 20px 18px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 8px; }
-.co-brief-door .co-brief-tag { color: var(--signal); }
-.co-brief-door .ico { width: 52px; height: 52px; color: var(--paper); }
-.co-brief-door b { font-size: 1.08rem; font-weight: 600; color: var(--paper); letter-spacing: -0.01em; }
-.co-brief-door span { font-size: 0.86rem; line-height: 1.5; color: color-mix(in srgb, var(--paper) 62%, transparent); }
-.co-brief-value { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
-.co-brief-value li { display: flex; align-items: center; gap: 10px; padding: 16px 18px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); background: var(--paper-2); font-weight: 600; font-size: 0.98rem; color: var(--ink); }
-.co-brief-value .ico { width: 18px; height: 18px; color: var(--signal); }
+/* The at-a-glance diagram now lives in the marketing layer below (.co-pipe-*). */
 .co-brief-caption { margin-top: 18px; font-size: 0.95rem; color: var(--ink-faint); max-width: 74ch; line-height: 1.6; }
 
 /* The notice aside, as Board Room's. */
@@ -236,9 +212,6 @@
   .co-hero-grid { grid-template-columns: 1fr; gap: 36px; }
   .co-flow { grid-template-columns: 1fr; }
   .co-flow-arrow { transform: rotate(90deg); justify-self: center; }
-  .co-brief-diagram { grid-template-columns: 1fr; }
-  .co-brief-arrow { transform: rotate(90deg); justify-self: center; }
-  .co-brief-value { grid-template-columns: 1fr; }
   .co-iov, .co-cards { grid-template-columns: 1fr; }
   .co-iov .diag-cell:not(:last-child)::after { content: "↓"; right: auto; left: 28px; top: auto; bottom: -15px; }
   .steps.five { grid-template-columns: repeat(2, 1fr); }
@@ -249,6 +222,277 @@
   .steps.five { grid-template-columns: 1fr; }
   .co-ladder li { grid-template-columns: 1fr; gap: 4px; }
   .bp-cta .btn + .btn { margin-left: 0; margin-top: 10px; }
+}
+
+/* ============================================================
+   Marketing layer (2026-10-29): the page's own components take
+   the board-room look (rounded cards, soft shadows, brass) with
+   classic-look fallbacks, plus motion. Copy is unchanged.
+   ============================================================ */
+
+/* --- hero: glow, grid, highlighted promise --- */
+.co-hero { position: relative; }
+.co-hero::before, .co-hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.co-hero::before { background:
+  radial-gradient(58% 46% at 82% 6%, color-mix(in srgb, var(--signal) 13%, transparent), transparent 70%),
+  radial-gradient(38% 32% at 6% 34%, color-mix(in srgb, var(--signal) 7%, transparent), transparent 70%); }
+.co-hero::after { background-image:
+  linear-gradient(color-mix(in srgb, var(--rule) 60%, transparent) 1px, transparent 1px),
+  linear-gradient(90deg, color-mix(in srgb, var(--rule) 60%, transparent) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(75% 62% at 62% 16%, #000 0%, transparent 78%);
+  mask-image: radial-gradient(75% 62% at 62% 16%, #000 0%, transparent 78%); }
+.co-hero .container { position: relative; z-index: 1; }
+.co-hero h1 .co-hl { font-style: normal; color: var(--signal); position: relative; z-index: 0; white-space: nowrap; }
+.co-hero h1 .co-hl::after { content: ""; position: absolute; left: -2px; right: -4px; bottom: 0.04em; height: 0.16em; background: color-mix(in srgb, var(--signal) 40%, transparent); transform: skewX(-14deg); z-index: -1; }
+.co-meta span { border: 0; border-radius: 999px; background: var(--signal-soft); color: var(--brass-ink, var(--signal-ink)); padding: 6px 13px; font-family: var(--sans); text-transform: none; letter-spacing: 0; font-size: .82rem; font-weight: 600; }
+.co-meta span::before { content: none; }
+
+/* --- the queue mock: window chrome, paper stack, float --- */
+.co-mock { isolation: isolate; border: 1px solid var(--card-border, var(--ink)); border-radius: var(--radius, 0); background: var(--doc, #FFFDF8); box-shadow: var(--shadow-md, 10px 10px 0 var(--paper-3)); animation: co-float 6.5s ease-in-out infinite alternate; }
+@keyframes co-float { from { transform: translateY(0); } to { transform: translateY(-7px); } }
+.co-mock::before, .co-mock::after { content: ""; position: absolute; inset: 0; border: 1px solid var(--rule); background: var(--paper); z-index: -1; }
+.co-mock::before { transform: rotate(-1.7deg) translate(-7px, 8px); }
+.co-mock::after { transform: rotate(1.2deg) translate(8px, 13px); opacity: .55; }
+.co-mock-top { align-items: center; padding-bottom: 12px; margin-bottom: 6px; border-bottom: 1px solid var(--rule); }
+.co-mock-top::before { content: ""; width: 36px; height: 11px; flex: none; order: -1; background:
+  radial-gradient(circle at 6px 5.5px, var(--rule-2) 3.2px, transparent 3.5px),
+  radial-gradient(circle at 17px 5.5px, var(--rule-2) 3.2px, transparent 3.5px),
+  radial-gradient(circle at 28px 5.5px, var(--signal) 3.2px, transparent 3.5px); }
+.co-q-item.is-you { border: 1px solid color-mix(in srgb, var(--signal) 45%, transparent); border-radius: var(--radius-sm, 0); box-shadow: 0 0 0 4px color-mix(in srgb, var(--signal) 12%, transparent); }
+.co-q-ok { display: block; }
+.co-passkey { background: var(--signal); color: var(--signal-ink); border-radius: 999px; box-shadow: 0 6px 18px color-mix(in srgb, var(--signal) 38%, transparent); transition: transform .18s, box-shadow .18s; cursor: default; }
+.co-passkey:hover { transform: translateY(-2px); box-shadow: 0 10px 24px color-mix(in srgb, var(--signal) 45%, transparent); }
+
+/* --- proof-points ticker under the hero --- */
+.co-ticker { overflow: hidden; border-bottom: 1px solid var(--rule); background: color-mix(in srgb, var(--tile, var(--paper-2)) 65%, transparent); padding: 13px 0; }
+.co-ticker-track { display: flex; width: max-content; animation: co-ticker 40s linear infinite; }
+.co-ticker:hover .co-ticker-track { animation-play-state: paused; }
+@keyframes co-ticker { to { transform: translateX(-50%); } }
+.co-ticker-half { display: flex; }
+.co-ticker-half span { font-family: var(--mono); font-size: .76rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); padding: 0 30px; position: relative; white-space: nowrap; }
+.co-ticker-half span::after { content: "◆"; position: absolute; right: -5px; top: 50%; transform: translateY(-50%); font-size: .52rem; color: var(--signal); }
+
+/* --- in / out strip and at-a-glance: cards with lift --- */
+.co-flow-step { border: 1px solid var(--card-border, var(--ink)); border-radius: var(--radius, 0); background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); transition: transform .25s, box-shadow .25s; }
+.co-flow-step:hover { transform: translateY(-4px); box-shadow: var(--shadow-md, none); }
+.co-flow-step.is-box { background: var(--deep, var(--ink)); border-color: var(--deep, var(--ink)); box-shadow: var(--shadow-md, none); }
+.co-flow-step.is-box .n { color: var(--deep-accent, var(--signal)); }
+.co-flow-step.is-box b { color: var(--on-deep, var(--paper)); }
+.co-flow-step.is-box span:last-child { color: var(--deep-mute, #C2BDB2); }
+.co-flow-arrow { width: 34px; height: 34px; border: 1px solid var(--rule-2, transparent); border-radius: 50%; display: grid; place-items: center; background: var(--surface, transparent); }
+.co-brief-panel { border: 1px solid var(--card-border, var(--ink)); border-radius: var(--radius, 0); background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); transition: transform .25s, box-shadow .25s; }
+.co-brief-panel:hover { transform: translateY(-4px); box-shadow: var(--shadow-md, none); }
+.co-brief-door { background: var(--deep, var(--ink)); border: 1px solid var(--deep, var(--ink)); border-radius: var(--radius, 0); box-shadow: var(--shadow-md, none); }
+.co-brief-door .co-brief-tag { color: var(--deep-accent, var(--signal)); }
+.co-brief-door .ico { color: var(--on-deep, var(--paper)); }
+.co-brief-door b { color: var(--on-deep, var(--paper)); }
+.co-brief-door span { color: color-mix(in srgb, var(--on-deep, var(--paper)) 62%, transparent); }
+.co-brief-arrow { width: 34px; height: 34px; border: 1px solid var(--rule-2, transparent); border-radius: 50%; display: grid; place-items: center; background: var(--surface, transparent); }
+.co-brief-value { border: 0; gap: 10px; }
+.co-brief-value li { border: 1px solid var(--card-border, var(--ink)); border-radius: 999px; background: var(--surface, var(--paper-2)); box-shadow: var(--shadow, none); padding: 12px 18px; font-size: .92rem; justify-content: center; font-weight: 600; }
+
+/* --- the notice --- */
+.bp-notice { border: 1px solid var(--card-border, var(--rule)); border-left: 4px solid var(--warn); border-radius: var(--radius-sm, 0); background: var(--surface, var(--paper-2)); box-shadow: var(--shadow, none); }
+
+/* --- input/output/value and today/built-in/next: card grid --- */
+.co-iov { border: 0; gap: 16px; }
+.co-iov .diag-cell { border: 1px solid var(--card-border, var(--ink)); border-radius: var(--radius, 0); background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); transition: transform .25s, box-shadow .25s; }
+.co-iov .diag-cell:hover { transform: translateY(-4px); box-shadow: var(--shadow-md, none); }
+.co-iov .diag-cell:not(:last-child)::after { right: -24px; top: 42px; border-radius: 50%; box-shadow: var(--shadow, none); }
+.co-iov .label.in::before { background: var(--deep-faint, var(--ink-faint)); }
+.co-iov .label.out::before { background: var(--ink); }
+.co-iov li::before { background: var(--signal); }
+.co-iov .good { background: linear-gradient(var(--signal-soft), var(--signal-soft)), var(--surface, var(--paper-2)); }
+
+/* --- where the value is: the table becomes a card --- */
+.co-val-wrap { border: 1px solid var(--card-border, var(--rule)); border-radius: var(--radius, 0); background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); }
+.co-val th:first-child, .co-val td:first-child { padding-left: 20px; }
+.co-val th:last-child, .co-val td:last-child { padding-right: 20px; }
+.co-val td:first-child { font-weight: 600; }
+.co-val tbody tr { transition: background .15s; }
+.co-val tbody tr:hover { background: color-mix(in srgb, var(--signal) 6%, transparent); }
+
+/* --- the journey: pill tags, hover lift --- */
+.steps.five { gap: 16px; }
+.steps.five .step { transition: transform .25s, box-shadow .25s; }
+.steps.five .step:hover { transform: translateY(-5px); box-shadow: var(--shadow-md, none); }
+.steps.five .step .when { display: inline-block; margin-top: 14px; padding: 5px 12px; border-radius: 999px; background: var(--signal-soft); color: var(--brass-ink, var(--signal-ink)); font-family: var(--sans); text-transform: none; letter-spacing: 0; font-size: .82rem; font-weight: 600; }
+.co-note { border: 1px solid var(--card-border, var(--rule-2)); border-radius: var(--radius-sm, 0); background: var(--surface, var(--paper-2)); box-shadow: var(--shadow, none); }
+.co-note .ico { color: var(--signal); flex: none; }
+
+/* --- the ladder: level bars --- */
+.co-ladder { border-top: 0; display: grid; gap: 12px; }
+.co-ladder li { position: relative; overflow: hidden; border: 1px solid var(--card-border, var(--rule)); border-radius: var(--radius-sm, 0); background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); padding: 18px 22px; transition: transform .2s, box-shadow .2s; }
+.co-ladder li:nth-child(1) { --w: 22; }
+.co-ladder li:nth-child(2) { --w: 44; }
+.co-ladder li:nth-child(3) { --w: 66; }
+.co-ladder li:nth-child(4) { --w: 88; }
+.co-ladder li::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: calc(var(--w) * 1%); background: linear-gradient(90deg, color-mix(in srgb, var(--signal) 20%, transparent), transparent 88%); pointer-events: none; }
+.co-ladder li:hover { transform: translateX(6px); }
+.co-ladder .lv { font-family: var(--display, var(--mono)); font-size: 1.7rem; font-weight: 700; position: relative; }
+.co-ladder .nm { color: var(--brass-ink, var(--signal-ink)); }
+.co-ladder .ds { position: relative; }
+.co-moves li { border-radius: 8px; padding-left: 10px; padding-right: 10px; transition: background .2s; }
+.co-moves li:hover { background: color-mix(in srgb, var(--signal) 7%, transparent); }
+
+/* --- benchmarks: deep tokens, row glow, tabular nums --- */
+.proof-cell .num { font-variant-numeric: tabular-nums; }
+.co-proof-sub { color: var(--deep-faint, #8A857D); }
+.bench-scroll { border-top-color: var(--deep-line, #2A2A26); }
+.bench th { color: var(--deep-faint, #8A857D); }
+.bench, .bench td { border-color: var(--deep-line, #2A2A26); color: var(--deep-mute, #C2BDB2); }
+.bench td:first-child { color: var(--on-deep, var(--paper)); }
+.bench tbody tr { transition: background .15s; }
+.bench tbody tr:hover { background: color-mix(in srgb, var(--deep-accent, var(--signal)) 9%, transparent); }
+.co-misses { border-top-color: var(--deep-line, #2A2A26); }
+.co-misses li { border-bottom-color: var(--deep-line, #2A2A26); color: var(--deep-mute, #C2BDB2); }
+.co-misses li::before { background: var(--deep-faint, #8A857D); }
+.co-method { color: var(--deep-faint, #8A857D); }
+
+/* --- the dream: cards, the hub one dark, ghost numerals --- */
+.co-cards { border: 0; gap: 16px; }
+.co-card-cell { position: relative; overflow: hidden; border: 1px solid var(--card-border, var(--ink)); border-radius: var(--radius, 0); background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); transition: transform .25s, box-shadow .25s; }
+.co-card-cell:hover { transform: translateY(-5px); box-shadow: var(--shadow-md, none); }
+.co-card-cell::before { position: absolute; right: 16px; top: 2px; font-family: var(--display, var(--mono)); font-weight: 700; font-size: 4.6rem; letter-spacing: -.05em; line-height: 1; color: color-mix(in srgb, var(--ink) 7%, transparent); pointer-events: none; }
+.co-cards .co-card-cell:nth-child(1)::before { content: "01"; }
+.co-cards .co-card-cell:nth-child(2)::before { content: "02"; }
+.co-cards .co-card-cell:nth-child(3)::before { content: "03"; }
+.co-cards .co-card-cell:nth-child(2) { background: var(--deep, var(--ink)); border-color: var(--deep, var(--ink)); box-shadow: var(--shadow-md, none); }
+.co-cards .co-card-cell:nth-child(2)::before { color: color-mix(in srgb, var(--on-deep, #fff) 9%, transparent); }
+.co-cards .co-card-cell:nth-child(2) .n { color: var(--deep-accent, var(--signal)); }
+.co-cards .co-card-cell:nth-child(2) h3 { color: var(--on-deep, var(--paper)); }
+.co-cards .co-card-cell:nth-child(2) p { color: var(--deep-mute, var(--ink-mute)); }
+.co-cards .co-card-cell:nth-child(2) .when { color: var(--deep-faint, var(--ink-faint)); }
+.co-cards .co-card-cell:nth-child(2) .co-ico { background: var(--deep-2, transparent); border-color: var(--deep-line, var(--rule-2)); color: var(--on-deep, var(--paper)); }
+.co-cards .co-card-cell .co-ico { transition: transform .25s; }
+.co-cards .co-card-cell:hover .co-ico { transform: rotate(-6deg) scale(1.06); }
+
+/* --- trade-offs: the crosses --- */
+.co-trade li { display: flex; gap: 14px; align-items: baseline; }
+.co-trade li::before { content: "×"; flex: none; font-weight: 700; color: var(--warn); line-height: inherit; }
+
+/* --- closing CTA: a dark panel with a glow --- */
+.co-cta-panel { position: relative; overflow: hidden; max-width: none; border-radius: var(--radius, 0); border: 1px solid var(--deep-line, transparent); background: var(--deep, var(--paper-2)); box-shadow: var(--shadow-md, none); padding: clamp(40px, 6vw, 76px) clamp(24px, 6vw, 72px); text-align: center; }
+.co-cta-panel::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(62% 90% at 50% 0%, color-mix(in srgb, var(--deep-accent, var(--signal)) 17%, transparent), transparent 66%); }
+.co-cta-panel h3 { color: var(--on-deep, var(--ink)); font-size: clamp(1.6rem, 3.2vw, 2.4rem) !important; max-width: 24ch; margin-left: auto; margin-right: auto; position: relative; }
+.co-cta-panel p { color: var(--deep-mute, var(--ink-mute)); max-width: 62ch; margin-left: auto; margin-right: auto; position: relative; }
+.co-cta-panel .btn { position: relative; margin-top: 8px; }
+.co-cta-panel .btn-primary { background: var(--deep-accent, var(--signal)); border-color: var(--deep-accent, var(--signal)); color: #1a1305; }
+.co-cta-panel .btn-primary:hover { background: var(--on-deep, var(--paper)); border-color: var(--on-deep, var(--paper)); color: var(--deep, var(--ink)); }
+.co-cta-panel a.btn-ghost { border: 1.5px solid var(--deep-line, var(--rule-2)) !important; color: var(--on-deep, var(--ink)); }
+.co-cta-panel a.btn-ghost:hover { background: var(--on-deep, var(--ink)); color: var(--deep, var(--paper)); }
+
+/* --- staggered rise on reveal --- */
+@keyframes co-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.reveal.in > * { animation: co-rise .55s cubic-bezier(.2,.7,.3,1) backwards; }
+.reveal.in > *:nth-child(2) { animation-delay: .06s; }
+.reveal.in > *:nth-child(3) { animation-delay: .12s; }
+.reveal.in > *:nth-child(4) { animation-delay: .18s; }
+.reveal.in > *:nth-child(5) { animation-delay: .24s; }
+.reveal.in > *:nth-child(6) { animation-delay: .30s; }
+.reveal.in > *:nth-child(7) { animation-delay: .36s; }
+.reveal.in > *:nth-child(n+8) { animation-delay: .42s; }
+.reveal.in tbody tr:nth-child(2) { animation-delay: .05s; }
+.reveal.in tbody tr:nth-child(3) { animation-delay: .1s; }
+.reveal.in tbody tr:nth-child(4) { animation-delay: .15s; }
+.reveal.in tbody tr:nth-child(5) { animation-delay: .2s; }
+
+@media (max-width: 960px) {
+  .co-iov .diag-cell:not(:last-child)::after { right: auto; left: 28px; top: auto; bottom: -23px; }
+}
+@media (max-width: 640px) {
+  .co-meta span { font-size: .74rem; padding: 5px 10px; }
+  .co-hero h1 .co-hl { white-space: normal; }
+  .co-ticker-half span { padding: 0 20px; }
+}
+/* --- the animated pipeline: in → five steps → out, then the value.
+     One shared 11s clock: keyframes are written at absolute times and
+     each element's delay shifts its phase (delay = t₀ − T); 0% and 100%
+     are both hidden so the loop is seamless. --- */
+.co-pipe { --co-cycle: 11s; display: grid; grid-template-columns: 0.92fr 46px minmax(0, 1.7fr) 46px 1fr; gap: 14px; align-items: stretch; }
+.co-pipe-stage { border: 1px solid var(--card-border, var(--ink)); border-radius: var(--radius, 0); background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.co-pipe-tag { font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--brass-ink, var(--signal-ink)); }
+.co-pipe-chips { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; align-content: start; }
+.co-pipe-chips li { display: flex; align-items: center; gap: 10px; border: 1px solid var(--rule); border-radius: var(--radius-sm, 0); background: var(--tile, var(--paper-2)); padding: 10px 12px; font-size: .92rem; font-weight: 500; color: var(--ink); animation: co-chip var(--co-cycle) ease infinite; }
+.co-pipe-in .co-pipe-chips li:nth-child(2) { animation-delay: -0.08s; }
+.co-pipe-in .co-pipe-chips li:nth-child(3) { animation-delay: 0.07s; }
+.co-pipe-out .co-pipe-chips li { animation-name: co-chip-late; }
+.co-pipe-out .co-pipe-chips li:nth-child(1) { animation-delay: -0.26s; }
+.co-pipe-out .co-pipe-chips li:nth-child(2) { animation-delay: -0.11s; }
+.co-pipe-out .co-pipe-chips li:nth-child(3) { animation-delay: 0.04s; }
+.co-pipe-out .co-pipe-chips li:nth-child(4) { animation-delay: 0.19s; }
+@keyframes co-chip { 0% { opacity: 0; transform: translateX(-14px); } 3%, 92% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; } }
+@keyframes co-chip-late { 0%, 52% { opacity: 0; transform: translateX(14px); } 56%, 92% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; } }
+.co-pipe-ic { display: inline-grid; place-items: center; width: 28px; height: 28px; flex: none; border: 1px solid var(--rule-2, var(--rule)); border-radius: 8px; background: var(--surface, var(--paper)); color: var(--brass-ink, var(--signal)); }
+.co-pipe-ic .ico { width: 15px; height: 15px; }
+.co-pipe-run { position: relative; align-self: center; height: 2px; border-radius: 2px; background: var(--rule-2); }
+.co-pipe-run i { position: absolute; top: 50%; left: 0; width: 9px; height: 9px; margin-top: -4.5px; border-radius: 50%; background: var(--signal); animation: co-dot var(--co-cycle) linear infinite; }
+.co-pipe-run i:nth-child(2) { animation-delay: -2.75s; }
+@keyframes co-dot { 0% { left: 0; opacity: 0; } 5% { opacity: 1; } 49% { left: calc(100% - 9px); opacity: 1; } 54%, 100% { left: calc(100% - 9px); opacity: 0; } }
+.co-pipe-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; align-content: stretch; }
+.co-pipe-steps li { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border: 1px solid var(--card-border, var(--ink)); border-radius: var(--radius-sm, 0); background: var(--surface, var(--paper)); box-shadow: var(--shadow, none); padding: 14px 8px 12px; animation: co-step var(--co-cycle) infinite; }
+.co-pipe-steps li:nth-child(1) { animation-delay: -0.7s; }
+.co-pipe-steps li:nth-child(2) { animation-delay: -1.6s; }
+.co-pipe-steps li:nth-child(3) { animation-delay: -2.5s; }
+.co-pipe-steps li:nth-child(4) { animation-delay: -3.4s; }
+.co-pipe-steps li:nth-child(5) { animation-delay: -4.3s; }
+@keyframes co-step {
+  0%, 8% { border-color: color-mix(in srgb, var(--signal) 65%, transparent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--signal) 15%, transparent); transform: translateY(-3px); }
+  13%, 100% { border-color: var(--card-border, var(--ink)); box-shadow: var(--shadow, none); transform: none; }
+}
+.co-pipe-steps .n { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: var(--paper); font-family: var(--mono); font-size: .7rem; margin-bottom: 8px; }
+.co-pipe-steps b { display: block; font-size: .84rem; line-height: 1.25; letter-spacing: -0.01em; }
+.co-pipe-steps li > span:last-child { display: block; margin-top: 5px; font-family: var(--mono); font-size: .6rem; letter-spacing: .02em; color: var(--ink-faint); }
+.co-pipe-value { --co-cycle: 11s; margin-top: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; border: 1px dashed color-mix(in srgb, var(--signal) 45%, transparent); border-radius: var(--radius, 0); background: linear-gradient(var(--signal-soft), var(--signal-soft)), var(--surface, var(--paper-2)); padding: 14px 18px; }
+.co-pipe-value ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.co-pipe-value li { border-radius: 999px; background: var(--surface, var(--paper)); border: 1px solid color-mix(in srgb, var(--signal) 40%, transparent); box-shadow: var(--shadow, none); padding: 7px 15px; font-weight: 600; font-size: .9rem; color: var(--ink); animation: co-pop var(--co-cycle) cubic-bezier(.2,1.4,.4,1) infinite; }
+.co-pipe-value li:nth-child(1) { animation-delay: -0.26s; }
+.co-pipe-value li:nth-child(2) { animation-delay: -0.11s; }
+.co-pipe-value li:nth-child(3) { animation-delay: 0.04s; }
+@keyframes co-pop { 0%, 62% { opacity: 0; transform: scale(.7); } 66%, 92% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; } }
+.co-pipe:hover .co-pipe-chips li, .co-pipe:hover .co-pipe-steps li, .co-pipe:hover .co-pipe-run i, .co-pipe-value:hover li { animation-play-state: paused; }
+
+/* --- second animation pass --- */
+@keyframes co-item { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.co-mock-top { animation: co-item .55s .2s backwards; }
+.co-mock .co-q-item:nth-of-type(2) { animation: co-item .55s .45s backwards; }
+.co-mock .co-q-item:nth-of-type(3) { animation: co-item .55s .62s backwards; }
+.co-mock .co-q-item:nth-of-type(4) { animation: co-item .55s .79s backwards; }
+.co-mock .co-q-item:nth-of-type(5) { animation: co-item .55s .96s backwards; }
+@keyframes co-grow { from { transform: scaleX(0); } }
+.section-head.reveal.in .kicker::before { transform-origin: left center; animation: co-grow .5s .05s backwards; }
+.steps.five { position: relative; }
+.steps.five::before, .steps.five::after { content: ""; position: absolute; top: -18px; height: 2px; border-radius: 2px; pointer-events: none; }
+.steps.five::before { left: 9%; right: 9%; background: var(--rule-2); }
+.steps.five::after { left: 9%; right: 9%; background: linear-gradient(90deg, var(--signal), color-mix(in srgb, var(--signal) 45%, transparent)); transform: scaleX(0); transform-origin: left center; transition: transform 1.5s cubic-bezier(.2,.7,.3,1) .25s; }
+.steps.five.reveal.in::after { transform: scaleX(1); }
+.co-ladder li::before { width: 0; transition: width 1s cubic-bezier(.2,.7,.3,1) .15s; }
+.co-ladder.reveal.in li::before { width: calc(var(--w) * 1%); }
+.co-ladder.reveal.in li:nth-child(2)::before { transition-delay: .3s; }
+.co-ladder.reveal.in li:nth-child(3)::before { transition-delay: .45s; }
+.co-ladder.reveal.in li:nth-child(4)::before { transition-delay: .6s; }
+.co-cta-panel .btn-primary { position: relative; overflow: hidden; }
+.co-cta-panel .btn-primary::after { content: ""; position: absolute; top: -25%; bottom: -25%; left: -45%; width: 34%; background: linear-gradient(105deg, transparent, rgba(255,255,255,.4), transparent); transform: skewX(-18deg); animation: co-shine 4.5s ease-in-out infinite 1.6s; }
+@keyframes co-shine { 0% { left: -45%; } 26%, 100% { left: 135%; } }
+@keyframes co-nudge { 0%, 100% { transform: none; } 50% { transform: translateX(4px); } }
+.co-iov .diag-cell:not(:last-child)::after { animation: co-nudge 2.6s ease-in-out infinite; }
+
+@media (max-width: 960px) {
+  .co-pipe { grid-template-columns: 1fr; }
+  .co-pipe-run { display: none; }
+  .co-pipe-steps { grid-template-columns: repeat(5, 1fr); }
+  .co-iov .diag-cell:not(:last-child)::after { animation: none; }
+  .steps.five::before, .steps.five::after { display: none; }
+}
+@media (max-width: 640px) {
+  .co-pipe-steps { grid-template-columns: 1fr 1fr; }
+  .co-pipe-value { flex-direction: column; align-items: stretch; text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .co-mock, .co-mock-top, .co-mock .co-q-item, .co-ticker-track, .reveal.in > *, .reveal.in tbody tr, .co-pipe-chips li, .co-pipe-steps li, .co-pipe-run i, .co-pipe-value li, .co-iov .diag-cell:not(:last-child)::after, .co-cta-panel .btn-primary::after, .section-head.reveal.in .kicker::before { animation: none !important; }
+  .co-ladder li::before { width: calc(var(--w) * 1%) !important; transition: none !important; }
+  .steps.five::after { transform: scaleX(1) !important; transition: none !important; }
 }
 </style>
 <link rel="stylesheet" href="../../look.css" id="look-css">
@@ -290,7 +534,7 @@
     <div class="co-hero-grid">
       <div>
         <div class="co-lockup"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0B0B0A"/><circle cx="9.5" cy="16" r="3.2" fill="#00C46A"/><rect x="15.2" y="6" width="2.6" height="20" rx="1.3" fill="#F7F4ED"/><rect x="20.5" y="10" width="8" height="2.4" rx="1.2" fill="#F7F4ED"/><rect x="20.5" y="14.8" width="8" height="2.4" rx="1.2" fill="#00C46A"/><rect x="20.5" y="19.6" width="8" height="2.4" rx="1.2" fill="#F7F4ED"/></svg><div><b>Company OS</b><div class="kicker">Selected work / 07 · In-house product</div></div></div>
-        <h1>Agents run the shop. Nothing goes out until you say yes.</h1>
+        <h1>Agents run the shop. Nothing goes out until <em class="co-hl">you say yes.</em></h1>
         <p class="lead">An online shop runs on orders, deliveries and customer messages, all day. Company OS reads them, does the work that repeats, and puts every decision that needs you in one queue. Nothing reaches a customer or a supplier until your passkey, or a rule you signed, says yes. Safety work never waits for a model.</p>
         <div class="co-meta"><span>Built and run by Indica Technology</span><span>Runs on one machine</span><span>14 of 14 benchmarks passed</span><span>Safety runs with every model off</span></div>
         <div class="co-ctas"><a href="sample/" class="btn btn-primary">Try the guided sample <span class="arrow">→</span></a><a href="#value" class="btn btn-ghost">See where the value is <span class="arrow">↓</span></a></div>
@@ -333,58 +577,61 @@
   </div>
 </section>
 
+<div class="co-ticker" aria-hidden="true">
+  <div class="co-ticker-track">
+    <div class="co-ticker-half">
+      <span>14 of 14 benchmarks passed</span><span>287 ms slowest kill-switch stop</span><span>Safety with every model off</span><span>5,991 deliveries, exactly once</span><span>The brief by 07:30 — no model wrote it</span><span>59 of 59 unsafe drafts stopped</span><span>31 injection attempts, none through</span><span>0 real customers, 0 real payments — by design</span>
+    </div>
+    <div class="co-ticker-half">
+      <span>14 of 14 benchmarks passed</span><span>287 ms slowest kill-switch stop</span><span>Safety with every model off</span><span>5,991 deliveries, exactly once</span><span>The brief by 07:30 — no model wrote it</span><span>59 of 59 unsafe drafts stopped</span><span>31 injection attempts, none through</span><span>0 real customers, 0 real payments — by design</span>
+    </div>
+  </div>
+</div>
+
 <section class="co-brief" aria-labelledby="at-a-glance-h">
   <div class="container">
     <div class="section-head reveal">
       <div class="kicker">At a glance</div>
       <h2 id="at-a-glance-h">A message in. A checked reply out. One door between.</h2>
     </div>
-    <div class="co-brief-diagram reveal">
-      <div class="co-brief-panel">
-        <span class="co-brief-tag">In</span>
-        <ul class="co-brief-list">
-          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l8 3.6v8.8L12 19.5l-8-3.6V7.1z"/><path d="M4 7.1l8 3.6 8-3.6"/><path d="M12 10.7v8.8"/></svg>Orders</li>
-          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 7h10.5v9H2.5z"/><path d="M13 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.7"/><circle cx="16.5" cy="18" r="1.7"/></svg>Shipments</li>
-          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16v10.5H9.5L5 19.5v-3.5H4z"/><circle cx="8.6" cy="10.75" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="10.75" r="0.9" fill="currentColor" stroke="none"/><circle cx="15.4" cy="10.75" r="0.9" fill="currentColor" stroke="none"/></svg>Customer messages</li>
+    <div class="co-pipe reveal">
+      <div class="co-pipe-stage co-pipe-in">
+        <span class="co-pipe-tag">In · your shop&rsquo;s day</span>
+        <ul class="co-pipe-chips">
+          <li><span class="co-pipe-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l8 3.6v8.8L12 19.5l-8-3.6V7.1z"/><path d="M4 7.1l8 3.6 8-3.6"/><path d="M12 10.7v8.8"/></svg></span>Order #1042 paid</li>
+          <li><span class="co-pipe-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 7h10.5v9H2.5z"/><path d="M13 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.7"/><circle cx="16.5" cy="18" r="1.7"/></svg></span>Shipment delayed 20 minutes</li>
+          <li><span class="co-pipe-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16v10.5H9.5L5 19.5v-3.5H4z"/><circle cx="8.6" cy="10.75" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="10.75" r="0.9" fill="currentColor" stroke="none"/><circle cx="15.4" cy="10.75" r="0.9" fill="currentColor" stroke="none"/></svg></span>&ldquo;How many do I take a day?&rdquo;</li>
         </ul>
       </div>
-      <span class="co-brief-arrow" aria-hidden="true">→</span>
-      <div class="co-brief-panel">
-        <span class="co-brief-tag">The middle</span>
-        <ol class="co-brief-mini">
-          <li class="co-brief-step"><span class="co-brief-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11A8 8 0 0 0 5.6 6.6L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.4 4.4L20 16"/><path d="M20 21v-5h-5"/></svg></span><b>Agents do the work that repeats</b></li>
-          <li class="co-brief-mini-a" aria-hidden="true">↓</li>
-          <li class="co-brief-step"><span class="co-brief-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8.5 7.5h7"/><path d="M9.3 12.4l2 2 3.6-3.9"/></svg></span><b>Rules check it</b></li>
-          <li class="co-brief-mini-a" aria-hidden="true">↓</li>
-          <li class="co-brief-step"><span class="co-brief-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="3.5"/><path d="M11.5 12h8.5"/><path d="M17 12v3"/><path d="M20 12v2"/></svg></span><b>You say yes</b></li>
-        </ol>
-        <p class="co-brief-fast"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2.5L4.5 13.5H11L10 21.5L19.5 10.5H13z"/></svg>Safety first — no model in the path</p>
-      </div>
-      <span class="co-brief-arrow" aria-hidden="true">→</span>
-      <div class="co-brief-door">
-        <span class="co-brief-tag">The door</span>
-        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 58h48"/><rect x="18" y="8" width="28" height="50" rx="2"/><circle cx="39" cy="30" r="3.4" fill="var(--signal)" stroke="none"/><path d="M39 33v8" stroke="var(--signal)" stroke-width="4"/></svg>
-        <b>One way out</b>
-        <span>Your passkey, or a rule you signed. Only things with a yes pass.</span>
-      </div>
-      <span class="co-brief-arrow" aria-hidden="true">→</span>
-      <div class="co-brief-panel">
-        <span class="co-brief-tag">Out</span>
-        <ul class="co-brief-list">
-          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3.5L10.5 13.5"/><path d="M21 3.5l-6.8 17-3-7.7-7.7-3z"/></svg>Replies sent</li>
-          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l8 3.6v8.8L12 19.5l-8-3.6V7.1z"/><path d="M4 7.1l8 3.6 8-3.6"/><path d="M10.2 11.5v4M13.8 11.5v4"/></svg>Batches held</li>
-          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/><circle cx="16" cy="16" r="1.4" fill="currentColor" stroke="none"/></svg>Brief by 07:30</li>
-          <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/></svg>Every action on the record</li>
+      <span class="co-pipe-run" aria-hidden="true"><i></i><i></i></span>
+      <ol class="co-pipe-steps">
+        <li><span class="n">1</span><b>Notice, then fetch</b><span>never trusts the notice</span></li>
+        <li><span class="n">2</span><b>Safety first</b><span>no model in the path</span></li>
+        <li><span class="n">3</span><b>Draft and check</b><span>checked twice</span></li>
+        <li><span class="n">4</span><b>You decide</b><span>what you see is what you sign</span></li>
+        <li><span class="n">5</span><b>One way out</b><span>exactly once</span></li>
+      </ol>
+      <span class="co-pipe-run" aria-hidden="true"><i></i><i></i></span>
+      <div class="co-pipe-stage co-pipe-out">
+        <span class="co-pipe-tag">Out · work done</span>
+        <ul class="co-pipe-chips">
+          <li><span class="co-pipe-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3.5L10.5 13.5"/><path d="M21 3.5l-6.8 17-3-7.7-7.7-3z"/></svg></span>Reply sent — your approved text</li>
+          <li><span class="co-pipe-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5h3.5v13H8z"/><path d="M12.5 5.5H16v13h-3.5z"/></svg></span>Batch B-1042 held</li>
+          <li><span class="co-pipe-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8.5 7.8h7M8.5 12h7M8.5 16.2h4"/></svg></span>Brief ready 07:26 · 8 sections</li>
+          <li><span class="co-pipe-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg></span>Every step on the record</li>
         </ul>
       </div>
     </div>
-    <ul class="co-brief-value reveal">
-      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>Minutes, not hours</li>
-      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="3.5"/><path d="M11.5 12h8.5"/><path d="M17 12v3"/><path d="M20 12v2"/></svg>Every yes is yours</li>
-      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/></svg>Provable months later</li>
-    </ul>
+    <div class="co-pipe-value reveal">
+      <span class="co-pipe-tag">Value · what it is worth</span>
+      <ul>
+        <li>Minutes, not hours</li>
+        <li>Every yes is yours</li>
+        <li>Provable months later</li>
+      </ul>
+    </div>
     <p class="co-brief-caption">Picture a shop with one door: every reply, parcel or note leaves only with your yes — or a rule you signed.</p>
-    <p class="visually-hidden">The workflow as a list: orders, shipments and customer messages come in; agents do the work that repeats, rules check it and you say yes, with a safety-first lane that has no model in its path; one door lets anything out only with your passkey or a rule you signed; replies go out, batches are held, the brief is ready by 07:30 and every action lands on the record. The value: minutes rather than hours, every yes stays yours, and the record is provable months later.</p>
+    <p class="visually-hidden">The pipeline as a list: orders, shipments and customer messages come in; the five steps run — notice then fetch, safety first with no model in the path, draft and check twice, you decide with your passkey, and one way out that sends exactly once; replies go out, a batch is held, the brief is ready by 07:26 and every step lands on the record. The value: minutes rather than hours, every yes stays yours, and the record is provable months later.</p>
   </div>
 </section>
 
@@ -438,6 +685,7 @@
         </ul>
       </div>
     </div>
+    <p class="co-after reveal"><a href="value/" class="btn btn-ghost">See the business case — your week, the proof, the record <span class="arrow">→</span></a></p>
   </div>
 </section>
 
@@ -522,9 +770,9 @@
       <h2>Fourteen benchmarks, measured, all passed.</h2>
     </div>
     <div class="proof-grid reveal">
-      <div class="proof-cell"><div class="num">1.3<span class="unit"> s</span></div><div class="lbl">Slowest safety report recorded<br>with every model switched off</div></div>
-      <div class="proof-cell"><div class="num">5,991</div><div class="lbl">Deliveries applied exactly once<br>500 orders, with faults injected</div></div>
-      <div class="proof-cell"><div class="num">287<span class="unit"> ms</span></div><div class="lbl">Slowest kill-switch stop<br>against a 10-second bar</div></div>
+      <div class="proof-cell"><div class="num" data-count="1.3" data-decimals="1">1.3<span class="unit"> s</span></div><div class="lbl">Slowest safety report recorded<br>with every model switched off</div></div>
+      <div class="proof-cell"><div class="num" data-count="5991" data-comma="1">5,991</div><div class="lbl">Deliveries applied exactly once<br>500 orders, with faults injected</div></div>
+      <div class="proof-cell"><div class="num" data-count="287">287<span class="unit"> ms</span></div><div class="lbl">Slowest kill-switch stop<br>against a 10-second bar</div></div>
       <div class="proof-cell"><div class="num">59 / 59</div><div class="lbl">Non-compliant drafts stopped<br>and 101 of 101 good ones passed</div></div>
     </div>
     <div class="proof-body reveal">
@@ -652,10 +900,11 @@
 
 <section class="bp-cta">
   <div class="container">
-    <div class="prose-cta">
+    <div class="prose-cta co-cta-panel">
       <h3>Which part of your business would you trust to an agent first?</h3>
       <p>We build AI like this for other companies: it runs where your data lives, a person approves what goes out, and its failures are counted rather than hidden. If you have work like that in mind, or want to see Company OS run a morning, tell us.</p>
       <a href="/#contact" class="btn btn-primary">Book a call <span class="arrow">→</span></a>
+      <a href="value/" class="btn btn-ghost">The business case <span class="arrow">→</span></a>
       <a href="/work/" class="btn btn-ghost">More selected work</a>
     </div>
   </div>
@@ -711,11 +960,47 @@
         <a href="/terms.html">Terms</a> ·
         <a href="/cookies.html">Cookies</a>
       </span>
-      <span class="status">Taking new projects · Q2 2026</span>
+      <span class="status">Taking new projects · Q1 2027</span>
     </div>
   </div>
 </footer>
 
 <script src="/script.js"></script>
+<script>
+/* Company OS page: count the benchmark numerals up when they come into view. */
+(function () {
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function fmt(n, dec, comma) {
+    var s = n.toFixed(dec);
+    if (comma) { var p = s.split("."); p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); s = p.join("."); }
+    return s;
+  }
+  document.querySelectorAll("[data-count]").forEach(function (el) {
+    var target = parseFloat(el.getAttribute("data-count"));
+    var dec = parseInt(el.getAttribute("data-decimals") || "0", 10);
+    var comma = el.getAttribute("data-comma") === "1";
+    var node = el.childNodes[0];
+    if (isNaN(target) || !node || node.nodeType !== 3) return;
+    if (reduced) { node.textContent = fmt(target, dec, comma); return; }
+    node.textContent = fmt(0, dec, comma);
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        obs.unobserve(el);
+        var t0 = null, dur = 1400;
+        function step(ts) {
+          if (!t0) t0 = ts;
+          var k = Math.min(1, (ts - t0) / dur);
+          k = 1 - Math.pow(1 - k, 3);
+          node.textContent = fmt(target * k, dec, comma);
+          if (k < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.4 });
+    obs.observe(el);
+  });
+})();
+</script>
 </body>
 </html>
