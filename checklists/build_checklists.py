@@ -385,9 +385,7 @@ def render_head(title: str, desc: str, url: str, og_type: str, first: str = "") 
 <meta property="og:type" content="{og_type}">
 <meta property="og:url" content="{url}">
 {first}<link rel="stylesheet" href="/styles.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/fonts.css">
 <link rel="stylesheet" href="/look.css" id="look-css">
 <script src="/look.js"></script>
 <style>{CSS}</style>"""
